@@ -1,0 +1,45 @@
+.goal-topic {
+    padding-right: 0.5em;
+}
+
+span[data-tooltip] {
+    border-bottom: none;
+}
+
+.hide-and-show {
+    opacity: 1;
+    transition: opacity 250ms ease-in-out;
+}
+
+.hide-and-show.hide {
+    opacity: 0;
+    height: 0;
+}
+
+.ta-center {
+    text-align: center;
+}
+
+.mb-1 {
+    margin-bottom: 1em;
+}
+
+.mb-2 {
+    margin-bottom: 2em;
+}
+
+img {
+    border-radius: 1em;
+}
+
+mark.warning {
+    background-color: orange;
+    color: black;
+    border-radius: 0.2em;
+}
+
+mark.error {
+    background-color: red;
+    color: black;
+    border-radius: 0.2em;
+}

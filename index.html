@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="shortcut icon" type="image/ico" href="/assets/favicon/favicon.ico" />
+    <title>NMSUD Form</title>
+</head>
+
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="form-app"></div>
+
+    <script type="module">
+        window.process = {};
+        window.process.env = import.meta.env;
+    </script>
+    <script src="/src/index.tsx" type="module"></script>
+</body>
+
+</html>
