@@ -19,6 +19,7 @@ export class ConfigService {
     };
 
     isProd = () => this.get<string>('NODE_ENV') === 'production';
+    packageVersion = () => this.get<string>('PACKAGE_VERSION');
     buildVersion = () => this.get<string>('BUILD_VERSION');
 }
 

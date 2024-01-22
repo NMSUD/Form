@@ -30,6 +30,7 @@ export const BasicLink: Component<IProps> = (props: IProps) => {
     return (
         <a
             id={props.id}
+            title={props.title}
             href={appendRef(props.href)}
             target="_blank"
             rel="noopener noreferrer"

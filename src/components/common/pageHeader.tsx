@@ -15,7 +15,7 @@ export const PageHeader: Component<IProps> = (props: IProps) => {
             paddingTop="2em"
             mb="1em"
         >
-            <Heading size="3xl">{props.text}</Heading>
+            <Heading size="3xl" textAlign="center">{props.text}</Heading>
         </Flex>
     );
 }

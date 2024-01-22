@@ -1,0 +1,17 @@
+import { ValidationResult } from "../validationResult";
+
+export const minItems = (minLength: number) => <T>(arrVal: Array<T>): ValidationResult => {
+    if (arrVal?.length >= minLength) {
+        return { isValid: true };
+    }
+
+    return { isValid: false, errorMessage: `Minimum number of items that need to be selected is ${minLength}` };
+};
+
+export const maxLength = (maxLength: number) => <T>(arrVal: Array<T>): ValidationResult => {
+    if (arrVal?.length < maxLength) {
+        return { isValid: true };
+    }
+
+    return { isValid: false, errorMessage: `Too many items selected! Maximum number of items allowed to be selected is ${maxLength}` };
+};

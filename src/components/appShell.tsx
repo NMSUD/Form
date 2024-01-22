@@ -1,21 +1,43 @@
 import { Center, Flex, hope } from "@hope-ui/solid";
-import { Component, lazy, Suspense } from 'solid-js';
+import { useRoutes } from "@solidjs/router";
+import { Component, Suspense, lazy } from 'solid-js';
 
+import { routes } from '../constants/route';
+import { HomePage, RedirectToHome } from "../pages/home";
+import { NotFoundPage } from "../pages/notFound";
 import { LoadingSpinner } from './core/loading';
-
-const FormPage = lazy(() => import("../pages/formPage"));
+import { Sidebar } from "./common/sidebar";
 
 export const AppShell: Component = () => {
+    const Routes = useRoutes([
+        {
+            path: routes.form.root.path,
+            children: [
+                { path: routes.form.builder.path, component: lazy(() => import("../pages/form/builder")) },
+            ]
+        },
+        { path: routes.actualHome.path, component: HomePage },
+        { path: routes.home.path, component: RedirectToHome },
+        { path: "*", component: NotFoundPage }
+    ]);
 
     return (
         <Flex maxH="100vh">
-            <hope.main w="$full" px="3em" overflowY="auto">
+            <Sidebar />
+            <hope.main w="$full" class="main" overflowY="auto">
                 <Suspense fallback={
                     <Center width="100%" height="100vh">
                         <LoadingSpinner />
                     </Center>
                 }>
-                    <FormPage />
+                    <Routes />
+                    {/* <Routes>
+
+                        <Route path={routes.form} component={lazy(() => import("../pages/form"))} />
+                        <Route path={routes.actualHome} component={HomePage} />
+                        <Route path={routes.home} component={RedirectToHome} />
+                        <Route path={"*"} component={NotFoundPage} />
+                    </Routes> */}
 
                     {/* <Footer /> */}
                 </Suspense>

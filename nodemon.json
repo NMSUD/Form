@@ -6,5 +6,5 @@
     "ignore": [
         "src/**/*.spec.ts"
     ],
-    "exec": "ts-node ./src/api.ts"
+    "exec": "ts-node -p tsconfig.server.json ./src/api.ts"
 }
