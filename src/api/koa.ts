@@ -3,8 +3,9 @@ import Router from '@koa/router';
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import serve from "koa-static";
+import path from 'path';
 
-import { getConfig } from '../services/internal/configService';
+import { getBotPath, getConfig } from '../services/internal/configService';
 import { getLog } from "../services/internal/logService";
 import { defaultEndpoint, versionEndpoint } from './misc';
 import { handleFormSubmission } from './form';
@@ -25,12 +26,13 @@ export const setUpCustomHttpServer = (props: IHttpServerProps) => {
 
     // route definitions
     const router = new Router();
+    router.get('/', defaultEndpoint);
     router.get('/version', versionEndpoint('secret'));
     router.post('/', handleFormSubmission);
 
     props.koa.use(bodyParser());
     props.koa.use(router.routes());
-    props.koa.use(serve('public'));
+    props.koa.use(serve(path.join(getBotPath(), 'public')));
     props.koa.use(cors());
 
     const port = getConfig().getApiPort();

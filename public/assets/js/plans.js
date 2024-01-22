@@ -7,7 +7,6 @@ const rangeIds = {
     cheap: 'cheap',
 }
 
-
 const ranges = [
     {
         id: rangeIds.ease,
@@ -80,7 +79,7 @@ const calculateStorageSpace = () => {
 
     const maxUsagePerPerson = totalUploadsElem.value * maxUploadElem.value;
 
-    const people = availableElem.value / maxUsagePerPerson;
+    const people = (availableElem.value * 1024) / maxUsagePerPerson;
     const numPeopleElem = document.getElementById('storage-num-people');
     numPeopleElem.innerText = Math.round(people);
 }

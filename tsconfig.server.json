@@ -1,15 +1,14 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "es2016",
     "lib": [
       "es2021",
       "dom"
     ],
     "jsx": "preserve",
-    "jsxImportSource": "solid-js",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "Node",
     "types": [
       "vite/client"
@@ -24,8 +23,7 @@
     "strict": true,
     "noImplicitAny": true,
     "strictPropertyInitialization": false,
-    "skipLibCheck": true,
-    "noEmit": true
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*"
@@ -33,11 +31,9 @@
   "exclude": [
     "node_modules",
     "**/*.spec.ts",
-    "build",
+    "src/**/*.tsx",
     "public",
     "scripts",
-    "src/admin.tsx",
-    "src/admin/**/*",
     "./vite.config.ts"
   ],
   "files": [

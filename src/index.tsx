@@ -1,6 +1,7 @@
 import { render } from 'solid-js/web';
 import { AppShell } from './components/appShell';
 import { CustomThemeProvider } from './components/themeProvider';
+import { HashRouter } from '@solidjs/router';
 
 const root = document.getElementById('form-app');
 
@@ -12,6 +13,8 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 
 render(() => (
   <CustomThemeProvider>
-    <AppShell />
+    <HashRouter >
+      <AppShell />
+    </HashRouter >
   </CustomThemeProvider>
 ), root!);
