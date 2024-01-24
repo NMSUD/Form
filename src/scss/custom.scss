@@ -1,31 +1,33 @@
-@import "var";
 @import "misc";
+@import "form";
 @import "sidebar";
 @import "scrollbar";
 @import "sweetalertDark";
 @import "breakpoint";
 
+
 :root {
     --bg-color: #151718;
     --bg-hover-color: #0b0b0c;
     --line-gray-color: #8c9297;
-    --primary-colour: $primaryColour;
-    --content-text: $primaryColour;
-    --link-color: $linkColour;
-    --error-text-color: #8b0000;
-    --text-max-lines: none;
+
+    // to be overridden by the app at runtime
+    --primary-colour: #00ffff;
+    --primary-colour-darken-25: darken(#00ffff, 25%);
+    --link-color: #00ffff;
+    --text-selection-color: #388a4a;
 }
 
 html body {
     font-family: "Quicksand", sans-serif;
 
     ::selection {
-        background: $highlightColour;
+        background: var(--text-selection-color);
         color: white;
     }
 
     ::-moz-selection {
-        background: $highlightColour;
+        background: var(--text-selection-color);
         color: white;
     }
 
@@ -34,7 +36,7 @@ html body {
     }
 
     a {
-        color: $linkColour;
+        color: var(--link-color);
     }
 }
 

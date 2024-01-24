@@ -1,22 +1,14 @@
 
 import { FormControl, FormErrorMessage, FormLabel, HStack, Input, InputGroup, InputRightElement, VStack } from '@hope-ui/solid';
 import { Component, For, Show, createEffect, createSignal } from 'solid-js';
-import { ValidationResult } from '../../contracts/validationResult';
 import { makeArrayOrDefault } from '../../helper/arrayHelper';
 import { onTargetValue } from '../../helper/eventHelper';
 import { useValidation } from '../../hooks/validation';
 import { RightArrowIcon } from '../common/icon/rightArrowIcon';
 import { AvatarFromSocialLink } from '../social';
+import { IFormInputProps } from './formBuilder';
 
-interface IFormSocialProps {
-    id: string;
-    placeholder?: string;
-    label: string;
-    value: Array<string>;
-    showValidationMessages?: boolean;
-    onChange: (newValue: Array<string>) => void;
-    validation?: (value: Array<string>) => ValidationResult;
-}
+interface IFormSocialProps extends IFormInputProps<Array<string>> { }
 
 export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialProps) => {
     const [isValid, calcIsValid] = useValidation(props.validation);

@@ -1,7 +1,8 @@
 import { minItems } from "../../validation/arrayValidation";
-import { IValidationObject, multiValidation, noValidation, notNull, validateForEach } from "../../validation/baseValidation";
+import { multiValidation, noValidation, notNull, validateForEach } from "../../validation/baseValidation";
 import { maxLength, minLength, shouldBeUrl } from "../../validation/textValidation";
 import { PlatformType } from "../enum/platformType";
+import { IFormDtoMeta } from "./baseFormDto";
 
 export const builderBioMaxLength = 500;
 export const builderContactDetailsMaxLength = 500;
@@ -17,14 +18,7 @@ export interface BuilderDto {
     contactDetails: string;
 }
 
-export const BuilderDtoValidation: IValidationObject<BuilderDto> = {
-    name: {
-        label: 'Name',
-        validator: multiValidation([
-            minLength(2),
-            maxLength(100),
-        ]),
-    },
+export const BuilderDtoValidation: IFormDtoMeta<BuilderDto> = {
     profilePic: {
         label: 'Profile picture',
         validator: maxLength(500),
@@ -33,12 +27,19 @@ export const BuilderDtoValidation: IValidationObject<BuilderDto> = {
         label: 'Profile picture',
         validator: notNull('You need to upload an image'),
     },
+    name: {
+        label: 'Name',
+        validator: multiValidation(
+            minLength(2),
+            maxLength(100),
+        ),
+    },
     bio: {
         label: 'Bio',
-        validator: multiValidation([
+        validator: multiValidation(
             minLength(2),
             maxLength(builderBioMaxLength),
-        ]),
+        ),
     },
     platforms: {
         label: 'Platforms',
@@ -51,10 +52,10 @@ export const BuilderDtoValidation: IValidationObject<BuilderDto> = {
     socials: {
         label: 'Socials',
         validator: validateForEach(
-            multiValidation([
+            multiValidation(
                 minLength(2),
                 shouldBeUrl,
-            ]),
+            ),
         ),
     },
     contactDetails: {

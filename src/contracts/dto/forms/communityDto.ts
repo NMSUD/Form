@@ -1,7 +1,7 @@
-import { nameof } from "../../../helper/propHelper";
 import { minItems } from "../../validation/arrayValidation";
-import { IValidationObject, multiValidation, notNull, validateForEach } from "../../validation/baseValidation";
+import { multiValidation, notNull, validateForEach } from "../../validation/baseValidation";
 import { maxLength, minLength, shouldBeUrl } from "../../validation/textValidation";
+import { IFormDtoMeta } from "./baseFormDto";
 
 export const communityBioMaxLength = 500;
 export const communityContactDetailsMaxLength = 500;
@@ -17,14 +17,7 @@ export interface CommunityDto {
     contactDetails: string;
 }
 
-export const CommunityDtoValidation: IValidationObject<CommunityDto> = {
-    name: {
-        label: 'Name',
-        validator: multiValidation([
-            minLength(2),
-            maxLength(100),
-        ]),
-    },
+export const CommunityDtoValidation: IFormDtoMeta<CommunityDto> = {
     profilePic: {
         label: 'Profile picture',
         validator: maxLength(500),
@@ -33,20 +26,27 @@ export const CommunityDtoValidation: IValidationObject<CommunityDto> = {
         label: 'Profile picture',
         validator: notNull('You need to upload an image'),
     },
+    name: {
+        label: 'Name',
+        validator: multiValidation(
+            minLength(2),
+            maxLength(100),
+        ),
+    },
     bio: {
         label: 'Bio',
-        validator: multiValidation([
+        validator: multiValidation(
             minLength(2),
             maxLength(communityBioMaxLength),
-        ]),
+        ),
     },
     bioMediaUrls: {
         label: 'Media upload',
         validator: validateForEach(
-            multiValidation([
+            multiValidation(
                 minLength(2),
                 shouldBeUrl,
-            ]),
+            ),
         ),
     },
     tags: {
@@ -55,15 +55,15 @@ export const CommunityDtoValidation: IValidationObject<CommunityDto> = {
     },
     socials: {
         label: 'Socials',
-        validator: multiValidation([
+        validator: multiValidation(
             minItems(1),
             validateForEach(
-                multiValidation([
+                multiValidation(
                     minLength(2),
                     shouldBeUrl,
-                ]),
+                ),
             ),
-        ]),
+        ),
     },
     contactDetails: {
         label: 'Contact Details',

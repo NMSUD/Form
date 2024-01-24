@@ -1,19 +1,12 @@
-
-import { Avatar, Box, Center, Flex, FormControl, FormErrorMessage, FormLabel, Spacer } from '@hope-ui/solid';
-import { Component, Show, createEffect, createSignal } from 'solid-js';
+import { Avatar, Box, Center, Flex, FormControl, FormErrorMessage, FormLabel } from '@hope-ui/solid';
+import { Component, createEffect, createSignal } from 'solid-js';
 import { AppImage } from '../../constants/image';
-import { ValidationResult } from '../../contracts/validationResult';
+import { onTargetFile } from '../../helper/eventHelper';
 import { useValidation } from '../../hooks/validation';
+import { IFormInputProps } from './formBuilder';
 
-interface IFormProfileImageUrlProps {
-    id: string;
-    placeholder?: string;
-    label: string;
-    value: string;
+interface IFormProfileImageUrlProps extends IFormInputProps<File> {
     imageValue?: string;
-    showValidationMessages?: boolean;
-    onChange: (newValue: string) => void;
-    validation?: (value: string) => ValidationResult;
 }
 
 export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (props: IFormProfileImageUrlProps) => {
@@ -27,33 +20,22 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (prop
         }
     }, [props.showValidationMessages]);
 
-    const handleFileChange = (event: any) => {
-        const fileList = event.target.files;
-        if (fileList && fileList.length > 0) {
-            console.log(fileList[0])
-            setCurrentImage(fileList[0]);
-        } else {
-            setCurrentImage(undefined);
-        }
+    const handleFileChange = (uploadedFile: File) => {
+        setCurrentImage(uploadedFile);
+        props.onChange(uploadedFile);
     };
 
-    const onChange = (event: any) => {
-        const value = event.target?.value;
-        if (value == null) return;
-
-        props.onChange(value);
-    }
-
-    const getImageOrFallback = (textUrl: string, imageUrl?: string): any => {
-        if (currentImage() != null) {
-            return currentImage();
+    const getImageOrFallback = (textUrl: File, imageUrl?: string): any => {
+        const uploadedFile = currentImage();
+        if (uploadedFile != null) {
+            return URL.createObjectURL(uploadedFile);
         }
         if (imageUrl != null) {
             return imageUrl;
         }
 
         if (textUrl == null) return AppImage.fallbackImg;
-        if (textUrl.length < 3) return AppImage.fallbackImg;
+        // if (textUrl.length < 3) return AppImage.fallbackImg;
         return textUrl;
     }
 
@@ -70,6 +52,7 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (prop
                         mt="$3"
                         size="xl"
                         name="+"
+                        borderRadius="0.25em"
                         src={getImageOrFallback(props.value, props.imageValue)}
                     />
                 </Center>
@@ -79,7 +62,7 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (prop
                         id="file-upload"
                         type="file"
                         accept="image/*"
-                        onChange={handleFileChange}
+                        onChange={onTargetFile(handleFileChange)}
                     />
                 </Box>
                 <Box mt="$3" textAlign="center">

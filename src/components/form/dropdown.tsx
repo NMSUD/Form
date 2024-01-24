@@ -1,19 +1,12 @@
 import { Component } from 'solid-js';
 
-import { ValidationResult } from '../../contracts/validationResult';
 import { makeArrayOrDefault } from '../../helper/arrayHelper';
 import { Dropdown, IDropdownOption } from '../common/dropdown';
+import { IFormInputProps } from './formBuilder';
 
-interface IProps {
-    id: string;
-    placeholder?: string;
-    label: string;
-    value: Array<string>;
-    options: Array<IDropdownOption>;
+interface IProps extends IFormInputProps<Array<string>> {
+    options?: Array<IDropdownOption>;
     multiple?: boolean;
-    showValidationMessages?: boolean;
-    onChange?: (values: Array<string> | string) => void;
-    validation?: (value: Array<string> | string) => ValidationResult;
 }
 
 export const FormDropdown: Component<IProps> = (props: IProps) => {
@@ -27,7 +20,7 @@ export const FormDropdown: Component<IProps> = (props: IProps) => {
             showValidationMessages={props.showValidationMessages}
             onSelect={props.onChange}
             validation={props.validation}
-            options={props.options}
+            options={makeArrayOrDefault(props.options)}
         />
     );
 }

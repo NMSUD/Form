@@ -26,28 +26,25 @@ export const CommunityFormPage: Component = () => {
         <>
             <PageHeader text="Submit a community"></PageHeader>
 
-            <Card>
+            <Card class="form">
                 <FormBuilder
                     item={itemBeingEdited()}
                     id="community"
-                    validationObj={CommunityDtoValidation}
+                    formDtoMeta={CommunityDtoValidation}
                     mappings={{
                         profilePicFileUpload: {
                             component: FormProfileImageInput,
                             gridItemColumnSize: GridItemSize.smol,
                             gridItemRowSize: GridItemSize.smol,
-                            label: 'Profile picture',
                         },
                         name: {
                             component: FormLongInput,
                             gridItemColumnSize: GridItemSize.medium,
-                            label: 'Name',
                             placeholder: randomItemFromArray(funnyPlayerNames),
                         },
                         tags: {
                             component: FormDropdown,
                             gridItemColumnSize: GridItemSize.long,
-                            label: 'Tags',
                             placeholder: 'Select your tags',
                             additional: {
                                 options: (_) => Labels.Community.map(lbl => ({ title: lbl, value: lbl })),
@@ -57,19 +54,16 @@ export const CommunityFormPage: Component = () => {
                         socials: {
                             component: FormSocialInput,
                             gridItemColumnSize: GridItemSize.medium,
-                            label: 'Socials',
                             placeholder: 'https://youtube.com/...',
                         },
                         bioMediaUrls: {
                             component: FormSocialInput,
                             gridItemColumnSize: GridItemSize.small,
-                            label: 'Media',
                             placeholder: 'Upload your images',
                         },
                         bio: {
                             component: FormTextArea,
                             gridItemColumnSize: GridItemSize.full,
-                            label: 'Bio',
                             placeholder: 'Hi, my name is ...',
                             additional:
                             {
@@ -80,7 +74,6 @@ export const CommunityFormPage: Component = () => {
                         contactDetails: {
                             component: FormTextArea,
                             gridItemColumnSize: GridItemSize.full,
-                            label: 'Contact details',
                             placeholder: 'Email, Discord, etc',
                             additional:
                             {

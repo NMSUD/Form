@@ -1,12 +1,15 @@
 import { Button, HStack, Tag, notificationService } from "@hope-ui/solid";
-import { Component, For, Show, createSignal } from "solid-js";
+import { Component, For, Show, createEffect, createSignal } from "solid-js";
+
 import { NetworkState } from "../../constants/enum/networkState";
 import { Result } from "../../contracts/resultWithValue";
-import { IValidationObject, validateObj } from "../../contracts/validation/baseValidation";
+import { validateObj } from "../../contracts/validation/baseValidation";
 import { ValidationResult } from "../../contracts/validationResult";
 import { anyObject } from "../../helper/typescriptHacks";
 import { FormFieldGrid, FormFieldGridCell, GridItemSize } from "./grid";
 import { nameof } from "../../helper/propHelper";
+import { getCaptchaService } from "../../services/external/captchaService";
+import { IFormDtoMeta, IFormDtoMetaDetails } from "../../contracts/dto/forms/baseFormDto";
 
 interface IPropertyToFormMappingExtraProp<T> {
     [prop: string]: (item: T) => any;
@@ -16,11 +19,20 @@ export type IComponentMapping<T> = {
     [prop in keyof T]?: IPropertyToFormMapping<T>;
 };
 
+export type IFormInputProps<T> = {
+    id: string;
+    label: string;
+    value: T;
+    placeholder: string;
+    showValidationMessages: boolean;
+    validation: (val: T) => ValidationResult;
+    onChange: (newValue: T) => void;
+};
+
 export interface IPropertyToFormMapping<T> {
-    component: Component<any>;
+    component: Component<IFormInputProps<any>>;
     gridItemColumnSize: GridItemSize;
     gridItemRowSize?: GridItemSize;
-    label: string;
     placeholder?: string;
     additional?: IPropertyToFormMappingExtraProp<T>;
 }
@@ -29,16 +41,22 @@ interface IProps<T> {
     item: T;
     id: string;
     mappings: IComponentMapping<T>;
-    validationObj: IValidationObject<T>;
+    formDtoMeta: IFormDtoMeta<T>;
     updateObject: (item: T) => void;
     updateProperty: (prop: string, value: any) => void;
     submit: (item: T, captcha: string) => Promise<Result>;
 }
 
 export const FormBuilder = <T,>(props: IProps<T>) => {
+    let captchaRef: any;
     const [itemBeingEdited, setItemBeingEdited] = createSignal<T>(props.item);
     const [forceValidationMessages, setForceValidationMessages] = createSignal<boolean>(false);
-    const [networkState, setNetworkState] = createSignal<NetworkState>(NetworkState.Pending);
+    const [networkState, setNetworkState] = createSignal<NetworkState>(NetworkState.Loading);
+
+    setTimeout(async () => {
+        await getCaptchaService().loadUI(captchaRef);
+        setNetworkState(NetworkState.Pending);
+    }, 500);
 
     const updateProperty = (prop: string, value: any) => {
         setItemBeingEdited(prev => ({ ...prev, [prop]: value }) as any);
@@ -60,9 +78,10 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     }
 
     const submitForm = async () => {
+
         const failedValidationMsgs = validateObj({
             data: itemBeingEdited(),
-            validationObj: props.validationObj,
+            validationObj: props.formDtoMeta,
             inludeLabelInErrMsgs: true,
         }).filter(v => v.isValid === false);
 
@@ -79,7 +98,17 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
         }
 
         setNetworkState(NetworkState.Loading);
-        const submitTask = await props.submit(itemBeingEdited(), '11111111111111111');
+
+        const captchaResult = await getCaptchaService().promptUser();
+        if (captchaResult.isSuccess == false) {
+            notificationService.show({
+                status: 'danger',
+                title: 'Captcha faile!',
+                description: 'The captcha was cancelled or failed to load, please try again.',
+            })
+        }
+
+        const submitTask = await props.submit(itemBeingEdited(), captchaResult.value);
         if (submitTask.isSuccess === false) {
             setNetworkState(NetworkState.Success);
             return;
@@ -100,8 +129,9 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
                     {(itemPropName) => {
                         const item: IPropertyToFormMapping<T> = (props.mappings as any)[itemPropName];
                         const Component = item.component;
-                        const validator: (val: T) => ValidationResult =
-                            (props.validationObj as any)?.[itemPropName]?.validator;
+
+                        const dtoMeta: IFormDtoMetaDetails<any> = (props.formDtoMeta as any)?.[itemPropName];
+                        const { label, validator } = dtoMeta;
 
                         return (
                             <FormFieldGridCell
@@ -111,7 +141,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
                                 <Component
                                     {...getExtraProps(item, itemBeingEdited())}
                                     id={`${props.id}-${itemPropName}`}
-                                    label={item.label}
+                                    label={label}
                                     value={(itemBeingEdited() as any)[itemPropName]}
                                     placeholder={item.placeholder}
                                     validation={validator}
@@ -129,6 +159,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
                 </HStack>
             </Show>
             <HStack mt="1em" spacing="$4" justifyContent="center">
+                <div ref={el => captchaRef = el}></div>
                 <Button
                     variant="solid"
                     loading={networkState() === NetworkState.Loading}

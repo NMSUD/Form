@@ -4,17 +4,11 @@ import { ValidationResult } from '../../contracts/validationResult';
 import { formatForDateLocal } from '../../helper/dateHelper';
 import { onTargetValue } from '../../helper/eventHelper';
 import { useValidation } from '../../hooks/validation';
+import { IFormInputProps } from './formBuilder';
 
-interface IFormLongInputProps {
-    id: string;
-    placeholder?: string;
-    label: string;
-    value: string | number;
+interface IFormLongInputProps extends IFormInputProps<string | number> {
     inputType?: string;
     disabled?: boolean;
-    showValidationMessages?: boolean;
-    onChange: (newValue: string) => void;
-    validation?: (value: string | number) => ValidationResult;
 }
 
 export const FormLongInput: Component<IFormLongInputProps> = (props: IFormLongInputProps) => {
@@ -55,18 +49,11 @@ export const FormLongInput: Component<IFormLongInputProps> = (props: IFormLongIn
     );
 };
 
-interface IFormTextAreaProps {
-    id: string;
-    placeholder?: string;
-    label: string;
+interface IFormTextAreaProps extends IFormInputProps<string> {
     minH?: string;
-    value: string;
     inputType?: string;
     displayTextLength?: boolean;
     maxTextLength?: number;
-    showValidationMessages?: boolean;
-    onChange: (newValue: string) => void;
-    validation?: (value: string) => ValidationResult;
 }
 
 export const FormTextArea: Component<IFormTextAreaProps> = (props: IFormTextAreaProps) => {

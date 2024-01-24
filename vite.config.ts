@@ -5,7 +5,8 @@ import loadVersion from 'vite-plugin-package-version';
 export default defineConfig({
   plugins: [loadVersion(), solidPlugin()],
   server: {
-    port: 3000,
+    port: 4200,
+    host: 'test.nmsud.com',
   },
   build: {
     target: 'esnext',

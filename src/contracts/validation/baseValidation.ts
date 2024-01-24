@@ -1,13 +1,7 @@
 import { makeArrayOrDefault } from "../../helper/arrayHelper";
 import { getLog } from "../../services/internal/logService";
+import { IFormDtoMeta } from "../dto/forms/baseFormDto";
 import { ValidationResult } from "../validationResult";
-
-export type IValidationObject<T> = {
-    [prop in keyof T]: {
-        label: string,
-        validator: (val: any) => ValidationResult
-    };
-};
 
 export const noValidation = <T>(_: T): ValidationResult => ({ isValid: true });
 
@@ -19,7 +13,7 @@ export const notNull = (customErrMsg?: string) => <T>(value: T): ValidationResul
     return { isValid: false, errorMessage: (customErrMsg ?? `Field shouldn't be empty`) };
 };
 
-export const multiValidation = <T>(validations: Array<(validationVal: T) => ValidationResult>) =>
+export const multiValidation = <T>(...validations: Array<(validationVal: T) => ValidationResult>) =>
     (value: T): ValidationResult => {
         for (const validation of validations) {
             const result = validation(value);
@@ -42,7 +36,7 @@ export const validateForEach = <T>(validation: (item: T) => ValidationResult) =>
 
 export const validateObj = <T>(props: {
     data: T,
-    validationObj: IValidationObject<T>,
+    validationObj: IFormDtoMeta<T>,
     inludeLabelInErrMsgs?: boolean,
 }): Array<ValidationResult> => {
     const validationMessages: Array<ValidationResult> = [];
@@ -52,14 +46,15 @@ export const validateObj = <T>(props: {
 
         try {
             const propValue = props.data[mappedBodyParam];
-            const { label, validator } = props.validationObj[mappedBodyParam];
+            const { label, validationLabel, validator } = props.validationObj[mappedBodyParam];
             const validationResult = validator(propValue);
 
             if (validationResult.isValid === false) {
                 const errMsg = validationResult.errorMessage ?? `Validation failed for ${mappedBodyParam}`;
+                const propLabel = validationLabel ?? label;
                 validationMessages.push({
                     isValid: validationResult.isValid,
-                    errorMessage: props.inludeLabelInErrMsgs ? `${label}: ${errMsg}` : errMsg,
+                    errorMessage: props.inludeLabelInErrMsgs ? `${propLabel}: ${errMsg}` : errMsg,
                 })
             }
         } catch (ex) {

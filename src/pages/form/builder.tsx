@@ -23,28 +23,25 @@ export const BuilderFormPage: Component = () => {
         <>
             <PageHeader text="Submit a builder profile"></PageHeader>
 
-            <Card>
+            <Card class="form">
                 <FormBuilder
                     item={itemBeingEdited()}
                     id="builder"
-                    validationObj={BuilderDtoValidation}
+                    formDtoMeta={BuilderDtoValidation}
                     mappings={{
                         profilePic: {
                             component: FormProfileImageInput,
                             gridItemColumnSize: GridItemSize.smol,
                             gridItemRowSize: GridItemSize.smol,
-                            label: 'Profile picture',
                         },
                         name: {
                             component: FormLongInput,
                             gridItemColumnSize: GridItemSize.medium,
-                            label: 'Name',
                             placeholder: randomItemFromArray(funnyPlayerNames),
                         },
                         labels: {
                             component: FormDropdown,
                             gridItemColumnSize: GridItemSize.long,
-                            label: 'Labels',
                             placeholder: 'Select your labels',
                             additional: {
                                 options: (_) => Labels.Builders.map(lbl => ({ title: lbl, value: lbl })),
@@ -54,13 +51,11 @@ export const BuilderFormPage: Component = () => {
                         socials: {
                             component: FormSocialInput,
                             gridItemColumnSize: GridItemSize.medium,
-                            label: 'Socials',
                             placeholder: 'https://youtube.com/...',
                         },
                         platforms: {
                             component: PlatformTypeDropdown,
                             gridItemColumnSize: GridItemSize.small,
-                            label: 'Platforms',
                             placeholder: 'Select your platforms',
                             additional: {
                                 multiple: (_) => true,
@@ -69,7 +64,6 @@ export const BuilderFormPage: Component = () => {
                         bio: {
                             component: FormTextArea,
                             gridItemColumnSize: GridItemSize.full,
-                            label: 'Bio',
                             placeholder: 'Hi, my name is ...',
                             additional:
                             {
@@ -80,7 +74,6 @@ export const BuilderFormPage: Component = () => {
                         contactDetails: {
                             component: FormTextArea,
                             gridItemColumnSize: GridItemSize.full,
-                            label: 'Contact details',
                             placeholder: 'Email, Discord, etc',
                             additional:
                             {

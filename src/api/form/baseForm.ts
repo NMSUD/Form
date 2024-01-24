@@ -1,14 +1,15 @@
 import Koa from 'koa';
-import { getLog } from '../../services/internal/logService';
-import { nameof } from '../../helper/propHelper';
-import { IValidationObject, validateObj } from '../../contracts/validation/baseValidation';
-import { hasCaptcha } from '../guard/hasCaptcha';
+
 import { Result } from '../../contracts/resultWithValue';
+import { validateObj } from '../../contracts/validation/baseValidation';
+import { getLog } from '../../services/internal/logService';
+import { hasCaptcha } from '../guard/hasCaptcha';
 import { errorResponse } from '../httpResponse/errorResponse';
+import { IFormDtoMeta } from '../../contracts/dto/forms/baseFormDto';
 
 export interface IFormHandler<T> {
     name: string;
-    validationObj: IValidationObject<T>;
+    validationObj: IFormDtoMeta<T>;
     handleBody: (body: T) => Result;
 }
 
@@ -23,10 +24,10 @@ export const baseHandleFormSubmission = <T>
         const bodyParams: any = ctx.request.body;
         const mappedBodyParams: T = bodyParams;
 
-        const failedValidationMsgs = validateObj(
-            mappedBodyParams,
-            props.validationObj
-        ).filter(v => v.isValid === false);
+        const failedValidationMsgs = validateObj<T>({
+            data: mappedBodyParams,
+            validationObj: props.validationObj
+        }).filter(v => v.isValid === false);
 
         if (failedValidationMsgs.length > 0) {
             errorResponse({

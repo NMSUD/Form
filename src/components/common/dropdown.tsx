@@ -18,7 +18,7 @@ interface IProps {
     selectedValues?: Array<string>;
     options: Array<IDropdownOption>;
     showValidationMessages?: boolean;
-    onSelect?: (values: string | Array<string>) => void;
+    onSelect?: (values: Array<string>) => void;
     validation?: (value: Array<string>) => ValidationResult;
 }
 

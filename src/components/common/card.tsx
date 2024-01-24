@@ -9,7 +9,7 @@ interface IProps {
 export const Card: Component<IProps> = (props: IProps) => {
     return (
         <Box
-            class={props.class}
+            class={`card ${props.class}`}
             border="1px solid $neutral5"
             p="$4"
             borderTopRadius="$lg"

@@ -7,7 +7,7 @@ import { SidebarNavLink } from './sidebarNavLink';
 import { getConfig } from '../../services/internal/configService';
 
 export const Sidebar: Component = () => {
-    const [isOpen, setIsOpen] = createSignal(false);
+    const [isOpen, setIsOpen] = createSignal(true);
 
     const SidebarTitle = <C extends ElementType = "p">(props: TextProps<C>) => {
         return (
