@@ -1,6 +1,6 @@
 
 import { FormControl, FormErrorMessage, FormLabel, HStack, Input, InputGroup, InputRightElement, VStack } from '@hope-ui/solid';
-import { Component, For, Show, createSignal } from 'solid-js';
+import { Component, For, Show, createEffect, createSignal } from 'solid-js';
 import { ValidationResult } from '../../contracts/validationResult';
 import { makeArrayOrDefault } from '../../helper/arrayHelper';
 import { onTargetValue } from '../../helper/eventHelper';
@@ -13,6 +13,7 @@ interface IFormSocialProps {
     placeholder?: string;
     label: string;
     value: Array<string>;
+    showValidationMessages?: boolean;
     onChange: (newValue: Array<string>) => void;
     validation?: (value: Array<string>) => ValidationResult;
 }
@@ -21,6 +22,12 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
     const [isValid, calcIsValid] = useValidation(props.validation);
     const [currentLink, setCurrentLink] = createSignal('');
     const [items, setItems] = createSignal(makeArrayOrDefault(props.value));
+
+    createEffect(() => {
+        if (props.showValidationMessages === true) {
+            calcIsValid(props.value);
+        }
+    }, [props.showValidationMessages]);
 
     const handleSpecialKeyPress = (event: any) => {
         if (event.keyCode == 13) {
@@ -31,7 +38,11 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
     const addToList = (link: string) => {
         if (isValid().isValid === false) return;
 
-        setItems(prev => [...makeArrayOrDefault(prev), link]);
+        setItems(prev => {
+            const newValue = [...makeArrayOrDefault(prev), link];
+            props.onChange(newValue);
+            return newValue;
+        });
         setCurrentLink('');
     }
 

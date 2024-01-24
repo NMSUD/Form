@@ -5,10 +5,12 @@ import bodyParser from 'koa-bodyparser';
 import serve from "koa-static";
 import path from 'path';
 
+import { api } from '../constants/api';
 import { getBotPath, getConfig } from '../services/internal/configService';
 import { getLog } from "../services/internal/logService";
-import { defaultEndpoint, versionEndpoint } from './misc';
-import { handleFormSubmission } from './form';
+import { handleBuilderFormSubmission } from './form/builderForm';
+import { handleCommunityFormSubmission } from './form/communityForm';
+import { versionEndpoint } from './misc';
 
 export const setupKoa = () => {
     const koa = new Koa();
@@ -26,13 +28,18 @@ export const setUpCustomHttpServer = (props: IHttpServerProps) => {
 
     // route definitions
     const router = new Router();
-    router.get('/', defaultEndpoint);
+    // router.get('/', defaultEndpoint);
     router.get('/version', versionEndpoint('secret'));
-    router.post('/', handleFormSubmission);
 
+    // forms
+    router.post(api.routes.form.community, handleCommunityFormSubmission);
+    router.post(api.routes.form.builder, handleBuilderFormSubmission);
+    // router.post(api.routes.form.baseBuild, handleFormSubmission);
+
+    // middleware
     props.koa.use(bodyParser());
     props.koa.use(router.routes());
-    props.koa.use(serve(path.join(getBotPath(), 'public')));
+    props.koa.use(serve(path.join(getBotPath(), '../public')));
     props.koa.use(cors());
 
     const port = getConfig().getApiPort();

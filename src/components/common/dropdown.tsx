@@ -17,6 +17,7 @@ interface IProps {
     hideTitle?: boolean;
     selectedValues?: Array<string>;
     options: Array<IDropdownOption>;
+    showValidationMessages?: boolean;
     onSelect?: (values: string | Array<string>) => void;
     validation?: (value: Array<string>) => ValidationResult;
 }
@@ -24,6 +25,13 @@ interface IProps {
 export const Dropdown: Component<IProps> = (props: IProps) => {
     const [selectedOptions, setSelectedOptions] = createSignal(props.selectedValues ?? [], { equals: false });
     const [isValid, calcIsValid] = useValidation(props.validation);
+
+    createEffect(() => {
+        if (props.showValidationMessages === true) {
+            const safeValue = makeArrayOrDefault(props.selectedValues);
+            calcIsValid(safeValue);
+        }
+    }, [props.showValidationMessages]);
 
     createEffect(() => {
         setSelectedOptions(props.selectedValues ?? []);

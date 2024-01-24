@@ -1,17 +1,17 @@
 import { Component } from 'solid-js';
 
+import { AppImage } from '../../constants/image';
 import { PlatformType, friendlyPlatformName } from '../../contracts/dto/enum/platformType';
 import { ValidationResult } from '../../contracts/validationResult';
-import { getArrFromEnum } from '../../helper/enumHelper';
-import { capitalizeFirstLetter } from '../../helper/stringHelper';
-import { Dropdown } from '../common/dropdown';
 import { makeArrayOrDefault } from '../../helper/arrayHelper';
-import { AppImage } from '../../constants/image';
+import { getArrFromEnum } from '../../helper/enumHelper';
+import { Dropdown } from '../common/dropdown';
 
 interface IProps {
     placeholder?: string;
     value: Array<string>;
     multiple?: boolean;
+    showValidationMessages?: boolean;
     onChange?: (values: Array<string> | string) => void;
     validation?: (value: Array<string> | string) => ValidationResult;
 }
@@ -32,6 +32,7 @@ export const PlatformTypeDropdown: Component<IProps> = (props: IProps) => {
             placeholder={props.placeholder}
             onSelect={props.onChange}
             validation={props.validation}
+            showValidationMessages={props.showValidationMessages}
             options={getArrFromEnum(PlatformType)
                 .map(pType => ({
                     title: friendlyPlatformName(pType as any),

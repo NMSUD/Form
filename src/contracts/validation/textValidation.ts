@@ -9,7 +9,7 @@ export const minLength = (minLength: number) => (value: string): ValidationResul
 };
 
 export const maxLength = (maxLength: number) => (value: string): ValidationResult => {
-    if ((value ?? '').length < maxLength) {
+    if (value?.length < maxLength) {
         return { isValid: true };
     }
 
@@ -17,7 +17,7 @@ export const maxLength = (maxLength: number) => (value: string): ValidationResul
 };
 
 export const shouldBeUrl = (value: string): ValidationResult => {
-    const safeValue = (value ?? '');
+    const safeValue = (`${value}`);
     const isHttps = [
         safeValue.includes?.('http://'),
         safeValue.includes?.('https://'),

@@ -3,5 +3,8 @@ export const Labels = {
         'Builder',
         'Glitch Builder',
         'Blender Builder',
+    ],
+    Community: [
+        'Civilization',
     ]
 }

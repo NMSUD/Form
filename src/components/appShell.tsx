@@ -14,6 +14,7 @@ export const AppShell: Component = () => {
             path: routes.form.root.path,
             children: [
                 { path: routes.form.builder.path, component: lazy(() => import("../pages/form/builder")) },
+                { path: routes.form.community.path, component: lazy(() => import("../pages/form/community")) },
             ]
         },
         { path: routes.actualHome.path, component: HomePage },

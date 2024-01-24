@@ -1,0 +1,16 @@
+{
+  "id": "mig_cmnqqtq7r74dcqmo1n50",
+  "parentID": "mig_cmnqqr1fpmeip9g0s4sg",
+  "checksum": "1:b6cc56071463f520eeeb83032df4bad850fee615be176baa338d2bb1dc379e00",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "bio",
+          "type": "string"
+        },
+        "table": "community"
+      }
+    }
+  ]
+}

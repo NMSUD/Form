@@ -38,6 +38,8 @@ export const FormFieldGridCell: Component<IGridItemProps> = (props: IGridItemPro
         <GridItem
             colSpan={getSpanNumber(props.colSpan)}
             rowSpan={getSpanNumber(props.rowSpan)}
+            data-colspan={getSpanNumber(props.colSpan)}
+            data-rowspan={getSpanNumber(props.rowSpan)}
         >
             {props.children}
         </GridItem>

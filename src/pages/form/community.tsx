@@ -7,29 +7,32 @@ import { FormBuilder } from '../../components/form/formBuilder';
 import { GridItemSize } from '../../components/form/grid';
 import { FormProfileImageInput } from '../../components/form/image';
 import { FormLongInput, FormTextArea } from '../../components/form/input';
-import { PlatformTypeDropdown } from '../../components/form/platformTypeDropdown';
 import { FormSocialInput } from '../../components/form/social';
 import { Labels } from '../../constants/labels';
 import { funnyPlayerNames } from '../../constants/names';
-import { BuilderDto, BuilderDtoValidation, builderBioMaxLength, builderContactDetailsMaxLength } from '../../contracts/dto/forms/builderDto';
+import { CommunityDto, CommunityDtoValidation, communityBioMaxLength, communityContactDetailsMaxLength } from '../../contracts/dto/forms/communityDto';
 import { randomItemFromArray } from '../../helper/randomHelper';
 import { anyObject } from '../../helper/typescriptHacks';
 import { getFormApiService } from '../../services/api/formApiService';
 
-export const BuilderFormPage: Component = () => {
-    const [itemBeingEdited, setItemBeingEdited] = createSignal<BuilderDto>(anyObject);
+export const CommunityFormPage: Component = () => {
+    const [itemBeingEdited, setItemBeingEdited] = createSignal<CommunityDto>({
+        profilePic: '',
+        bioMediaUrls: [],
+        ...anyObject,
+    });
 
     return (
         <>
-            <PageHeader text="Submit a builder profile"></PageHeader>
+            <PageHeader text="Submit a community"></PageHeader>
 
             <Card>
                 <FormBuilder
                     item={itemBeingEdited()}
-                    id="builder"
-                    validationObj={BuilderDtoValidation}
+                    id="community"
+                    validationObj={CommunityDtoValidation}
                     mappings={{
-                        profilePic: {
+                        profilePicFileUpload: {
                             component: FormProfileImageInput,
                             gridItemColumnSize: GridItemSize.smol,
                             gridItemRowSize: GridItemSize.smol,
@@ -41,13 +44,13 @@ export const BuilderFormPage: Component = () => {
                             label: 'Name',
                             placeholder: randomItemFromArray(funnyPlayerNames),
                         },
-                        labels: {
+                        tags: {
                             component: FormDropdown,
                             gridItemColumnSize: GridItemSize.long,
-                            label: 'Labels',
-                            placeholder: 'Select your labels',
+                            label: 'Tags',
+                            placeholder: 'Select your tags',
                             additional: {
-                                options: (_) => Labels.Builders.map(lbl => ({ title: lbl, value: lbl })),
+                                options: (_) => Labels.Community.map(lbl => ({ title: lbl, value: lbl })),
                                 multiple: (_) => true,
                             },
                         },
@@ -57,14 +60,11 @@ export const BuilderFormPage: Component = () => {
                             label: 'Socials',
                             placeholder: 'https://youtube.com/...',
                         },
-                        platforms: {
-                            component: PlatformTypeDropdown,
+                        bioMediaUrls: {
+                            component: FormSocialInput,
                             gridItemColumnSize: GridItemSize.small,
-                            label: 'Platforms',
-                            placeholder: 'Select your platforms',
-                            additional: {
-                                multiple: (_) => true,
-                            },
+                            label: 'Media',
+                            placeholder: 'Upload your images',
                         },
                         bio: {
                             component: FormTextArea,
@@ -74,7 +74,7 @@ export const BuilderFormPage: Component = () => {
                             additional:
                             {
                                 displayTextLength: (_) => true,
-                                maxTextLength: (_) => builderBioMaxLength,
+                                maxTextLength: (_) => communityBioMaxLength,
                             },
                         },
                         contactDetails: {
@@ -85,20 +85,20 @@ export const BuilderFormPage: Component = () => {
                             additional:
                             {
                                 displayTextLength: (_) => true,
-                                maxTextLength: (_) => builderContactDetailsMaxLength,
+                                maxTextLength: (_) => communityContactDetailsMaxLength,
                             },
                         },
                     }}
-                    updateObject={(item: BuilderDto) => setItemBeingEdited(_ => item)}
+                    updateObject={(item: CommunityDto) => setItemBeingEdited(_ => item)}
                     updateProperty={(prop: string, value: string) => {
                         console.log('create', { prop, value })
                         setItemBeingEdited(prev => ({ ...prev, [prop]: value }));
                     }}
-                    submit={getFormApiService().submitBuilder}
+                    submit={getFormApiService().submitCommunity}
                 />
             </Card>
         </>
     );
 };
 
-export default BuilderFormPage;
+export default CommunityFormPage;

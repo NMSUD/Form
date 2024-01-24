@@ -10,6 +10,7 @@
     "build": "npm-run-all --sequential build:* copy:*",
     "build:api": "tsc -p ./tsconfig.server.json",
     "build:ui": "vite build",
+    "db:generate": "xata pull main",
     "copy:prod": "node scripts/copyProdFiles.js"
   },
   "author": "Kurt Lourens",
@@ -20,7 +21,7 @@
     "@solidjs/router": "^0.8.2",
     "@stitches/core": "^1.2.8",
     "@types/koa": "^2.13.5",
-    "@xata.io/client": "^0.22.1",
+    "@xata.io/client": "^0.22.4",
     "dayjs": "^1.11.10",
     "dotenv": "^16.0.3",
     "koa": "^2.14.1",

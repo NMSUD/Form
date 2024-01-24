@@ -1,5 +1,5 @@
 import { FormControl, FormErrorMessage, FormLabel, Input, Textarea } from '@hope-ui/solid';
-import { Component, Show, createSignal } from 'solid-js';
+import { Component, Show, createEffect, createSignal } from 'solid-js';
 import { ValidationResult } from '../../contracts/validationResult';
 import { formatForDateLocal } from '../../helper/dateHelper';
 import { onTargetValue } from '../../helper/eventHelper';
@@ -12,12 +12,19 @@ interface IFormLongInputProps {
     value: string | number;
     inputType?: string;
     disabled?: boolean;
+    showValidationMessages?: boolean;
     onChange: (newValue: string) => void;
     validation?: (value: string | number) => ValidationResult;
 }
 
 export const FormLongInput: Component<IFormLongInputProps> = (props: IFormLongInputProps) => {
     const [isValid, calcIsValid] = useValidation(props.validation);
+
+    createEffect(() => {
+        if (props.showValidationMessages === true) {
+            calcIsValid(props.value);
+        }
+    }, [props.showValidationMessages]);
 
     const handleSpecialDateLocalValue = (value: string | number, inputType?: string) => {
         if (inputType == 'datetime-local') {
@@ -53,10 +60,11 @@ interface IFormTextAreaProps {
     placeholder?: string;
     label: string;
     minH?: string;
-    value?: string;
+    value: string;
     inputType?: string;
     displayTextLength?: boolean;
     maxTextLength?: number;
+    showValidationMessages?: boolean;
     onChange: (newValue: string) => void;
     validation?: (value: string) => ValidationResult;
 }
@@ -64,6 +72,12 @@ interface IFormTextAreaProps {
 export const FormTextArea: Component<IFormTextAreaProps> = (props: IFormTextAreaProps) => {
     const [isValid, calcIsValid] = useValidation(props.validation);
     const [localTextCount, setLocalTextCount] = createSignal<number>(props.value?.length ?? 0);
+
+    createEffect(() => {
+        if (props.showValidationMessages === true) {
+            calcIsValid(props.value);
+        }
+    }, [props.showValidationMessages]);
 
     return (
         <FormControl invalid={!isValid().isValid}>
@@ -88,7 +102,7 @@ export const FormTextArea: Component<IFormTextAreaProps> = (props: IFormTextArea
                 onInput={onTargetValue(value => setLocalTextCount(value.length))}
             />
             <Show when={!isValid().isValid} >
-                <FormErrorMessage>{isValid().errorMessage}</FormErrorMessage>
+                <FormErrorMessage mt="0">{isValid().errorMessage}</FormErrorMessage>
             </Show>
         </FormControl>
     );

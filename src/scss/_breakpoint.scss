@@ -4,12 +4,30 @@ body {
     }
 
     @media screen and (max-width: 980px) {
-        //
+        .hope-grid {
+            grid-template-columns: repeat(2, 1fr);
+
+            .hope-grid-item {
+                grid-column-start: span 1;
+                grid-column-end: span 1;
+
+                &[data-colspan="12"] {
+                    grid-column-start: span 2;
+                    grid-column-end: span 2;
+                }
+            }
+        }
     }
 
     @media only screen and (max-width: 768px) {
         main.main {
             padding-inline: 2em;
+
+            .hope-grid {
+                .hope-grid-item {
+                    grid-area: span 1 / span 2 / span 1 / span 2;
+                }
+            }
         }
     }
 

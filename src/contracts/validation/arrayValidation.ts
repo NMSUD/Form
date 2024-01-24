@@ -1,15 +1,18 @@
+import { makeArrayOrDefault } from "../../helper/arrayHelper";
 import { ValidationResult } from "../validationResult";
 
-export const minItems = (minLength: number) => <T>(arrVal: Array<T>): ValidationResult => {
-    if (arrVal?.length >= minLength) {
+export const minItems = (minLength: number) => <T>(values: Array<T>): ValidationResult => {
+    const safeArr = makeArrayOrDefault(values);
+    if (safeArr.length >= minLength) {
         return { isValid: true };
     }
 
     return { isValid: false, errorMessage: `Minimum number of items that need to be selected is ${minLength}` };
 };
 
-export const maxLength = (maxLength: number) => <T>(arrVal: Array<T>): ValidationResult => {
-    if (arrVal?.length < maxLength) {
+export const maxLength = (maxLength: number) => <T>(values: Array<T>): ValidationResult => {
+    const safeArr = makeArrayOrDefault(values);
+    if (safeArr.length < maxLength) {
         return { isValid: true };
     }
 
