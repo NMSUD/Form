@@ -1,14 +1,19 @@
 import { Center, Flex, hope } from "@hope-ui/solid";
 import { useRoutes } from "@solidjs/router";
 import { Component, Suspense, lazy } from 'solid-js';
+import Container from 'typedi';
 
+import { AppType } from "../constants/enum/appType";
 import { routes } from '../constants/route';
 import { HomePage, RedirectToHome } from "../pages/home";
 import { NotFoundPage } from "../pages/notFound";
-import { LoadingSpinner } from './core/loading';
+import { APP_TYPE } from "../services/internal/configService";
 import { Sidebar } from "./common/sidebar";
+import { LoadingSpinner } from './core/loading';
 
 export const AppShell: Component = () => {
+    Container.set(APP_TYPE, AppType.UI);
+
     const Routes = useRoutes([
         {
             path: routes.form.root.path,

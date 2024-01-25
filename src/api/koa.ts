@@ -2,6 +2,7 @@ import cors from '@koa/cors';
 import Router from '@koa/router';
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
+import koaBody from 'koa-body';
 import serve from "koa-static";
 import path from 'path';
 
@@ -26,14 +27,16 @@ interface IHttpServerProps {
 export const setUpCustomHttpServer = (props: IHttpServerProps) => {
     getLog().i("Starting up http server");
 
-    // route definitions
+    const bodyOptions = koaBody({
+        multipart: true,
+    });
     const router = new Router();
     // router.get('/', defaultEndpoint);
     router.get('/version', versionEndpoint('secret'));
 
     // forms
-    router.post(api.routes.form.community, handleCommunityFormSubmission);
-    router.post(api.routes.form.builder, handleBuilderFormSubmission);
+    router.post('/' + api.routes.form.community, bodyOptions, handleCommunityFormSubmission);
+    router.post('/' + api.routes.form.builder, bodyOptions, handleBuilderFormSubmission);
     // router.post(api.routes.form.baseBuild, handleFormSubmission);
 
     // middleware

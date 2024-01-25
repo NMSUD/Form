@@ -24,3 +24,8 @@ export const site = {
         discord: 'https://assistantapps.com/discord',
     }
 }
+
+export const LocalStorageKey = {
+    main: 'nmsud-form',
+    submissions: 'nmsud-submissions',
+}

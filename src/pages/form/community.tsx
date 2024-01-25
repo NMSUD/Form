@@ -1,6 +1,7 @@
 import { Component, createSignal } from 'solid-js';
 
 import { Card } from '../../components/common/card';
+import { IDropdownOption } from '../../components/common/dropdown';
 import { PageHeader } from '../../components/common/pageHeader';
 import { FormDropdown } from '../../components/form/dropdown';
 import { FormBuilder } from '../../components/form/formBuilder';
@@ -14,6 +15,7 @@ import { CommunityDto, CommunityDtoValidation, communityBioMaxLength, communityC
 import { randomItemFromArray } from '../../helper/randomHelper';
 import { anyObject } from '../../helper/typescriptHacks';
 import { getFormApiService } from '../../services/api/formApiService';
+import { getStateService } from '../../services/internal/stateService';
 
 export const CommunityFormPage: Component = () => {
     const [itemBeingEdited, setItemBeingEdited] = createSignal<CommunityDto>({
@@ -32,7 +34,7 @@ export const CommunityFormPage: Component = () => {
                     id="community"
                     formDtoMeta={CommunityDtoValidation}
                     mappings={{
-                        profilePicFileUpload: {
+                        profilePicFile: {
                             component: FormProfileImageInput,
                             gridItemColumnSize: GridItemSize.smol,
                             gridItemRowSize: GridItemSize.smol,
@@ -56,7 +58,7 @@ export const CommunityFormPage: Component = () => {
                             gridItemColumnSize: GridItemSize.medium,
                             placeholder: 'https://youtube.com/...',
                         },
-                        bioMediaUrls: {
+                        bioMediaFiles: {
                             component: FormSocialInput,
                             gridItemColumnSize: GridItemSize.small,
                             placeholder: 'Upload your images',
@@ -87,7 +89,18 @@ export const CommunityFormPage: Component = () => {
                         console.log('create', { prop, value })
                         setItemBeingEdited(prev => ({ ...prev, [prop]: value }));
                     }}
-                    submit={getFormApiService().submitCommunity}
+                    submit={async (item: CommunityDto, captcha: string) => {
+                        const apiResult = await getFormApiService().submitCommunity(item, captcha);
+                        if (apiResult.isSuccess === false) return apiResult;
+
+                        const dropDownOpt: IDropdownOption = {
+                            title: item.name,
+                            value: apiResult.value.id,
+                            image: apiResult.value.iconUrl,
+                        }
+                        getStateService().addSubmission('builder', dropDownOpt);
+                        return apiResult;
+                    }}
                 />
             </Card>
         </>

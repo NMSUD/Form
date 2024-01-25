@@ -10,6 +10,7 @@ import { FormFieldGrid, FormFieldGridCell, GridItemSize } from "./grid";
 import { nameof } from "../../helper/propHelper";
 import { getCaptchaService } from "../../services/external/captchaService";
 import { IFormDtoMeta, IFormDtoMetaDetails } from "../../contracts/dto/forms/baseFormDto";
+import { getConfig } from "../../services/internal/configService";
 
 interface IPropertyToFormMappingExtraProp<T> {
     [prop: string]: (item: T) => any;
@@ -54,6 +55,8 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     const [networkState, setNetworkState] = createSignal<NetworkState>(NetworkState.Loading);
 
     setTimeout(async () => {
+        if (getConfig().getCaptchaEnabled() === false) return;
+
         await getCaptchaService().loadUI(captchaRef);
         setNetworkState(NetworkState.Pending);
     }, 500);
@@ -99,16 +102,21 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
 
         setNetworkState(NetworkState.Loading);
 
-        const captchaResult = await getCaptchaService().promptUser();
-        if (captchaResult.isSuccess == false) {
-            notificationService.show({
-                status: 'danger',
-                title: 'Captcha faile!',
-                description: 'The captcha was cancelled or failed to load, please try again.',
-            })
+        let captchaResp = 'test1000080001tset'
+        if (getConfig().getCaptchaEnabled() === true) {
+            const captchaResult = await getCaptchaService().promptUser();
+            if (captchaResult.isSuccess == false) {
+                notificationService.show({
+                    status: 'danger',
+                    title: 'Captcha faile!',
+                    description: 'The captcha was cancelled or failed to load, please try again.',
+                });
+                return;
+            }
+            captchaResp = captchaResult.value
         }
 
-        const submitTask = await props.submit(itemBeingEdited(), captchaResult.value);
+        const submitTask = await props.submit(itemBeingEdited(), captchaResp);
         if (submitTask.isSuccess === false) {
             setNetworkState(NetworkState.Success);
             return;

@@ -1,20 +1,22 @@
 import { Container, Service, Token } from "typedi";
+import { AppType } from "../../constants/enum/appType";
 
 @Service()
 export class ConfigService {
     /* If the .env var name starts with VITE_ it is available on the UI & API */
 
-    getNmsUdApiUrl = (): string => this.get<string>('VITE_NMSUD_API_URL');
-    getApiPort = (): number => this.get<number>('API_PORT', 3001);
+    getNmsUdApiUrl = () => this.get<string>('VITE_NMSUD_API_URL');
+    getApiPort = () => this.get<number>('API_PORT', 3001);
 
-    getXataApiKey = (): string => this.get<string>('XATA_API_KEY');
-    getXataDbUrl = (): string => this.get<string>('XATA_DB_URL');
-    getXataFallbackBranch = (): string => this.get<string>('XATA_FALLBACK_BRANCH');
+    getXataApiKey = () => this.get<string>('XATA_API_KEY');
+    getXataDbUrl = () => this.get<string>('XATA_DB_URL');
+    getXataFallbackBranch = () => this.get<string>('XATA_FALLBACK_BRANCH');
 
-    getDiscordWebhookUrl = (): string => this.get<string>('DISCORD_WEBHOOK_URL');
+    getDiscordWebhookUrl = () => this.get<string>('DISCORD_WEBHOOK_URL');
 
-    getHCaptchaSecret = (): string => this.get<string>('HCAPTCHA_SECRET');
-    getHCaptchaSiteKey = (): string => this.get<string>('VITE_HCAPTCHA_SITE_KEY');
+    getCaptchaEnabled = () => this.get<boolean>('ENABLE_CAPTCHA');
+    getHCaptchaSecret = () => this.get<string>('HCAPTCHA_SECRET');
+    getHCaptchaSiteKey = () => this.get<string>('VITE_HCAPTCHA_SITE_KEY');
 
     /* Special case, available on UI & API */
     isProd = () => this.get<string>('NODE_ENV') === 'production';
@@ -32,5 +34,8 @@ export class ConfigService {
 
 export const BOT_PATH = new Token<string>('BOT_PATH');
 export const getBotPath = () => Container.get(BOT_PATH);
+
+export const APP_TYPE = new Token<AppType>('APP_TYPE');
+export const getAppType = () => Container.get(APP_TYPE);
 
 export const getConfig = () => Container.get(ConfigService);

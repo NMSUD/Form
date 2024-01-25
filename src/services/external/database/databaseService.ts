@@ -1,6 +1,11 @@
 import { Container, Inject, Service } from "typedi";
-import { XataClient } from "../../../integration/xata";
+import { Community, CommunityRecord, XataClient } from "../../../integration/xata";
 import { ConfigService } from "../../internal/configService";
+import { CommunityDto } from "../../../contracts/dto/forms/communityDto";
+import { Result, ResultWithValue } from "../../../contracts/resultWithValue";
+import { ApprovalStatus } from "../../../constants/enum/approvalStatus";
+import { IFormResponse } from "../../../contracts/response/formResponse";
+import { anyObject } from "../../../helper/typescriptHacks";
 
 @Service()
 export class DatabaseService {
@@ -14,14 +19,28 @@ export class DatabaseService {
         });
     }
 
-    // addCronusSeasonSelection = async (seasonId: number, appId: string): Promise<CronusSeasonSelections> => {
-    //     const newRecord = await this.xata.db.CronusSeasonSelections.create({
-    //         appId,
-    //         seasonId,
-    //         selectedDate: new Date(),
-    //     });
-    //     return newRecord;
-    // };
+    addCommunitySubmission = async (persistence: Omit<Community, 'id'>): Promise<ResultWithValue<IFormResponse>> => {
+        try {
+            const newRecordCreated = await this.xata.db.community.create({
+                ...persistence,
+                approvalStatus: ApprovalStatus.pending,
+            });
+            return {
+                isSuccess: true,
+                value: {
+                    id: newRecordCreated.id,
+                    name: newRecordCreated.name,
+                },
+                errorMessage: '',
+            }
+        } catch (ex) {
+            return {
+                isSuccess: false,
+                value: anyObject,
+                errorMessage: ex?.toString?.() ?? 'error occurred while creating record in database',
+            };
+        }
+    };
 }
 
 export const getDatabaseService = () => Container.get(DatabaseService);

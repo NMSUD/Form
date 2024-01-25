@@ -10,13 +10,21 @@ const tables = [
   {
     name: "community",
     columns: [
-      { name: "name", type: "string" },
-      { name: "profilePic", type: "string" },
-      { name: "bio", type: "string" },
+      { name: "profilePicUrl", type: "string" },
       { name: "bioMediaUrls", type: "string" },
-      { name: "tags", type: "string" },
-      { name: "socials", type: "string" },
-      { name: "contactDetails", type: "string" },
+      { name: "profilePicFile", type: "file" },
+      { name: "bioMediaFiles", type: "file[]" },
+      { name: "approvalStatus", type: "int", notNull: true, defaultValue: "0" },
+      { name: "name", type: "string", notNull: true, defaultValue: "''" },
+      { name: "bio", type: "string", notNull: true, defaultValue: "''" },
+      { name: "tags", type: "string", notNull: true, defaultValue: "''" },
+      { name: "socials", type: "string", notNull: true, defaultValue: "''" },
+      {
+        name: "contactDetails",
+        type: "string",
+        notNull: true,
+        defaultValue: "''",
+      },
     ],
   },
 ] as const;

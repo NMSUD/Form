@@ -1,5 +1,5 @@
 import { minItems } from "../../validation/arrayValidation";
-import { multiValidation, notNull, validateForEach } from "../../validation/baseValidation";
+import { multiValidation, noValidation, notNull, seperateValidation, validateForEach } from "../../validation/baseValidation";
 import { maxLength, minLength, shouldBeUrl } from "../../validation/textValidation";
 import { IFormDtoMeta } from "./baseFormDto";
 
@@ -8,23 +8,21 @@ export const communityContactDetailsMaxLength = 500;
 
 export interface CommunityDto {
     name: string;
-    profilePic: string;
-    profilePicFileUpload: File;
+    profilePicFile: File;
     bio: string;
-    bioMediaUrls: Array<string>;
+    bioMediaFiles: Array<File>;
     tags: Array<string>;
     socials: Array<string>;
     contactDetails: string;
 }
 
 export const CommunityDtoValidation: IFormDtoMeta<CommunityDto> = {
-    profilePic: {
+    profilePicFile: {
         label: 'Profile picture',
-        validator: maxLength(500),
-    },
-    profilePicFileUpload: {
-        label: 'Profile picture',
-        validator: notNull('You need to upload an image'),
+        validator: seperateValidation({
+            api: noValidation,
+            ui: notNull('You need to upload an image')
+        }),
     },
     name: {
         label: 'Name',
@@ -40,14 +38,14 @@ export const CommunityDtoValidation: IFormDtoMeta<CommunityDto> = {
             maxLength(communityBioMaxLength),
         ),
     },
-    bioMediaUrls: {
+    bioMediaFiles: {
         label: 'Media upload',
-        validator: validateForEach(
-            multiValidation(
-                minLength(2),
-                shouldBeUrl,
-            ),
-        ),
+        validator: seperateValidation({
+            api: noValidation,
+            ui: validateForEach(
+                notNull('You need to upload an image'),
+            )
+        }),
     },
     tags: {
         label: 'Tags',
@@ -70,3 +68,4 @@ export const CommunityDtoValidation: IFormDtoMeta<CommunityDto> = {
         validator: maxLength(communityBioMaxLength),
     },
 }
+

@@ -1,4 +1,6 @@
+import { AppType } from "../../constants/enum/appType";
 import { makeArrayOrDefault } from "../../helper/arrayHelper";
+import { getAppType } from "../../services/internal/configService";
 import { getLog } from "../../services/internal/logService";
 import { IFormDtoMeta } from "../dto/forms/baseFormDto";
 import { ValidationResult } from "../validationResult";
@@ -18,6 +20,21 @@ export const multiValidation = <T>(...validations: Array<(validationVal: T) => V
         for (const validation of validations) {
             const result = validation(value);
             if (result.isValid === false) return result;
+        }
+
+        return { isValid: true };
+    };
+
+export const seperateValidation = <T>(validators: {
+    ui: (validationVal: T) => ValidationResult,
+    api: (validationVal: T) => ValidationResult,
+}) =>
+    (value: T): ValidationResult => {
+        if (getAppType() === AppType.UI) {
+            return validators.ui(value);
+        }
+        if (getAppType() === AppType.Api) {
+            return validators.api(value);
         }
 
         return { isValid: true };

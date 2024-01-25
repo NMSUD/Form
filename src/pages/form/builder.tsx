@@ -1,6 +1,7 @@
 import { Component, createSignal } from 'solid-js';
 
 import { Card } from '../../components/common/card';
+import { IDropdownOption } from '../../components/common/dropdown';
 import { PageHeader } from '../../components/common/pageHeader';
 import { FormDropdown } from '../../components/form/dropdown';
 import { FormBuilder } from '../../components/form/formBuilder';
@@ -15,6 +16,7 @@ import { BuilderDto, BuilderDtoValidation, builderBioMaxLength, builderContactDe
 import { randomItemFromArray } from '../../helper/randomHelper';
 import { anyObject } from '../../helper/typescriptHacks';
 import { getFormApiService } from '../../services/api/formApiService';
+import { getStateService } from '../../services/internal/stateService';
 
 export const BuilderFormPage: Component = () => {
     const [itemBeingEdited, setItemBeingEdited] = createSignal<BuilderDto>(anyObject);
@@ -87,7 +89,19 @@ export const BuilderFormPage: Component = () => {
                         console.log('create', { prop, value })
                         setItemBeingEdited(prev => ({ ...prev, [prop]: value }));
                     }}
-                    submit={getFormApiService().submitBuilder}
+                    submit={async (item: BuilderDto, captcha: string) => {
+                        const apiResult = await getFormApiService().submitBuilder(item, captcha);
+                        return apiResult;
+                        // if (apiResult.isSuccess === false) return apiResult;
+
+                        // const dropDownOpt: IDropdownOption = {
+                        //     title: item.name,
+                        //     value: apiResult.value.id,
+                        //     image: apiResult.value.iconUrl,
+                        // }
+                        // getStateService().addSubmission('builder', dropDownOpt);
+                        // return apiResult;
+                    }}
                 />
             </Card>
         </>
