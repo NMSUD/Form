@@ -3,6 +3,7 @@ import { ValidationResult } from "../../validationResult";
 export type IFormDtoMetaDetails<TV> = {
     label: string,
     validationLabel?: string,
+    helpText?: string,
     validator: (val: TV) => ValidationResult
 }
 

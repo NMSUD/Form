@@ -1,8 +1,9 @@
-import { Flex, FormControl, FormErrorMessage, FormLabel, Image, Select, SelectContent, SelectIcon, SelectListbox, SelectOption, SelectOptionIndicator, SelectOptionText, SelectPlaceholder, SelectTrigger, SelectValue, Tag, TagLabel, Text } from "@hope-ui/solid";
-import { Component, createEffect, createSignal, For, JSX, Show } from "solid-js";
+import { Flex, FormControl, FormErrorMessage, FormLabel, Image, Select, SelectContent, SelectIcon, SelectListbox, SelectOption, SelectOptionIndicator, SelectOptionText, SelectPlaceholder, SelectTrigger, SelectValue, Tag, TagLabel } from "@hope-ui/solid";
+import { Component, For, JSX, Show, createEffect, createSignal } from "solid-js";
 import { ValidationResult } from "../../contracts/validationResult";
-import { useValidation } from "../../hooks/validation";
 import { makeArrayOrDefault } from "../../helper/arrayHelper";
+import { useValidation } from "../../hooks/validation";
+import { HelpIcon } from "../form/helpIcon";
 
 export interface IDropdownOption {
     title: string;
@@ -14,6 +15,7 @@ interface IProps {
     title: string;
     placeholder?: string | JSX.Element;
     multiple?: boolean;
+    helpText?: string;
     hideTitle?: boolean;
     selectedValues?: Array<string>;
     options: Array<IDropdownOption>;
@@ -52,7 +54,10 @@ export const Dropdown: Component<IProps> = (props: IProps) => {
     return (
         <FormControl invalid={!isValid().isValid}>
             <Show when={props.hideTitle != true}>
-                <FormLabel>{props.title}</FormLabel>
+                <FormLabel>
+                    {props.title}
+                    <HelpIcon helpText={props.helpText} />
+                </FormLabel>
             </Show>
             <Select
                 multiple={props.multiple}

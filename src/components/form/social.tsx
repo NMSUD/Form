@@ -7,6 +7,7 @@ import { useValidation } from '../../hooks/validation';
 import { RightArrowIcon } from '../common/icon/rightArrowIcon';
 import { AvatarFromSocialLink } from '../social';
 import { IFormInputProps } from './formBuilder';
+import { HelpIcon } from './helpIcon';
 
 interface IFormSocialProps extends IFormInputProps<Array<string>> { }
 
@@ -41,7 +42,10 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
     return (
         <VStack>
             <FormControl invalid={!isValid().isValid}>
-                <FormLabel for={props.id}>{props.label}</FormLabel>
+                <FormLabel textAlign="center" for={props.id}>
+                    {props.label}
+                    <HelpIcon helpText={props.helpText} />
+                </FormLabel>
 
                 <InputGroup>
                     <Input

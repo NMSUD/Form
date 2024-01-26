@@ -1,16 +1,16 @@
 import Koa from 'koa';
 
+import { ApiStatusErrorCode } from '../../constants/api';
 import { FormDataKey } from '../../constants/form';
 import { IFormDtoMeta } from '../../contracts/dto/forms/baseFormDto';
-import { Result, ResultWithValue } from '../../contracts/resultWithValue';
+import { IFormResponse } from '../../contracts/response/formResponse';
+import { ResultWithValue } from '../../contracts/resultWithValue';
 import { validateObj } from '../../contracts/validation/baseValidation';
 import { anyObject } from '../../helper/typescriptHacks';
 import { getConfig } from '../../services/internal/configService';
 import { getLog } from '../../services/internal/logService';
 import { hasCaptcha } from '../guard/hasCaptcha';
 import { errorResponse } from '../httpResponse/errorResponse';
-import { ApiStatusErrorCode } from '../../constants/api';
-import { IFormResponse } from '../../contracts/response/formResponse';
 
 export interface IFormHandler<T, TF> {
     name: string;

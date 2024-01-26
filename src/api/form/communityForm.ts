@@ -1,3 +1,4 @@
+import { XataFile } from '@xata.io/client';
 import { ApprovalStatus } from '../../constants/enum/approvalStatus';
 import { FormDataKey } from '../../constants/form';
 import { IDatabaseFile } from '../../contracts/databaseFile';
@@ -8,7 +9,9 @@ import { anyObject } from '../../helper/typescriptHacks';
 import { Community } from '../../integration/xata';
 import { getDatabaseService } from '../../services/external/database/databaseService';
 import { getApiFileService } from '../../services/internal/apiFileService';
+import { getLog } from '../../services/internal/logService';
 import { baseHandleFormSubmission } from './baseForm';
+import { makeArrayOrDefault } from '../../helper/arrayHelper';
 
 interface ICommunityImages {
     profilePicFile?: IDatabaseFile;
@@ -20,14 +23,24 @@ const handleFiles = async (formData: any): Promise<ResultWithValue<ICommunityIma
         bioMediaFiles: [],
     }
 
-    const profilePicFileFromForm = formData[FormDataKey.profilePicFile];
-    result.profilePicFile = getApiFileService().formDataToDatabaseFile(profilePicFileFromForm);
+    try {
+        const profilePicFileFromForm = formData[FormDataKey.profilePicFile];
+        result.profilePicFile = await getApiFileService().formDataToDatabaseFile(profilePicFileFromForm);
+    } catch (ex) {
+        const errMsg = `Error occurred during file upload: ${ex?.toString?.()}`;
+        getLog().e(errMsg)
+        return {
+            isSuccess: false,
+            value: result,
+            errorMessage: errMsg,
+        };
+    }
 
-    // const bioMediaFilesFromForm = formData[FormDataKey.bioMediaFiles];
-    // for (const bioMediaFileFromForm of bioMediaFilesFromForm) {
-    //     const bioMediaDbFile = getApiFileService().formDataToDatabaseFile(bioMediaFileFromForm);
-    //     result.bioMediaFiles?.push(bioMediaDbFile);
-    // }
+    const bioMediaFilesFromForm = formData[FormDataKey.bioMediaFiles];
+    for (const bioMediaFileFromForm of bioMediaFilesFromForm) {
+        const bioMediaDbFile = await getApiFileService().formDataToDatabaseFile(bioMediaFileFromForm);
+        result.bioMediaFiles?.push(bioMediaDbFile);
+    }
 
     return {
         isSuccess: true,
@@ -39,9 +52,10 @@ const handleFiles = async (formData: any): Promise<ResultWithValue<ICommunityIma
 const handleSubmission = async (body: CommunityDto, images: ICommunityImages): Promise<ResultWithValue<IFormResponse>> => {
     const persistence: Omit<Community, 'id'> = {
         name: body.name,
-        profilePicFile: images.profilePicFile as any,
+        profilePicFile: XataFile.fromBase64(images.profilePicFile!.base64Content),
         bio: body.bio,
-        // bioMediaFiles: dto.bioMediaFiles,
+        bioMediaFiles: makeArrayOrDefault(images.bioMediaFiles)
+            .map(bfile => XataFile.fromBase64(bfile!.base64Content) as any),
         tags: body.tags.join(','),
         socials: body.socials.join(','),
         contactDetails: body.contactDetails,

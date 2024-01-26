@@ -31,7 +31,7 @@ export const CommunityFormPage: Component = () => {
             <Card class="form">
                 <FormBuilder
                     item={itemBeingEdited()}
-                    id="community"
+                    id="CommunityDto"
                     formDtoMeta={CommunityDtoValidation}
                     mappings={{
                         profilePicFile: {

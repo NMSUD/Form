@@ -1,18 +1,17 @@
 import { Container, Service } from 'typedi';
-import { LocalStorageKey } from '../../constants/site';
 import { IDatabaseFile } from '../../contracts/databaseFile';
-import { ResultWithValue } from '../../contracts/resultWithValue';
+
+const fs = require('fs').promises;
 
 @Service()
 export class ApiFileService {
 
-    formDataToDatabaseFile = (formData: unknown): IDatabaseFile => {
-
+    formDataToDatabaseFile = async (formData: any): Promise<IDatabaseFile> => {
+        const contents = await fs.readFile(formData.filepath, { encoding: 'base64' });
         return {
-            name: 'file.png',
-            mediaType: 'image/png',
-            base64Content:
-                'iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAEklEQVR42mNk+M9QzwAEjDAGACCDAv8cI7IoAAAAAElFTkSuQmCC'
+            name: formData.newFilename,
+            mediaType: formData.mimetype,
+            base64Content: contents,
         };
         // try {
         // } catch (err) {

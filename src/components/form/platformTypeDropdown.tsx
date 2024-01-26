@@ -24,6 +24,7 @@ export const PlatformTypeDropdown: Component<IProps> = (props: IProps) => {
                 )
             }
             multiple={props.multiple}
+            helpText={props.helpText}
             placeholder={props.placeholder}
             onSelect={props.onChange}
             validation={props.validation}

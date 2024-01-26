@@ -14,6 +14,7 @@ export const FormDropdown: Component<IProps> = (props: IProps) => {
     return (
         <Dropdown
             title={props.label}
+            helpText={props.helpText}
             selectedValues={makeArrayOrDefault(props.value)}
             multiple={props.multiple}
             placeholder={props.placeholder}

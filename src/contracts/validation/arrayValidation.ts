@@ -10,7 +10,8 @@ export const minItems = (minLength: number) => <T>(values: Array<T>): Validation
     return { isValid: false, errorMessage: `Minimum number of items that need to be selected is ${minLength}` };
 };
 
-export const maxLength = (maxLength: number) => <T>(values: Array<T>): ValidationResult => {
+
+export const maxItems = (maxLength: number) => <T>(values: Array<T>): ValidationResult => {
     const safeArr = makeArrayOrDefault(values);
     if (safeArr.length < maxLength) {
         return { isValid: true };

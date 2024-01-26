@@ -1,10 +1,10 @@
-import { FormControl, FormErrorMessage, FormLabel, Input, Textarea } from '@hope-ui/solid';
+import { FormControl, FormErrorMessage, FormLabel, Icon, Input, Textarea, Tooltip } from '@hope-ui/solid';
 import { Component, Show, createEffect, createSignal } from 'solid-js';
-import { ValidationResult } from '../../contracts/validationResult';
 import { formatForDateLocal } from '../../helper/dateHelper';
 import { onTargetValue } from '../../helper/eventHelper';
 import { useValidation } from '../../hooks/validation';
 import { IFormInputProps } from './formBuilder';
+import { HelpIcon } from './helpIcon';
 
 interface IFormLongInputProps extends IFormInputProps<string | number> {
     inputType?: string;
@@ -30,7 +30,10 @@ export const FormLongInput: Component<IFormLongInputProps> = (props: IFormLongIn
 
     return (
         <FormControl invalid={!isValid().isValid}>
-            <FormLabel for={props.id}>{props.label}</FormLabel>
+            <FormLabel textAlign="center" for={props.id}>
+                {props.label}
+                <HelpIcon helpText={props.helpText} />
+            </FormLabel>
             <Input
                 id={props.id}
                 placeholder={props.placeholder}
@@ -70,6 +73,8 @@ export const FormTextArea: Component<IFormTextAreaProps> = (props: IFormTextArea
         <FormControl invalid={!isValid().isValid}>
             <FormLabel for={props.id} width="100%">
                 {props.label}
+                <HelpIcon helpText={props.helpText} />
+
                 <Show when={props.displayTextLength}>
                     <span style={{ float: 'right', "margin-right": '0.5em' }}>
                         {localTextCount()} / {props.maxTextLength}

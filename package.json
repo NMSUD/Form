@@ -1,7 +1,8 @@
 {
   "name": "nmsud.form",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
+  "dockerTagName": "nmsud-form",
   "scripts": {
     "start:api": "nodemon src/api.ts",
     "start:public": "cd public && npx alive-server",

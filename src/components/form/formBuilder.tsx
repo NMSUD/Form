@@ -1,4 +1,4 @@
-import { Button, HStack, Tag, notificationService } from "@hope-ui/solid";
+import { Box, Button, Center, HStack, Tag, Text, notificationService } from "@hope-ui/solid";
 import { Component, For, Show, createEffect, createSignal } from "solid-js";
 
 import { NetworkState } from "../../constants/enum/networkState";
@@ -23,6 +23,7 @@ export type IComponentMapping<T> = {
 export type IFormInputProps<T> = {
     id: string;
     label: string;
+    helpText: string;
     value: T;
     placeholder: string;
     showValidationMessages: boolean;
@@ -55,9 +56,10 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     const [networkState, setNetworkState] = createSignal<NetworkState>(NetworkState.Loading);
 
     setTimeout(async () => {
-        if (getConfig().getCaptchaEnabled() === false) return;
+        if (getConfig().getCaptchaEnabled() == true) {
+            await getCaptchaService().loadUI(captchaRef);
+        }
 
-        await getCaptchaService().loadUI(captchaRef);
         setNetworkState(NetworkState.Pending);
     }, 500);
 
@@ -103,7 +105,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
         setNetworkState(NetworkState.Loading);
 
         let captchaResp = 'test1000080001tset'
-        if (getConfig().getCaptchaEnabled() === true) {
+        if (getConfig().getCaptchaEnabled() == true) {
             const captchaResult = await getCaptchaService().promptUser();
             if (captchaResult.isSuccess == false) {
                 notificationService.show({
@@ -130,6 +132,17 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
         setNetworkState(NetworkState.Success);
     }
 
+    const renderGridCell = (item: IPropertyToFormMapping<T>, children: any) => {
+        return (
+            <FormFieldGridCell
+                colSpan={item.gridItemColumnSize}
+                rowSpan={item.gridItemRowSize ?? GridItemSize.xsmol}
+            >
+                {children}
+            </FormFieldGridCell>
+        );
+    }
+
     return (
         <>
             <FormFieldGrid>
@@ -139,25 +152,26 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
                         const Component = item.component;
 
                         const dtoMeta: IFormDtoMetaDetails<any> = (props.formDtoMeta as any)?.[itemPropName];
-                        const { label, validator } = dtoMeta;
+                        if (dtoMeta == null) return renderGridCell(item, (
+                            <Center border="1px solid red" borderRadius="1em" height="100%">
+                                <Text color="red" textAlign="center" p="2em"
+                                >Item mapping '{itemPropName}'' does not exist on '{props.id}'</Text>
+                            </Center>
+                        ));
 
-                        return (
-                            <FormFieldGridCell
-                                colSpan={item.gridItemColumnSize}
-                                rowSpan={item.gridItemRowSize ?? GridItemSize.xsmol}
-                            >
-                                <Component
-                                    {...getExtraProps(item, itemBeingEdited())}
-                                    id={`${props.id}-${itemPropName}`}
-                                    label={label}
-                                    value={(itemBeingEdited() as any)[itemPropName]}
-                                    placeholder={item.placeholder}
-                                    validation={validator}
-                                    showValidationMessages={forceValidationMessages()}
-                                    onChange={(newValue: string) => updateProperty(itemPropName, newValue)}
-                                />
-                            </FormFieldGridCell>
-                        );
+                        return renderGridCell(item, (
+                            <Component
+                                {...getExtraProps(item, itemBeingEdited())}
+                                id={`${props.id}-${itemPropName}`}
+                                label={dtoMeta.label}
+                                value={(itemBeingEdited() as any)[itemPropName]}
+                                helpText={dtoMeta.helpText}
+                                placeholder={item.placeholder}
+                                validation={dtoMeta.validator}
+                                showValidationMessages={forceValidationMessages()}
+                                onChange={(newValue: string) => updateProperty(itemPropName, newValue)}
+                            />
+                        ));
                     }}
                 </For>
             </FormFieldGrid>
@@ -173,11 +187,6 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
                     loading={networkState() === NetworkState.Loading}
                     onClick={submitForm}
                 >Submit</Button>
-                <Button
-                    variant="outline"
-                    colorScheme="warning"
-                    onClick={() => setItemBeingEdited(anyObject)}
-                >Clear all fields</Button>
             </HStack>
         </>
     );
