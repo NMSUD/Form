@@ -5,10 +5,10 @@ import { FormDataKey } from '../../constants/form';
 import { IFormDtoMeta } from '../../contracts/dto/forms/baseFormDto';
 import { IFormResponse } from '../../contracts/response/formResponse';
 import { ResultWithValue } from '../../contracts/resultWithValue';
-import { validateObj } from '../../contracts/validation/baseValidation';
 import { anyObject } from '../../helper/typescriptHacks';
 import { getConfig } from '../../services/internal/configService';
 import { getLog } from '../../services/internal/logService';
+import { validateObj } from '../../validation/baseValidation';
 import { hasCaptcha } from '../guard/hasCaptcha';
 import { errorResponse } from '../httpResponse/errorResponse';
 

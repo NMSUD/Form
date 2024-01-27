@@ -1,5 +1,6 @@
-import { IImageParams } from "../../helper/imageHelper";
-import { ValidationResult } from "../validationResult";
+import { ValidationResult } from "../contracts/validationResult";
+import { IImageParams } from "../helper/imageHelper";
+
 
 export interface IImageRestriction {
     maxWidth?: number;

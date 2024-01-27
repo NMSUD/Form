@@ -1,9 +1,9 @@
-import { AppType } from "../../constants/enum/appType";
-import { makeArrayOrDefault } from "../../helper/arrayHelper";
-import { getAppType } from "../../services/internal/configService";
-import { getLog } from "../../services/internal/logService";
-import { IFormDtoMeta } from "../dto/forms/baseFormDto";
-import { ValidationResult } from "../validationResult";
+import { AppType } from "../constants/enum/appType";
+import { makeArrayOrDefault } from "../helper/arrayHelper";
+import { getAppType } from "../services/internal/configService";
+import { getLog } from "../services/internal/logService";
+import { IFormDtoMeta } from "../contracts/dto/forms/baseFormDto";
+import { ValidationResult } from "../contracts/validationResult";
 
 export const noValidation = <T>(_: T): ValidationResult => ({ isValid: true });
 

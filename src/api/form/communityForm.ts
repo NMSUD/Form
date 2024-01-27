@@ -23,23 +23,30 @@ const handleFiles = async (formData: any): Promise<ResultWithValue<ICommunityIma
         bioMediaFiles: [],
     }
 
-    try {
-        const profilePicFileFromForm = formData[FormDataKey.profilePicFile];
-        result.profilePicFile = await getApiFileService().formDataToDatabaseFile(profilePicFileFromForm);
-    } catch (ex) {
-        const errMsg = `Error occurred during file upload: ${ex?.toString?.()}`;
-        getLog().e(errMsg)
+    const profilePicFileFromForm = formData[FormDataKey.profilePicFile];
+    const profilePicFileResult = await getApiFileService().formDataToDatabaseFile(profilePicFileFromForm);
+    if (profilePicFileResult.isSuccess == false) {
+        getLog().e('handleCommunityFormSubmission profilePicFileFromForm', profilePicFileResult.value);
         return {
             isSuccess: false,
             value: result,
-            errorMessage: errMsg,
+            errorMessage: profilePicFileResult.errorMessage,
         };
     }
+    result.profilePicFile = profilePicFileResult.value;
 
     const bioMediaFilesFromForm = formData[FormDataKey.bioMediaFiles];
     for (const bioMediaFileFromForm of bioMediaFilesFromForm) {
-        const bioMediaDbFile = await getApiFileService().formDataToDatabaseFile(bioMediaFileFromForm);
-        result.bioMediaFiles?.push(bioMediaDbFile);
+        const bioMediaDbFileResult = await getApiFileService().formDataToDatabaseFile(bioMediaFileFromForm);
+        if (bioMediaDbFileResult.isSuccess == false) {
+            getLog().e('handleCommunityFormSubmission bioMediaFileFromForm', bioMediaFileFromForm.value);
+            return {
+                isSuccess: false,
+                value: result,
+                errorMessage: profilePicFileResult.errorMessage,
+            };
+        }
+        result.bioMediaFiles?.push(bioMediaDbFileResult.value);
     }
 
     return {

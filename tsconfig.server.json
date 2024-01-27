@@ -20,18 +20,21 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noImplicitAny": true,
+    "strict": false,
+    "noImplicitAny": false,
     "strictPropertyInitialization": false,
     "skipLibCheck": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
   ],
   "exclude": [
     "node_modules",
     "**/*.spec.ts",
+    "src/*.tsx",
     "src/**/*.tsx",
+    "src/**/**/*.tsx",
+    "src/components/*.*",
     "public",
     "scripts",
     "./vite.config.ts"

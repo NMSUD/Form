@@ -1,5 +1,5 @@
-import { makeArrayOrDefault } from "../../helper/arrayHelper";
-import { ValidationResult } from "../validationResult";
+import { makeArrayOrDefault } from "../helper/arrayHelper";
+import { ValidationResult } from "../contracts/validationResult";
 
 export const minItems = (minLength: number) => <T>(values: Array<T>): ValidationResult => {
     const safeArr = makeArrayOrDefault(values);

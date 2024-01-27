@@ -1,4 +1,4 @@
-import { IImageRestriction } from "../contracts/validation/imageValidation"
+import { IImageRestriction } from "../validation/imageValidation"
 
 export const AppImage = {
     socialFolder: '/assets/img/social',

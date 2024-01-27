@@ -1,8 +1,8 @@
 import { DefaultImageRestrictions } from "../../../constants/image";
-import { minItems } from "../../validation/arrayValidation";
-import { multiValidation, noValidation, notNull, seperateValidation, validateForEach } from "../../validation/baseValidation";
-import { webImageRestrictions } from "../../validation/imageValidation";
-import { maxLength, minLength, shouldBeUrl } from "../../validation/textValidation";
+import { minItems } from "../../../validation/arrayValidation";
+import { webImageRestrictions } from "../../../validation/imageValidation";
+import { maxLength, minLength, shouldBeUrl } from "../../../validation/textValidation";
+import { multiValidation, noValidation, notNull, seperateValidation, validateForEach } from "../../../validation/baseValidation";
 import { PlatformType } from "../enum/platformType";
 import { IFormDtoMeta } from "./baseFormDto";
 
