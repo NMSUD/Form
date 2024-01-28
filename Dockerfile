@@ -8,6 +8,7 @@ COPY tsconfig*.json ./
 COPY vite.config.ts ./
 COPY index.html ./
 COPY src ./src
+COPY public ./public
 COPY scripts ./scripts
 RUN npm ci
 RUN npm run build
@@ -19,7 +20,7 @@ COPY --from=builder /usr/src/app/build .
 COPY --from=builder /usr/src/app/package*.json .
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 
-EXPOSE 55555
+EXPOSE 3001
 ARG BUILD_VERSION
 ENV NODE_ENV=production
 ENV BUILD_VERSION=$BUILD_VERSION
