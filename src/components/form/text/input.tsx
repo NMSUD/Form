@@ -2,7 +2,7 @@ import { FormControl, FormErrorMessage, FormLabel, Input } from '@hope-ui/solid'
 import { Component, Show, createEffect } from 'solid-js';
 import { formatForDateLocal } from '../../../helper/dateHelper';
 import { onTargetValue } from '../../../helper/eventHelper';
-import { useValidation } from '../../../hooks/validation';
+import { useValidation } from '../../../hooks/useValidation';
 import { IFormInputProps } from '../formBuilder';
 import { HelpIcon } from '../helpIcon/helpIcon';
 

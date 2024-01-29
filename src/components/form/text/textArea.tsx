@@ -1,7 +1,7 @@
 import { FormControl, FormErrorMessage, FormLabel, Textarea } from '@hope-ui/solid';
 import { Component, Show, createEffect, createSignal } from 'solid-js';
 import { onTargetValue } from '../../../helper/eventHelper';
-import { useValidation } from '../../../hooks/validation';
+import { useValidation } from '../../../hooks/useValidation';
 import { IFormInputProps } from '../formBuilder';
 import { HelpIcon } from '../helpIcon/helpIcon';
 

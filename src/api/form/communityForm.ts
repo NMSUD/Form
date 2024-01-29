@@ -6,7 +6,7 @@ import { CommunityDto, CommunityDtoValidation } from '../../contracts/dto/forms/
 import { IFormResponse } from '../../contracts/response/formResponse';
 import { ResultWithValue } from '../../contracts/resultWithValue';
 import { anyObject } from '../../helper/typescriptHacks';
-import { Community } from '../../integration/xata';
+import { Community } from '../../services/external/database/xata';
 import { getDatabaseService } from '../../services/external/database/databaseService';
 import { getApiFileService } from '../../services/internal/apiFileService';
 import { getLog } from '../../services/internal/logService';

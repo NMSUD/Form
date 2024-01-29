@@ -1,11 +1,10 @@
 import { Container, Inject, Service } from "typedi";
-import { Community, CommunityRecord, XataClient } from "../../../integration/xata";
-import { ConfigService } from "../../internal/configService";
-import { CommunityDto } from "../../../contracts/dto/forms/communityDto";
-import { Result, ResultWithValue } from "../../../contracts/resultWithValue";
 import { ApprovalStatus } from "../../../constants/enum/approvalStatus";
 import { IFormResponse } from "../../../contracts/response/formResponse";
+import { ResultWithValue } from "../../../contracts/resultWithValue";
 import { anyObject } from "../../../helper/typescriptHacks";
+import { ConfigService } from "../../internal/configService";
+import { Community, XataClient } from "./xata";
 
 @Service()
 export class DatabaseService {

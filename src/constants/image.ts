@@ -3,6 +3,7 @@ import { IImageRestriction } from "../validation/imageValidation"
 export const AppImage = {
     socialFolder: '/assets/img/social',
     platformFolder: '/assets/img/platform',
+    sidebarLogo: '/assets/img/logo.png',
     fallbackImg: '/assets/img/fallback.png',
 }
 

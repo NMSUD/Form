@@ -4,7 +4,7 @@ import { NetworkState } from '../../../constants/enum/networkState';
 import { AppImage } from '../../../constants/image';
 import { onTargetFile } from '../../../helper/eventHelper';
 import { IImageParams, getImageParams } from '../../../helper/imageHelper';
-import { useValidation } from '../../../hooks/validation';
+import { useValidation } from '../../../hooks/useValidation';
 import { LoadingSpinner } from '../../core/loading';
 import { IFormInputProps } from '../formBuilder';
 import { HelpIcon } from '../helpIcon/helpIcon';

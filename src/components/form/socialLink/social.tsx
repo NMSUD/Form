@@ -3,7 +3,7 @@ import { FormControl, FormErrorMessage, FormLabel, HStack, Input, InputGroup, In
 import { Component, For, Show, createEffect, createSignal } from 'solid-js';
 import { makeArrayOrDefault } from '../../../helper/arrayHelper';
 import { onTargetValue } from '../../../helper/eventHelper';
-import { useValidation } from '../../../hooks/validation';
+import { useValidation } from '../../../hooks/useValidation';
 import { RightArrowIcon } from '../../common/icon/rightArrowIcon';
 import { AvatarFromSocialLink } from './socialLinkAvatar';
 import { IFormInputProps } from '../formBuilder';

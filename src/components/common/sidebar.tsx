@@ -5,6 +5,7 @@ import { Link } from '@solidjs/router';
 import { routes, traverseRoutes } from '../../constants/route';
 import { SidebarNavLink } from './sidebarNavLink';
 import { getConfig } from '../../services/internal/configService';
+import { AppImage } from '../../constants/image';
 
 export const Sidebar: Component = () => {
     const [isOpen, setIsOpen] = createSignal(true);
@@ -45,7 +46,7 @@ export const Sidebar: Component = () => {
                     <Box position="relative">
                         <Link href={routes.home.path}>
                             <Flex>
-                                <Image src="/assets/img/logo.png" alt="logo" width="25%" />
+                                <Image src={AppImage.sidebarLogo} alt="logo" width="25%" />
                                 <Box m="$2" />
                                 <Center>
                                     <Heading>NMSUD<br />Submissions</Heading>
