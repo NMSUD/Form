@@ -3,33 +3,14 @@ import { BuilderDto, BuilderDtoMeta } from '../../contracts/dto/forms/builderDto
 import { IFormResponse } from '../../contracts/response/formResponse';
 import { ResultWithValue } from '../../contracts/resultWithValue';
 import { anyObject } from '../../helper/typescriptHacks';
+import { getDatabaseService } from '../../services/external/database/databaseService';
 import { baseHandleFormSubmission } from './baseForm';
+import { builderFileHandler } from './builder/builderFileHandler';
+import { builderMessageBuilder } from './builder/builderMessageBuilder';
 
 interface IBuilderImages {
     profilePicFile?: IDatabaseFile;
     bioMediaFiles?: Array<IDatabaseFile>;
-}
-
-const handleFiles = async (formData: any): Promise<ResultWithValue<IBuilderImages>> => {
-    // const result: ICommunityImages = {
-    //     bioMediaFiles: [],
-    // }
-
-    // const profilePicFileFromForm = formData[FormDataKey.profilePicFile];
-    // result.profilePicFile = getApiFileService().formDataToDatabaseFile(profilePicFileFromForm);
-
-    // // const bioMediaFilesFromForm = formData[FormDataKey.bioMediaFiles];
-    // // for (const bioMediaFileFromForm of bioMediaFilesFromForm) {
-    // //     const bioMediaDbFile = getApiFileService().formDataToDatabaseFile(bioMediaFileFromForm);
-    // //     result.bioMediaFiles?.push(bioMediaDbFile);
-    // // }
-
-    return {
-        isSuccess: true,
-        // value: result,
-        value: anyObject,
-        errorMessage: '',
-    };
 }
 
 const handleSubmission = async (body: BuilderDto, images: IBuilderImages): Promise<ResultWithValue<IFormResponse>> => {
@@ -44,5 +25,7 @@ export const handleBuilderFormSubmission = baseHandleFormSubmission<BuilderDto, 
     name: 'BuilderDto',
     validationObj: BuilderDtoMeta,
     handleRequest: handleSubmission,
-    fileMapper: handleFiles,
+    handleFilesInFormData: builderFileHandler,
+    discordMessageBuilder: builderMessageBuilder,
+    afterDiscordMessage: getDatabaseService().addWebhookIdToBuilder,
 });

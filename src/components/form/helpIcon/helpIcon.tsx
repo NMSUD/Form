@@ -10,7 +10,7 @@ export const HelpIcon: Component<IProps> = (props: IProps) => {
     return (
         <Show when={props.helpText != null}>
             <Tooltip label={props.helpText}>
-                <Icon />
+                <Icon fontSize="1.5em" marginLeft="$1" paddingBottom="2px" />
             </Tooltip>
         </Show>
     );

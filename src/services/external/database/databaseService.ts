@@ -1,7 +1,8 @@
-import { Container, Inject, Service } from "typedi";
-import { ConfigService } from "../../internal/configService";
-import { createCommunity, readCommunity, updateWebhookIdCommunity } from "./table/communityTableOperations";
-import { Community, XataClient } from "./xata";
+import { Container, Inject, Service } from 'typedi';
+import { ConfigService } from '../../internal/configService';
+import { createCommunity, readCommunity, updateWebhookIdCommunity } from './table/communityTableOperations';
+import { createBuilder, readBuilder, updateWebhookIdBuilder } from './table/builderTableOperations';
+import { XataClient, Community, Builder } from './xata';
 
 @Service()
 export class DatabaseService {
@@ -15,9 +16,13 @@ export class DatabaseService {
         });
     }
 
-    getCommunitySubmission = (id: string) => readCommunity(this.xata, id);
-    addCommunitySubmission = (persistence: Omit<Community, 'id'>) => createCommunity(this.xata, persistence);
-    addWebhookIdToCommunitySubmission = (recordId: string, webhookMessageId: string) => updateWebhookIdCommunity(this.xata, recordId, webhookMessageId);
+    getCommunity = (id: string) => readCommunity(this.xata, id);
+    addCommunity = (persistence: Omit<Community, 'id'>) => createCommunity(this.xata, persistence);
+    addWebhookIdToCommunity = (recordId: string, webhookMessageId: string) => updateWebhookIdCommunity(this.xata, recordId, webhookMessageId);
+
+    getBuilder = (id: string) => readBuilder(this.xata, id);
+    addBuilder = (persistence: Omit<Builder, 'id'>) => createBuilder(this.xata, persistence);
+    addWebhookIdToBuilder = (recordId: string, webhookMessageId: string) => updateWebhookIdBuilder(this.xata, recordId, webhookMessageId);
 }
 
 export const getDatabaseService = () => Container.get(DatabaseService);

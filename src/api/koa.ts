@@ -15,41 +15,31 @@ import { versionEndpoint } from './misc';
 
 export const setupKoa = () => {
     const koa = new Koa();
-    setUpCustomHttpServer({ koa });
 
-    getLog().i('Koa setup complete\n');
-}
-
-interface IHttpServerProps {
-    koa: Koa;
-}
-
-export const setUpCustomHttpServer = (props: IHttpServerProps) => {
     getLog().i("Starting up http server");
 
     const bodyOptions = koaBody({ multipart: true });
     const router = new Router();
-    // router.get('/', defaultEndpoint);
-    router.get('/version', versionEndpoint('secret'));
 
     // forms
-    router.post('/' + api.routes.form.community, bodyOptions, handleCommunityFormSubmission);
-    router.post('/' + api.routes.form.builder, bodyOptions, handleBuilderFormSubmission);
+    router.post(`/${api.routes.form.community}`, bodyOptions, handleCommunityFormSubmission);
+    router.post(`/${api.routes.form.builder}`, bodyOptions, handleBuilderFormSubmission);
     // router.post(api.routes.form.baseBuild, handleFormSubmission);
 
     // approvals
-    router.post('/' + api.routes.verify, handleBuilderFormSubmission);
+    router.post(`/${api.routes.verify}`, handleBuilderFormSubmission);
+
+    // misc
+    router.get('/version', versionEndpoint('secret'));
 
     // middleware
-    props.koa.use(bodyParser());
-    props.koa.use(router.routes());
-    props.koa.use(serve(path.join(getBotPath(), '../public')));
-    props.koa.use(cors());
+    koa.use(bodyParser());
+    koa.use(router.routes());
+    koa.use(serve(path.join(getBotPath(), '../public')));
+    koa.use(cors());
 
     const port = getConfig().getApiPort();
-    props.koa.listen(port);
+    koa.listen(port);
 
-    getLog().i(`Http server setup complete. Available at http://localhost:${port}\n`);
-
-    return props.koa;
+    getLog().i(`Koa setup complete. Available on port ${port}\n`);
 }

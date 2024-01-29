@@ -23,6 +23,13 @@ describe('Base Validation', () => {
         const validator = notNull();
         expect(validator(arr).isValid).toBeFalsy();
     });
+    test('notNullValidator custom error message', () => {
+        const arr: any = null;
+        const err = 'tester test test'
+        const validator = notNull(err);
+        expect(validator(arr).isValid).toBeFalsy();
+        expect(validator(arr).errorMessage).toBe(err);
+    });
 
     describe('Multi Validation ', () => {
         test('multiple validators exec each validator', () => {

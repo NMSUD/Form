@@ -81,13 +81,8 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
         ),
     },
     contactDetails: {
-        label: 'Contact Details (This will not be shared)',
+        label: 'Contact Details (only visible to NMSUD organisers)',
         helpText: 'This is so that we can get in contact with you if there are any issue with your submissions, etc.',
         validator: maxLength(communityBioMaxLength),
     },
-}
-
-export interface ICommunityImages {
-    profilePicFile?: IDatabaseFile;
-    bioMediaFiles?: Array<IDatabaseFile>;
 }

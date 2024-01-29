@@ -6,5 +6,5 @@
     "ignore": [
         "src/**/*.spec.ts"
     ],
-    "exec": "ts-node --project tsconfig.server.json"
+    "exec": "dotenv -- ts-node --project tsconfig.server.json"
 }

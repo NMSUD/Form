@@ -3,9 +3,12 @@ import Koa from 'koa';
 import { ApiStatusErrorCode } from '../../constants/api';
 import { FormDataKey } from '../../constants/form';
 import { IFormDtoMeta } from '../../contracts/dto/forms/baseFormDto';
+import { DiscordWebhook } from '../../contracts/generated/discordWebhook';
 import { IFormResponse } from '../../contracts/response/formResponse';
 import { ResultWithValue } from '../../contracts/resultWithValue';
 import { anyObject } from '../../helper/typescriptHacks';
+import { IMessageBuilderProps } from '../../services/external/discord/discordMessageBuilder';
+import { getDiscordService } from '../../services/external/discord/discordService';
 import { getConfig } from '../../services/internal/configService';
 import { getLog } from '../../services/internal/logService';
 import { validateObj } from '../../validation/baseValidation';
@@ -15,8 +18,10 @@ import { errorResponse } from '../httpResponse/errorResponse';
 export interface IFormHandler<T, TF> {
     name: string;
     validationObj: IFormDtoMeta<T>;
-    fileMapper: (formData: any) => Promise<ResultWithValue<TF>>;
     handleRequest: (request: T, files: TF) => Promise<ResultWithValue<IFormResponse>>;
+    handleFilesInFormData: (formData: any) => Promise<ResultWithValue<TF>>;
+    discordMessageBuilder: (props: IMessageBuilderProps<T>) => DiscordWebhook;
+    afterDiscordMessage: (recordId: string, webhookMessageId: string) => Promise<void>;
 }
 
 export const baseHandleFormSubmission = <T, TF>
@@ -45,7 +50,7 @@ export const baseHandleFormSubmission = <T, TF>
             }
         }
 
-        const fileObjResult = await props.fileMapper(formDataFiles);
+        const fileObjResult = await props.handleFilesInFormData(formDataFiles);
         if (fileObjResult.isSuccess === false) {
             getLog().e(fileObjResult.errorMessage);
             await errorResponse({
@@ -75,7 +80,7 @@ export const baseHandleFormSubmission = <T, TF>
 
         const failedValidationMsgs = validateObj<T>({
             data: data,
-            validationObj: props.validationObj
+            validationObj: props.validationObj,
         }).filter(v => v.isValid === false);
 
         if (failedValidationMsgs.length > 0) {
@@ -98,6 +103,21 @@ export const baseHandleFormSubmission = <T, TF>
                 message: handleDtoResult.errorMessage,
             });
             return;
+        }
+
+        // Send discord message & update db record
+        const discordUrl = getConfig().getDiscordWebhookUrl();
+        const webhookPayload = props.discordMessageBuilder({
+            id: handleDtoResult.value.id,
+            dto: data,
+            dtoMeta: props.validationObj,
+        });
+        const discordResponse = await getDiscordService().sendDiscordMessage(discordUrl, webhookPayload);
+        if (discordResponse.isSuccess) {
+            await props.afterDiscordMessage(
+                handleDtoResult.value.id,
+                discordResponse.value.id
+            );
         }
 
         ctx.response.status = 200;

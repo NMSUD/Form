@@ -21,6 +21,27 @@ body {
         .form.card {
             padding: var(--hope-space-4);
         }
+
+        main.main {
+            transition: opacity 500ms ease-in-out;
+        }
+
+        nav.hide-scrollbar {
+            position: absolute;
+            z-index: 10;
+
+            &.expand {
+                width: 0;
+
+                .drawer-icon {
+                    right: -3em;
+                }
+            }
+
+            &.close+main.main {
+                opacity: 0.2;
+            }
+        }
     }
 
     @media only screen and (max-width: 768px) {

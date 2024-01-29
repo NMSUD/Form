@@ -1,6 +1,7 @@
-.hide-scrollbar {
+nav.hide-scrollbar {
     border-right: 5px solid rgba(0, 0, 0, 0.2);
     transition: all 500ms ease-in-out;
+    background-color: var(--hope-colors-background);
 
     .content {
         transition: all 250ms ease-in-out;
