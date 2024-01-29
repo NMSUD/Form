@@ -1,13 +1,13 @@
 
 import { FormControl, FormErrorMessage, FormLabel, HStack, Input, InputGroup, InputRightElement, VStack } from '@hope-ui/solid';
 import { Component, For, Show, createEffect, createSignal } from 'solid-js';
-import { makeArrayOrDefault } from '../../helper/arrayHelper';
-import { onTargetValue } from '../../helper/eventHelper';
-import { useValidation } from '../../hooks/validation';
-import { RightArrowIcon } from '../common/icon/rightArrowIcon';
-import { AvatarFromSocialLink } from '../social';
-import { IFormInputProps } from './formBuilder';
-import { HelpIcon } from './helpIcon';
+import { makeArrayOrDefault } from '../../../helper/arrayHelper';
+import { onTargetValue } from '../../../helper/eventHelper';
+import { useValidation } from '../../../hooks/validation';
+import { RightArrowIcon } from '../../common/icon/rightArrowIcon';
+import { AvatarFromSocialLink } from './socialLinkAvatar';
+import { IFormInputProps } from '../formBuilder';
+import { HelpIcon } from '../helpIcon/helpIcon';
 
 interface IFormSocialProps extends IFormInputProps<Array<string>> { }
 
@@ -67,7 +67,7 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
                 </Show>
             </FormControl>
 
-            <HStack mt="$2">
+            <HStack mt="$2" flexWrap="wrap">
                 <For each={items()}>
                     {(item) => (<AvatarFromSocialLink url={item} />)}
                 </For>

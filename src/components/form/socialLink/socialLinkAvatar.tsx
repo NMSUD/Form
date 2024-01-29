@@ -1,9 +1,9 @@
 import { Avatar, Badge, Center, Text } from '@hope-ui/solid';
 import { Component } from 'solid-js';
-import { AppImage } from '../constants/image';
-import { socialIcons } from '../constants/socialIcons';
-import { BasicLink } from './core/link';
-import { site } from '../constants/site';
+import { AppImage } from '../../../constants/image';
+import { socialIcons } from '../../../constants/socialIcons';
+import { BasicLink } from '../../core/link';
+import { site } from '../../../constants/site';
 
 interface IFormSocialProps {
     url: string;
@@ -36,6 +36,7 @@ export const AvatarFromSocialLink: Component<IFormSocialProps> = (props: IFormSo
                 size={props.size}
                 backgroundColor="transparent"
                 src={getImgFromUrl(props.url)}
+                p="$1"
             />
             <Badge
                 class="reveal pos-abs"

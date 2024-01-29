@@ -1,11 +1,11 @@
 import { Component } from 'solid-js';
 
-import { AppImage } from '../../constants/image';
-import { PlatformType, friendlyPlatformName } from '../../contracts/dto/enum/platformType';
-import { makeArrayOrDefault } from '../../helper/arrayHelper';
-import { getArrFromEnum } from '../../helper/enumHelper';
-import { Dropdown } from '../common/dropdown';
-import { IFormInputProps } from './formBuilder';
+import { AppImage } from '../../../constants/image';
+import { PlatformType, friendlyPlatformName } from '../../../contracts/dto/enum/platformType';
+import { makeArrayOrDefault } from '../../../helper/arrayHelper';
+import { getArrFromEnum } from '../../../helper/enumHelper';
+import { Dropdown } from '../../common/dropdown';
+import { IFormInputProps } from '../formBuilder';
 
 interface IProps extends IFormInputProps<Array<string>> {
     multiple?: boolean;

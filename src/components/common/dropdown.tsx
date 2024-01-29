@@ -3,7 +3,7 @@ import { Component, For, JSX, Show, createEffect, createSignal } from "solid-js"
 import { ValidationResult } from "../../contracts/validationResult";
 import { makeArrayOrDefault } from "../../helper/arrayHelper";
 import { useValidation } from "../../hooks/validation";
-import { HelpIcon } from "../form/helpIcon";
+import { HelpIcon } from "../form/helpIcon/helpIcon";
 
 export interface IDropdownOption {
     title: string;

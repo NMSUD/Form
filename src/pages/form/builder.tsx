@@ -2,13 +2,13 @@ import { Component, createSignal } from 'solid-js';
 
 import { Card } from '../../components/common/card';
 import { PageHeader } from '../../components/common/pageHeader';
-import { FormDropdown } from '../../components/form/dropdown';
+import { FormDropdown } from '../../components/form/dropdown/dropdown';
 import { FormBuilder } from '../../components/form/formBuilder';
 import { GridItemSize } from '../../components/form/grid';
-import { FormProfileImageInput } from '../../components/form/image';
-import { FormLongInput, FormTextArea } from '../../components/form/input';
-import { PlatformTypeDropdown } from '../../components/form/platformTypeDropdown';
-import { FormSocialInput } from '../../components/form/social';
+import { FormProfileImageInput } from '../../components/form/image/profileImage';
+import { FormLongInput, FormTextArea } from '../../components/form/text/input';
+import { PlatformTypeDropdown } from '../../components/form/dropdown/platformTypeDropdown';
+import { FormSocialInput } from '../../components/form/socialLink/social';
 import { Labels } from '../../constants/labels';
 import { funnyPlayerNames } from '../../constants/names';
 import { BuilderDto, BuilderDtoValidation, builderBioMaxLength, builderContactDetailsMaxLength } from '../../contracts/dto/forms/builderDto';

@@ -1,13 +1,13 @@
 import { Avatar, Box, Center, Flex, FormControl, FormErrorMessage, FormLabel, Icon } from '@hope-ui/solid';
 import { Component, Match, Switch, createEffect, createSignal } from 'solid-js';
-import { NetworkState } from '../../constants/enum/networkState';
-import { AppImage } from '../../constants/image';
-import { onTargetFile } from '../../helper/eventHelper';
-import { IImageParams, getImageParams } from '../../helper/imageHelper';
-import { useValidation } from '../../hooks/validation';
-import { LoadingSpinner } from '../core/loading';
-import { IFormInputProps } from './formBuilder';
-import { HelpIcon } from './helpIcon';
+import { NetworkState } from '../../../constants/enum/networkState';
+import { AppImage } from '../../../constants/image';
+import { onTargetFile } from '../../../helper/eventHelper';
+import { IImageParams, getImageParams } from '../../../helper/imageHelper';
+import { useValidation } from '../../../hooks/validation';
+import { LoadingSpinner } from '../../core/loading';
+import { IFormInputProps } from '../formBuilder';
+import { HelpIcon } from '../helpIcon/helpIcon';
 
 interface IFormProfileImageUrlProps extends IFormInputProps<File> {
     imageValue?: string;
@@ -32,15 +32,7 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (prop
 
     createEffect(() => {
         if (props.showValidationMessages === true) {
-            console.log(
-                calcIsValid(
-                    imageDetails() as any
-                    //     {
-                    //     ...imageDetails(),
-                    //     ...props.value,
-                    // }
-                )
-            );
+            calcIsValid(imageDetails() as any);
         }
     }, [props.showValidationMessages]);
 
@@ -51,7 +43,6 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (prop
             try {
                 setCurrentImage(URL.createObjectURL(uploadedFile));
                 const imgWithExtraDetails = await getImageParams(uploadedFile);
-                console.log(imgWithExtraDetails)
                 setImageDetails(imgWithExtraDetails);
                 calcIsValid(imgWithExtraDetails as any);
                 props.onChange(uploadedFile);
