@@ -1,0 +1,39 @@
+name: Test Build
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install npm packages
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Build UI
+        run: npm run build:ui
+
+      - name: Build API
+        run: npm run build:api
