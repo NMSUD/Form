@@ -1,7 +1,7 @@
 {
   "name": "nmsud.form",
   "version": "1.0.2",
-  "description": "A custom solution for capturing data for the yearly Unification Day event",
+  "description": "A custom solution for capturing data for the yearly Unification Days event",
   "dockerTagName": "nmsud-form",
   "scripts": {
     "start:api": "nodemon src/api.ts",

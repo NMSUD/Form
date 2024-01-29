@@ -631,7 +631,7 @@ to attach them to the start of each source file to most effectively
 state the exclusion of warranty; and each file should have at least
 the "copyright" line and a pointer to where the full notice is found.
 
-    NMSUD Form, a custom form solution to allow for easy data collection for the yearly Unification Day event.
+    NMSUD Form, a custom form solution to allow for easy data collection for the yearly Unification Days event.
     Copyright (C) 2024  NMSUD
 
     This program is free software: you can redistribute it and/or modify

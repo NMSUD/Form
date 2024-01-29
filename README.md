@@ -1,7 +1,7 @@
 <div align="center">
   
   # NMSUD Form
-  _Makes submitting your builds for [Unification Day][nmsudWebsite] easier._
+  _Makes submitting your builds for [Unification Days][nmsudWebsite] easier._
   
   <br />  
   
@@ -9,8 +9,8 @@
   
   <br />
   
-  ![madeWithLove](https://github.com/NMSUD/.github/blob/main/badges/made-with-love.svg)
-  ![gitmoji](https://github.com/NMSUD/.github/blob/main/badges/gitmoji.svg?raw=true)<br />
+  ![madeWithLove](https://github.com/NMSUD/.github/blob/main/badge/made-with-love.svg)
+  ![gitmoji](https://github.com/NMSUD/.github/blob/main/badge/gitmoji.svg?raw=true)<br />
   ![Profile views](https://komarev.com/ghpvc/?username=NMSUD&color=green&style=for-the-badge)<br />
   
   <br /> 
