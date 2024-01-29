@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-solidjs';
 
-import { BuilderDtoValidation } from '../../../contracts/dto/forms/builderDto';
+import { BuilderDtoMeta } from '../../../contracts/dto/forms/builderDto';
 import { FormDropdown } from './dropdown';
 import { UseHopeUIThemeProvider, getIFormInputArgTypes } from '../../storybook';
 
@@ -24,7 +24,7 @@ export const Basic: Story = {
     label: 'Name',
     placeholder: 'this is a placeholder',
     options: ['test1', 'test2', 'test3'].map(t => ({ title: t, value: t })),
-    validation: BuilderDtoValidation.platforms.validator,
+    validation: BuilderDtoMeta.platforms.validator,
   },
 };
 
@@ -34,7 +34,7 @@ export const Multiple: Story = {
     multiple: true,
     placeholder: 'this is a placeholder',
     options: ['test1', 'test2', 'test3'].map(t => ({ title: t, value: t })),
-    validation: BuilderDtoValidation.platforms.validator,
+    validation: BuilderDtoMeta.platforms.validator,
   },
 };
 

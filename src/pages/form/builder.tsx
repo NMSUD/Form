@@ -12,7 +12,7 @@ import { FormLongInput } from '../../components/form/text/input';
 import { FormTextArea } from '../../components/form/text/textArea';
 import { Labels } from '../../constants/labels';
 import { funnyPlayerNames } from '../../constants/names';
-import { BuilderDto, BuilderDtoValidation, builderBioMaxLength, builderContactDetailsMaxLength } from '../../contracts/dto/forms/builderDto';
+import { BuilderDto, BuilderDtoMeta, builderBioMaxLength, builderContactDetailsMaxLength } from '../../contracts/dto/forms/builderDto';
 import { randomItemFromArray } from '../../helper/randomHelper';
 import { anyObject } from '../../helper/typescriptHacks';
 import { getFormApiService } from '../../services/api/formApiService';
@@ -28,7 +28,7 @@ export const BuilderFormPage: Component = () => {
                 <FormBuilder
                     item={itemBeingEdited()}
                     id="BuilderDto"
-                    formDtoMeta={BuilderDtoValidation}
+                    formDtoMeta={BuilderDtoMeta}
                     mappings={{
                         profilePicFile: {
                             component: FormProfileImageInput,

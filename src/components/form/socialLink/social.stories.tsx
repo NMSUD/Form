@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from 'storybook-solidjs';
 
 import { UseHopeUIThemeProvider, getIFormInputArgTypes } from '../../storybook';
 import { FormSocialInput } from './social';
-import { CommunityDtoValidation } from '../../../contracts/dto/forms/communityDto';
+import { CommunityDtoMeta } from '../../../contracts/dto/forms/communityDto';
 import { socialIcons } from '../../../constants/socialIcons';
 
 const meta = {
@@ -25,7 +25,7 @@ export const Basic: Story = {
     label: 'Social links',
     placeholder: 'this is a placeholder',
     helpText: 'This is a help icon with a tooltip',
-    validation: CommunityDtoValidation.socials.validator,
+    validation: CommunityDtoMeta.socials.validator,
     onChange: () => { },
   },
 };
@@ -38,7 +38,7 @@ export const WithAllPossibleIcons: Story = {
       .replaceAll('.svg', '.com')
       .replaceAll('.png', '.com')
     ),
-    validation: CommunityDtoValidation.socials.validator,
+    validation: CommunityDtoMeta.socials.validator,
     onChange: () => { },
   },
 };

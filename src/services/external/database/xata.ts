@@ -25,6 +25,7 @@ const tables = [
         notNull: true,
         defaultValue: "''",
       },
+      { name: "discordWebhookId", type: "string", defaultValue: "" },
     ],
   },
 ] as const;
@@ -43,7 +44,7 @@ const DatabaseClient = buildClient();
 
 const defaultOptions = {
   databaseURL:
-    "https://support-s-workspace-9tmlv0.eu-central-1.xata.sh/db/nmsud-submission",
+    "",
 };
 
 export class XataClient extends DatabaseClient<DatabaseSchema> {

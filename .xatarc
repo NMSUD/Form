@@ -1,5 +1,4 @@
 {
-  "databaseURL": "https://support-s-workspace-9tmlv0.eu-central-1.xata.sh/db/nmsud-submission",
   "codegen": {
     "output": "src/services/external/database/xata.ts"
   }

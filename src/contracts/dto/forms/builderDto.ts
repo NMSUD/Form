@@ -22,7 +22,7 @@ export interface BuilderDto {
     contactDetails: string;
 }
 
-export const BuilderDtoValidation: IFormDtoMeta<BuilderDto> = {
+export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     profilePicFile: {
         label: 'Profile picture',
         validator: seperateValidation({

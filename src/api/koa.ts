@@ -37,6 +37,9 @@ export const setUpCustomHttpServer = (props: IHttpServerProps) => {
     router.post('/' + api.routes.form.builder, bodyOptions, handleBuilderFormSubmission);
     // router.post(api.routes.form.baseBuild, handleFormSubmission);
 
+    // approvals
+    router.post('/' + api.routes.verify, handleBuilderFormSubmission);
+
     // middleware
     props.koa.use(bodyParser());
     props.koa.use(router.routes());

@@ -36,8 +36,7 @@
     "build",
     "public",
     "scripts",
-    "src/admin.tsx",
-    "src/admin/**/*",
+    "src/api/**/*",
     "./vite.config.ts"
   ],
   "files": [

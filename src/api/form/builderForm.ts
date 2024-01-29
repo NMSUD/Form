@@ -1,5 +1,5 @@
 import { IDatabaseFile } from '../../contracts/databaseFile';
-import { BuilderDto, BuilderDtoValidation } from '../../contracts/dto/forms/builderDto';
+import { BuilderDto, BuilderDtoMeta } from '../../contracts/dto/forms/builderDto';
 import { IFormResponse } from '../../contracts/response/formResponse';
 import { ResultWithValue } from '../../contracts/resultWithValue';
 import { anyObject } from '../../helper/typescriptHacks';
@@ -42,7 +42,7 @@ const handleSubmission = async (body: BuilderDto, images: IBuilderImages): Promi
 
 export const handleBuilderFormSubmission = baseHandleFormSubmission<BuilderDto, IBuilderImages>({
     name: 'BuilderDto',
-    validationObj: BuilderDtoValidation,
+    validationObj: BuilderDtoMeta,
     handleRequest: handleSubmission,
     fileMapper: handleFiles,
 });

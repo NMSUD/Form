@@ -1,11 +1,10 @@
 import 'reflect-metadata';
 import { Container } from 'typedi';
+import fs from 'fs';
+import path from 'path';
 
-import { setupKoa } from "./api/koa";
 import { APP_TYPE, BOT_PATH } from './services/internal/configService';
 import { AppType } from './constants/enum/appType';
-
-const fs = require('fs');
 
 require('dotenv').config();
 
@@ -23,6 +22,7 @@ const main = async () => {
     // json generation
     //      json file for each table (e.g community.json)
     //      json file per id (e.g. for id "tester1" => community/tester1.json)
+    //      grouped json files (e.g. all builds by a builder with id "bobBuilder" => bases-by-builder/bobBuilder.json)
 
 
 

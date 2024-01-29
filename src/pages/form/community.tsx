@@ -12,7 +12,7 @@ import { FormTextArea } from '../../components/form/text/textArea';
 import { Labels } from '../../constants/labels';
 import { funnyPlayerNames } from '../../constants/names';
 import { IDropdownOption } from '../../contracts/dropdownOption';
-import { CommunityDto, CommunityDtoValidation, communityBioMaxLength, communityContactDetailsMaxLength } from '../../contracts/dto/forms/communityDto';
+import { CommunityDto, CommunityDtoMeta, communityBioMaxLength, communityContactDetailsMaxLength } from '../../contracts/dto/forms/communityDto';
 import { randomItemFromArray } from '../../helper/randomHelper';
 import { anyObject } from '../../helper/typescriptHacks';
 import { getFormApiService } from '../../services/api/formApiService';
@@ -33,7 +33,7 @@ export const CommunityFormPage: Component = () => {
                 <FormBuilder
                     item={itemBeingEdited()}
                     id="CommunityDto"
-                    formDtoMeta={CommunityDtoValidation}
+                    formDtoMeta={CommunityDtoMeta}
                     mappings={{
                         profilePicFile: {
                             component: FormProfileImageInput,

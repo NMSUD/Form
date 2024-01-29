@@ -48,8 +48,33 @@ This script is able to pull all the uploaded images and the records out of the d
 
 <br />
 
+## 🧪 Running the tests
+This project uses [vitest](https://vitest.dev) for unit tests. The tests in this project are mostly testing the validation functions used on both the **website** and **API** projects. Hoping to add more tests in the future! 
+
+To run the tests, use the command `npm run test`.
+
+<br />
+
+## 🎨 Storybook
+This project has [Storybook](https://storybook.js.com) set up. This is mostly for visual testing and is suitable for components such as the reusable form components in `src/components/form`.
+
+To run storybook use the command `npm run storybook`. \
+Then open [localhost:6006](http://localhost:6006)
+
+<br />
+
 ## 👪 Contributing
 Please take a look at the [Contribution Guideline](./.github/CONTRIBUTING.md) before creating an issue or pull request.
+
+<br />
+
+## 📄 Creating a new form
+There are [some basic docs](./src/pages/form/README.md) on what is required to create a new form in this project.
+
+<br />
+
+## 🐋 Docker
+This project makes use of [Docker][docker] to create an "easy" way of running the whole solution. However the resulting [Docker][docker] image of this solution will not uploaded to a public [Docker Hub][dockerHub]. Any images that you see that claim to be of this project are forks of this project or fradulent. If this changes, this part of the README.md will be update.
 
 <br />
 
@@ -57,6 +82,10 @@ Please take a look at the [Contribution Guideline](./.github/CONTRIBUTING.md) be
 [![Website](https://img.shields.io/badge/Website-nmsud.com-blue?color=7986cc&style=for-the-badge)][nmsudWebsite] <br />
 [![Discord](https://img.shields.io/badge/Discord-NMSUD-blue?color=5865F2&style=for-the-badge)][discord] <br />
 
+<br />
+
 <!-- Links used in the page -->
 [nmsudWebsite]: https://nmsud.com
+[docker]: https://www.docker.com
+[dockerHub]: https://hub.docker.com
 [discord]: https://discord.gg/jQrNeWeTwR

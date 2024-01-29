@@ -3,6 +3,7 @@ import { maxItems, minItems } from "../../../validation/arrayValidation";
 import { multiValidation, noValidation, notNull, seperateValidation, validateForEach } from "../../../validation/baseValidation";
 import { webImageRestrictions } from "../../../validation/imageValidation";
 import { maxLength, minLength, shouldBeUrl } from "../../../validation/textValidation";
+import { IDatabaseFile } from "../../databaseFile";
 import { IFormDtoMeta } from "./baseFormDto";
 
 export const communityBioMaxLength = 500;
@@ -10,8 +11,10 @@ export const communityContactDetailsMaxLength = 500;
 
 export interface CommunityDto {
     name: string;
+    profilePicUrl: string;
     profilePicFile: File;
     bio: string;
+    bioMediaUrls: Array<string>;
     bioMediaFiles: Array<File>;
     homeGalaxies: Array<string>;
     tags: Array<string>;
@@ -19,7 +22,8 @@ export interface CommunityDto {
     contactDetails: string;
 }
 
-export const CommunityDtoValidation: IFormDtoMeta<CommunityDto> = {
+export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
+    profilePicUrl: { label: '', validator: noValidation },
     profilePicFile: {
         label: 'Profile picture',
         validator: seperateValidation({
@@ -44,6 +48,7 @@ export const CommunityDtoValidation: IFormDtoMeta<CommunityDto> = {
             maxLength(communityBioMaxLength),
         ),
     },
+    bioMediaUrls: { label: 'Bio Media', validator: noValidation },
     bioMediaFiles: {
         label: 'Media upload',
         validator: seperateValidation({
@@ -82,3 +87,7 @@ export const CommunityDtoValidation: IFormDtoMeta<CommunityDto> = {
     },
 }
 
+export interface ICommunityImages {
+    profilePicFile?: IDatabaseFile;
+    bioMediaFiles?: Array<IDatabaseFile>;
+}
