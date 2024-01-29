@@ -1,15 +1,10 @@
 import { Flex, FormControl, FormErrorMessage, FormLabel, Image, Select, SelectContent, SelectIcon, SelectListbox, SelectOption, SelectOptionIndicator, SelectOptionText, SelectPlaceholder, SelectTrigger, SelectValue, Tag, TagLabel } from "@hope-ui/solid";
 import { Component, For, JSX, Show, createEffect, createSignal } from "solid-js";
+import { IDropdownOption } from "../../contracts/dropdownOption";
 import { ValidationResult } from "../../contracts/validationResult";
 import { makeArrayOrDefault } from "../../helper/arrayHelper";
 import { useValidation } from "../../hooks/validation";
 import { HelpIcon } from "../form/helpIcon/helpIcon";
-
-export interface IDropdownOption {
-    title: string;
-    value: string;
-    image?: string;
-}
 
 interface IProps {
     title: string;

@@ -1,16 +1,15 @@
-import { Box, Button, Center, HStack, Tag, Text, notificationService } from "@hope-ui/solid";
-import { Component, For, Show, createEffect, createSignal } from "solid-js";
+import { Button, Center, HStack, Tag, Text, notificationService } from "@hope-ui/solid";
+import { Component, For, Show, createSignal } from "solid-js";
 
 import { NetworkState } from "../../constants/enum/networkState";
+import { IFormDtoMeta, IFormDtoMetaDetails } from "../../contracts/dto/forms/baseFormDto";
 import { Result } from "../../contracts/resultWithValue";
-import { validateObj } from "../../contracts/validation/baseValidation";
 import { ValidationResult } from "../../contracts/validationResult";
 import { anyObject } from "../../helper/typescriptHacks";
-import { FormFieldGrid, FormFieldGridCell, GridItemSize } from "./grid";
-import { nameof } from "../../helper/propHelper";
 import { getCaptchaService } from "../../services/external/captchaService";
-import { IFormDtoMeta, IFormDtoMetaDetails } from "../../contracts/dto/forms/baseFormDto";
 import { getConfig } from "../../services/internal/configService";
+import { validateObj } from "../../validation/baseValidation";
+import { FormFieldGrid, FormFieldGridCell, GridItemSize } from "./grid";
 
 interface IPropertyToFormMappingExtraProp<T> {
     [prop: string]: (item: T) => any;

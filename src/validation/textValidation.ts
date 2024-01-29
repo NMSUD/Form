@@ -1,7 +1,7 @@
-import { ValidationResult } from "../validationResult";
+import { ValidationResult } from "../contracts/validationResult";
 
 export const minLength = (minLength: number) => (value: string): ValidationResult => {
-    if (value?.length >= minLength) {
+    if ((value?.length ?? 0) >= minLength) {
         return { isValid: true };
     }
 
@@ -9,7 +9,7 @@ export const minLength = (minLength: number) => (value: string): ValidationResul
 };
 
 export const maxLength = (maxLength: number) => (value: string): ValidationResult => {
-    if (value?.length < maxLength) {
+    if ((value?.length ?? 0) < maxLength) {
         return { isValid: true };
     }
 

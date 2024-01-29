@@ -1,8 +1,8 @@
 import { DefaultImageRestrictions } from "../../../constants/image";
-import { maxItems, minItems } from "../../validation/arrayValidation";
-import { multiValidation, noValidation, notNull, seperateValidation, validateForEach } from "../../validation/baseValidation";
-import { webImageRestrictions } from "../../validation/imageValidation";
-import { maxLength, minLength, shouldBeUrl } from "../../validation/textValidation";
+import { maxItems, minItems } from "../../../validation/arrayValidation";
+import { multiValidation, noValidation, notNull, seperateValidation, validateForEach } from "../../../validation/baseValidation";
+import { webImageRestrictions } from "../../../validation/imageValidation";
+import { maxLength, minLength, shouldBeUrl } from "../../../validation/textValidation";
 import { IFormDtoMeta } from "./baseFormDto";
 
 export const communityBioMaxLength = 500;

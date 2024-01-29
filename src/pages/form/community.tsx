@@ -1,7 +1,6 @@
 import { Component, createSignal } from 'solid-js';
 
 import { Card } from '../../components/common/card';
-import { IDropdownOption } from '../../components/common/dropdown';
 import { PageHeader } from '../../components/common/pageHeader';
 import { FormDropdown } from '../../components/form/dropdown/dropdown';
 import { FormBuilder } from '../../components/form/formBuilder';
@@ -11,6 +10,7 @@ import { FormLongInput, FormTextArea } from '../../components/form/text/input';
 import { FormSocialInput } from '../../components/form/socialLink/social';
 import { Labels } from '../../constants/labels';
 import { funnyPlayerNames } from '../../constants/names';
+import { IDropdownOption } from '../../contracts/dropdownOption';
 import { CommunityDto, CommunityDtoValidation, communityBioMaxLength, communityContactDetailsMaxLength } from '../../contracts/dto/forms/communityDto';
 import { randomItemFromArray } from '../../helper/randomHelper';
 import { anyObject } from '../../helper/typescriptHacks';

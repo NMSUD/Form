@@ -1,10 +1,10 @@
 ///<reference types="@hcaptcha/types"/>
 import { hCaptchaLoader } from '@hcaptcha/loader';
-import Container, { Inject, Service } from 'typedi';
 import { verify } from 'hcaptcha';
+import { Container, Service } from 'typedi';
 
-import { ConfigService, getConfig } from '../internal/configService';
 import { Result, ResultWithValue } from '../../contracts/resultWithValue';
+import { ConfigService, getConfig } from '../internal/configService';
 import { getLog } from '../internal/logService';
 
 @Service()
@@ -44,7 +44,7 @@ export class CaptchaService {
 
             return {
                 isSuccess: true,
-                value: response.response,
+                value: (response as any)?.response ?? '',
                 errorMessage: '',
             }
         }

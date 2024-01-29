@@ -3,12 +3,12 @@ import Router from '@koa/router';
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import koaBody from 'koa-body';
-import serve from "koa-static";
+import serve from 'koa-static';
 import path from 'path';
 
 import { api } from '../constants/api';
 import { getBotPath, getConfig } from '../services/internal/configService';
-import { getLog } from "../services/internal/logService";
+import { getLog } from '../services/internal/logService';
 import { handleBuilderFormSubmission } from './form/builderForm';
 import { handleCommunityFormSubmission } from './form/communityForm';
 import { versionEndpoint } from './misc';
@@ -27,9 +27,7 @@ interface IHttpServerProps {
 export const setUpCustomHttpServer = (props: IHttpServerProps) => {
     getLog().i("Starting up http server");
 
-    const bodyOptions = koaBody({
-        multipart: true,
-    });
+    const bodyOptions = koaBody({ multipart: true });
     const router = new Router();
     // router.get('/', defaultEndpoint);
     router.get('/version', versionEndpoint('secret'));

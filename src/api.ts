@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Container } from 'typedi';
 
-import { setupKoa } from "./api/koa";
+import { setupKoa } from './api/koa';
 import { APP_TYPE, BOT_PATH } from './services/internal/configService';
 import { AppType } from './constants/enum/appType';
 

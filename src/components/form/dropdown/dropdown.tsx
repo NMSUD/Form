@@ -1,7 +1,8 @@
 import { Component } from 'solid-js';
 
+import { IDropdownOption } from '../../../contracts/dropdownOption';
 import { makeArrayOrDefault } from '../../../helper/arrayHelper';
-import { Dropdown, IDropdownOption } from '../../common/dropdown';
+import { Dropdown } from '../../common/dropdown';
 import { IFormInputProps } from '../formBuilder';
 
 interface IProps extends IFormInputProps<Array<string>> {

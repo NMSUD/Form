@@ -1,7 +1,7 @@
 import { Container, Service } from "typedi";
 
-import { IDropdownOption } from "../../components/common/dropdown";
 import { LocalStorageKey } from "../../constants/site";
+import { IDropdownOption } from "../../contracts/dropdownOption";
 import { debounceLeading } from "../../helper/debounceHelper";
 import { getLocalStorage } from "./localStorageService";
 
