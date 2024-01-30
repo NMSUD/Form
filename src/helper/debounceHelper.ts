@@ -1,6 +1,7 @@
 export const debounceLeading = (func: any, wait: number = 300, immediate?: boolean) => {
     let timeout: any;
     const funcToReturn: any = function () {
+        // this guy sucks, but works super well
         let context: any = this as any;
         let args = arguments;
         let later = function () {

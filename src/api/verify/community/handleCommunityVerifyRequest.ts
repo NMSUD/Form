@@ -1,6 +1,6 @@
 import { communityMessageBuilder } from '../../../api/form/community/communityMessageBuilder';
 import { ApprovalStatus } from '../../../constants/enum/approvalStatus';
-import { CommunityDtoMeta } from '../../../contracts/dto/forms/communityDto';
+import { CommunityDto, CommunityDtoMeta } from '../../../contracts/dto/forms/communityDto';
 import { ResultWithValue } from '../../../contracts/resultWithValue';
 import { IVerifyRequestDiscordParams, IVerifyRequestParams, VerifyRequestFunc } from '../../../contracts/verifyRequestParam';
 import { getCommunityCheck } from '../../../helper/checkHelper';
@@ -47,7 +47,7 @@ export const handleCommunityVerifyRequest: VerifyRequestFunc = async (
 
     const webhookPayload = communityMessageBuilder({
         id: recordResult.value.id,
-        dto: (recordResult.value as any), // for reuse
+        dto: (recordResult.value as unknown as CommunityDto), // for reuse
         dtoMeta: CommunityDtoMeta,
         approvalStatus: approvalStatus,
         includeActionsEmbed: false,

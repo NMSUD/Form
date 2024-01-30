@@ -10,13 +10,14 @@ import { baseHandleFormSubmission } from './baseForm';
 import { communityMessageBuilder } from './community/communityMessageBuilder';
 import { ICommunityImages, communityFileHandler } from './community/communityFileHandler';
 import { getLog } from '../../services/internal/logService';
+import { XataArrayFile, XataFile } from '@xata.io/client';
 
 const handleSubmission = async (body: CommunityDto, images: ICommunityImages): Promise<ResultWithValue<IFormResponse>> => {
     const persistence: Omit<Community, 'id'> = {
         name: body.name,
-        profilePicFile: images.profilePicFile as any,
+        profilePicFile: images.profilePicFile as XataFile,
         bio: body.bio,
-        bioMediaFiles: makeArrayOrDefault(images.bioMediaFiles) as any,
+        bioMediaFiles: makeArrayOrDefault(images.bioMediaFiles) as Array<XataArrayFile>,
         bioMediaUrls: '',
         tags: body.tags.join(','),
         socials: body.socials.join(','),

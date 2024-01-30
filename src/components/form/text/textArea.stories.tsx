@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from 'storybook-solidjs';
 
 import { UseHopeUIThemeProvider, getIFormInputArgTypes } from '../../storybook';
 import { FormTextArea } from './textArea';
-import { maxLength } from '../../../contracts/validation/textValidation';
+import { maxLength } from '../../../validation/textValidation';
 
 const meta = {
   title: 'Form/TextArea',

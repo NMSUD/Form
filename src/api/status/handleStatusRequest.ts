@@ -19,7 +19,7 @@ export const handleStatusRequest = async (ctx: Koa.DefaultContext, next: () => P
 
     const dbFunc = lookupFunctions[params.segment];
     if (dbFunc == null) {
-        const errMsg = `Database function lookup failed for segment: ${params.segment}`;
+        const errMsg = `Lookup failed for segment: ${params.segment}`;
         getLog().e(errMsg);
         await errorResponse({
             ctx,

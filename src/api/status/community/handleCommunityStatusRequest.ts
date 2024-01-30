@@ -1,13 +1,13 @@
 import { CommunityDto } from '../../../contracts/dto/forms/communityDto';
 import { ResultWithValue } from '../../../contracts/resultWithValue';
-import { IVerifyStatusParams, VerifyStatusFunc } from '../../../contracts/verifyStatusParam';
+import { IVerifyStatusParams, VerifyStatusFunc, WithApprovalStatus } from '../../../contracts/verifyStatusParam';
 import { anyObject } from '../../../helper/typescriptHacks';
 import { getDatabaseService } from '../../../services/external/database/databaseService';
 import { getLog } from '../../../services/internal/logService';
 
 export const handleCommunityStatusRequest: VerifyStatusFunc = async (
     params: IVerifyStatusParams
-): Promise<ResultWithValue<CommunityDto>> => {
+): Promise<ResultWithValue<CommunityDto & WithApprovalStatus>> => {
     getLog().i('status-community-submission');
 
     const recordResult = await getDatabaseService().community.read(params.id);
@@ -36,6 +36,6 @@ export const handleCommunityStatusRequest: VerifyStatusFunc = async (
         value: {
             ...dto,
             approvalStatus: recordResult.value.approvalStatus
-        } as any,
+        },
     };
 }

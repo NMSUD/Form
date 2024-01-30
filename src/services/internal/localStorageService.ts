@@ -29,7 +29,7 @@ export class LocalStorageService {
         const ownKeys: Array<string> = [];
         for (const localKey in LocalStorageKey) {
             if (Object.prototype.hasOwnProperty.call(LocalStorageKey, localKey)) {
-                ownKeys.push((LocalStorageKey as any)[localKey])
+                ownKeys.push((LocalStorageKey as { [prop: string]: string })[localKey])
             }
         }
 

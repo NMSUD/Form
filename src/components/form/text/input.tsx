@@ -21,8 +21,8 @@ export const FormLongInput: Component<IFormLongInputProps> = (props: IFormLongIn
     }, [props.showValidationMessages]);
 
     const handleSpecialDateLocalValue = (value: string | number, inputType?: string) => {
-        if (inputType == 'datetime-local') {
-            return formatForDateLocal(value as any);
+        if (inputType === 'datetime-local') {
+            return formatForDateLocal(value);
         }
 
         return value;

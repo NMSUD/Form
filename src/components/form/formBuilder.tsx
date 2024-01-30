@@ -5,7 +5,7 @@ import { NetworkState } from "../../constants/enum/networkState";
 import { IFormDtoMeta, IFormDtoMetaDetails } from "../../contracts/dto/forms/baseFormDto";
 import { Result, ResultWithValue } from "../../contracts/resultWithValue";
 import { ValidationResult } from "../../contracts/validationResult";
-import { anyObject } from "../../helper/typescriptHacks";
+import { ObjectWithPropsOfValue, anyObject } from "../../helper/typescriptHacks";
 import { getCaptchaService } from "../../services/external/captchaService";
 import { getConfig } from "../../services/internal/configService";
 import { validateObj } from "../../validation/baseValidation";
@@ -43,6 +43,10 @@ export interface IPropertyToFormMapping<T> {
     additional?: IPropertyToFormMappingExtraProp<T>;
 }
 
+interface IItemRequirements {
+    name: string;
+}
+
 interface IProps<T> {
     item: T;
     id: string;
@@ -54,7 +58,7 @@ interface IProps<T> {
     submit: (item: T, captcha: string) => Promise<ResultWithValue<IFormResponse>>;
 }
 
-export const FormBuilder = <T,>(props: IProps<T>) => {
+export const FormBuilder = <T extends IItemRequirements,>(props: IProps<T>) => {
     let captchaRef: any;
     const [itemBeingEdited, setItemBeingEdited] = createSignal<T>(props.item);
     const [forceValidationMessages, setForceValidationMessages] = createSignal<boolean>(false);
@@ -69,7 +73,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     }, 500);
 
     const updateProperty = (prop: string, value: any) => {
-        setItemBeingEdited(prev => ({ ...prev, [prop]: value }) as any);
+        setItemBeingEdited(prev => ({ ...prev, [prop]: value }));
         props.updateProperty(prop, value);
     }
 
@@ -155,7 +159,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
                         title="View status"
                         additionalClassNames="noselect"
                     >
-                        View Status of {props.segment} '{(itemBeingEdited() as any).name}'
+                        View Status of {props.segment} '{itemBeingEdited().name}'
                     </BasicLink>
                 }
             />
@@ -197,10 +201,10 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
             <FormFieldGrid>
                 <For each={Object.keys(props.mappings)}>
                     {(itemPropName) => {
-                        const item: IPropertyToFormMapping<T> = (props.mappings as any)[itemPropName];
+                        const item: IPropertyToFormMapping<T> = (props.mappings as ObjectWithPropsOfValue<IPropertyToFormMapping<T>>)[itemPropName];
                         const Component = item.component;
 
-                        const dtoMeta: IFormDtoMetaDetails<any> = (props.formDtoMeta as any)?.[itemPropName];
+                        const dtoMeta: IFormDtoMetaDetails<any> = (props.formDtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<any>>)?.[itemPropName];
                         if (dtoMeta == null) return renderGridCell(item, (
                             <Center border="1px solid red" borderRadius="1em" height="100%">
                                 <Text color="red" textAlign="center" p="2em"
@@ -213,7 +217,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
                                 {...getExtraProps(item, itemBeingEdited())}
                                 id={`${props.id}-${itemPropName}`}
                                 label={dtoMeta.label}
-                                value={(itemBeingEdited() as any)[itemPropName]}
+                                value={(itemBeingEdited() as unknown as ObjectWithPropsOfValue<T>)[itemPropName]}
                                 helpText={dtoMeta.helpText}
                                 placeholder={item.placeholder}
                                 validation={dtoMeta.validator}

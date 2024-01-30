@@ -4,7 +4,7 @@ import { IImageParams } from '../helper/imageHelper';
 import { IImageRestriction, webImageRestrictions } from './imageValidation';
 
 describe('Image Validation', () => {
-    const imgWithParams: IImageParams = {
+    const imgWithParams: IImageParams | any = {
         width: 100,
         height: 100,
         fileSize: 100 * (1024.0 * 1024.0),
@@ -16,7 +16,7 @@ describe('Image Validation', () => {
             maxWidth: 90
         }
         const validator = webImageRestrictions(imgRestriction);
-        const result = validator(imgWithParams as any);
+        const result = validator(imgWithParams);
         expect(result.isValid).toBeFalsy();
     });
     test('webImageRestrictions maxHeight', () => {
@@ -24,7 +24,7 @@ describe('Image Validation', () => {
             maxHeight: 90
         }
         const validator = webImageRestrictions(imgRestriction);
-        const result = validator(imgWithParams as any);
+        const result = validator(imgWithParams);
         expect(result.isValid).toBeFalsy();
     });
     test('webImageRestrictions minWidth', () => {
@@ -32,7 +32,7 @@ describe('Image Validation', () => {
             minWidth: 101
         }
         const validator = webImageRestrictions(imgRestriction);
-        const result = validator(imgWithParams as any);
+        const result = validator(imgWithParams);
         expect(result.isValid).toBeFalsy();
     });
     test('webImageRestrictions minHeight', () => {
@@ -40,7 +40,7 @@ describe('Image Validation', () => {
             minHeight: 101
         }
         const validator = webImageRestrictions(imgRestriction);
-        const result = validator(imgWithParams as any);
+        const result = validator(imgWithParams);
         expect(result.isValid).toBeFalsy();
     });
     test('webImageRestrictions maxSizeMb', () => {
@@ -48,7 +48,7 @@ describe('Image Validation', () => {
             maxSizeMb: 90
         }
         const validator = webImageRestrictions(imgRestriction);
-        const result = validator(imgWithParams as any);
+        const result = validator(imgWithParams);
         expect(result.isValid).toBeFalsy();
     });
 });

@@ -32,7 +32,10 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (prop
 
     createEffect(() => {
         if (props.showValidationMessages === true) {
-            calcIsValid(imageDetails() as any);
+            calcIsValid({
+                ...(new File([], '')),
+                ...imageDetails()
+            });
         }
     }, [props.showValidationMessages]);
 
@@ -50,7 +53,10 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (prop
                 setCurrentImage(URL.createObjectURL(uploadedFile));
                 const imgWithExtraDetails = await getImageParams(uploadedFile);
                 setImageDetails(imgWithExtraDetails);
-                calcIsValid(imgWithExtraDetails as any);
+                calcIsValid({
+                    ...uploadedFile,
+                    ...imgWithExtraDetails
+                });
                 props.onChange(uploadedFile);
                 setNetworkState(NetworkState.Success);
             } catch (ex) {

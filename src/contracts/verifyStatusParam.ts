@@ -1,3 +1,4 @@
+import { ApprovalStatus } from "../constants/enum/approvalStatus";
 import { ResultWithValue } from "./resultWithValue";
 
 export interface IVerifyStatusParams {
@@ -5,4 +6,8 @@ export interface IVerifyStatusParams {
     segment: string;
 }
 
-export type VerifyStatusFunc = (params: IVerifyStatusParams) => Promise<ResultWithValue<any>>;
+export interface WithApprovalStatus {
+    approvalStatus: ApprovalStatus;
+};
+
+export type VerifyStatusFunc = (params: IVerifyStatusParams) => Promise<ResultWithValue<WithApprovalStatus>>;

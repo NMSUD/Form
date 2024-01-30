@@ -44,7 +44,7 @@ export class CaptchaService {
 
             return {
                 isSuccess: true,
-                value: (response as any)?.response ?? '',
+                value: response?.response ?? '',
                 errorMessage: '',
             }
         }

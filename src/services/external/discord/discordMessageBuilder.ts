@@ -1,9 +1,9 @@
 import { api, apiParams } from '../../../constants/api';
 import { ApprovalStatus, approvalStatusToString } from '../../../constants/enum/approvalStatus';
-import { IFormDtoMeta } from '../../../contracts/dto/forms/baseFormDto';
+import { IFormDtoMeta, IFormDtoMetaDetails } from '../../../contracts/dto/forms/baseFormDto';
 import { DiscordWebhook, DiscordWebhookAttachment, DiscordWebhookEmbed } from '../../../contracts/generated/discordWebhook';
 import { makeArrayOrDefault } from '../../../helper/arrayHelper';
-import { anyObject } from '../../../helper/typescriptHacks';
+import { ObjectWithPropsOfValue, anyObject } from '../../../helper/typescriptHacks';
 import { getConfig } from '../../internal/configService';
 
 export interface IMessageBuilderProps<T> {
@@ -70,16 +70,16 @@ export const baseSubmissionMessageBuilder = (props: {
     };
 }
 
-export const getDescriptionLines = <T extends {}, TK extends {}>(props: {
+export const getDescriptionLines = <T, TK>(props: {
     dto: T;
     dtoMeta: TK;
-    itemsToDisplay: Array<keyof T | TK>;
+    itemsToDisplay: Array<keyof T | keyof TK>;
 }) => {
     const descripLines: Array<string> = [];
 
     for (const dtoProp of props.itemsToDisplay) {
-        const localDto = (props.dto as any)[dtoProp] ?? anyObject;
-        const localMeta = (props.dtoMeta as any)[dtoProp];
+        const localDto = (props.dto as ObjectWithPropsOfValue<string | Array<string>>)[dtoProp.toString()] ?? anyObject;
+        const localMeta = (props.dtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>)[dtoProp.toString()];
         if (localMeta == null) continue;
 
         if (Array.isArray(localDto)) {

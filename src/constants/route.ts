@@ -65,7 +65,7 @@ export const traverseRoutes = (routeObj: any, routeFunc: (routeData: any) => voi
         if (isNaN(routeProp as any) === false) continue;
 
         if (Object.prototype.hasOwnProperty.call(routeObj, routeProp)) {
-            const routeData = (routeObj as any)[routeProp];
+            const routeData = routeObj[routeProp];
 
             if ((routeData as any).path != null) {
                 routeFunc(routeData);

@@ -1,28 +1,22 @@
 
-import { Avatar, Box, Button, Center, Container, HStack, Text, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, VStack, createDisclosure, notificationService, } from "@hope-ui/solid"
-import { useNavigate, useParams } from '@solidjs/router';
-import { Component, For, Show, createEffect, createSignal } from 'solid-js';
+import { Avatar, Box, Button, Center, Container, HStack, Text, VStack, notificationService } from "@hope-ui/solid";
+import { useParams } from '@solidjs/router';
+import { Component, Show, createEffect, createSignal } from 'solid-js';
 
-import { PageHeader } from '../components/common/pageHeader';
-import { CenterLoading } from '../components/core/loading';
-import { routes } from '../constants/route';
 import { Card } from '../components/common/card';
+import { PageHeader } from '../components/common/pageHeader';
+import { FormDropdown } from '../components/form/dropdown/dropdown';
 import { FormLongInput } from '../components/form/text/input';
 import { apiParams, segments } from '../constants/api';
-import { addSpacesForEnum, capitalizeFirstLetter } from '../helper/stringHelper';
-import { FormDropdown } from '../components/form/dropdown/dropdown';
-import { multiValidation } from '../validation/baseValidation';
-import { minItems, selectedItemsExist } from '../validation/arrayValidation';
-import { maxLength, minLength } from '../validation/textValidation';
+import { getFriendlyApprovalStatus } from "../constants/enum/approvalStatus";
 import { NetworkState } from '../constants/enum/networkState';
-import { getDescriptionLines } from "../services/external/discord/discordMessageBuilder";
-import { getFormStatusApiService } from "../services/api/formStatusApiService";
-import { CommunityDtoMeta } from "../contracts/dto/forms/communityDto";
-import { anyObject } from "../helper/typescriptHacks";
-import { BuilderDtoMeta } from "../contracts/dto/forms/builderDto";
-import { IFormResponse, IFormWithApprovalResponse } from "../contracts/response/formResponse";
 import { AppImage } from "../constants/image";
-import { ApprovalStatus, getFriendlyApprovalStatus } from "../constants/enum/approvalStatus";
+import { IFormWithApprovalResponse } from "../contracts/response/formResponse";
+import { addSpacesForEnum, capitalizeFirstLetter } from '../helper/stringHelper';
+import { getFormStatusApiService } from "../services/api/formStatusApiService";
+import { minItems, selectedItemsExist } from '../validation/arrayValidation';
+import { multiValidation } from '../validation/baseValidation';
+import { maxLength, minLength } from '../validation/textValidation';
 
 const segmentOptions = Object.keys(segments).map(seg => ({
     title: capitalizeFirstLetter(addSpacesForEnum(seg)),
