@@ -1,13 +1,14 @@
 import { Avatar, Badge, Center, Text } from '@hope-ui/solid';
 import { Component } from 'solid-js';
 import { AppImage } from '../../../constants/image';
+import { site } from '../../../constants/site';
 import { socialIcons } from '../../../constants/socialIcons';
 import { BasicLink } from '../../core/link';
-import { site } from '../../../constants/site';
 
 interface IFormSocialProps {
     url: string;
     size?: "2xs" | "xs" | "sm" | "lg" | "xl" | "2xl" | "md" | "full" | undefined;
+    onChange?: () => void;
 }
 
 export const AvatarFromSocialLink: Component<IFormSocialProps> = (props: IFormSocialProps) => {
@@ -30,7 +31,8 @@ export const AvatarFromSocialLink: Component<IFormSocialProps> = (props: IFormSo
             href={props.url}
             title={props.url}
             ref={site.ref}
-            additionalClassNames="hover-reveal-child pos-rel"
+            additionalClassNames="hover-reveal-child pos-rel noselect"
+            onClick={props.onChange}
         >
             <Avatar
                 size={props.size}

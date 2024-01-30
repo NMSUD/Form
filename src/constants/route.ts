@@ -35,6 +35,24 @@ export const routes = {
             showInSidebar: true,
         },
     },
+    status: {
+        path: '/status',
+        pathWithParams: '/status/:segment/:id',
+        sidebarPath: '/status',
+        title: '🔍 View Status',
+        showInSidebar: true,
+        pathParam: {
+            segment: 'segment',
+            id: 'id',
+        },
+    },
+    verify: {
+        path: 'verify',
+        showInSidebar: false,
+        queryParam: {
+            decision: 'decision',
+        },
+    },
 
     login: '/login',
     about: '/about',
@@ -44,12 +62,14 @@ export const removeAuthPrefix = (route: string) => route.replace('/auth', '');
 
 export const traverseRoutes = (routeObj: any, routeFunc: (routeData: any) => void) => {
     for (const routeProp in routeObj) {
-        if (isNaN(routeProp as any) === false) { continue }
+        if (isNaN(routeProp as any) === false) continue;
 
         if (Object.prototype.hasOwnProperty.call(routeObj, routeProp)) {
             const routeData = (routeObj as any)[routeProp];
 
-            routeFunc(routeData);
+            if ((routeData as any).path != null) {
+                routeFunc(routeData);
+            }
 
             if (routeObj.path == undefined) {
                 traverseRoutes(routeData, routeFunc);

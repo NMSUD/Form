@@ -1,4 +1,5 @@
 import { Component, JSX } from "solid-js";
+import { preventDefault } from "../../helper/eventHelper";
 
 interface IProps {
     id?: string;
@@ -21,10 +22,10 @@ export const BasicLink: Component<IProps> = (props: IProps) => {
     };
 
     const localClick = (e: any) => {
-        if (props.onClick != null) {
-            e.preventDefault();
-            props.onClick();
-        }
+        if (props.onClick == null) return;
+
+        preventDefault(e);
+        props.onClick();
     }
 
     return (

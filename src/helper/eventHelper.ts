@@ -13,3 +13,8 @@ export const onTargetFile = (
 
     funcOnEvent(fileList[0]);
 }
+
+export const preventDefault = (event: any): any => {
+    event?.preventDefault?.();
+    return event;
+}

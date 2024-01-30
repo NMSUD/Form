@@ -1,49 +1,85 @@
 import Koa from 'koa';
 
-import { ApiStatusErrorCode, apiParams, verifySegments } from '../../constants/api';
-import { FormDataKey } from '../../constants/form';
-import { IFormDtoMeta } from '../../contracts/dto/forms/baseFormDto';
-import { IFormResponse } from '../../contracts/response/formResponse';
-import { ResultWithValue } from '../../contracts/resultWithValue';
-import { anyObject } from '../../helper/typescriptHacks';
+import { ApiStatusErrorCode, apiParams, segments } from '../../constants/api';
+import { approvalStatusFromString } from '../../constants/enum/approvalStatus';
+import { IVerifyRequestParams, VerifyRequestFunc } from '../../contracts/verifyRequestParam';
+import { getDiscordService } from '../../services/external/discord/discordService';
 import { getConfig } from '../../services/internal/configService';
 import { getLog } from '../../services/internal/logService';
-import { validateObj } from '../../validation/baseValidation';
-import { hasCaptcha } from '../guard/hasCaptcha';
-import { getDatabaseService } from '../../services/external/database/databaseService';
 import { errorResponse } from '../httpResponse/errorResponse';
+import { handleCommunityVerifyRequest } from './community/handleCommunityVerifyRequest';
+import { routes } from '../../constants/route';
 
 export const handleVerifyRequest = async (ctx: Koa.DefaultContext, next: () => Promise<any>) => {
-    getLog().i('verify-submission');
+    const params: IVerifyRequestParams = {
+        id: ctx.params[apiParams.verify.id],
+        decision: ctx.params[apiParams.verify.decision],
+        segment: ctx.params[apiParams.verify.segment],
+        check: ctx.params[apiParams.verify.check],
+    }
+    getLog().i(`verify-submission - ${params.id}`);
 
-    // const params = {
-    //     id: ctx.params[apiParams.verify.id],
-    //     decision: ctx.params[apiParams.verify.decision],
-    //     segment: ctx.params[apiParams.verify.segment],
-    //     check: ctx.params[apiParams.verify.check],
-    // }
+    const approvalStatus = approvalStatusFromString(params.decision);
+    if (approvalStatus == null) {
+        const errMsg = `Approval status not understood: ${params.decision}`;
+        getLog().e(errMsg);
+        await errorResponse({
+            ctx,
+            next,
+            statusCode: ApiStatusErrorCode.decisionNotFound,
+            message: errMsg,
+        });
+        return;
+    }
 
-    // const lookupFunctions: { [x: string]: () => Promise<ResultWithValue<any>> } = {
-    //     [verifySegments.community]: () => getDatabaseService().getCommunitySubmission(params[apiParams.verify.id]);
-    // }
+    const lookupFunctions: { [x: string]: VerifyRequestFunc } = {
+        [segments.community]: handleCommunityVerifyRequest,
+    }
 
-    // const dbFunc = lookupFunctions[params.segment];
-    // if (dbFunc == null) {
-    //     const errMsg = `Database function lookup failed for segment: ${params.segment}`;
-    //     getLog().i(errMsg);
-    //     await errorResponse({
-    //         ctx,
-    //         next,
-    //         statusCode: ApiStatusErrorCode.segmentNotFound,
-    //         message: errMsg,
-    //     });
-    //     return;
-    // }
+    const dbFunc = lookupFunctions[params.segment];
+    if (dbFunc == null) {
+        const errMsg = `Database function lookup failed for segment: ${params.segment}`;
+        getLog().e(errMsg);
+        await errorResponse({
+            ctx,
+            next,
+            statusCode: ApiStatusErrorCode.segmentNotFound,
+            message: errMsg,
+        });
+        return;
+    }
 
-    // const recordResult: ResultWithValue<any> = await dbFunc();
+    const updateRecordResult = await dbFunc(params, approvalStatus);
+    if (updateRecordResult.isSuccess == false || updateRecordResult.value == null) {
+        const errMsg = `An error occurred while updating the approval status of record: ${params.id}`;
+        getLog().e(errMsg);
+        await errorResponse({
+            ctx,
+            next,
+            statusCode: ApiStatusErrorCode.couldNotPersistData,
+            message: errMsg,
+        });
+        return;
+    }
 
-    ctx.response.status = 200;
-    ctx.body = 'Decision recorded';
+    const discordUrl = getConfig().getDiscordWebhookUrl();
+    await getDiscordService().updateDiscordMessage(
+        discordUrl,
+        updateRecordResult.value.id,
+        updateRecordResult.value.message,
+    );
+
+    const urlSegments = [
+        getConfig().getNmsUdFormWebUrl(),
+        '/#/',
+        routes.verify.path,
+        '?',
+        routes.verify.queryParam.decision,
+        '=',
+        params.decision,
+    ];
+    ctx.response.status = 301;
+    ctx.redirect(urlSegments.join(''));
 
     await next();
 }

@@ -36,6 +36,7 @@ export const FormLongInput: Component<IFormLongInputProps> = (props: IFormLongIn
             </FormLabel>
             <Input
                 id={props.id}
+                class="noselect"
                 placeholder={props.placeholder}
                 value={handleSpecialDateLocalValue(props.value, props.inputType)}
                 type={props.inputType}

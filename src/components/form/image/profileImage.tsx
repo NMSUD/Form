@@ -36,6 +36,12 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (prop
         }
     }, [props.showValidationMessages]);
 
+    createEffect(() => {
+        if (props.value == null) {
+            setCurrentImage(getImageOrFallback(props.value, props.imageValue));
+        }
+    }, [props.value]);
+
     const handleFileChange = async (uploadedFile: File) => {
         setNetworkState(NetworkState.Loading);
 
@@ -71,6 +77,8 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (prop
                                 mt="$3"
                                 size="xl"
                                 name="+"
+                                class="noselect no-drag"
+                                draggable={false}
                                 borderRadius="0.25em"
                                 src={currentImage()}
                             />

@@ -1,6 +1,6 @@
 import { test, describe, expect } from 'vitest';
 
-import { maxItems, minItems } from "./arrayValidation";
+import { maxItems, minItems, selectedItemsExist } from "./arrayValidation";
 
 describe('Array Validation', () => {
 
@@ -42,6 +42,24 @@ describe('Array Validation', () => {
             const arr: Array<any> = [{ 'test': 'tester' }];
             const validator = maxItems(2);
             expect(validator(arr).isValid).toBeTruthy();
+        });
+    });
+
+    describe('Array valid options', () => {
+        test('selected item not valid', () => {
+            const arr: Array<string> = ['test', 'tester'];
+            const validator = selectedItemsExist(arr);
+            expect(validator(['fred']).isValid).toBeFalsy();
+        });
+        test('selected item valid', () => {
+            const arr: Array<string> = ['test', 'tester', 'fred'];
+            const validator = selectedItemsExist(arr);
+            expect(validator(['test']).isValid).toBeTruthy();
+        });
+        test('selected items valid', () => {
+            const arr: Array<string> = ['test', 'tester', 'fred'];
+            const validator = selectedItemsExist(arr);
+            expect(validator(['fred', 'test']).isValid).toBeTruthy();
         });
     });
 });

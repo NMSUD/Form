@@ -3,13 +3,18 @@ import { Component, For, Show, createSignal } from "solid-js";
 
 import { NetworkState } from "../../constants/enum/networkState";
 import { IFormDtoMeta, IFormDtoMetaDetails } from "../../contracts/dto/forms/baseFormDto";
-import { Result } from "../../contracts/resultWithValue";
+import { Result, ResultWithValue } from "../../contracts/resultWithValue";
 import { ValidationResult } from "../../contracts/validationResult";
 import { anyObject } from "../../helper/typescriptHacks";
 import { getCaptchaService } from "../../services/external/captchaService";
 import { getConfig } from "../../services/internal/configService";
 import { validateObj } from "../../validation/baseValidation";
 import { FormFieldGrid, FormFieldGridCell, GridItemSize } from "./grid";
+import { StatusNotificationTile } from "./statusNotificationTile";
+import { AppImage } from "../../constants/image";
+import { BasicLink } from "../core/link";
+import { routes } from "../../constants/route";
+import { IFormResponse } from "../../contracts/response/formResponse";
 
 interface IPropertyToFormMappingExtraProp<T> {
     [prop: string]: (item: T) => any;
@@ -22,7 +27,7 @@ export type IComponentMapping<T> = {
 export type IFormInputProps<T> = {
     id: string;
     label: string;
-    helpText: string;
+    helpText?: string;
     value: T;
     placeholder: string;
     showValidationMessages: boolean;
@@ -41,11 +46,12 @@ export interface IPropertyToFormMapping<T> {
 interface IProps<T> {
     item: T;
     id: string;
+    segment: string;
     mappings: IComponentMapping<T>;
     formDtoMeta: IFormDtoMeta<T>;
     updateObject: (item: T) => void;
     updateProperty: (prop: string, value: any) => void;
-    submit: (item: T, captcha: string) => Promise<Result>;
+    submit: (item: T, captcha: string) => Promise<ResultWithValue<IFormResponse>>;
 }
 
 export const FormBuilder = <T,>(props: IProps<T>) => {
@@ -109,7 +115,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
             if (captchaResult.isSuccess == false) {
                 notificationService.show({
                     status: 'danger',
-                    title: 'Captcha faile!',
+                    title: 'Captcha failed!',
                     description: 'The captcha was cancelled or failed to load, please try again.',
                 });
                 return;
@@ -128,7 +134,51 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
             title: 'Form submitted successfully',
             description: 'Thank you for your submission! We will verify your submission as soon as possible',
         });
+
+        const urlSegments = [
+            getConfig().getNmsUdFormWebUrl(),
+            '/#',
+            routes.status.path,
+            '/',
+            props.segment,
+            '/',
+            submitTask.value.id,
+        ];
+        notificationService.show({
+            render: (notificationProps) => (<StatusNotificationTile
+                {...notificationProps}
+                imgUrl={AppImage.sidebarLogo}
+                title="View the status of your submission here:"
+                descrip={
+                    <BasicLink
+                        href={urlSegments.join('')}
+                        title="View status"
+                        additionalClassNames="noselect"
+                    >
+                        View Status of {props.segment} '{(itemBeingEdited() as any).name}'
+                    </BasicLink>
+                }
+            />
+            ),
+            persistent: true,
+        });
         setNetworkState(NetworkState.Success);
+    }
+
+    const clearForm = () => {
+        setItemBeingEdited((prev) => {
+            const result: any = { ...prev };
+
+            for (const formMetaKey in props.formDtoMeta) {
+                if (Object.prototype.hasOwnProperty.call(props.formDtoMeta, formMetaKey)) {
+                    const formMeta = props.formDtoMeta[formMetaKey];
+                    if (formMeta.defaultValue !== undefined) {
+                        result[formMetaKey] = formMeta.defaultValue;
+                    }
+                }
+            }
+            return result;
+        })
     }
 
     const renderGridCell = (item: IPropertyToFormMapping<T>, children: any) => {
@@ -186,6 +236,11 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
                     loading={networkState() === NetworkState.Loading}
                     onClick={submitForm}
                 >Submit</Button>
+                <Button
+                    variant="outline"
+                    colorScheme="warning"
+                    onClick={clearForm}
+                >Clear</Button>
             </HStack>
         </>
     );

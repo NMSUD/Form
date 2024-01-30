@@ -9,6 +9,7 @@ import { Community } from '../../services/external/database/xata';
 import { baseHandleFormSubmission } from './baseForm';
 import { communityMessageBuilder } from './community/communityMessageBuilder';
 import { ICommunityImages, communityFileHandler } from './community/communityFileHandler';
+import { getLog } from '../../services/internal/logService';
 
 const handleSubmission = async (body: CommunityDto, images: ICommunityImages): Promise<ResultWithValue<IFormResponse>> => {
     const persistence: Omit<Community, 'id'> = {
@@ -22,12 +23,16 @@ const handleSubmission = async (body: CommunityDto, images: ICommunityImages): P
         contactDetails: body.contactDetails,
         approvalStatus: ApprovalStatus.pending,
     }
-    const formResponse = await getDatabaseService().addCommunity(persistence);
-    if (formResponse.isSuccess == false) return ({
-        isSuccess: false,
-        value: anyObject,
-        errorMessage: `handleCommunityFormSubmission - ${formResponse.errorMessage}`,
-    });
+    const formResponse = await getDatabaseService().community.create(persistence);
+    if (formResponse.isSuccess == false) {
+        const errMsg = `handleCommunityFormSubmission - ${formResponse.errorMessage}`;
+        getLog().e(errMsg);
+        return {
+            isSuccess: false,
+            value: anyObject,
+            errorMessage: errMsg,
+        };
+    }
 
     return {
         isSuccess: true,
@@ -42,5 +47,5 @@ export const handleCommunityFormSubmission = baseHandleFormSubmission<CommunityD
     handleRequest: handleSubmission,
     handleFilesInFormData: communityFileHandler,
     discordMessageBuilder: communityMessageBuilder,
-    afterDiscordMessage: getDatabaseService().addWebhookIdToCommunity,
+    afterDiscordMessage: getDatabaseService().community.updateWebhookId,
 });

@@ -9,7 +9,7 @@ interface IProps {
 export const HelpIcon: Component<IProps> = (props: IProps) => {
     return (
         <Show when={props.helpText != null}>
-            <Tooltip label={props.helpText}>
+            <Tooltip label={props.helpText} class="noselect">
                 <Icon fontSize="1.5em" marginLeft="$1" paddingBottom="2px" />
             </Tooltip>
         </Show>

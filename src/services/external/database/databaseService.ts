@@ -1,8 +1,9 @@
 import { Container, Inject, Service } from 'typedi';
 import { ConfigService } from '../../internal/configService';
-import { createCommunity, readCommunity, updateWebhookIdCommunity } from './table/communityTableOperations';
+import { createCommunity, readCommunity, updateWebhookIdCommunity, updateApprovalStatusCommunity } from './table/communityTableOperations';
 import { createBuilder, readBuilder, updateWebhookIdBuilder } from './table/builderTableOperations';
 import { XataClient, Community, Builder } from './xata';
+import { ApprovalStatus } from '../../../constants/enum/approvalStatus';
 
 @Service()
 export class DatabaseService {
@@ -16,13 +17,18 @@ export class DatabaseService {
         });
     }
 
-    getCommunity = (id: string) => readCommunity(this.xata, id);
-    addCommunity = (persistence: Omit<Community, 'id'>) => createCommunity(this.xata, persistence);
-    addWebhookIdToCommunity = (recordId: string, webhookMessageId: string) => updateWebhookIdCommunity(this.xata, recordId, webhookMessageId);
+    community = {
+        create: (persistence: Omit<Community, 'id'>) => createCommunity(this.xata, persistence),
+        read: (id: string) => readCommunity(this.xata, id),
+        updateWebhookId: (recordId: string, webhookMessageId: string) => updateWebhookIdCommunity(this.xata, recordId, webhookMessageId),
+        updateApprovalStatus: (recordId: string, approvalStatus: ApprovalStatus) => updateApprovalStatusCommunity(this.xata, recordId, approvalStatus),
+    }
 
-    getBuilder = (id: string) => readBuilder(this.xata, id);
-    addBuilder = (persistence: Omit<Builder, 'id'>) => createBuilder(this.xata, persistence);
-    addWebhookIdToBuilder = (recordId: string, webhookMessageId: string) => updateWebhookIdBuilder(this.xata, recordId, webhookMessageId);
+    builder = {
+        create: (persistence: Omit<Builder, 'id'>) => createBuilder(this.xata, persistence),
+        read: (id: string) => readBuilder(this.xata, id),
+        updateWebhookId: (recordId: string, webhookMessageId: string) => updateWebhookIdBuilder(this.xata, recordId, webhookMessageId),
+    }
 }
 
 export const getDatabaseService = () => Container.get(DatabaseService);

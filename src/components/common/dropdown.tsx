@@ -60,8 +60,8 @@ export const Dropdown: Component<IProps> = (props: IProps) => {
                 onChange={onSelectOption}
             >
                 <SelectTrigger>
-                    <SelectPlaceholder>{props.placeholder}</SelectPlaceholder>
-                    <SelectValue>
+                    <SelectPlaceholder class="noselect">{props.placeholder}</SelectPlaceholder>
+                    <SelectValue class="noselect">
                         {({ selectedOptions }) => (
                             <Flex alignItems="flex-start">
                                 <For each={selectedOptions}>
@@ -92,7 +92,7 @@ export const Dropdown: Component<IProps> = (props: IProps) => {
                     </SelectValue>
                     <SelectIcon />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent class="noselect">
                     <SelectListbox>
                         <For each={props.options}>
                             {item => (

@@ -4,6 +4,7 @@ export type IFormDtoMetaDetails<TV> = {
     label: string,
     validationLabel?: string,
     helpText?: string,
+    defaultValue?: TV,
     validator: (val: TV) => ValidationResult
 }
 

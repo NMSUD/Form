@@ -36,6 +36,7 @@ export const FormTextArea: Component<IFormTextAreaProps> = (props: IFormTextArea
             </FormLabel>
             <Textarea
                 id={props.id}
+                class="noselect"
                 minH={props.minH}
                 width="100% !important"
                 placeholder={props.placeholder}

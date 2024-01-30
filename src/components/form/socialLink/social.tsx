@@ -39,6 +39,14 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
         setCurrentLink('');
     }
 
+    const removeFromList = (link: string) => {
+        setItems(prev => {
+            const newValue = makeArrayOrDefault(prev).filter(p => p != link);
+            props.onChange(newValue);
+            return newValue;
+        });
+    }
+
     return (
         <VStack>
             <FormControl invalid={!isValid().isValid}>
@@ -50,6 +58,7 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
                 <InputGroup>
                     <Input
                         id={props.id}
+                        class="noselect"
                         placeholder={props.placeholder}
                         value={currentLink()}
                         onInput={onTargetValue(val => {
@@ -69,7 +78,12 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
 
             <HStack mt="$2" flexWrap="wrap">
                 <For each={items()}>
-                    {(item) => (<AvatarFromSocialLink url={item} />)}
+                    {(item) => (
+                        <AvatarFromSocialLink
+                            url={item}
+                            onChange={() => removeFromList(item)}
+                        />
+                    )}
                 </For>
             </HStack>
         </VStack>

@@ -25,7 +25,10 @@ export const Sidebar: Component = () => {
     const menuItems: Array<{ route: string, title: string }> = [];
     traverseRoutes(routes, (routeData: any) => {
         if (routeData?.showInSidebar === true) {
-            menuItems.push({ route: routeData.sidebarPath, title: routeData.title });
+            menuItems.push({
+                route: routeData.sidebarPath ?? routeData.path,
+                title: routeData.title
+            });
         }
     })
 

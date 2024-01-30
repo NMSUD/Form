@@ -4,6 +4,10 @@ export const apiParams = {
         segment: 'segment',
         id: 'id',
         check: 'check',
+    },
+    status: {
+        segment: 'segment',
+        id: 'id',
     }
 }
 
@@ -18,21 +22,23 @@ export const api = {
         form: {
             community: 'form/community',
             builder: 'form/builder',
-            baseBuild: 'form/baseBuild',
+            planetaryBase: 'form/planetaryBase',
         },
         verify: `verify/:${apiParams.verify.decision}/:${apiParams.verify.segment}/:${apiParams.verify.id}/:${apiParams.verify.check}`,
+        status: `status/:${apiParams.status.segment}/:${apiParams.status.id}`,
     }
 }
 
-export const verifySegments = {
+export const segments = {
     community: 'community',
     builder: 'builder',
-    baseBuild: 'baseBuild',
+    planetaryBase: 'planetaryBase',
 }
 
 export const ApiStatusErrorCode = {
     validation: 460,
     segmentNotFound: 461,
+    decisionNotFound: 462,
     badCaptcha: 520,
     invalidFormData: 521,
     couldNotPersistData: 522,

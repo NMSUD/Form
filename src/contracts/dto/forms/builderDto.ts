@@ -25,6 +25,7 @@ export interface BuilderDto {
 export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     profilePicFile: {
         label: 'Profile picture',
+        defaultValue: null,
         validator: seperateValidation({
             api: noValidation,
             ui: multiValidation(
@@ -35,6 +36,7 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     },
     name: {
         label: 'Name',
+        defaultValue: '',
         helpText: 'Your IN-GAME character name',
         validator: multiValidation(
             minLength(2),
@@ -43,6 +45,7 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     },
     bio: {
         label: 'Bio',
+        defaultValue: '',
         validator: multiValidation(
             minLength(2),
             maxLength(builderBioMaxLength),
@@ -50,6 +53,7 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     },
     platforms: {
         label: 'Platforms',
+        defaultValue: [],
         validator: minItems(1),
     },
     startedPlaying: {
@@ -58,18 +62,22 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     },
     buildTechniquesUsed: {
         label: 'Build techniques used',
+        defaultValue: [],
         validator: noValidation,
     },
     communityAffiliations: {
         label: 'Community affiliations',
+        defaultValue: [],
         validator: noValidation,
     },
     labels: {
         label: 'Labels',
+        defaultValue: [],
         validator: noValidation,
     },
     socials: {
         label: 'Socials',
+        defaultValue: [],
         validator: validateForEach(
             multiValidation(
                 minLength(2),

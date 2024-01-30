@@ -27,5 +27,5 @@ export const handleBuilderFormSubmission = baseHandleFormSubmission<BuilderDto, 
     handleRequest: handleSubmission,
     handleFilesInFormData: builderFileHandler,
     discordMessageBuilder: builderMessageBuilder,
-    afterDiscordMessage: getDatabaseService().addWebhookIdToBuilder,
+    afterDiscordMessage: getDatabaseService().builder.updateWebhookId,
 });

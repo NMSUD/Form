@@ -17,6 +17,7 @@ import { randomItemFromArray } from '../../helper/randomHelper';
 import { anyObject } from '../../helper/typescriptHacks';
 import { getFormApiService } from '../../services/api/formApiService';
 import { getStateService } from '../../services/internal/stateService';
+import { segments } from '../../constants/api';
 
 export const CommunityFormPage: Component = () => {
     const [itemBeingEdited, setItemBeingEdited] = createSignal<CommunityDto>({
@@ -33,6 +34,7 @@ export const CommunityFormPage: Component = () => {
                 <FormBuilder
                     item={itemBeingEdited()}
                     id="CommunityDto"
+                    segment={segments.community}
                     formDtoMeta={CommunityDtoMeta}
                     mappings={{
                         profilePicFile: {

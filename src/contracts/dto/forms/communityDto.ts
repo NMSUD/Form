@@ -1,9 +1,9 @@
 import { DefaultImageRestrictions } from "../../../constants/image";
+import { anyObject } from "../../../helper/typescriptHacks";
 import { maxItems, minItems } from "../../../validation/arrayValidation";
 import { multiValidation, noValidation, notNull, seperateValidation, validateForEach } from "../../../validation/baseValidation";
 import { webImageRestrictions } from "../../../validation/imageValidation";
 import { maxLength, minLength, shouldBeUrl } from "../../../validation/textValidation";
-import { IDatabaseFile } from "../../databaseFile";
 import { IFormDtoMeta } from "./baseFormDto";
 
 export const communityBioMaxLength = 500;
@@ -26,6 +26,7 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     profilePicUrl: { label: '', validator: noValidation },
     profilePicFile: {
         label: 'Profile picture',
+        defaultValue: null,
         validator: seperateValidation({
             api: noValidation,
             ui: multiValidation(
@@ -36,6 +37,7 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     },
     name: {
         label: 'Name',
+        defaultValue: '',
         validator: multiValidation(
             minLength(2),
             maxLength(100),
@@ -43,6 +45,7 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     },
     bio: {
         label: 'Bio',
+        defaultValue: '',
         validator: multiValidation(
             minLength(2),
             maxLength(communityBioMaxLength),
@@ -60,14 +63,17 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     },
     homeGalaxies: {
         label: 'Home Galaxies',
+        defaultValue: [],
         validator: noValidation,
     },
     tags: {
         label: 'Tags',
+        defaultValue: [],
         validator: minItems(1),
     },
     socials: {
         label: 'Socials',
+        defaultValue: [],
         helpText: 'Add links by pressing the "ENTER" key or clicking the arrow on the right hand side. These links will be displayed as icons, if we are missing a customised icon for a link, please feel free to let us know if the feedback page!',
         validator: multiValidation(
             minItems(1),
@@ -83,6 +89,8 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     contactDetails: {
         label: 'Contact Details (only visible to NMSUD organisers)',
         helpText: 'This is so that we can get in contact with you if there are any issue with your submissions, etc.',
+        defaultValue: '',
         validator: maxLength(communityBioMaxLength),
     },
 }
+

@@ -22,6 +22,9 @@ export const AppShell: Component = () => {
                 { path: routes.form.community.path, component: lazy(() => import("../pages/form/community")) },
             ]
         },
+        { path: routes.status.path, component: lazy(() => import("../pages/status")) },
+        { path: routes.status.pathWithParams, component: lazy(() => import("../pages/status")) },
+        { path: routes.verify.path, component: HomePage },
         { path: routes.actualHome.path, component: HomePage },
         { path: routes.home.path, component: RedirectToHome },
         { path: "*", component: NotFoundPage }

@@ -14,6 +14,7 @@ import { getLog } from '../../services/internal/logService';
 import { validateObj } from '../../validation/baseValidation';
 import { hasCaptcha } from '../guard/hasCaptcha';
 import { errorResponse } from '../httpResponse/errorResponse';
+import { ApprovalStatus } from '../../constants/enum/approvalStatus';
 
 export interface IFormHandler<T, TF> {
     name: string;
@@ -21,7 +22,7 @@ export interface IFormHandler<T, TF> {
     handleRequest: (request: T, files: TF) => Promise<ResultWithValue<IFormResponse>>;
     handleFilesInFormData: (formData: any) => Promise<ResultWithValue<TF>>;
     discordMessageBuilder: (props: IMessageBuilderProps<T>) => DiscordWebhook;
-    afterDiscordMessage: (recordId: string, webhookMessageId: string) => Promise<void>;
+    afterDiscordMessage: (recordId: string, webhookMessageId: string) => Promise<any>;
 }
 
 export const baseHandleFormSubmission = <T, TF>
@@ -111,6 +112,8 @@ export const baseHandleFormSubmission = <T, TF>
             id: handleDtoResult.value.id,
             dto: data,
             dtoMeta: props.validationObj,
+            includeActionsEmbed: true,
+            approvalStatus: ApprovalStatus.pending,
         });
         const discordResponse = await getDiscordService().sendDiscordMessage(discordUrl, webhookPayload);
         if (discordResponse.isSuccess) {

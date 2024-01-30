@@ -5,6 +5,7 @@ import { AppType } from "../../constants/enum/appType";
 export class ConfigService {
     /* If the .env var name starts with VITE_ it is available on the UI & API */
 
+    getNmsUdFormWebUrl = () => this.get<string>('VITE_NMSUD_FORM_WEB_URL');
     getNmsUdApiUrl = () => this.get<string>('VITE_NMSUD_API_URL');
     getApiPort = () => this.get<number>('API_PORT', 3001);
 

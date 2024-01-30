@@ -1,7 +1,7 @@
 
 import { ApprovalStatus } from "../../../../constants/enum/approvalStatus";
 import { IFormResponse } from "../../../../contracts/response/formResponse";
-import { ResultWithValue } from "../../../../contracts/resultWithValue";
+import { Result, ResultWithValue } from "../../../../contracts/resultWithValue";
 import { anyObject } from "../../../../helper/typescriptHacks";
 import { getLog } from "../../../internal/logService";
 import { Community, CommunityRecord, XataClient } from "../xata";
@@ -51,11 +51,37 @@ export const createCommunity = async (xata: XataClient, persistence: Omit<Commun
     }
 };
 
-export const updateWebhookIdCommunity = async (xata: XataClient, recordId: string, webhookMessageId: string): Promise<void> => {
+export const updateWebhookIdCommunity = async (xata: XataClient, recordId: string, webhookMessageId: string): Promise<Result> => {
     try {
         await xata.db.community.update(recordId, { discordWebhookId: webhookMessageId });
+        return {
+            isSuccess: true,
+            errorMessage: ''
+        }
     } catch (ex) {
-        getLog().e('addWebhookIdToCommunitySubmission', ex);
+        const errMsg = `updateWebhookIdCommunity: ${ex?.toString?.()}`;
+        getLog().e(errMsg);
+        return {
+            isSuccess: false,
+            errorMessage: errMsg,
+        }
+    }
+};
+
+export const updateApprovalStatusCommunity = async (xata: XataClient, recordId: string, approvalStatus: ApprovalStatus): Promise<Result> => {
+    try {
+        await xata.db.community.update(recordId, { approvalStatus: approvalStatus });
+        return {
+            isSuccess: true,
+            errorMessage: ''
+        }
+    } catch (ex) {
+        const errMsg = `updateApprovalStatusCommunity: ${ex?.toString?.()}`;
+        getLog().e(errMsg);
+        return {
+            isSuccess: false,
+            errorMessage: errMsg,
+        }
     }
 };
 
