@@ -20,7 +20,7 @@ interface IProps {
 }
 
 export const Dropdown: Component<IProps> = (props: IProps) => {
-    const [selectedOptions, setSelectedOptions] = createSignal(props.selectedValues ?? [], { equals: false });
+    const [selectedOptions, setSelectedOptions] = createSignal<Array<string>>(props.selectedValues ?? [], { equals: false });
     const [isValid, calcIsValid] = useValidation(props.validation);
 
     createEffect(() => {
@@ -34,7 +34,7 @@ export const Dropdown: Component<IProps> = (props: IProps) => {
         setSelectedOptions(props.selectedValues ?? []);
     })
 
-    const onSelectOption = (selectedOpts: any) => {
+    const onSelectOption = (selectedOpts: Array<string>) => {
         setSelectedOptions(selectedOpts);
         const safeValue = makeArrayOrDefault(selectedOpts);
         props.onSelect?.(safeValue);

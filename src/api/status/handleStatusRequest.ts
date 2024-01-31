@@ -6,7 +6,7 @@ import { getLog } from '../../services/internal/logService';
 import { errorResponse } from '../httpResponse/errorResponse';
 import { handleCommunityStatusRequest } from './community/handleCommunityStatusRequest';
 
-export const handleStatusRequest = async (ctx: Koa.DefaultContext, next: () => Promise<any>) => {
+export const handleStatusRequest = async (ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>) => {
     const params: IVerifyStatusParams = {
         id: ctx.params[apiParams.status.id],
         segment: ctx.params[apiParams.status.segment],

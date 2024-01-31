@@ -1,23 +1,23 @@
 import { Button, Center, HStack, Tag, Text, notificationService } from "@hope-ui/solid";
-import { Component, For, Show, createSignal } from "solid-js";
+import { Component, For, JSXElement, Show, createSignal } from "solid-js";
 
 import { NetworkState } from "../../constants/enum/networkState";
+import { AppImage } from "../../constants/image";
+import { routes } from "../../constants/route";
 import { IFormDtoMeta, IFormDtoMetaDetails } from "../../contracts/dto/forms/baseFormDto";
-import { Result, ResultWithValue } from "../../contracts/resultWithValue";
+import { IFormResponse } from "../../contracts/response/formResponse";
+import { ResultWithValue } from "../../contracts/resultWithValue";
 import { ValidationResult } from "../../contracts/validationResult";
 import { ObjectWithPropsOfValue, anyObject } from "../../helper/typescriptHacks";
 import { getCaptchaService } from "../../services/external/captchaService";
 import { getConfig } from "../../services/internal/configService";
 import { validateObj } from "../../validation/baseValidation";
+import { BasicLink } from "../core/link";
 import { FormFieldGrid, FormFieldGridCell, GridItemSize } from "./grid";
 import { StatusNotificationTile } from "./statusNotificationTile";
-import { AppImage } from "../../constants/image";
-import { BasicLink } from "../core/link";
-import { routes } from "../../constants/route";
-import { IFormResponse } from "../../contracts/response/formResponse";
 
 interface IPropertyToFormMappingExtraProp<T> {
-    [prop: string]: (item: T) => any;
+    [prop: string]: (item: T) => unknown;
 }
 
 export type IComponentMapping<T> = {
@@ -54,12 +54,12 @@ interface IProps<T> {
     mappings: IComponentMapping<T>;
     formDtoMeta: IFormDtoMeta<T>;
     updateObject: (item: T) => void;
-    updateProperty: (prop: string, value: any) => void;
+    updateProperty: (prop: string, value: unknown) => void;
     submit: (item: T, captcha: string) => Promise<ResultWithValue<IFormResponse>>;
 }
 
 export const FormBuilder = <T extends IItemRequirements,>(props: IProps<T>) => {
-    let captchaRef: any;
+    let captchaRef: HTMLDivElement;
     const [itemBeingEdited, setItemBeingEdited] = createSignal<T>(props.item);
     const [forceValidationMessages, setForceValidationMessages] = createSignal<boolean>(false);
     const [networkState, setNetworkState] = createSignal<NetworkState>(NetworkState.Loading);
@@ -72,7 +72,7 @@ export const FormBuilder = <T extends IItemRequirements,>(props: IProps<T>) => {
         setNetworkState(NetworkState.Pending);
     }, 500);
 
-    const updateProperty = (prop: string, value: any) => {
+    const updateProperty = (prop: string, value: unknown) => {
         setItemBeingEdited(prev => ({ ...prev, [prop]: value }));
         props.updateProperty(prop, value);
     }
@@ -84,7 +84,7 @@ export const FormBuilder = <T extends IItemRequirements,>(props: IProps<T>) => {
         for (const additionalProp in localItem.additional) {
             if (Object.prototype.hasOwnProperty.call(localItem.additional, additionalProp) == false) continue
 
-            const propFunc: (item: T) => any = localItem.additional[additionalProp];
+            const propFunc: (item: T) => unknown = localItem.additional[additionalProp];
             extraProps = { ...extraProps, [additionalProp]: propFunc(localItemBeingEdited) };
         }
 
@@ -171,7 +171,7 @@ export const FormBuilder = <T extends IItemRequirements,>(props: IProps<T>) => {
 
     const clearForm = () => {
         setItemBeingEdited((prev) => {
-            const result: any = { ...prev };
+            const result: T = { ...prev };
 
             for (const formMetaKey in props.formDtoMeta) {
                 if (Object.prototype.hasOwnProperty.call(props.formDtoMeta, formMetaKey)) {
@@ -185,7 +185,7 @@ export const FormBuilder = <T extends IItemRequirements,>(props: IProps<T>) => {
         })
     }
 
-    const renderGridCell = (item: IPropertyToFormMapping<T>, children: any) => {
+    const renderGridCell = (item: IPropertyToFormMapping<T>, children: JSXElement) => {
         return (
             <FormFieldGridCell
                 colSpan={item.gridItemColumnSize}
@@ -204,7 +204,7 @@ export const FormBuilder = <T extends IItemRequirements,>(props: IProps<T>) => {
                         const item: IPropertyToFormMapping<T> = (props.mappings as ObjectWithPropsOfValue<IPropertyToFormMapping<T>>)[itemPropName];
                         const Component = item.component;
 
-                        const dtoMeta: IFormDtoMetaDetails<any> = (props.formDtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<any>>)?.[itemPropName];
+                        const dtoMeta: IFormDtoMetaDetails<string> = (props.formDtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>)?.[itemPropName];
                         if (dtoMeta == null) return renderGridCell(item, (
                             <Center border="1px solid red" borderRadius="1em" height="100%">
                                 <Text color="red" textAlign="center" p="2em"

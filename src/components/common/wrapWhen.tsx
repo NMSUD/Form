@@ -7,7 +7,7 @@ interface IHasChildrenProps {
 interface IProps {
     condition: boolean;
     children: JSX.Element;
-    wrapProps: any;
+    wrapProps: IHasChildrenProps;
     wrapComp: Component<IHasChildrenProps>;
 }
 

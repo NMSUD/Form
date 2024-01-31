@@ -9,8 +9,8 @@ export class BaseApiService {
 
     protected async get<T>(
         url: string,
-        manipulateHeaders?: () => any,
-        manipulateResponse?: (data: Response) => any
+        manipulateHeaders?: () => { [prop: string]: string },
+        manipulateResponse?: (data: Response) => ResultWithValue<T>
     ): Promise<ResultWithValue<T>> {
         //
         let options = anyObject;
@@ -25,19 +25,19 @@ export class BaseApiService {
             if (manipulateResponse != null) {
                 return manipulateResponse(result);
             }
-        } catch (ex: any) {
-            console.log('data', ex.toString());
+        } catch (ex) {
+            console.log('data', ex?.toString?.());
             return {
                 isSuccess: false,
                 value: anyObject,
-                errorMessage: ex.toString()
+                errorMessage: ex?.toString?.() ?? '',
             }
         }
 
         let resultValue = anyObject;
         try {
             resultValue = await result.json();
-        } catch (ex: any) { }
+        } catch (ex) { }
 
         return {
             isSuccess: true,
@@ -49,8 +49,8 @@ export class BaseApiService {
     protected async post<T, TK>(
         url: string,
         data: TK,
-        manipulateHeaders?: () => any,
-        customMapper?: (data: Response) => any
+        manipulateHeaders?: () => { [prop: string]: string },
+        customMapper?: (data: Response) => ResultWithValue<T>
     ): Promise<ResultWithValue<T>> {
         //
         let options = anyObject;
@@ -74,19 +74,19 @@ export class BaseApiService {
             if (customMapper != null) {
                 return customMapper(result);
             }
-        } catch (ex: any) {
-            console.log('data', ex.toString());
+        } catch (ex) {
+            console.log('data', ex?.toString?.());
             return {
                 isSuccess: false,
                 value: anyObject,
-                errorMessage: ex.toString()
+                errorMessage: ex?.toString?.() ?? '',
             }
         }
 
         let resultValue = anyObject;
         try {
             resultValue = await result.json();
-        } catch (ex: any) { }
+        } catch (ex) { }
 
         return {
             isSuccess: true,
@@ -98,8 +98,8 @@ export class BaseApiService {
     protected async put<T, TK>(
         url: string,
         data: TK,
-        manipulateHeaders?: () => any,
-        customMapper?: (data: any) => any
+        manipulateHeaders?: () => { [prop: string]: string },
+        customMapper?: (data: Response) => ResultWithValue<T>
     ): Promise<ResultWithValue<T>> {
         //
         let options = anyObject;
@@ -123,19 +123,19 @@ export class BaseApiService {
             if (customMapper != null) {
                 return customMapper(result);
             }
-        } catch (ex: any) {
-            console.log('data', ex.toString());
+        } catch (ex) {
+            console.log('data', ex?.toString?.());
             return {
                 isSuccess: false,
                 value: anyObject,
-                errorMessage: ex.toString()
+                errorMessage: ex?.toString?.() ?? '',
             }
         }
 
         let resultValue = anyObject;
         try {
             resultValue = await result.json();
-        } catch (ex: any) { }
+        } catch (ex) { }
 
         return {
             isSuccess: true,
@@ -146,7 +146,7 @@ export class BaseApiService {
 
     protected async delete(
         url: string,
-        manipulateHeaders?: () => any,
+        manipulateHeaders?: () => { [prop: string]: string }
     ): Promise<Result> {
         //
         let options = anyObject;
@@ -160,18 +160,18 @@ export class BaseApiService {
                 ...options,
                 method: 'DELETE',
             });
-        } catch (ex: any) {
-            console.log('data', ex.toString());
+        } catch (ex) {
+            console.log('data', ex?.toString?.());
             return {
                 isSuccess: false,
-                errorMessage: ex.toString()
+                errorMessage: ex?.toString?.() ?? '',
             }
         }
 
         let resultValue = anyObject;
         try {
             resultValue = await result.json();
-        } catch (ex: any) { }
+        } catch (ex) { }
 
         return {
             isSuccess: true,

@@ -5,13 +5,13 @@ import { getConfig } from '../services/internal/configService';
 import { isRequestAuthed } from './guard/hasAuth';
 
 
-export const defaultEndpoint = async (ctx: Koa.DefaultContext, next: () => Promise<any>) => {
+export const defaultEndpoint = async (ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>) => {
     ctx.body = '<p>You should <b>not</b> be here... Well done I guess 🤔</p>';
 
     await next();
 }
 
-export const versionEndpoint = (authToken: string) => async (ctx: Koa.DefaultContext, next: () => Promise<any>) => {
+export const versionEndpoint = (authToken: string) => async (ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>) => {
     const isAdmin = await isRequestAuthed(authToken, ctx, next);
 
     let output = `DOCKER_BUILD_VERSION: ${getConfig().buildVersion() ?? '???'}\n`;

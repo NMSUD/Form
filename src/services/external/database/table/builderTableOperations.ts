@@ -1,7 +1,7 @@
 
 import { ApprovalStatus } from "../../../../constants/enum/approvalStatus";
 import { IFormResponse } from "../../../../contracts/response/formResponse";
-import { ResultWithValue } from "../../../../contracts/resultWithValue";
+import { Result, ResultWithValue } from "../../../../contracts/resultWithValue";
 import { anyObject } from "../../../../helper/typescriptHacks";
 import { getLog } from "../../../internal/logService";
 import { Builder, BuilderRecord, XataClient } from "../xata";
@@ -51,11 +51,20 @@ export const createBuilder = async (xata: XataClient, persistence: Omit<Builder,
     }
 };
 
-export const updateWebhookIdBuilder = async (xata: XataClient, recordId: string, webhookMessageId: string): Promise<void> => {
+export const updateWebhookIdBuilder = async (xata: XataClient, recordId: string, webhookMessageId: string): Promise<Result> => {
     try {
         await xata.db.builder.update(recordId, { discordWebhookId: webhookMessageId });
+        return {
+            isSuccess: true,
+            errorMessage: ''
+        }
     } catch (ex) {
-        getLog().e('addWebhookIdToBuilderSubmission', ex);
+        const errMsg = `updateWebhookIdCommunity: ${ex?.toString?.()}`;
+        getLog().e(errMsg);
+        return {
+            isSuccess: false,
+            errorMessage: errMsg,
+        }
     }
 };
 

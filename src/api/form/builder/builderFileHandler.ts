@@ -1,5 +1,6 @@
 import { FormDataKey } from '../../../constants/form';
 import { IDatabaseFile } from '../../../contracts/databaseFile';
+import { IFormWithFiles } from '../../../contracts/file';
 import { ResultWithValue } from '../../../contracts/resultWithValue';
 import { makeArrayOrDefault } from '../../../helper/arrayHelper';
 import { getApiFileService } from '../../../services/internal/apiFileService';
@@ -10,7 +11,7 @@ export interface IBuilderImages {
     bioMediaFiles?: Array<IDatabaseFile>;
 }
 
-export const builderFileHandler = async (formData: any): Promise<ResultWithValue<IBuilderImages>> => {
+export const builderFileHandler = async (formData: IFormWithFiles): Promise<ResultWithValue<IBuilderImages>> => {
     const result: IBuilderImages = {
         bioMediaFiles: [],
     }
@@ -31,7 +32,7 @@ export const builderFileHandler = async (formData: any): Promise<ResultWithValue
     for (const bioMediaFileFromForm of makeArrayOrDefault(bioMediaFilesFromForm)) {
         const bioMediaDbFileResult = await getApiFileService().formDataToDatabaseFile(bioMediaFileFromForm);
         if (bioMediaDbFileResult.isSuccess == false) {
-            getLog().e('handleBuilderFormSubmission bioMediaFileFromForm', bioMediaFileFromForm.value);
+            getLog().e('handleBuilderFormSubmission bioMediaFileFromForm', bioMediaDbFileResult.errorMessage);
             return {
                 isSuccess: false,
                 value: result,

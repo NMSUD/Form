@@ -1,11 +1,13 @@
 import Koa from 'koa';
 
 import { ApiStatusErrorCode } from '../../constants/api';
+import { ApprovalStatus } from '../../constants/enum/approvalStatus';
 import { FormDataKey } from '../../constants/form';
 import { IFormDtoMeta } from '../../contracts/dto/forms/baseFormDto';
+import { IFormWithFiles } from '../../contracts/file';
 import { DiscordWebhook } from '../../contracts/generated/discordWebhook';
 import { IFormResponse } from '../../contracts/response/formResponse';
-import { ResultWithValue } from '../../contracts/resultWithValue';
+import { Result, ResultWithValue } from '../../contracts/resultWithValue';
 import { anyObject } from '../../helper/typescriptHacks';
 import { IMessageBuilderProps } from '../../services/external/discord/discordMessageBuilder';
 import { getDiscordService } from '../../services/external/discord/discordService';
@@ -14,20 +16,19 @@ import { getLog } from '../../services/internal/logService';
 import { validateObj } from '../../validation/baseValidation';
 import { hasCaptcha } from '../guard/hasCaptcha';
 import { errorResponse } from '../httpResponse/errorResponse';
-import { ApprovalStatus } from '../../constants/enum/approvalStatus';
 
 export interface IFormHandler<T, TF> {
     name: string;
     validationObj: IFormDtoMeta<T>;
     handleRequest: (request: T, files: TF) => Promise<ResultWithValue<IFormResponse>>;
-    handleFilesInFormData: (formData: any) => Promise<ResultWithValue<TF>>;
+    handleFilesInFormData: (formData: IFormWithFiles) => Promise<ResultWithValue<TF>>;
     discordMessageBuilder: (props: IMessageBuilderProps<T>) => DiscordWebhook;
-    afterDiscordMessage: (recordId: string, webhookMessageId: string) => Promise<any>;
+    afterDiscordMessage: (recordId: string, webhookMessageId: string) => Promise<Result>;
 }
 
 export const baseHandleFormSubmission = <T, TF>
     (props: IFormHandler<T, TF>) =>
-    async (ctx: Koa.DefaultContext, next: () => Promise<any>) => {
+    async (ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>) => {
         getLog().i(`formHandler-${props.name}`);
 
         const formDataFiles = ctx.request?.files ?? anyObject

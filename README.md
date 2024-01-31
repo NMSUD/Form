@@ -37,14 +37,15 @@ This script is able to pull all the uploaded images and the records out of the d
 - [NodeJS](https://nodejs.org) installed
 
 ### Steps:
-1. Clone this repository
-2. Rename the `env.dart.template` file to `env.dart`
-3. In the directory where the `package.json` file is, run `npm i` to install all the required packages
-4. Run the app
-    * **Website** can be run locally using `npm run start:ui`
-    * **API** can be run locally using `npm run start:api`
-    * **Data** can be run locally using `npm run start:data`
-    * **Website & API**, using `npm run dev`
+1. Clone this repository.
+2. Rename the `env.dart.template` file to `env.dart`.
+3. In the directory where the `package.json` file is, run `npm i` to install all the required packages.
+4. Run `npm run setup` to run the initial setup.
+5. Run the app
+    * **Website** can be run locally using `npm run start:ui`.
+    * **API** can be run locally using `npm run start:api`.
+    * **Data** can be run locally using `npm run start:data`.
+    * **Website & API**, using `npm run dev`.
 
 <br />
 

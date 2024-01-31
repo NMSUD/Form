@@ -21,7 +21,7 @@ export const BasicLink: Component<IProps> = (props: IProps) => {
         return baseUrl + `?ref=${siteRef}`;
     };
 
-    const localClick = (e: any) => {
+    const localClick = (e: MouseEvent) => {
         if (props.onClick == null) return;
 
         preventDefault(e);

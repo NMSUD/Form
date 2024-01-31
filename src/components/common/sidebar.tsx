@@ -2,7 +2,7 @@ import { Box, Center, Divider, ElementType, Flex, Heading, IconButton, Image, Te
 import { Component, For, createSignal } from 'solid-js';
 
 import { Link } from '@solidjs/router';
-import { routes, traverseRoutes } from '../../constants/route';
+import { IRouteOptions, routes, traverseRoutes } from '../../constants/route';
 import { SidebarNavLink } from './sidebarNavLink';
 import { getConfig } from '../../services/internal/configService';
 import { AppImage } from '../../constants/image';
@@ -23,11 +23,11 @@ export const Sidebar: Component = () => {
     }
 
     const menuItems: Array<{ route: string, title: string }> = [];
-    traverseRoutes(routes, (routeData: any) => {
+    traverseRoutes(routes, (routeData: IRouteOptions) => {
         if (routeData?.showInSidebar === true) {
             menuItems.push({
                 route: routeData.sidebarPath ?? routeData.path,
-                title: routeData.title
+                title: routeData.title ?? '??',
             });
         }
     })

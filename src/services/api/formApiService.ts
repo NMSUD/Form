@@ -54,30 +54,22 @@ export class FormApiService extends BaseApiService {
                 value: resultValue,
                 errorMessage: ''
             }
-        } catch (ex: any) {
+        } catch (ex) {
             return {
                 isSuccess: false,
                 value: anyObject,
-                errorMessage: ex?.toString?.(),
+                errorMessage: ex?.toString?.() ?? '',
             }
         }
     }
 
     submitBuilder(body: BuilderDto, captcha: string): Promise<ResultWithValue<string>> {
-        return this.post<string, any>(
+        return this.post<string, BuilderDto>(
             api.routes.form.builder,
             body,
             () => this._getCommonHeaders(captcha),
         );
     }
-
-    // submitBaseBuild(body: CommunityDto, captcha: string): Promise<ResultWithValue<CommunityDto>> {
-    //     return this.post<any, CommunityDto>(
-    //         api.routes.form.community,
-    //         body,
-    //         this._addCaptchaToHeader(captcha),
-    //     );
-    // }
 }
 
 export const getFormApiService = () => Container.get(FormApiService);

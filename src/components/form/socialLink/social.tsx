@@ -1,13 +1,14 @@
 
 import { FormControl, FormErrorMessage, FormLabel, HStack, Input, InputGroup, InputRightElement, VStack } from '@hope-ui/solid';
 import { Component, For, Show, createEffect, createSignal } from 'solid-js';
+import { HtmlKeyEvent } from '../../../contracts/event';
 import { makeArrayOrDefault } from '../../../helper/arrayHelper';
 import { onTargetValue } from '../../../helper/eventHelper';
 import { useValidation } from '../../../hooks/useValidation';
 import { RightArrowIcon } from '../../common/icon/rightArrowIcon';
-import { AvatarFromSocialLink } from './socialLinkAvatar';
 import { IFormInputProps } from '../formBuilder';
 import { HelpIcon } from '../helpIcon/helpIcon';
+import { AvatarFromSocialLink } from './socialLinkAvatar';
 
 interface IFormSocialProps extends IFormInputProps<Array<string>> { }
 
@@ -22,7 +23,7 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
         }
     }, [props.showValidationMessages]);
 
-    const handleSpecialKeyPress = (event: any) => {
+    const handleSpecialKeyPress = (event: HtmlKeyEvent) => {
         if (event.keyCode == 13) {
             addToList(currentLink());
         }

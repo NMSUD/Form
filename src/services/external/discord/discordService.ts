@@ -30,7 +30,7 @@ export class DiscordService {
                 errorMessage: '',
                 value: temp,
             };
-        } catch (ex: any) {
+        } catch (ex) {
             const errMsg = `DiscordService - discordWebhookExec: ${ex?.toString?.()}`;
             getLog().e(errMsg);
             return {

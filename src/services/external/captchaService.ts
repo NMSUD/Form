@@ -16,7 +16,7 @@ export class CaptchaService {
         this._config = getConfig();
     }
 
-    async loadUI(elem: any) {
+    async loadUI(elem: HTMLElement) {
         this._hcaptcha = await hCaptchaLoader({
             loadAsync: true,
             sentry: false,
@@ -44,7 +44,7 @@ export class CaptchaService {
 
             return {
                 isSuccess: true,
-                value: response?.response ?? '',
+                value: (response as HCaptchaResponse)?.response ?? '',
                 errorMessage: '',
             }
         }

@@ -1,5 +1,6 @@
 import { FormDataKey } from '../../../constants/form';
 import { IDatabaseFile } from '../../../contracts/databaseFile';
+import { IFormWithFiles } from '../../../contracts/file';
 import { ResultWithValue } from '../../../contracts/resultWithValue';
 import { makeArrayOrDefault } from '../../../helper/arrayHelper';
 import { getApiFileService } from '../../../services/internal/apiFileService';
@@ -10,7 +11,7 @@ export interface ICommunityImages {
     bioMediaFiles?: Array<IDatabaseFile>;
 }
 
-export const communityFileHandler = async (formData: any): Promise<ResultWithValue<ICommunityImages>> => {
+export const communityFileHandler = async (formData: IFormWithFiles): Promise<ResultWithValue<ICommunityImages>> => {
     const result: ICommunityImages = {
         bioMediaFiles: [],
     }
@@ -31,7 +32,7 @@ export const communityFileHandler = async (formData: any): Promise<ResultWithVal
     for (const bioMediaFileFromForm of makeArrayOrDefault(bioMediaFilesFromForm)) {
         const bioMediaDbFileResult = await getApiFileService().formDataToDatabaseFile(bioMediaFileFromForm);
         if (bioMediaDbFileResult.isSuccess == false) {
-            getLog().e('handleCommunityFormSubmission bioMediaFileFromForm', bioMediaFileFromForm.value);
+            getLog().e('handleCommunityFormSubmission bioMediaFileFromForm', bioMediaDbFileResult.errorMessage);
             return {
                 isSuccess: false,
                 value: result,

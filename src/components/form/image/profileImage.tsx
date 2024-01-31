@@ -13,18 +13,18 @@ interface IFormProfileImageUrlProps extends IFormInputProps<File> {
     imageValue?: string;
 }
 
-const getImageOrFallback = (textUrl: File, imageUrl?: string): any => {
+const getImageOrFallback = (textUrl: File, imageUrl?: string): string => {
     if (imageUrl != null) {
         return imageUrl;
     }
 
     if (textUrl == null) return AppImage.fallbackImg;
     // if (textUrl.length < 3) return AppImage.fallbackImg;
-    return textUrl;
+    return textUrl?.toString?.();
 }
 
 export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (props: IFormProfileImageUrlProps) => {
-    let inputRef: any;
+    let inputRef: HTMLDivElement;
     const [currentImage, setCurrentImage] = createSignal<string>(getImageOrFallback(props.value, props.imageValue));
     const [imageDetails, setImageDetails] = createSignal<IImageParams>();
     const [networkState, setNetworkState] = createSignal<NetworkState>(NetworkState.Success);

@@ -2,7 +2,7 @@ import Koa from 'koa';
 
 export interface IErrorResponse {
     ctx: Koa.DefaultContext;
-    next: () => Promise<any>;
+    next: () => Promise<unknown>;
     statusCode: number;
     message: string;
 }

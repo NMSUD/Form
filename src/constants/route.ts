@@ -1,3 +1,10 @@
+export interface IRouteOptions {
+    path: string;
+    title?: string;
+    sidebarPath?: string;
+    showInSidebar: boolean;
+}
+
 export const routes = {
     home: {
         path: '/',
@@ -12,10 +19,8 @@ export const routes = {
         showInSidebar: false,
     },
     form: {
-        root: {
-            path: '/form',
-            showInSidebar: false,
-        },
+        path: '/form',
+        showInSidebar: false,
         builder: {
             path: '/builder',
             sidebarPath: '/form/builder',
@@ -54,20 +59,29 @@ export const routes = {
         },
     },
 
-    login: '/login',
-    about: '/about',
+    login: {
+        path: '/login',
+        showInSidebar: false,
+    },
+    about: {
+        path: '/about',
+        showInSidebar: false,
+    },
 }
 
 export const removeAuthPrefix = (route: string) => route.replace('/auth', '');
 
-export const traverseRoutes = (routeObj: any, routeFunc: (routeData: any) => void) => {
+export const traverseRoutes = (
+    routeObj: any,
+    routeFunc: (routeData: IRouteOptions) => void
+) => {
     for (const routeProp in routeObj) {
-        if (isNaN(routeProp as any) === false) continue;
+        if (isNaN(Number(routeProp)) === false) continue;
 
         if (Object.prototype.hasOwnProperty.call(routeObj, routeProp)) {
             const routeData = routeObj[routeProp];
 
-            if ((routeData as any).path != null) {
+            if (routeData.path != null) {
                 routeFunc(routeData);
             }
 

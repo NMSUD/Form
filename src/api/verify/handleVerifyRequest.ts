@@ -10,7 +10,7 @@ import { errorResponse } from '../httpResponse/errorResponse';
 import { handleCommunityVerifyRequest } from './community/handleCommunityVerifyRequest';
 import { routes } from '../../constants/route';
 
-export const handleVerifyRequest = async (ctx: Koa.DefaultContext, next: () => Promise<any>) => {
+export const handleVerifyRequest = async (ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>) => {
     const params: IVerifyRequestParams = {
         id: ctx.params[apiParams.verify.id],
         decision: ctx.params[apiParams.verify.decision],

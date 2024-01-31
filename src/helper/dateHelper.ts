@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-export const formatDate = (date: Date, format: string = 'DD MMM YY hh:mm'): string => {
+export const formatDate = (date: Date | string | number, format: string = 'DD MMM YY hh:mm'): string => {
     try {
         return dayjs(date).format(format);
     }
@@ -9,7 +9,7 @@ export const formatDate = (date: Date, format: string = 'DD MMM YY hh:mm'): stri
     }
 }
 
-export const formatForDateLocal = (value: any) => formatDate(value, 'YYYY-MM-DDTHH:mm')
+export const formatForDateLocal = (value: Date | string | number) => formatDate(value, 'YYYY-MM-DDTHH:mm')
 
 export const addSeconds = (date: Date, seconds: number): Date => {
     try {

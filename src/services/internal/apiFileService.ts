@@ -1,5 +1,6 @@
 import { Container, Service } from 'typedi';
 import { IDatabaseFile } from '../../contracts/databaseFile';
+import { IFile } from '../../contracts/file';
 import { ResultWithValue } from '../../contracts/resultWithValue';
 import { anyObject } from '../../helper/typescriptHacks';
 
@@ -8,7 +9,7 @@ const fs = require('fs').promises;
 @Service()
 export class ApiFileService {
 
-    formDataToDatabaseFile = async (formData: any): Promise<ResultWithValue<IDatabaseFile>> => {
+    formDataToDatabaseFile = async (formData: IFile): Promise<ResultWithValue<IDatabaseFile>> => {
         try {
             const contents = await fs.readFile(formData.filepath, { encoding: 'base64' });
             return {
