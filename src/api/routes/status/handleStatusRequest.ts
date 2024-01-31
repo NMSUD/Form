@@ -1,10 +1,10 @@
 import Koa from 'koa';
 
-import { ApiStatusErrorCode, apiParams, segments } from '@constants/api';
-import { IVerifyStatusParams, VerifyStatusFunc } from '../../contracts/verifyStatusParam';
+import { ApiStatusErrorCode, apiParams } from '@constants/api';
 import { getLog } from '@services/internal/logService';
+import { IVerifyStatusParams } from '../../contracts/verifyStatusParam';
 import { errorResponse } from '../../misc/httpResponse/errorResponse';
-import { handleCommunityStatusRequest } from './community/handleCommunityStatusRequest';
+import { statusHandlerLookup } from '../lookupFunctions';
 
 export const handleStatusRequest = async (
   ctx: Koa.DefaultContext,
@@ -16,11 +16,7 @@ export const handleStatusRequest = async (
   };
   getLog().i(`status-submission - ${params.id}`);
 
-  const lookupFunctions: { [x: string]: VerifyStatusFunc } = {
-    [segments.community]: handleCommunityStatusRequest,
-  };
-
-  const dbFunc = lookupFunctions[params.segment];
+  const dbFunc = statusHandlerLookup[params.segment];
   if (dbFunc == null) {
     const errMsg = `Lookup failed for segment: ${params.segment}`;
     getLog().e(errMsg);

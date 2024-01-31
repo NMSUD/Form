@@ -5,6 +5,8 @@ $version = $json."version"
 
 # Write-Output $version
 
+cd ..
+
 docker build --no-cache -t $dockerTagName -f Dockerfile --build-arg BUILD_VERSION=$version .
 
 # ----------------------- Tag and push to remote -----------------------

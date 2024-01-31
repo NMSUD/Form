@@ -9,7 +9,7 @@ import {
   WithApprovalStatus,
 } from '../../../contracts/verifyStatusParam';
 
-export const handleCommunityStatusRequest: VerifyStatusFunc = async (
+export const communityStatusHandler: VerifyStatusFunc = async (
   params: IVerifyStatusParams,
 ): Promise<ResultWithValue<CommunityDto & WithApprovalStatus>> => {
   getLog().i('status-community-submission');

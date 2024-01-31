@@ -12,7 +12,7 @@ import {
   VerifyRequestFunc,
 } from '../../../contracts/verifyRequestParam';
 
-export const handleCommunityVerifyRequest: VerifyRequestFunc = async (
+export const communityVerifyHandler: VerifyRequestFunc = async (
   params: IVerifyRequestParams,
   approvalStatus: ApprovalStatus,
 ): Promise<ResultWithValue<IVerifyRequestDiscordParams>> => {

@@ -26,7 +26,7 @@ export interface IFormHandler<T, TF> {
   afterDiscordMessage: (recordId: string, webhookMessageId: string) => Promise<Result>;
 }
 
-export const baseHandleFormSubmission =
+export const baseFormHandler =
   <T, TF>(props: IFormHandler<T, TF>) =>
   async (ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>) => {
     getLog().i(`formHandler-${props.name}`);

@@ -8,7 +8,7 @@ import { getDatabaseService } from '@services/external/database/databaseService'
 import { Community } from '@services/external/database/xata';
 import { getLog } from '@services/internal/logService';
 import { XataArrayFile, XataFile } from '@xata.io/client';
-import { baseHandleFormSubmission } from './baseForm';
+import { baseFormHandler } from './baseForm';
 import { ICommunityImages, communityFileHandler } from './community/communityFileHandler';
 import { communityMessageBuilder } from './community/communityMessageBuilder';
 
@@ -45,10 +45,7 @@ const handleSubmission = async (
   };
 };
 
-export const handleCommunityFormSubmission = baseHandleFormSubmission<
-  CommunityDto,
-  ICommunityImages
->({
+export const communityFormHandler = baseFormHandler<CommunityDto, ICommunityImages>({
   name: 'CommunityDto',
   validationObj: CommunityDtoMeta,
   handleRequest: handleSubmission,

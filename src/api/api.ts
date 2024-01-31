@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import cors from '@koa/cors';
 import Router from '@koa/router';
 import Koa from 'koa';
@@ -5,11 +7,10 @@ import koaBody from 'koa-body';
 import bodyParser from 'koa-bodyparser';
 import serve from 'koa-static';
 import path from 'path';
-import 'reflect-metadata';
 import { Container } from 'typedi';
 
-import { handleBuilderFormSubmission } from '@api/routes/form/builderForm';
-import { handleCommunityFormSubmission } from '@api/routes/form/communityForm';
+import { builderFormHandler } from '@api/routes/form/builderFormHandler';
+import { communityFormHandler } from '@api/routes/form/communityFormHanlder';
 import { handleStatusRequest } from '@api/routes/status/handleStatusRequest';
 import { handleVerifyRequest } from '@api/routes/verify/handleVerifyRequest';
 import { api } from '@constants/api';
@@ -31,8 +32,8 @@ const bodyOptions = koaBody({ multipart: true });
 const router = new Router();
 
 // forms
-router.post(`/${api.routes.form.community}`, bodyOptions, handleCommunityFormSubmission);
-router.post(`/${api.routes.form.builder}`, bodyOptions, handleBuilderFormSubmission);
+router.post(`/${api.routes.form.community}`, bodyOptions, communityFormHandler);
+router.post(`/${api.routes.form.builder}`, bodyOptions, builderFormHandler);
 // router.post(api.routes.form.baseBuild, handleFormSubmission);
 
 // verify

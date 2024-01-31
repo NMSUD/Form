@@ -4,6 +4,8 @@ dockerTagName=$(cat  package.json | grep \"dockerTagName\" | cut -d'"' -f 4)
 # echo $version
 # echo $dockerTagName
 
+cd ..
+
 docker build --no-cache -t $dockerTagName -f Dockerfile --build-arg BUILD_VERSION=$version .
 
 # ----------------------- Tag and push to remote -----------------------

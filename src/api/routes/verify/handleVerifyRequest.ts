@@ -1,14 +1,14 @@
 import Koa from 'koa';
 
-import { ApiStatusErrorCode, apiParams, segments } from '@constants/api';
+import { ApiStatusErrorCode, apiParams } from '@constants/api';
 import { approvalStatusFromString } from '@constants/enum/approvalStatus';
 import { routes } from '@constants/route';
 import { getDiscordService } from '@services/external/discord/discordService';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
-import { IVerifyRequestParams, VerifyRequestFunc } from '../../contracts/verifyRequestParam';
+import { IVerifyRequestParams } from '../../contracts/verifyRequestParam';
 import { errorResponse } from '../../misc/httpResponse/errorResponse';
-import { handleCommunityVerifyRequest } from './community/handleCommunityVerifyRequest';
+import { verifyHandlerLookup } from '../lookupFunctions';
 
 export const handleVerifyRequest = async (
   ctx: Koa.DefaultContext,
@@ -35,11 +35,7 @@ export const handleVerifyRequest = async (
     return;
   }
 
-  const lookupFunctions: { [x: string]: VerifyRequestFunc } = {
-    [segments.community]: handleCommunityVerifyRequest,
-  };
-
-  const dbFunc = lookupFunctions[params.segment];
+  const dbFunc = verifyHandlerLookup[params.segment];
   if (dbFunc == null) {
     const errMsg = `Database function lookup failed for segment: ${params.segment}`;
     getLog().e(errMsg);

@@ -4,7 +4,7 @@ import { IFormResponse } from '@contracts/response/formResponse';
 import { ResultWithValue } from '@contracts/resultWithValue';
 import { anyObject } from '@helpers/typescriptHacks';
 import { getDatabaseService } from '@services/external/database/databaseService';
-import { baseHandleFormSubmission } from './baseForm';
+import { baseFormHandler } from './baseForm';
 import { builderFileHandler } from './builder/builderFileHandler';
 import { builderMessageBuilder } from './builder/builderMessageBuilder';
 
@@ -24,7 +24,7 @@ const handleSubmission = async (
   };
 };
 
-export const handleBuilderFormSubmission = baseHandleFormSubmission<BuilderDto, IBuilderImages>({
+export const builderFormHandler = baseFormHandler<BuilderDto, IBuilderImages>({
   name: 'BuilderDto',
   validationObj: BuilderDtoMeta,
   handleRequest: handleSubmission,
