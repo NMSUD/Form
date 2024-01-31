@@ -1,39 +1,35 @@
 ///<reference types="@hcaptcha/types"/>
-import { hCaptchaLoader } from '@hcaptcha/loader';
-import { verify } from 'hcaptcha';
 import { Container, Service } from 'typedi';
 
+import { ICaptchaResponse } from '@api/contracts/hcaptcha';
 import { Result, ResultWithValue } from '@contracts/resultWithValue';
+import { addScriptToHead } from '@helpers/documentHelper';
 import { ConfigService, getConfig } from '../internal/configService';
 import { getLog } from '../internal/logService';
 
 @Service()
 export class CaptchaService {
   private _config: ConfigService;
-  private _hcaptcha: HCaptcha;
 
   constructor() {
     this._config = getConfig();
   }
 
   async loadUI(elem: HTMLElement) {
-    this._hcaptcha = await hCaptchaLoader({
-      loadAsync: true,
-      sentry: false,
-      cleanup: true,
+    addScriptToHead({
+      id: 'hcaptcha',
+      url: 'https://js.hcaptcha.com/1/api.js',
+      async: true,
+      defer: true,
     });
-
-    const widgetId = this._hcaptcha.render(elem, {
-      sitekey: this._config.getHCaptchaSiteKey(),
-      theme: 'dark',
-      size: 'invisible',
-    });
-    getLog().i(`Captcha id: ${widgetId}`);
+    elem.dataset.sitekey = this._config.getHCaptchaSiteKey();
+    elem.dataset.theme = 'dark';
+    elem.dataset.size = 'invisible';
   }
 
   async promptUser(): Promise<ResultWithValue<string>> {
     try {
-      const response = await this._hcaptcha.execute({ async: true });
+      const response = await window.hcaptcha.execute({ async: true });
       if (response == null) {
         return {
           isSuccess: false,
@@ -58,18 +54,36 @@ export class CaptchaService {
   }
 
   async verifyToken(token: string): Promise<Result> {
-    const response = await verify(this._config.getHCaptchaSecret(), token);
-    if (response == null || response.success === false) {
+    let formData = new FormData();
+    formData.append('response', token);
+    formData.append('secret', this._config.getHCaptchaSecret());
+
+    try {
+      const apiResult = await fetch('https://api.hcaptcha.com/siteverify', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const response: ICaptchaResponse = await apiResult.json();
+      if (response == null || response.success === false) {
+        return {
+          isSuccess: false,
+          errorMessage: 'Failed to verify captcha token',
+        };
+      }
+
+      return {
+        isSuccess: true,
+        errorMessage: '',
+      };
+    } catch (ex) {
+      const errMsg = `Failed to verify captcha token: ${ex?.toString?.()}`;
+      getLog().e(errMsg);
       return {
         isSuccess: false,
-        errorMessage: 'Failed to verify captcha token',
+        errorMessage: errMsg,
       };
     }
-
-    return {
-      isSuccess: true,
-      errorMessage: '',
-    };
   }
 }
 

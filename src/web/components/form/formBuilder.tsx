@@ -125,6 +125,7 @@ export const FormBuilder = <T extends IItemRequirements>(props: IProps<T>) => {
           title: 'Captcha failed!',
           description: 'The captcha was cancelled or failed to load, please try again.',
         });
+        setNetworkState(NetworkState.Success);
         return;
       }
       captchaResp = captchaResult.value;
@@ -247,7 +248,7 @@ export const FormBuilder = <T extends IItemRequirements>(props: IProps<T>) => {
         </HStack>
       </Show>
       <HStack mt="1em" spacing="$4" justifyContent="center">
-        <div ref={(el) => (captchaRef = el)}></div>
+        <div ref={(el) => (captchaRef = el)} class="h-captcha"></div>
         <Button
           variant="solid"
           loading={networkState() === NetworkState.Loading}

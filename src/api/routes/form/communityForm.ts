@@ -6,11 +6,11 @@ import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { anyObject } from '@helpers/typescriptHacks';
 import { getDatabaseService } from '@services/external/database/databaseService';
 import { Community } from '@services/external/database/xata';
-import { baseHandleFormSubmission } from './baseForm';
-import { communityMessageBuilder } from './community/communityMessageBuilder';
-import { ICommunityImages, communityFileHandler } from './community/communityFileHandler';
 import { getLog } from '@services/internal/logService';
 import { XataArrayFile, XataFile } from '@xata.io/client';
+import { baseHandleFormSubmission } from './baseForm';
+import { ICommunityImages, communityFileHandler } from './community/communityFileHandler';
+import { communityMessageBuilder } from './community/communityMessageBuilder';
 
 const handleSubmission = async (
   body: CommunityDto,

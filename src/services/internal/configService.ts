@@ -5,32 +5,36 @@ import { AppType } from '@constants/enum/appType';
 export class ConfigService {
   /* If the .env var name starts with VITE_ it is available on the UI & API */
 
-  getNmsUdFormWebUrl = () => this.get<string>('VITE_NMSUD_FORM_WEB_URL');
-  getNmsUdApiUrl = () => this.get<string>('VITE_NMSUD_API_URL');
-  getApiPort = () => this.get<number>('API_PORT', 3001);
+  getNmsUdFormWebUrl = () => this.get('VITE_NMSUD_FORM_WEB_URL');
+  getNmsUdApiUrl = () => this.get('VITE_NMSUD_API_URL');
+  getApiPort = () => this.getNumber('API_PORT', 3001);
 
-  getXataApiKey = () => this.get<string>('XATA_API_KEY');
-  getXataDbUrl = () => this.get<string>('XATA_DB_URL');
-  getXataFallbackBranch = () => this.get<string>('XATA_FALLBACK_BRANCH');
+  getXataApiKey = () => this.get('XATA_API_KEY');
+  getXataDbUrl = () => this.get('XATA_DB_URL');
+  getXataFallbackBranch = () => this.get('XATA_FALLBACK_BRANCH');
 
-  getDiscordWebhookUrl = () => this.get<string>('DISCORD_WEBHOOK_URL');
+  getDiscordWebhookUrl = () => this.get('DISCORD_WEBHOOK_URL');
 
-  getCaptchaEnabled = () => this.get<boolean>('ENABLE_CAPTCHA');
-  getHCaptchaSecret = () => this.get<string>('HCAPTCHA_SECRET');
-  getHCaptchaSiteKey = () => this.get<string>('VITE_HCAPTCHA_SITE_KEY');
+  getCaptchaEnabled = () => this.getBool('VITE_ENABLE_CAPTCHA');
+  getHCaptchaSecret = () => this.get('HCAPTCHA_SECRET');
+  getHCaptchaSiteKey = () => this.get('VITE_HCAPTCHA_SITE_KEY');
 
   /* Special case, available on UI & API */
-  isProd = () => this.get<string>('NODE_ENV') === 'production';
-  packageVersion = () => this.get<string>('PACKAGE_VERSION');
-  buildVersion = () => this.get<string>('BUILD_VERSION');
+  isProd = () => this.get('NODE_ENV') === 'production';
+  packageVersion = () => this.get('PACKAGE_VERSION');
+  buildVersion = () => this.get('BUILD_VERSION');
 
-  get<T>(property: string, defaultValue?: T): T {
+  get(property: string, defaultValue?: string): string {
     const value = process?.env?.[property];
     if (defaultValue != null) {
-      return (value ?? defaultValue) as T;
+      return value ?? defaultValue;
     }
-    return (value ?? '') as T;
+    return value ?? '';
   }
+  getBool = (property: string, defaultValue?: string) =>
+    this.get(property, defaultValue).toLowerCase() == 'true';
+  getNumber = (property: string, defaultValue?: number) =>
+    Number(this.get(property, defaultValue?.toString?.()));
 }
 
 export const BOT_PATH = new Token<string>('BOT_PATH');
