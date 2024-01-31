@@ -1,6 +1,6 @@
 import Koa from 'koa';
 
-import { getLog } from "../../services/internal/logService";
+import { getLog } from '@services/internal/logService';
 
 export const isRequestAuthed = async (authToken: string, ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>): Promise<boolean> => {
     const currentAuthHeader = ctx.get('Authorization') ?? '';

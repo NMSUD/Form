@@ -1,93 +1,90 @@
 export interface IRouteOptions {
-    path: string;
-    title?: string;
-    sidebarPath?: string;
-    showInSidebar: boolean;
+  path: string;
+  title?: string;
+  sidebarPath?: string;
+  showInSidebar: boolean;
 }
 
 export const routes = {
-    home: {
-        path: '/',
-        showInSidebar: false,
+  home: {
+    path: '/',
+    showInSidebar: false,
+  },
+  actualHome: {
+    path: '/home',
+    showInSidebar: false,
+  },
+  authPrefix: {
+    path: '/auth',
+    showInSidebar: false,
+  },
+  form: {
+    path: '/form',
+    showInSidebar: false,
+    builder: {
+      path: '/builder',
+      sidebarPath: '/form/builder',
+      title: '👤 Builder',
+      showInSidebar: true,
     },
-    actualHome: {
-        path: '/home',
-        showInSidebar: false,
+    community: {
+      path: '/community',
+      sidebarPath: '/form/community',
+      title: '🏘️ Community',
+      showInSidebar: true,
     },
-    authPrefix: {
-        path: '/auth',
-        showInSidebar: false,
+    base: {
+      path: '/base',
+      sidebarPath: '/form/base',
+      title: '🏡 Planetary Base',
+      showInSidebar: true,
     },
-    form: {
-        path: '/form',
-        showInSidebar: false,
-        builder: {
-            path: '/builder',
-            sidebarPath: '/form/builder',
-            title: '👤 Builder',
-            showInSidebar: true,
-        },
-        community: {
-            path: '/community',
-            sidebarPath: '/form/community',
-            title: '🏘️ Community',
-            showInSidebar: true,
-        },
-        base: {
-            path: '/base',
-            sidebarPath: '/form/base',
-            title: '🏡 Planetary Base',
-            showInSidebar: true,
-        },
+  },
+  status: {
+    path: '/status',
+    pathWithParams: '/status/:segment/:id',
+    sidebarPath: '/status',
+    title: '🔍 View Status',
+    showInSidebar: true,
+    pathParam: {
+      segment: 'segment',
+      id: 'id',
     },
-    status: {
-        path: '/status',
-        pathWithParams: '/status/:segment/:id',
-        sidebarPath: '/status',
-        title: '🔍 View Status',
-        showInSidebar: true,
-        pathParam: {
-            segment: 'segment',
-            id: 'id',
-        },
+  },
+  verify: {
+    path: 'verify',
+    showInSidebar: false,
+    queryParam: {
+      decision: 'decision',
     },
-    verify: {
-        path: 'verify',
-        showInSidebar: false,
-        queryParam: {
-            decision: 'decision',
-        },
-    },
+  },
 
-    login: {
-        path: '/login',
-        showInSidebar: false,
-    },
-    about: {
-        path: '/about',
-        showInSidebar: false,
-    },
-}
+  login: {
+    path: '/login',
+    showInSidebar: false,
+  },
+  about: {
+    path: '/about',
+    showInSidebar: false,
+  },
+};
 
 export const removeAuthPrefix = (route: string) => route.replace('/auth', '');
 
-export const traverseRoutes = (
-    routeObj: any,
-    routeFunc: (routeData: IRouteOptions) => void
-) => {
-    for (const routeProp in routeObj) {
-        if (isNaN(Number(routeProp)) === false) continue;
+export const traverseRoutes = (routeObj: any, routeFunc: (routeData: IRouteOptions) => void) => {
+  for (const routeProp in routeObj) {
+    if (isNaN(Number(routeProp)) === false) continue;
 
-        if (Object.prototype.hasOwnProperty.call(routeObj, routeProp)) {
-            const routeData = routeObj[routeProp];
+    if (Object.prototype.hasOwnProperty.call(routeObj, routeProp)) {
+      const routeData = routeObj[routeProp];
 
-            if (routeData.path != null) {
-                routeFunc(routeData);
-            }
+      if (routeData.path != null) {
+        routeFunc(routeData);
+      }
 
-            if (routeObj.path == undefined) {
-                traverseRoutes(routeData, routeFunc);
-            }
-        }
+      if (routeObj.path == undefined) {
+        traverseRoutes(routeData, routeFunc);
+      }
     }
-}
+  }
+};

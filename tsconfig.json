@@ -25,7 +25,31 @@
     "noImplicitAny": true,
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "baseUrl": "src",
+    "paths": {
+      "@web/*": [
+        "web/*"
+      ],
+      "@api/*": [
+        "api/*"
+      ],
+      "@constants/*": [
+        "constants/*"
+      ],
+      "@contracts/*": [
+        "contracts/*"
+      ],
+      "@helpers/*": [
+        "helpers/*"
+      ],
+      "@services/*": [
+        "services/*"
+      ],
+      "@validation/*": [
+        "validation/*"
+      ]
+    }
   },
   "include": [
     "src/**/*"
@@ -34,9 +58,9 @@
     "node_modules",
     "**/*.spec.ts",
     "build",
+    "dist",
     "public",
     "scripts",
-    "src/api/**/*",
     "./vite.config.ts"
   ],
   "files": [

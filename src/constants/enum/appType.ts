@@ -1,5 +1,5 @@
 export enum AppType {
-    UI,
-    Api,
-    DataGenerator,
+  UI,
+  Api,
+  DataGenerator,
 }

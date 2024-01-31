@@ -1,35 +1,35 @@
 export interface DiscordWebhook {
-    content: string;
-    embeds: Array<DiscordWebhookEmbed>;
-    // flags: number;
-    attachments: Array<DiscordWebhookAttachment>;
+  content: string;
+  embeds: Array<DiscordWebhookEmbed>;
+  // flags: number;
+  attachments: Array<DiscordWebhookAttachment>;
 }
 
 export interface DiscordWebhookEmbed {
-    description?: string;
-    color?: number;
-    author?: DiscordWebhookAuthor;
-    thumbnail?: DiscordWebhookThumbnail;
-    fields?: Array<DiscordWebhookField>;
+  description?: string;
+  color?: number;
+  author?: DiscordWebhookAuthor;
+  thumbnail?: DiscordWebhookThumbnail;
+  fields?: Array<DiscordWebhookField>;
 }
 
 export interface DiscordWebhookAuthor {
-    name: string;
-    icon_url?: string;
+  name: string;
+  icon_url?: string;
 }
 
 export interface DiscordWebhookThumbnail {
-    url: string;
+  url: string;
 }
 
 export interface DiscordWebhookAttachment {
-    id: number;
-    description: string;
-    filename: string;
+  id: number;
+  description: string;
+  filename: string;
 }
 
 export interface DiscordWebhookField {
-    name: string;
-    value: string;
-    inline: boolean;
+  name: string;
+  value: string;
+  inline: boolean;
 }

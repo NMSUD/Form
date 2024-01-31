@@ -23,7 +23,34 @@
     "strict": false,
     "noImplicitAny": false,
     "strictPropertyInitialization": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": "src",
+    "paths": {
+      "@web/*": [
+        "web/*"
+      ],
+      "@api/*": [
+        "api/*"
+      ],
+      "@constants/*": [
+        "constants/*"
+      ],
+      "@contracts/*": [
+        "contracts/*"
+      ],
+      "@helpers/*": [
+        "helpers/*"
+      ],
+      "@services/*": [
+        "services/*"
+      ],
+      "@validation/*": [
+        "validation/*"
+      ]
+    }
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
   },
   "include": [
     "src/**/*",
@@ -31,12 +58,11 @@
   "exclude": [
     "node_modules",
     "**/*.spec.ts",
-    "src/*.tsx",
-    "src/**/*.tsx",
-    "src/**/**/*.tsx",
-    "src/components/*.*",
+    "build",
+    "dist",
     "public",
     "scripts",
+    "src/web/**/**",
     "./vite.config.ts"
   ],
   "files": [

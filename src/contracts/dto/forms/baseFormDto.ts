@@ -1,13 +1,13 @@
-import { ValidationResult } from "../../validationResult";
+import { ValidationResult } from '@contracts/validationResult';
 
 export type IFormDtoMetaDetails<TV> = {
-    label: string,
-    validationLabel?: string,
-    helpText?: string,
-    defaultValue?: TV,
-    validator: (val: TV) => ValidationResult
-}
+  label: string;
+  validationLabel?: string;
+  helpText?: string;
+  defaultValue?: TV;
+  validator: (val: TV) => ValidationResult;
+};
 
 export type IFormDtoMeta<T> = {
-    [prop in keyof T]: IFormDtoMetaDetails<any>;
+  [prop in keyof T]: IFormDtoMetaDetails<any>;
 };

@@ -1,75 +1,76 @@
-import { Container, Service } from "typedi";
+import { Container, Service } from 'typedi';
 
-import { api } from '../../constants/api';
-import { BuilderDto } from '../../contracts/dto/forms/builderDto';
-import { CommunityDto } from '../../contracts/dto/forms/communityDto';
-import { IFormResponse } from "../../contracts/response/formResponse";
-import { ResultWithValue } from '../../contracts/resultWithValue';
-import { makeArrayOrDefault } from "../../helper/arrayHelper";
+import { api } from '@constants/api';
+import { BuilderDto } from '@contracts/dto/forms/builderDto';
+import { CommunityDto } from '@contracts/dto/forms/communityDto';
+import { IFormResponse } from '@contracts/response/formResponse';
+import { ResultWithValue } from '@contracts/resultWithValue';
+import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { getConfig } from '../internal/configService';
 import { BaseApiService } from './baseApiService';
-import { anyObject } from "../../helper/typescriptHacks";
-import { FormDataKey } from "../../constants/form";
+import { anyObject } from '@helpers/typescriptHacks';
+import { FormDataKey } from '@constants/form';
 
 @Service()
 export class FormApiService extends BaseApiService {
-    private _apiUrl;
+  private _apiUrl;
 
-    constructor() {
-        const apiUrl = getConfig().getNmsUdApiUrl();
-        super(apiUrl);
-        this._apiUrl = apiUrl;
+  constructor() {
+    const apiUrl = getConfig().getNmsUdApiUrl();
+    super(apiUrl);
+    this._apiUrl = apiUrl;
+  }
+
+  async submitCommunity(
+    data: CommunityDto,
+    captcha: string,
+  ): Promise<ResultWithValue<IFormResponse>> {
+    const { profilePicFile, bioMediaFiles, ...dataWithoutFiles } = data;
+
+    let formData = new FormData();
+    formData.append(FormDataKey.captcha, captcha);
+    formData.append(FormDataKey.profilePicFile, profilePicFile);
+    for (const bioMediaFile of makeArrayOrDefault(bioMediaFiles)) {
+      formData.append(FormDataKey.bioMediaFiles, bioMediaFile);
     }
+    formData.append(FormDataKey.data, JSON.stringify(dataWithoutFiles));
 
-    private _getCommonHeaders = (captcha: string) => ({
-        // 'Accept': 'application/json',
-        [api.captcha.header]: captcha,
-    });
+    return this.submitForm(api.routes.form.community, formData);
+  }
 
-    async submitCommunity(data: CommunityDto, captcha: string): Promise<ResultWithValue<IFormResponse>> {
-        const {
-            profilePicFile,
-            bioMediaFiles,
-            ...dataWithoutFiles
-        } = data;
+  async submitBuilder(data: BuilderDto, captcha: string): Promise<ResultWithValue<IFormResponse>> {
+    const { profilePicFile, ...dataWithoutFiles } = data;
 
-        let formData = new FormData();
-        formData.append(FormDataKey.captcha, captcha);
-        formData.append(FormDataKey.profilePicFile, profilePicFile);
-        for (const bioMediaFile of makeArrayOrDefault(bioMediaFiles)) {
-            formData.append(FormDataKey.bioMediaFiles, bioMediaFile);
-        }
-        formData.append(FormDataKey.data, JSON.stringify(dataWithoutFiles));
+    let formData = new FormData();
+    formData.append(FormDataKey.captcha, captcha);
+    formData.append(FormDataKey.profilePicFile, profilePicFile);
+    formData.append(FormDataKey.data, JSON.stringify(dataWithoutFiles));
 
-        const url = `${this._apiUrl}/${api.routes.form.community}`;
-        try {
-            const apiResult = await fetch(url, {
-                method: 'POST',
-                body: formData,
-            });
-            const resultValue: IFormResponse = await apiResult.json();
+    return this.submitForm(api.routes.form.builder, formData);
+  }
 
-            return {
-                isSuccess: true,
-                value: resultValue,
-                errorMessage: ''
-            }
-        } catch (ex) {
-            return {
-                isSuccess: false,
-                value: anyObject,
-                errorMessage: ex?.toString?.() ?? '',
-            }
-        }
+  async submitForm(urlPath: string, formData: FormData): Promise<ResultWithValue<IFormResponse>> {
+    const url = `${this._apiUrl}/${urlPath}`;
+    try {
+      const apiResult = await fetch(url, {
+        method: 'POST',
+        body: formData,
+      });
+      const resultValue: IFormResponse = await apiResult.json();
+
+      return {
+        isSuccess: true,
+        value: resultValue,
+        errorMessage: '',
+      };
+    } catch (ex) {
+      return {
+        isSuccess: false,
+        value: anyObject,
+        errorMessage: ex?.toString?.() ?? '',
+      };
     }
-
-    submitBuilder(body: BuilderDto, captcha: string): Promise<ResultWithValue<string>> {
-        return this.post<string, BuilderDto>(
-            api.routes.form.builder,
-            body,
-            () => this._getCommonHeaders(captcha),
-        );
-    }
+  }
 }
 
 export const getFormApiService = () => Container.get(FormApiService);

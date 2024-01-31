@@ -2,10 +2,10 @@ import 'reflect-metadata';
 import { render } from 'solid-js/web';
 import { Router, hashIntegration } from '@solidjs/router';
 
-import { AppShell } from './components/appShell';
-import { CustomThemeProvider } from './components/themeProvider';
+import { AppShell } from '@web/appShell';
+import { CustomThemeProvider } from '@web/themeProvider';
 
-import './scss/custom.scss';
+import './web/scss/custom.scss';
 
 const root = document.getElementById('form-app');
 

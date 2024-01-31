@@ -1,10 +1,4 @@
 export const Labels = {
-    Builders: [
-        'Builder',
-        'Glitch Builder',
-        'Blender Builder',
-    ],
-    Community: [
-        'Civilization',
-    ]
-}
+  Builders: ['Builder', 'Glitch Builder', 'Blender Builder'],
+  Community: ['Civilization'],
+};

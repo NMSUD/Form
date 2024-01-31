@@ -1,22 +1,22 @@
 export interface HtmlElementEvent<T> {
-    target: {
-        value: T;
-    }
+  target: {
+    value: T;
+  };
 }
 export interface HtmlKeyEvent {
-    keyCode: number;
+  keyCode: number;
 }
 
 export interface HtmlFilesEvent {
-    target: {
-        files: FileList | null;
-    }
+  target: {
+    files: FileList | null;
+  };
 }
 
 export interface HtmlImageReadEvent {
-    target: FileReader | null;
+  target: FileReader | null;
 }
 
 export interface ClickEvent {
-    preventDefault: () => void;
+  preventDefault: () => void;
 }

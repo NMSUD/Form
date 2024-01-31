@@ -1,11 +1,11 @@
-import { ApprovalStatus } from "../../constants/enum/approvalStatus";
+import { ApprovalStatus } from '@constants/enum/approvalStatus';
 
 export interface IFormResponse {
-    id: string;
-    name: string;
-    iconUrl?: string;
+  id: string;
+  name: string;
+  iconUrl?: string;
 }
 
 export interface IFormWithApprovalResponse extends IFormResponse {
-    approvalStatus: ApprovalStatus;
+  approvalStatus: ApprovalStatus;
 }

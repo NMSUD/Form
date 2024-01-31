@@ -1,4 +1,4 @@
 export const themeColours = {
-	primary: '#00ffff',
-	lightGrey: '#9ba1a6',
-}
+  primary: '#00ffff',
+  lightGrey: '#9ba1a6',
+};

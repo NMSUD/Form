@@ -42,10 +42,10 @@ This script is able to pull all the uploaded images and the records out of the d
 3. In the directory where the `package.json` file is, run `npm i` to install all the required packages.
 4. Run `npm run setup` to run the initial setup.
 5. Run the app
-    * **Website** can be run locally using `npm run start:ui`.
+    * **Web** can be run locally using `npm run start:web`.
     * **API** can be run locally using `npm run start:api`.
     * **Data** can be run locally using `npm run start:data`.
-    * **Website & API**, using `npm run dev`.
+    * **Web & API**, using `npm run dev`.
 
 <br />
 
