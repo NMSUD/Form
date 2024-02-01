@@ -12,7 +12,7 @@ import {
 import { useParams } from '@solidjs/router';
 import { Component, Show, createEffect, createSignal } from 'solid-js';
 
-import { apiParams, segments } from '@constants/api';
+import { apiParams, apiSegments } from '@constants/api';
 import { getFriendlyApprovalStatus } from '@constants/enum/approvalStatus';
 import { NetworkState } from '@constants/enum/networkState';
 import { AppImage } from '@constants/image';
@@ -27,7 +27,7 @@ import { PageHeader } from '../components/common/pageHeader';
 import { FormDropdown } from '../components/form/dropdown/dropdown';
 import { FormLongInput } from '../components/form/text/input';
 
-const segmentOptions = Object.keys(segments).map((seg) => ({
+const segmentOptions = Object.keys(apiSegments).map((seg) => ({
   title: capitalizeFirstLetter(addSpacesForEnum(seg)),
   value: seg,
 }));
@@ -53,7 +53,7 @@ export const StatusPage: Component = () => {
 
   const segmentValidation = multiValidation<Array<string>>(
     minItems(1),
-    selectedItemsExist(Object.keys(segments)),
+    selectedItemsExist(Object.keys(apiSegments)),
   );
 
   const recordIdValidation = multiValidation<string>(minLength(10), maxLength(50));

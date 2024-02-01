@@ -1,9 +1,12 @@
 export const apiParams = {
-  verify: {
-    decision: 'decision',
+  form: {
     segment: 'segment',
+  },
+  verify: {
     id: 'id',
     check: 'check',
+    decision: 'decision',
+    segment: 'segment',
   },
   status: {
     segment: 'segment',
@@ -19,27 +22,25 @@ export const api = {
     image: {
       upload: '',
     },
-    form: {
-      community: 'form/community',
-      builder: 'form/builder',
-      planetaryBase: 'form/planetaryBase',
-    },
-    verify: `verify/:${apiParams.verify.decision}/:${apiParams.verify.segment}/:${apiParams.verify.id}/:${apiParams.verify.check}`,
-    status: `status/:${apiParams.status.segment}/:${apiParams.status.id}`,
+    form: `form/:${apiParams.form.segment}/`,
+    verify: `verify/:${apiParams.verify.segment}/:${apiParams.verify.decision}/:${apiParams.verify.id}/:${apiParams.verify.check}`,
+    status: `status/:${apiParams.verify.segment}/:${apiParams.status.id}`,
   },
 };
 
-export const segments = {
-  community: 'community',
-  builder: 'builder',
-  planetaryBase: 'planetaryBase',
-};
+export interface IApiSegment {
+  community: string;
+  builder: string;
+  // planetaryBase: string;
+}
 
 export const ApiStatusErrorCode = {
   validation: 460,
   segmentNotFound: 461,
   decisionNotFound: 462,
+  recordNotFound: 463,
   badCaptcha: 520,
   invalidFormData: 521,
   couldNotPersistData: 522,
+  calculatedCheckFailed: 523,
 };

@@ -1,23 +1,27 @@
-# Adding a new Form
+# Creating a new Module
 
-### Create new FormHandler
-
-- Go to this folder `src/api/routes/form`
-- Create a file (e.g. **communityFormHandler.ts**) making use of `baseHandleFormSubmission`
+- Go to this folder `src/api/modules`
+- Create a folder for the new module (e.g. **community**)
+- Create a file (e.g. **communityModule.ts**) making use of `IApiModule<dto, imageInterface, dbType>`
+  - This file points to all the logic for this module
   - Example:
 
 ```ts
-export const communityFormHandler = baseFormHandler<CommunityDto, ICommunityImages>({
+export const communityModule: IApiModule<CommunityDto, ICommunityImages, Community> = {
   name: 'CommunityDto',
   validationObj: CommunityDtoMeta,
-  handleRequest: handleSubmission,
+  createRecord: getDatabaseService().community().create,
+  readRecord: getDatabaseService().community().read,
+  updateRecord: getDatabaseService().community().update,
+
+  mapDtoWithImageToPersistence: communityDtoWithImageToPersistence,
+  mapPersistenceToDto: communityPersistenceToDto,
+
   handleFilesInFormData: communityFileHandler,
   discordMessageBuilder: communityMessageBuilder,
-  afterDiscordMessage: getDatabaseService().community.updateWebhookId,
-});
+  calculateCheck: (p) => cyrb53([p.id, p.name, p.contactDetails].join('-')),
+};
 ```
-
-Create a folder for the new table (e.g. **community**)
 
 ### Create new FileHandler
 
@@ -39,6 +43,13 @@ export const communityFileHandler = async (
   // ... get the images out of the form
 };
 ```
+
+### Create new Mapper
+
+**e.g. `communityMapper.ts`**
+
+- Export a function that takes `DtoAndImageMapperToNewPersistence<dto, imageInterface, dbType>{` and returns `dbType`
+- Export a function that takes `Mapper<Community, CommunityDto>` and returns a `CommunityDto`
 
 ### Create new MessageBuilder
 

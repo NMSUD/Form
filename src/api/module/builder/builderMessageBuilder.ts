@@ -1,8 +1,7 @@
-import { segments } from '@constants/api';
+import { apiSegments } from '@constants/api';
 import { ApprovalStatus, colourFromApprovalStatus } from '@constants/enum/approvalStatus';
 import { BuilderDto } from '@contracts/dto/forms/builderDto';
 import { DiscordWebhook, DiscordWebhookEmbed } from '@contracts/generated/discordWebhook';
-import { getBuilderCheck } from '@helpers/checkHelper';
 import {
   IMessageBuilderProps,
   baseSubmissionMessageBuilder,
@@ -29,8 +28,15 @@ export const builderMessageBuilder = (props: IMessageBuilderProps<BuilderDto>): 
 
   const additionalEmbeds: Array<DiscordWebhookEmbed> = [];
   if (props.includeActionsEmbed == true) {
-    const check = getBuilderCheck(props.id, props.dto.name, props.dto.contactDetails);
-    additionalEmbeds.push(baseSubmissionMessageEmbed(props.id, check, segments.community));
+    if (props.includeActionsEmbed == true) {
+      additionalEmbeds.push(
+        baseSubmissionMessageEmbed(
+          props.dbId,
+          props.calculateCheck,
+          apiSegments.community, //
+        ),
+      );
+    }
   }
 
   const messages = {

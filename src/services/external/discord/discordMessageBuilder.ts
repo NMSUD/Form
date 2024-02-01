@@ -11,15 +11,17 @@ import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
 import { getConfig } from '../../internal/configService';
 
 export interface IMessageBuilderProps<T> {
-  id: string;
+  dbId: string;
   dto: T;
+  segment: string;
+  calculateCheck: number;
   dtoMeta: IFormDtoMeta<T>;
   includeActionsEmbed: boolean;
   approvalStatus: ApprovalStatus;
 }
 
 export const baseSubmissionMessageEmbed = (
-  id: string,
+  dbId: string,
   check: number,
   segment: string,
 ): DiscordWebhookEmbed => {
@@ -28,7 +30,7 @@ export const baseSubmissionMessageEmbed = (
     apiUrl +
     '/' +
     api.routes.verify
-      .replaceAll(`:${apiParams.verify.id}`, id)
+      .replaceAll(`:${apiParams.verify.id}`, dbId)
       .replaceAll(`:${apiParams.verify.segment}`, segment)
       .replaceAll(`:${apiParams.verify.check}`, check.toString())
       .replaceAll(
@@ -39,7 +41,7 @@ export const baseSubmissionMessageEmbed = (
     apiUrl +
     '/' +
     api.routes.verify
-      .replaceAll(`:${apiParams.verify.id}`, id)
+      .replaceAll(`:${apiParams.verify.id}`, dbId)
       .replaceAll(`:${apiParams.verify.segment}`, segment)
       .replaceAll(`:${apiParams.verify.check}`, check.toString())
       .replaceAll(`:${apiParams.verify.decision}`, approvalStatusToString(ApprovalStatus.denied));

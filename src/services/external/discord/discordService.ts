@@ -8,11 +8,11 @@ import { getLog } from '../../internal/logService';
 
 @Service()
 export class DiscordService {
-  private async discordWebhookExec(
+  private async discordWebhookExec<T>(
     url: string,
     method: string,
-    message: DiscordWebhook,
-  ): Promise<ResultWithValue<DiscordWebhookResponse>> {
+    message?: string,
+  ): Promise<ResultWithValue<T>> {
     try {
       const apiResult = await fetch(`${url}?wait=true`, {
         method: method,
@@ -20,10 +20,11 @@ export class DiscordService {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(message),
+        body: message,
       });
 
       const temp = await apiResult.json();
+      console.log('DiscordService', method, temp);
       return {
         isSuccess: true,
         errorMessage: '',
@@ -40,18 +41,21 @@ export class DiscordService {
     }
   }
 
+  getDiscordMessage = (url: string, messageId: string): Promise<ResultWithValue<DiscordWebhook>> =>
+    this.discordWebhookExec(`${url}/messages/${messageId}`, 'GET');
+
   sendDiscordMessage = (
     url: string,
     message: DiscordWebhook,
   ): Promise<ResultWithValue<DiscordWebhookResponse>> =>
-    this.discordWebhookExec(url, 'POST', message);
+    this.discordWebhookExec(url, 'POST', JSON.stringify(message));
 
   updateDiscordMessage = (
     url: string,
     messageId: string,
     message: DiscordWebhook,
   ): Promise<ResultWithValue<DiscordWebhookResponse>> =>
-    this.discordWebhookExec(`${url}/messages/${messageId}`, 'PATCH', message);
+    this.discordWebhookExec(`${url}/messages/${messageId}`, 'PATCH', JSON.stringify(message));
 }
 
 export const getDiscordService = () => Container.get(DiscordService);

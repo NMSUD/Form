@@ -2,10 +2,10 @@ import 'reflect-metadata';
 import { render } from 'solid-js/web';
 import { Router, hashIntegration } from '@solidjs/router';
 
-import { AppShell } from '@web/appShell';
-import { CustomThemeProvider } from '@web/themeProvider';
+import { AppShell } from '@web/components/appShell';
+import { CustomThemeProvider } from '@web/components/themeProvider';
 
-import './web/scss/custom.scss';
+import './scss/custom.scss';
 
 const root = document.getElementById('form-app');
 
@@ -15,10 +15,13 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   );
 }
 
-render(() => (
-  <CustomThemeProvider>
-    <Router source={hashIntegration()}>
-      <AppShell />
-    </Router>
-  </CustomThemeProvider>
-), root!);
+render(
+  () => (
+    <CustomThemeProvider>
+      <Router source={hashIntegration()}>
+        <AppShell />
+      </Router>
+    </CustomThemeProvider>
+  ),
+  root!,
+);

@@ -1,13 +1,13 @@
-# Creating a new Form
+# Steps for creating a new Form
 
-### Steps:
+- Create a database table
+  - Log into [Xata.io](https://xata.io) and open the `nmsud-submission` database
+  - Create a new table
+    - Specify the data types per column, it is better to keep the fields `not null`. It helps with the Typescript typings
+  - Run `npm run db:generate` in the project to get the latest types
 
-- [Create database table](../src/services/external/database/CreateTable.md)
-- [Create new Dto](../src/contracts/dto/forms/NewDto.md)
-- [Create new form page](../src/web/pages/form/NewFormPage.md)
-- [Create form handler](../src/api/routes/form/NewFormHandler.md)
-- [Create a Status handler](../src/api/routes/status/NewStatusHandler.md)
+- [Create new Dto](/src/contracts/dto/forms/NewDto.md)
+- Add new item to the IApiSegment interface in [api.ts](/src/constants/api.ts)
+- [Create new form page](/src/web/pages/form/NewFormPage.md)
+- [Create API module](/src/api/module/NewApiModule.md)
 
-
-
-- Add functions to handle the quick verify request

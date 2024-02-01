@@ -2,34 +2,21 @@ import Koa from 'koa';
 
 import { hasCaptcha } from '@api/guard/hasCaptcha';
 import { errorResponse } from '@api/misc/httpResponse/errorResponse';
+import { IApiModule, IRecordRequirements } from '@api/module/baseModule';
 import { ApiStatusErrorCode } from '@constants/api';
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
 import { FormDataKey } from '@constants/form';
-import { IFormDtoMeta } from '@contracts/dto/forms/baseFormDto';
-import { IFormWithFiles } from '@contracts/file';
-import { DiscordWebhook } from '@contracts/generated/discordWebhook';
-import { IFormResponse } from '@contracts/response/formResponse';
-import { Result, ResultWithValue } from '@contracts/resultWithValue';
 import { anyObject } from '@helpers/typescriptHacks';
-import { IMessageBuilderProps } from '@services/external/discord/discordMessageBuilder';
 import { getDiscordService } from '@services/external/discord/discordService';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
 import { validateObj } from '@validation/baseValidation';
 
-export interface IFormHandler<T, TF> {
-  name: string;
-  validationObj: IFormDtoMeta<T>;
-  handleRequest: (request: T, files: TF) => Promise<ResultWithValue<IFormResponse>>;
-  handleFilesInFormData: (formData: IFormWithFiles) => Promise<ResultWithValue<TF>>;
-  discordMessageBuilder: (props: IMessageBuilderProps<T>) => DiscordWebhook;
-  afterDiscordMessage: (recordId: string, webhookMessageId: string) => Promise<Result>;
-}
-
 export const baseFormHandler =
-  <T, TF>(props: IFormHandler<T, TF>) =>
+  <TD, TF, TP>(module: IApiModule<TD, TF, TP>) =>
   async (ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>) => {
-    getLog().i(`formHandler-${props.name}`);
+    const handlerName = `formHandler-${module.name}`;
+    getLog().i(handlerName);
 
     const formDataFiles = ctx.request?.files ?? anyObject;
     const formDataBody = ctx.request?.body ?? anyObject;
@@ -52,24 +39,9 @@ export const baseFormHandler =
       }
     }
 
-    const fileObjResult = await props.handleFilesInFormData(formDataFiles);
+    const fileObjResult = await module.handleFilesInFormData(formDataFiles);
     if (fileObjResult.isSuccess === false) {
-      getLog().e(fileObjResult.errorMessage);
-      await errorResponse({
-        ctx,
-        next,
-        statusCode: ApiStatusErrorCode.invalidFormData,
-        message: fileObjResult.errorMessage,
-      });
-      return;
-    }
-
-    let data: T = anyObject;
-    try {
-      const dataString = formDataBody[FormDataKey.data];
-      data = JSON.parse(dataString);
-    } catch (ex) {
-      const errMsg = `formHandler-${props.name} formdata mapping: ${ex?.toString?.()}`;
+      const errMsg = `${handlerName} handle files: ${fileObjResult.errorMessage}`;
       getLog().e(errMsg);
       await errorResponse({
         ctx,
@@ -80,9 +52,25 @@ export const baseFormHandler =
       return;
     }
 
-    const failedValidationMsgs = validateObj<T>({
+    let data: TD = anyObject;
+    try {
+      const dataString = formDataBody[FormDataKey.data];
+      data = JSON.parse(dataString);
+    } catch (ex) {
+      const errMsg = `${handlerName} formdata mapping: ${ex?.toString?.()}`;
+      getLog().e(errMsg);
+      await errorResponse({
+        ctx,
+        next,
+        statusCode: ApiStatusErrorCode.invalidFormData,
+        message: errMsg,
+      });
+      return;
+    }
+
+    const failedValidationMsgs = validateObj<TD>({
       data: data,
-      validationObj: props.validationObj,
+      validationObj: module.validationObj,
     }).filter((v) => v.isValid === false);
 
     if (failedValidationMsgs.length > 0) {
@@ -96,23 +84,27 @@ export const baseFormHandler =
       return;
     }
 
-    const handleDtoResult = await props.handleRequest(data, fileObjResult.value);
-    if (handleDtoResult.isSuccess == false) {
+    const persistence = module.mapDtoWithImageToPersistence(data, fileObjResult.value);
+    const formResponse = await module.createRecord(persistence);
+    if (formResponse.isSuccess == false) {
+      const errMsg = `${handlerName} - create db record - ${formResponse.errorMessage}`;
+      getLog().e(errMsg);
       await errorResponse({
         ctx,
         next,
         statusCode: ApiStatusErrorCode.couldNotPersistData,
-        message: handleDtoResult.errorMessage,
+        message: errMsg,
       });
       return;
     }
 
-    // Send discord message & update db record
     const discordUrl = getConfig().getDiscordWebhookUrl();
-    const webhookPayload = props.discordMessageBuilder({
-      id: handleDtoResult.value.id,
+    const webhookPayload = module.discordMessageBuilder({
+      dbId: formResponse.value.id,
       dto: data,
-      dtoMeta: props.validationObj,
+      segment: module.segment,
+      dtoMeta: module.validationObj,
+      calculateCheck: module.calculateCheck(formResponse.value),
       includeActionsEmbed: true,
       approvalStatus: ApprovalStatus.pending,
     });
@@ -121,12 +113,16 @@ export const baseFormHandler =
       webhookPayload,
     );
     if (discordResponse.isSuccess) {
-      await props.afterDiscordMessage(handleDtoResult.value.id, discordResponse.value.id);
+      await module.updateRecord(formResponse.value.id, {
+        ...persistence,
+        id: formResponse.value.id,
+        discordWebhookId: discordResponse.value.id,
+      } as TP & IRecordRequirements);
     }
 
     ctx.response.status = 200;
     ctx.set('Content-Type', 'application/json');
-    ctx.body = handleDtoResult.value;
+    ctx.body = formResponse.value;
 
     await next();
   };

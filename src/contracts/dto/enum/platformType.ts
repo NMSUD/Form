@@ -20,7 +20,7 @@ export const friendlyPlatformName = (plat?: PlatformType) => {
 };
 
 export const platformTypeToString = (platformType: PlatformType) => PlatformType[platformType];
-export const platformTypeFromString = (platformType: string): PlatformType | undefined => {
+export const platformTypeFromString = (platformType: string): PlatformType => {
   const platformTypeLookup = {
     [PlatformType[PlatformType.PSX]]: PlatformType.PSX,
     [PlatformType[PlatformType.XBX]]: PlatformType.XBX,
@@ -29,4 +29,5 @@ export const platformTypeFromString = (platformType: string): PlatformType | und
   };
   const lookupValue = platformTypeLookup[platformType];
   if (lookupValue != null) return lookupValue;
+  return PlatformType.Steam;
 };

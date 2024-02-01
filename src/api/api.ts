@@ -9,17 +9,17 @@ import serve from 'koa-static';
 import path from 'path';
 import { Container } from 'typedi';
 
-import { builderFormHandler } from '@api/routes/form/builderFormHandler';
-import { communityFormHandler } from '@api/routes/form/communityFormHanlder';
-import { handleStatusRequest } from '@api/routes/status/handleStatusRequest';
-import { handleVerifyRequest } from '@api/routes/verify/handleVerifyRequest';
 import { api } from '@constants/api';
 import { AppType } from '@constants/enum/appType';
 import { APP_TYPE, BOT_PATH, getBotPath, getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
 import { versionEndpoint } from './misc/misc';
-
-require('dotenv').config();
+import {
+  formHandlerLookup,
+  routeToCorrectHandler,
+  statusHandlerLookup,
+  verifyHandlerLookup,
+} from './routes/routeLookup';
 
 Container.set(BOT_PATH, __dirname);
 Container.set(APP_TYPE, AppType.Api);
@@ -31,14 +31,9 @@ getLog().i('Starting up http server');
 const bodyOptions = koaBody({ multipart: true });
 const router = new Router();
 
-// forms
-router.post(`/${api.routes.form.community}`, bodyOptions, communityFormHandler);
-router.post(`/${api.routes.form.builder}`, bodyOptions, builderFormHandler);
-// router.post(api.routes.form.baseBuild, handleFormSubmission);
-
-// verify
-router.get(`/${api.routes.verify}`, handleVerifyRequest);
-router.get(`/${api.routes.status}`, handleStatusRequest);
+router.post(`/${api.routes.form}`, bodyOptions, routeToCorrectHandler(formHandlerLookup));
+router.get(`/${api.routes.verify}`, routeToCorrectHandler(verifyHandlerLookup));
+router.get(`/${api.routes.status}`, routeToCorrectHandler(statusHandlerLookup));
 
 // misc
 router.get('/version', versionEndpoint('secret'));

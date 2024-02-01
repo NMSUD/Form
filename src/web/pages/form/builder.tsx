@@ -21,7 +21,8 @@ import {
 import { randomItemFromArray } from '@helpers/randomHelper';
 import { anyObject } from '@helpers/typescriptHacks';
 import { getFormApiService } from '@services/api/formApiService';
-import { segments } from '@constants/api';
+import { nameof } from '@helpers/propHelper';
+import { IApiSegment } from '@constants/api';
 
 export const BuilderFormPage: Component = () => {
   const [itemBeingEdited, setItemBeingEdited] = createSignal<BuilderDto>(anyObject);
@@ -34,7 +35,7 @@ export const BuilderFormPage: Component = () => {
         <FormBuilder
           item={itemBeingEdited()}
           id="BuilderDto"
-          segment={segments.builder}
+          segment={nameof<IApiSegment>('builder')}
           formDtoMeta={BuilderDtoMeta}
           mappings={{
             profilePicFile: {

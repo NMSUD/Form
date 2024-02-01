@@ -1,42 +1,31 @@
-import { ApprovalStatus } from '@constants/enum/approvalStatus';
 import { Container, Inject, Service } from 'typedi';
 import { ConfigService } from '../../internal/configService';
-import { createBuilder, readBuilder, updateWebhookIdBuilder } from './table/builderTableOperations';
-import {
-  createCommunity,
-  readCommunity,
-  updateApprovalStatusCommunity,
-  updateWebhookIdCommunity,
-} from './table/communityTableOperations';
-import { Builder, Community, XataClient } from './xata';
+import { getCrudOperations } from './table/baseTableOperations';
+import { Builder, BuilderRecord, Community, CommunityRecord, XataClient } from './xata';
 
 @Service()
 export class DatabaseService {
-  private xata: XataClient;
+  private _xata: XataClient;
 
   constructor(@Inject() config: ConfigService) {
-    this.xata = new XataClient({
+    this._xata = new XataClient({
       apiKey: config.getXataApiKey(),
       databaseURL: config.getXataDbUrl(),
       branch: config.getXataFallbackBranch(),
     });
   }
 
-  community = {
-    create: (persistence: Omit<Community, 'id'>) => createCommunity(this.xata, persistence),
-    read: (id: string) => readCommunity(this.xata, id),
-    updateWebhookId: (recordId: string, webhookMessageId: string) =>
-      updateWebhookIdCommunity(this.xata, recordId, webhookMessageId),
-    updateApprovalStatus: (recordId: string, approvalStatus: ApprovalStatus) =>
-      updateApprovalStatusCommunity(this.xata, recordId, approvalStatus),
-  };
+  community = () =>
+    getCrudOperations<Community, CommunityRecord>({
+      logName: 'Community',
+      repo: this._xata.db.community,
+    });
 
-  builder = {
-    create: (persistence: Omit<Builder, 'id'>) => createBuilder(this.xata, persistence),
-    read: (id: string) => readBuilder(this.xata, id),
-    updateWebhookId: (recordId: string, webhookMessageId: string) =>
-      updateWebhookIdBuilder(this.xata, recordId, webhookMessageId),
-  };
+  builder = () =>
+    getCrudOperations<Builder, BuilderRecord>({
+      logName: 'Builder',
+      repo: this._xata.db.builder,
+    });
 }
 
 export const getDatabaseService = () => Container.get(DatabaseService);

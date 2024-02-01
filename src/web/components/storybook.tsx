@@ -1,7 +1,7 @@
 import { Component } from 'solid-js';
 import { Container, Text } from '@hope-ui/solid';
 
-import { CustomThemeProvider } from '@web/themeProvider';
+import { CustomThemeProvider } from '@web/components/themeProvider';
 import { Card } from '@web/components/common/card';
 
 export const UseHopeUIThemeProvider = (Story: Component) => (

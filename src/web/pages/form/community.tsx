@@ -1,14 +1,6 @@
 import { Component, createSignal } from 'solid-js';
 
-import { Card } from '../../components/common/card';
-import { PageHeader } from '../../components/common/pageHeader';
-import { FormDropdown } from '../../components/form/dropdown/dropdown';
-import { FormBuilder } from '../../components/form/formBuilder';
-import { GridItemSize } from '../../components/form/grid';
-import { FormProfileImageInput } from '../../components/form/image/profileImage';
-import { FormSocialInput } from '../../components/form/socialLink/social';
-import { FormLongInput } from '../../components/form/text/input';
-import { FormTextArea } from '../../components/form/text/textArea';
+import { IApiSegment } from '@constants/api';
 import { Labels } from '@constants/labels';
 import { funnyPlayerNames } from '@constants/names';
 import { IDropdownOption } from '@contracts/dropdownOption';
@@ -18,11 +10,20 @@ import {
   communityBioMaxLength,
   communityContactDetailsMaxLength,
 } from '@contracts/dto/forms/communityDto';
+import { nameof } from '@helpers/propHelper';
 import { randomItemFromArray } from '@helpers/randomHelper';
 import { anyObject } from '@helpers/typescriptHacks';
 import { getFormApiService } from '@services/api/formApiService';
 import { getStateService } from '@services/internal/stateService';
-import { segments } from '@constants/api';
+import { Card } from '../../components/common/card';
+import { PageHeader } from '../../components/common/pageHeader';
+import { FormDropdown } from '../../components/form/dropdown/dropdown';
+import { FormBuilder } from '../../components/form/formBuilder';
+import { GridItemSize } from '../../components/form/grid';
+import { FormProfileImageInput } from '../../components/form/image/profileImage';
+import { FormSocialInput } from '../../components/form/socialLink/social';
+import { FormLongInput } from '../../components/form/text/input';
+import { FormTextArea } from '../../components/form/text/textArea';
 
 export const CommunityFormPage: Component = () => {
   const [itemBeingEdited, setItemBeingEdited] = createSignal<CommunityDto>({
@@ -39,7 +40,7 @@ export const CommunityFormPage: Component = () => {
         <FormBuilder
           item={itemBeingEdited()}
           id="CommunityDto"
-          segment={segments.community}
+          segment={nameof<IApiSegment>('community')}
           formDtoMeta={CommunityDtoMeta}
           mappings={{
             profilePicFile: {
