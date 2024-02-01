@@ -1,10 +1,8 @@
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
 import { IFormDtoMeta } from '@contracts/dto/forms/baseFormDto';
 import { IFormWithFiles } from '@contracts/file';
-import { DiscordWebhook } from '@contracts/generated/discordWebhook';
 import { DtoAndImageMapperToNewPersistence, Mapper } from '@contracts/mapper';
 import { Result, ResultWithValue } from '@contracts/resultWithValue';
-import { IMessageBuilderProps } from '@services/external/discord/discordMessageBuilder';
 
 export interface IRecordRequirements {
   id: string;
@@ -15,7 +13,7 @@ export interface IRecordRequirements {
 export type IApiModule<TD, TF, TP> = {
   name: string;
   segment: string;
-  validationObj: IFormDtoMeta<TD>;
+  dtoMeta: IFormDtoMeta<TD>;
 
   mapDtoWithImageToPersistence: DtoAndImageMapperToNewPersistence<TD, TF, TP>;
   mapPersistenceToDto: Mapper<TP, TD>;
@@ -23,9 +21,10 @@ export type IApiModule<TD, TF, TP> = {
   createRecord: (persistence: Omit<TP, 'id'>) => Promise<ResultWithValue<TP & IRecordRequirements>>;
   readRecord: (id: string) => Promise<ResultWithValue<TP & IRecordRequirements>>;
   updateRecord: (id: string, persistence: TP & IRecordRequirements) => Promise<Result>;
-  // addDiscordWebhookMsgId: (recordId: string, webhookMessageId: string) => Promise<Result>;
 
   handleFilesInFormData: (formData: IFormWithFiles) => Promise<ResultWithValue<TF>>;
+  getPublicUrlsOfUploads: (persistence: TP) => TP;
+
   calculateCheck: (persistence: TP) => number;
-  discordMessageBuilder: (props: IMessageBuilderProps<TD>) => DiscordWebhook;
+  additionalPropsToDisplay?: Array<string>;
 };

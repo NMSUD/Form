@@ -5,7 +5,7 @@ import { onTargetValue } from '@helpers/eventHelper';
 import { FormControl, FormErrorMessage, FormLabel, Input } from '@hope-ui/solid';
 import { useValidation } from '@web/hooks/useValidation';
 import { IFormInputProps } from '../formBuilder';
-import { HelpIcon } from '../helpIcon/helpIcon';
+import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 
 interface IFormLongInputProps extends IFormInputProps<string | number> {
   inputType?: string;
@@ -33,7 +33,7 @@ export const FormLongInput: Component<IFormLongInputProps> = (props: IFormLongIn
     <FormControl invalid={!isValid().isValid}>
       <FormLabel textAlign="center" for={props.id}>
         {props.label}
-        <HelpIcon helpText={props.helpText} />
+        <HelpIconTooltip helpText={props.helpText} />
       </FormLabel>
       <Input
         id={props.id}

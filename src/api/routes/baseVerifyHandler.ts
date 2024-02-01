@@ -1,14 +1,22 @@
 import Koa from 'koa';
 
+import { IVerifyRequestParams } from '@api/contracts/verifyRequestParam';
+import { errorResponse } from '@api/misc/httpResponse/errorResponse';
 import { IApiModule } from '@api/module/baseModule';
 import { ApiStatusErrorCode, apiParams } from '@constants/api';
-import { anyObject } from '@helpers/typescriptHacks';
-import { getLog } from '@services/internal/logService';
-import { IVerifyRequestParams } from '@api/contracts/verifyRequestParam';
-import { approvalStatusFromString } from '@constants/enum/approvalStatus';
-import { errorResponse } from '@api/misc/httpResponse/errorResponse';
-import { getConfig } from '@services/internal/configService';
+import {
+  approvalStatusFromString,
+  colourFromApprovalStatus,
+  getFriendlyApprovalStatus,
+} from '@constants/enum/approvalStatus';
 import { routes } from '@constants/route';
+import {
+  baseSubmissionMessageBuilder,
+  getDescriptionLines,
+} from '@services/external/discord/discordMessageBuilder';
+import { getDiscordService } from '@services/external/discord/discordService';
+import { getConfig } from '@services/internal/configService';
+import { getLog } from '@services/internal/logService';
 
 export const baseVerifyHandler =
   <TD, TF, TP>(module: IApiModule<TD, TF, TP>) =>
@@ -83,23 +91,30 @@ export const baseVerifyHandler =
       return;
     }
 
-    // TODO get discord message
-    // TODO update message colour & content
-
-    // const discordMessage = module.discordMessageBuilder({
-    //   dbId: readRecordResult.value.id,
-    //   dto: readRecordResult.value, // for reuse
-    //   dtoMeta: module.validationObj,
-    //   approvalStatus: approvalStatus,
-    //   includeActionsEmbed: false,
-    // });
-
-    // const discordUrl = getConfig().getDiscordWebhookUrl();
-    // await getDiscordService().updateDiscordMessage(
-    //   discordUrl,
-    //   updateRecordResult.value.discordWebhookId,
-    //   discordMessage,
-    // );
+    const discordWebhookId = readRecordResult.value.discordWebhookId;
+    if (discordWebhookId != null) {
+      const msgColour = colourFromApprovalStatus(approvalStatus);
+      const webhookPayload = baseSubmissionMessageBuilder({
+        content: '',
+        colour: msgColour,
+        descripLines: getDescriptionLines({
+          data: readRecordResult.value,
+          dtoMeta: module.dtoMeta,
+          additionalItemsToDisplay: module.additionalPropsToDisplay,
+        }),
+        additionalEmbeds: [
+          {
+            color: msgColour,
+            description: `Decision: ${getFriendlyApprovalStatus(approvalStatus)}`,
+          },
+        ],
+      });
+      await getDiscordService().updateDiscordMessage(
+        getConfig().getDiscordWebhookUrl(),
+        discordWebhookId,
+        webhookPayload,
+      );
+    }
 
     const urlSegments = [
       getConfig().getNmsUdFormWebUrl(),

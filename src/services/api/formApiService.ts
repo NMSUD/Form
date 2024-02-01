@@ -1,6 +1,6 @@
 import { Container, Service } from 'typedi';
 
-import { api } from '@constants/api';
+import { IApiSegment, api, apiParams } from '@constants/api';
 import { BuilderDto } from '@contracts/dto/forms/builderDto';
 import { CommunityDto } from '@contracts/dto/forms/communityDto';
 import { IFormResponse } from '@contracts/response/formResponse';
@@ -10,6 +10,7 @@ import { getConfig } from '../internal/configService';
 import { BaseApiService } from './baseApiService';
 import { anyObject } from '@helpers/typescriptHacks';
 import { FormDataKey } from '@constants/form';
+import { nameof } from '@helpers/propHelper';
 
 @Service()
 export class FormApiService extends BaseApiService {
@@ -35,7 +36,7 @@ export class FormApiService extends BaseApiService {
     }
     formData.append(FormDataKey.data, JSON.stringify(dataWithoutFiles));
 
-    return this.submitForm(api.routes.form.community, formData);
+    return this.submitForm(nameof<IApiSegment>('community'), formData);
   }
 
   async submitBuilder(data: BuilderDto, captcha: string): Promise<ResultWithValue<IFormResponse>> {
@@ -46,10 +47,11 @@ export class FormApiService extends BaseApiService {
     formData.append(FormDataKey.profilePicFile, profilePicFile);
     formData.append(FormDataKey.data, JSON.stringify(dataWithoutFiles));
 
-    return this.submitForm(api.routes.form.builder, formData);
+    return this.submitForm(nameof<IApiSegment>('builder'), formData);
   }
 
-  async submitForm(urlPath: string, formData: FormData): Promise<ResultWithValue<IFormResponse>> {
+  async submitForm(segment: string, formData: FormData): Promise<ResultWithValue<IFormResponse>> {
+    const urlPath = api.routes.form.replace(`:${apiParams.form.segment}`, segment);
     const url = `${this._apiUrl}/${urlPath}`;
     try {
       const apiResult = await fetch(url, {

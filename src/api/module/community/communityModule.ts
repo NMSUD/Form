@@ -5,14 +5,14 @@ import { Community } from '@services/external/database/xata';
 import { IApiModule } from '../baseModule';
 import { ICommunityImages, communityFileHandler } from './communityFileHandler';
 import { communityDtoWithImageToPersistence, communityPersistenceToDto } from './communityMapper';
-import { communityMessageBuilder } from './communityMessageBuilder';
 import { nameof } from '@helpers/propHelper';
 import { IApiSegment } from '@constants/api';
+import { communityPublicUrlHandler } from './communityPublicUrlHandler';
 
 export const communityModule: IApiModule<CommunityDto, ICommunityImages, Community> = {
   name: 'CommunityDto',
   segment: nameof<IApiSegment>('community'),
-  validationObj: CommunityDtoMeta,
+  dtoMeta: CommunityDtoMeta,
   createRecord: getDatabaseService().community().create,
   readRecord: getDatabaseService().community().read,
   updateRecord: getDatabaseService().community().update,
@@ -21,6 +21,6 @@ export const communityModule: IApiModule<CommunityDto, ICommunityImages, Communi
   mapPersistenceToDto: communityPersistenceToDto,
 
   handleFilesInFormData: communityFileHandler,
-  discordMessageBuilder: communityMessageBuilder,
+  getPublicUrlsOfUploads: communityPublicUrlHandler,
   calculateCheck: (p) => cyrb53([p.id, p.name, p.contactDetails].join('-')),
 };

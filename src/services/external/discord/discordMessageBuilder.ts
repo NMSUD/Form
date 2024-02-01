@@ -9,10 +9,11 @@ import {
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
 import { getConfig } from '../../internal/configService';
+import { addSpacesForEnum, capitalizeFirstLetter } from '@helpers/stringHelper';
 
-export interface IMessageBuilderProps<T> {
+export interface IMessageBuilderProps<T, TP> {
   dbId: string;
-  dto: T;
+  persistence: TP;
   segment: string;
   calculateCheck: number;
   dtoMeta: IFormDtoMeta<T>;
@@ -85,29 +86,31 @@ export const baseSubmissionMessageBuilder = (props: {
 };
 
 export const getDescriptionLines = <T, TK>(props: {
-  dto: T;
-  dtoMeta: TK;
-  itemsToDisplay: Array<keyof T | keyof TK>;
+  data: T;
+  dtoMeta: IFormDtoMeta<TK>;
+  additionalItemsToDisplay?: Array<string>;
 }) => {
   const descripLines: Array<string> = [];
 
-  for (const dtoProp of props.itemsToDisplay) {
-    const localDto =
-      (props.dto as ObjectWithPropsOfValue<string | Array<string>>)[dtoProp.toString()] ??
-      anyObject;
-    const localMeta = (props.dtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>)[
-      dtoProp.toString()
-    ];
-    if (localMeta == null) continue;
+  for (const dtoMetaPropKey in props.dtoMeta) {
+    if (Object.prototype.hasOwnProperty.call(props.dtoMeta, dtoMetaPropKey) == false) continue;
+    const dtoMetaProp = props.dtoMeta[dtoMetaPropKey];
+    if (dtoMetaProp.displayInDiscordMessage != true) continue;
 
-    if (Array.isArray(localDto)) {
+    const localData =
+      (props.data as ObjectWithPropsOfValue<string | Array<string>>)[dtoMetaPropKey] ?? anyObject;
+    const localMeta = (props.dtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>)[
+      dtoMetaPropKey
+    ] ?? { label: capitalizeFirstLetter(addSpacesForEnum(dtoMetaPropKey)) };
+
+    if (Array.isArray(localData)) {
       descripLines.push(`${localMeta.label}:`);
-      for (const dtoItem of makeArrayOrDefault(localDto)) {
+      for (const dtoItem of makeArrayOrDefault(localData)) {
         descripLines.push(`- ${dtoItem}`);
       }
       continue;
     }
-    descripLines.push(`${localMeta.label}: ${localDto}`);
+    descripLines.push(`${localMeta.label}: ${localData}`);
   }
 
   return descripLines;

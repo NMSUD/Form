@@ -12,7 +12,7 @@ import {
 import { useParams } from '@solidjs/router';
 import { Component, Show, createEffect, createSignal } from 'solid-js';
 
-import { apiParams, apiSegments } from '@constants/api';
+import { apiParams, IApiSegment } from '@constants/api';
 import { getFriendlyApprovalStatus } from '@constants/enum/approvalStatus';
 import { NetworkState } from '@constants/enum/networkState';
 import { AppImage } from '@constants/image';
@@ -27,7 +27,11 @@ import { PageHeader } from '../components/common/pageHeader';
 import { FormDropdown } from '../components/form/dropdown/dropdown';
 import { FormLongInput } from '../components/form/text/input';
 
-const segmentOptions = Object.keys(apiSegments).map((seg) => ({
+const segmentObj: IApiSegment = {
+  community: 'community',
+  builder: 'builder',
+};
+const segmentOptions = Object.keys(segmentObj).map((seg) => ({
   title: capitalizeFirstLetter(addSpacesForEnum(seg)),
   value: seg,
 }));
@@ -44,16 +48,20 @@ export const StatusPage: Component = () => {
 
   createEffect(() => {
     const localRecordId = params[apiParams.status.id];
-    const localSegment = [params[apiParams.status.segment]];
-    setRecordId(localRecordId);
-    setSegment(localSegment);
+    const localSegment = params[apiParams.status.segment];
 
-    searchAndDisplay(localSegment, localRecordId);
+    if (localRecordId != null || localSegment != null) {
+      setRecordId(localRecordId);
+      setSegment([localSegment]);
+      searchAndDisplay([localSegment], localRecordId);
+      return;
+    }
+    setNetworkState(NetworkState.Success);
   }, params);
 
   const segmentValidation = multiValidation<Array<string>>(
     minItems(1),
-    selectedItemsExist(Object.keys(apiSegments)),
+    selectedItemsExist(Object.keys(segmentObj)),
   );
 
   const recordIdValidation = multiValidation<string>(minLength(10), maxLength(50));

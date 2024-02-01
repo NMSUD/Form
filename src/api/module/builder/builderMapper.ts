@@ -1,12 +1,11 @@
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
+import { platformTypeFromString, platformTypeToString } from '@contracts/dto/enum/platformType';
 import { BuilderDto } from '@contracts/dto/forms/builderDto';
 import { DtoAndImageMapperToNewPersistence, Mapper } from '@contracts/mapper';
-import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { anyObject } from '@helpers/typescriptHacks';
 import { Builder } from '@services/external/database/xata';
-import { XataArrayFile, XataFile } from '@xata.io/client';
+import { XataFile } from '@xata.io/client';
 import { IBuilderImages } from './builderFileHandler';
-import { platformTypeFromString, platformTypeToString } from '@contracts/dto/enum/platformType';
 
 export const builderDtoWithImageToPersistence: DtoAndImageMapperToNewPersistence<
   BuilderDto,

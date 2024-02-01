@@ -43,45 +43,55 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
   name: {
     label: 'Name',
     defaultValue: '',
+    displayInDiscordMessage: true,
     helpText: 'Your IN-GAME character name',
     validator: multiValidation(minLength(2), maxLength(100)),
   },
   bio: {
     label: 'Bio',
     defaultValue: '',
+    displayInDiscordMessage: true,
     validator: multiValidation(minLength(2), maxLength(builderBioMaxLength)),
   },
   platforms: {
     label: 'Platforms',
     defaultValue: [],
+    displayInDiscordMessage: true,
     validator: minItems(1),
   },
   startedPlaying: {
     label: 'Date that you started playing',
+    displayInDiscordMessage: true,
     validator: noValidation,
   },
   buildTechniquesUsed: {
     label: 'Build techniques used',
     defaultValue: [],
+    displayInDiscordMessage: true,
     validator: noValidation,
   },
   communityAffiliations: {
     label: 'Community affiliations',
     defaultValue: [],
+    displayInDiscordMessage: true,
     validator: noValidation,
   },
   labels: {
     label: 'Labels',
     defaultValue: [],
+    displayInDiscordMessage: true,
     validator: noValidation,
   },
   socials: {
     label: 'Socials',
     defaultValue: [],
+    displayInDiscordMessage: true,
     validator: validateForEach(multiValidation(minLength(2), shouldBeUrl)),
   },
   contactDetails: {
-    label: 'Contact Details',
+    label: 'Contact Details (only visible to NMSUD organisers)',
+    helpText: `This is so that we can get in contact with you if there are any issue with your submissions, etc.`,
+    displayInDiscordMessage: true,
     validator: maxLength(builderContactDetailsMaxLength),
   },
 };

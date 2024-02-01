@@ -31,5 +31,5 @@ export interface DiscordWebhookAttachment {
 export interface DiscordWebhookField {
   name: string;
   value: string;
-  inline: boolean;
+  inline?: boolean;
 }

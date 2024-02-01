@@ -1,22 +1,14 @@
-import {
-  Avatar,
-  Box,
-  Center,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Icon,
-} from '@hope-ui/solid';
-import { Component, Match, Switch, createEffect, createSignal } from 'solid-js';
+import { Box, Center, Flex, FormControl, FormErrorMessage, FormLabel } from '@hope-ui/solid';
+import { Component, createEffect, createSignal } from 'solid-js';
+
 import { NetworkState } from '@constants/enum/networkState';
 import { AppImage } from '@constants/image';
 import { onTargetFile } from '@helpers/eventHelper';
 import { IImageParams, getImageParams } from '@helpers/imageHelper';
 import { useValidation } from '../../../hooks/useValidation';
-import { LoadingSpinner } from '../../core/loading';
 import { IFormInputProps } from '../formBuilder';
-import { HelpIcon } from '../helpIcon/helpIcon';
+import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
+import { FormProfileImageLoading } from './profileImageLoading';
 
 interface IFormProfileImageUrlProps extends IFormInputProps<File> {
   imageValue?: string;
@@ -36,12 +28,14 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
   props: IFormProfileImageUrlProps,
 ) => {
   let inputRef: HTMLDivElement;
+  const [isValid, calcIsValid] = useValidation(props.validation);
+
   const [currentImage, setCurrentImage] = createSignal<string>(
     getImageOrFallback(props.value, props.imageValue),
   );
   const [imageDetails, setImageDetails] = createSignal<IImageParams>();
+  const [fileToProcess, setFileToProcess] = createSignal<File>();
   const [networkState, setNetworkState] = createSignal<NetworkState>(NetworkState.Success);
-  const [isValid, calcIsValid] = useValidation(props.validation);
 
   createEffect(() => {
     if (props.showValidationMessages === true) {
@@ -52,6 +46,27 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
     }
   }, [props.showValidationMessages]);
 
+  createEffect(async () => {
+    const localFileToProcess = fileToProcess();
+    if (localFileToProcess == null) return;
+
+    try {
+      setCurrentImage(URL.createObjectURL(localFileToProcess));
+      const imgWithExtraDetails = await getImageParams(localFileToProcess);
+      setImageDetails(imgWithExtraDetails);
+      calcIsValid({
+        ...localFileToProcess,
+        ...imgWithExtraDetails,
+      });
+      props.onChange(localFileToProcess);
+      setNetworkState(NetworkState.Success);
+    } catch (ex) {
+      setNetworkState(NetworkState.Error);
+    } finally {
+      setFileToProcess(undefined);
+    }
+  }, [fileToProcess]);
+
   createEffect(() => {
     if (props.value == null) {
       setCurrentImage(getImageOrFallback(props.value, props.imageValue));
@@ -60,22 +75,7 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
 
   const handleFileChange = async (uploadedFile: File) => {
     setNetworkState(NetworkState.Loading);
-
-    setTimeout(async () => {
-      try {
-        setCurrentImage(URL.createObjectURL(uploadedFile));
-        const imgWithExtraDetails = await getImageParams(uploadedFile);
-        setImageDetails(imgWithExtraDetails);
-        calcIsValid({
-          ...uploadedFile,
-          ...imgWithExtraDetails,
-        });
-        props.onChange(uploadedFile);
-        setNetworkState(NetworkState.Success);
-      } catch (ex) {
-        setNetworkState(NetworkState.Error);
-      }
-    }, 200);
+    setFileToProcess(uploadedFile);
   };
 
   return (
@@ -87,31 +87,10 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
       >
         <FormLabel textAlign="center" for={props.id}>
           {props.label}
-          <HelpIcon helpText={props.helpText} />
+          <HelpIconTooltip helpText={props.helpText} />
         </FormLabel>
         <Center h="100%">
-          <Switch
-            fallback={
-              <Avatar
-                mt="$3"
-                size="xl"
-                name="+"
-                class="noselect no-drag"
-                draggable={false}
-                borderRadius="0.25em"
-                src={currentImage()}
-              />
-            }
-          >
-            <Match when={networkState() === NetworkState.Loading}>
-              <Box pt="2em">
-                <LoadingSpinner />
-              </Box>
-            </Match>
-            <Match when={networkState() === NetworkState.Error}>
-              <Icon />
-            </Match>
-          </Switch>
+          <FormProfileImageLoading imageUrl={currentImage()} networkState={networkState()} />
         </Center>
         <Box display="none">
           <input
@@ -124,7 +103,7 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
         </Box>
         <Box mt="$3" textAlign="center">
           <FormControl invalid={!isValid().isValid}>
-            <FormErrorMessage>{isValid().errorMessage}</FormErrorMessage>
+            <FormErrorMessage textAlign="center">{isValid().errorMessage}</FormErrorMessage>
           </FormControl>
         </Box>
       </Flex>

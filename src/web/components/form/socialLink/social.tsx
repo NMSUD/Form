@@ -15,7 +15,7 @@ import { onTargetValue } from '@helpers/eventHelper';
 import { useValidation } from '../../../hooks/useValidation';
 import { RightArrowIcon } from '../../common/icon/rightArrowIcon';
 import { IFormInputProps } from '../formBuilder';
-import { HelpIcon } from '../helpIcon/helpIcon';
+import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 import { AvatarFromSocialLink } from './socialLinkAvatar';
 
 interface IFormSocialProps extends IFormInputProps<Array<string>> {}
@@ -61,7 +61,7 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
       <FormControl invalid={!isValid().isValid}>
         <FormLabel textAlign="center" for={props.id}>
           {props.label}
-          <HelpIcon helpText={props.helpText} />
+          <HelpIconTooltip helpText={props.helpText} />
         </FormLabel>
 
         <InputGroup>

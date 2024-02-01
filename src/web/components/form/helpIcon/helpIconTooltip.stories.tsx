@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from 'storybook-solidjs';
 
 import { UseHopeUIThemeProvider } from '../../storybook';
-import { HelpIcon } from './helpIcon';
+import { HelpIconTooltip } from './helpIconTooltip';
 
 const meta = {
   title: 'Form/HelpIcon',
-  component: HelpIcon,
+  component: HelpIconTooltip,
   decorators: [UseHopeUIThemeProvider],
   tags: ['autodocs'],
   argTypes: {
     helpText: { control: 'text' },
   },
-} satisfies Meta<typeof HelpIcon>;
+} satisfies Meta<typeof HelpIconTooltip>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

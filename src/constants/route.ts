@@ -3,6 +3,7 @@ export interface IRouteOptions {
   title?: string;
   sidebarPath?: string;
   showInSidebar: boolean;
+  addDividerAbove?: boolean;
 }
 
 export const routes = {
@@ -45,6 +46,7 @@ export const routes = {
     pathWithParams: '/status/:segment/:id',
     sidebarPath: '/status',
     title: '🔍 View Status',
+    addDividerAbove: true,
     showInSidebar: true,
     pathParam: {
       segment: 'segment',

@@ -4,7 +4,7 @@ import { Component, Show, createEffect, createSignal } from 'solid-js';
 import { onTargetValue } from '@helpers/eventHelper';
 import { useValidation } from '@web/hooks/useValidation';
 import { IFormInputProps } from '../formBuilder';
-import { HelpIcon } from '../helpIcon/helpIcon';
+import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 
 interface IFormTextAreaProps extends IFormInputProps<string> {
   minH?: string;
@@ -27,7 +27,7 @@ export const FormTextArea: Component<IFormTextAreaProps> = (props: IFormTextArea
     <FormControl invalid={!isValid().isValid}>
       <FormLabel for={props.id} width="100%">
         {props.label}
-        <HelpIcon helpText={props.helpText} />
+        <HelpIconTooltip helpText={props.helpText} />
 
         <Show when={props.displayTextLength}>
           <span style={{ float: 'right', 'margin-right': '0.5em' }}>

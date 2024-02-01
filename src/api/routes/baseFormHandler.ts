@@ -4,9 +4,14 @@ import { hasCaptcha } from '@api/guard/hasCaptcha';
 import { errorResponse } from '@api/misc/httpResponse/errorResponse';
 import { IApiModule, IRecordRequirements } from '@api/module/baseModule';
 import { ApiStatusErrorCode } from '@constants/api';
-import { ApprovalStatus } from '@constants/enum/approvalStatus';
+import { ApprovalStatus, colourFromApprovalStatus } from '@constants/enum/approvalStatus';
 import { FormDataKey } from '@constants/form';
 import { anyObject } from '@helpers/typescriptHacks';
+import {
+  baseSubmissionMessageBuilder,
+  baseSubmissionMessageEmbed,
+  getDescriptionLines,
+} from '@services/external/discord/discordMessageBuilder';
 import { getDiscordService } from '@services/external/discord/discordService';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
@@ -70,7 +75,7 @@ export const baseFormHandler =
 
     const failedValidationMsgs = validateObj<TD>({
       data: data,
-      validationObj: module.validationObj,
+      validationObj: module.dtoMeta,
     }).filter((v) => v.isValid === false);
 
     if (failedValidationMsgs.length > 0) {
@@ -98,15 +103,24 @@ export const baseFormHandler =
       return;
     }
 
+    const persistenceWithImgUrls = module.getPublicUrlsOfUploads(formResponse.value);
+
     const discordUrl = getConfig().getDiscordWebhookUrl();
-    const webhookPayload = module.discordMessageBuilder({
-      dbId: formResponse.value.id,
-      dto: data,
-      segment: module.segment,
-      dtoMeta: module.validationObj,
-      calculateCheck: module.calculateCheck(formResponse.value),
-      includeActionsEmbed: true,
-      approvalStatus: ApprovalStatus.pending,
+    const webhookPayload = baseSubmissionMessageBuilder({
+      content: '',
+      colour: colourFromApprovalStatus(ApprovalStatus.pending),
+      descripLines: getDescriptionLines({
+        data: persistenceWithImgUrls,
+        dtoMeta: module.dtoMeta,
+        additionalItemsToDisplay: module.additionalPropsToDisplay,
+      }),
+      additionalEmbeds: [
+        baseSubmissionMessageEmbed(
+          formResponse.value.id,
+          module.calculateCheck(formResponse.value),
+          module.segment,
+        ),
+      ],
     });
     const discordResponse = await getDiscordService().sendDiscordMessage(
       discordUrl,
@@ -114,7 +128,7 @@ export const baseFormHandler =
     );
     if (discordResponse.isSuccess) {
       await module.updateRecord(formResponse.value.id, {
-        ...persistence,
+        ...persistenceWithImgUrls,
         id: formResponse.value.id,
         discordWebhookId: discordResponse.value.id,
       } as TP & IRecordRequirements);

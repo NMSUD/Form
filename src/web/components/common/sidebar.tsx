@@ -11,7 +11,7 @@ import {
   TextProps,
   VStack,
 } from '@hope-ui/solid';
-import { Component, For, createSignal } from 'solid-js';
+import { Component, For, Show, createSignal } from 'solid-js';
 
 import { Link } from '@solidjs/router';
 import { IRouteOptions, routes, traverseRoutes } from '@constants/route';
@@ -26,12 +26,13 @@ export const Sidebar: Component = () => {
     return <Text fontSize="$sm" fontWeight="$bold" textTransform="uppercase" mb="$2" {...props} />;
   };
 
-  const menuItems: Array<{ route: string; title: string }> = [];
+  const menuItems: Array<{ route: string; title: string; addDividerAbove?: boolean }> = [];
   traverseRoutes(routes, (routeData: IRouteOptions) => {
     if (routeData?.showInSidebar === true) {
       menuItems.push({
         route: routeData.sidebarPath ?? routeData.path,
         title: routeData.title ?? '??',
+        addDividerAbove: routeData.addDividerAbove,
       });
     }
   });
@@ -75,7 +76,12 @@ export const Sidebar: Component = () => {
 
             <For each={menuItems}>
               {(menuItem) => (
-                <SidebarNavLink href={menuItem.route}>{menuItem.title}</SidebarNavLink>
+                <>
+                  <Show when={menuItem.addDividerAbove}>
+                    <Divider my="0.5em" mx="auto" opacity="50%" width="95%" />
+                  </Show>
+                  <SidebarNavLink href={menuItem.route}>{menuItem.title}</SidebarNavLink>
+                </>
               )}
             </For>
           </VStack>

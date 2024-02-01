@@ -23,7 +23,7 @@ import { IDropdownOption } from '@contracts/dropdownOption';
 import { ValidationResult } from '@contracts/validationResult';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { useValidation } from '../../hooks/useValidation';
-import { HelpIcon } from '../form/helpIcon/helpIcon';
+import { HelpIconTooltip } from '../form/helpIcon/helpIconTooltip';
 
 interface IProps {
   title: string;
@@ -73,7 +73,7 @@ export const Dropdown: Component<IProps> = (props: IProps) => {
       <Show when={props.hideTitle != true}>
         <FormLabel>
           {props.title}
-          <HelpIcon helpText={props.helpText} />
+          <HelpIconTooltip helpText={props.helpText} />
         </FormLabel>
       </Show>
       <Select multiple={props.multiple} value={selectedOptions()} onChange={onSelectOption}>
