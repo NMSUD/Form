@@ -34,6 +34,11 @@ export interface IApiSegment {
   // planetaryBase: string;
 }
 
+export const segmentLabels: IApiSegment = {
+  community: 'Community',
+  builder: 'Builder',
+};
+
 export const ApiStatusErrorCode = {
   validation: 460,
   segmentNotFound: 461,

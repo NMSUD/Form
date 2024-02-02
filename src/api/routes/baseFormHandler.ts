@@ -11,7 +11,7 @@ import {
   baseSubmissionMessageBuilder,
   baseSubmissionMessageEmbed,
   getDescriptionLines,
-} from '@services/external/discord/discordMessageBuilder';
+} from '@helpers/discordMessageHelper';
 import { getDiscordService } from '@services/external/discord/discordService';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
@@ -104,11 +104,16 @@ export const baseFormHandler =
     }
 
     const persistenceWithImgUrls = module.getPublicUrlsOfUploads(formResponse.value);
+    const authorName = module.getName(persistenceWithImgUrls);
+    const iconUrl = module.getIcon?.(persistenceWithImgUrls);
+    const msgColour = colourFromApprovalStatus(ApprovalStatus.pending);
 
     const discordUrl = getConfig().getDiscordWebhookUrl();
     const webhookPayload = baseSubmissionMessageBuilder({
       content: '',
-      colour: colourFromApprovalStatus(ApprovalStatus.pending),
+      authorName: authorName,
+      iconUrl: iconUrl ?? undefined,
+      colour: msgColour,
       descripLines: getDescriptionLines({
         data: persistenceWithImgUrls,
         dtoMeta: module.dtoMeta,

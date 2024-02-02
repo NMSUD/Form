@@ -15,6 +15,9 @@ import { validateObj } from '@validation/baseValidation';
 import { BasicLink } from '@web/components/core/link';
 import { FormFieldGrid, FormFieldGridCell, GridItemSize } from '@web/components/form/grid';
 import { StatusNotificationTile } from '@web/components/form/statusNotificationTile';
+import { IApiSegment } from '@constants/api';
+import { IDropdownOption } from '@contracts/dropdownOption';
+import { getStateService } from '@services/internal/stateService';
 
 interface IPropertyToFormMappingExtraProp<T> {
   [prop: string]: (item: T) => unknown;
@@ -43,22 +46,19 @@ export interface IPropertyToFormMapping<T> {
   additional?: IPropertyToFormMappingExtraProp<T>;
 }
 
-interface IItemRequirements {
-  name: string;
-}
-
 interface IProps<T> {
   item: T;
   id: string;
-  segment: string;
+  segment: keyof IApiSegment;
   mappings: IComponentMapping<T>;
   formDtoMeta: IFormDtoMeta<T>;
+  getName: (item: T) => string;
   updateObject: (item: T) => void;
   updateProperty: (prop: string, value: unknown) => void;
   submit: (item: T, captcha: string) => Promise<ResultWithValue<IFormResponse>>;
 }
 
-export const FormBuilder = <T extends IItemRequirements>(props: IProps<T>) => {
+export const FormBuilder = <T,>(props: IProps<T>) => {
   let captchaRef: HTMLDivElement;
   const [itemBeingEdited, setItemBeingEdited] = createSignal<T>(props.item);
   const [forceValidationMessages, setForceValidationMessages] = createSignal<boolean>(false);
@@ -133,39 +133,43 @@ export const FormBuilder = <T extends IItemRequirements>(props: IProps<T>) => {
 
     const submitTask = await props.submit(itemBeingEdited(), captchaResp);
     if (submitTask.isSuccess === false) {
+      notificationService.show({
+        status: 'danger',
+        title: 'Something went wrong!',
+        description: `Unable to confirm that your data was submitted correctly. Please either try submitting again or reach out to one of the NMSUD organisers`,
+      });
       setNetworkState(NetworkState.Success);
       return;
     }
 
+    const dropDownOpt: IDropdownOption = {
+      title: props.getName(itemBeingEdited()),
+      value: submitTask.value.id,
+      image: submitTask.value.iconUrl,
+    };
+    getStateService().addSubmission(props.segment, dropDownOpt);
+
     notificationService.show({
       status: 'success',
       title: 'Form submitted successfully',
-      description:
-        'Thank you for your submission! We will verify your submission as soon as possible',
+      description: `Thank you for your submission! We will verify your submission as soon as possible`,
     });
 
-    const urlSegments = [
-      getConfig().getNmsUdFormWebUrl(),
-      '/#',
-      routes.status.path,
-      '/',
-      props.segment,
-      '/',
-      submitTask.value.id,
-    ];
+    const urlSegments = [getConfig().getNmsUdFormWebUrl(), '/#', routes.status.path];
     notificationService.show({
       render: (notificationProps) => (
         <StatusNotificationTile
           {...notificationProps}
-          imgUrl={AppImage.sidebarLogo}
+          imgUrl={submitTask.value.iconUrl ?? AppImage.sidebarLogo}
           title="View the status of your submission here:"
           descrip={
             <BasicLink
               href={urlSegments.join('')}
               title="View status"
+              disableRef={true}
               additionalClassNames="noselect"
             >
-              View Status of {props.segment} '{itemBeingEdited().name}'
+              View Status of {props.segment} '{props.getName(itemBeingEdited())}'
             </BasicLink>
           }
         />

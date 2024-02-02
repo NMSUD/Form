@@ -10,10 +10,7 @@ import {
   getFriendlyApprovalStatus,
 } from '@constants/enum/approvalStatus';
 import { routes } from '@constants/route';
-import {
-  baseSubmissionMessageBuilder,
-  getDescriptionLines,
-} from '@services/external/discord/discordMessageBuilder';
+import { baseSubmissionMessageBuilder, getDescriptionLines } from '@helpers/discordMessageHelper';
 import { getDiscordService } from '@services/external/discord/discordService';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
@@ -21,18 +18,17 @@ import { getLog } from '@services/internal/logService';
 export const baseVerifyHandler =
   <TD, TF, TP>(module: IApiModule<TD, TF, TP>) =>
   async (ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>) => {
-    const name = `verifyHandler-${module.name}`;
-
     const params: IVerifyRequestParams = {
       id: ctx.params[apiParams.verify.id],
       decision: ctx.params[apiParams.verify.decision],
       check: ctx.params[apiParams.verify.check],
     };
-    getLog().i(`${name}-id-${params.id}`);
+    const handlerName = `verifyHandler ${module.name} ${params.id}`;
+    getLog().i(handlerName);
 
     const approvalStatus = approvalStatusFromString(params.decision);
     if (approvalStatus == null) {
-      const errMsg = `Approval status not understood: ${params.decision}`;
+      const errMsg = `${handlerName}: Approval status not understood: ${params.decision}`;
       getLog().e(errMsg);
       await errorResponse({
         ctx,
@@ -45,7 +41,7 @@ export const baseVerifyHandler =
 
     const readRecordResult = await module.readRecord(params.id);
     if (readRecordResult.isSuccess == false || readRecordResult.value == null) {
-      const errMsg = `An error occurred while getting a db record with id: ${params.id}`;
+      const errMsg = `${handlerName}: An error occurred while getting a db record with id: ${params.id}`;
       getLog().e(errMsg);
       await errorResponse({
         ctx,
@@ -56,13 +52,30 @@ export const baseVerifyHandler =
       return;
     }
 
+    const urlSegments = [
+      getConfig().getNmsUdFormWebUrl(),
+      '/#/',
+      routes.verify.path,
+      '?',
+      routes.verify.queryParam.decision,
+      '=',
+      params.decision,
+    ];
+    if (readRecordResult.value.approvalStatus == approvalStatus) {
+      getLog().i(`${handlerName}: Approval status recieved matches what is in the database`);
+      ctx.response.status = 303;
+      ctx.redirect(urlSegments.join(''));
+      await next();
+      return;
+    }
+
     try {
       const calculatedCheck = module.calculateCheck(readRecordResult.value);
       if (calculatedCheck != parseInt(params.check)) {
         throw 'calculated check value does not match the supplied check';
       }
     } catch (ex) {
-      const errMsg = `The calculated check value does not match the supplied check value. Maybe the data changed?`;
+      const errMsg = `${handlerName}: The calculated check value does not match the supplied check value. Maybe the data changed?`;
       getLog().e(errMsg);
       await errorResponse({
         ctx,
@@ -78,9 +91,10 @@ export const baseVerifyHandler =
       approvalStatus,
     };
 
+    getLog().i(`${handlerName}: Updating database record`);
     const updateRecordResult = await module.updateRecord(updatedPersistence.id, updatedPersistence);
     if (updateRecordResult.isSuccess == false) {
-      const errMsg = `An error occurred while updating the approval status of record: ${params.id}`;
+      const errMsg = `${handlerName}: An error occurred while updating the approval status of record: ${params.id}`;
       getLog().e(errMsg);
       await errorResponse({
         ctx,
@@ -93,21 +107,24 @@ export const baseVerifyHandler =
 
     const discordWebhookId = readRecordResult.value.discordWebhookId;
     if (discordWebhookId != null) {
+      getLog().i(`${handlerName}: Updating Discord message`);
       const msgColour = colourFromApprovalStatus(approvalStatus);
+      const authorName = module.getName(readRecordResult.value);
+      const iconUrl = module.getIcon?.(readRecordResult.value);
       const webhookPayload = baseSubmissionMessageBuilder({
         content: '',
         colour: msgColour,
-        descripLines: getDescriptionLines({
-          data: readRecordResult.value,
-          dtoMeta: module.dtoMeta,
-          additionalItemsToDisplay: module.additionalPropsToDisplay,
-        }),
-        additionalEmbeds: [
-          {
-            color: msgColour,
-            description: `Decision: ${getFriendlyApprovalStatus(approvalStatus)}`,
-          },
+        authorName,
+        iconUrl,
+        descripLines: [
+          ...getDescriptionLines({
+            data: readRecordResult.value,
+            dtoMeta: module.dtoMeta,
+            additionalItemsToDisplay: module.additionalPropsToDisplay,
+          }),
+          `\n**Decision: ${getFriendlyApprovalStatus(approvalStatus)}**`,
         ],
+        additionalEmbeds: [],
       });
       await getDiscordService().updateDiscordMessage(
         getConfig().getDiscordWebhookUrl(),
@@ -116,17 +133,7 @@ export const baseVerifyHandler =
       );
     }
 
-    const urlSegments = [
-      getConfig().getNmsUdFormWebUrl(),
-      '/#/',
-      routes.verify.path,
-      '?',
-      routes.verify.queryParam.decision,
-      '=',
-      params.decision,
-    ];
-    ctx.response.status = 301;
+    ctx.response.status = 303;
     ctx.redirect(urlSegments.join(''));
-
     await next();
   };

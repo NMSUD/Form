@@ -5,6 +5,7 @@ interface IProps {
   id?: string;
   href: string;
   title?: string;
+  disableRef?: boolean;
   onClick?: () => void;
   additionalClassNames?: string;
   children?: JSX.Element;
@@ -14,6 +15,7 @@ export const siteRef = 'nmscdCommunitySearch';
 
 export const BasicLink: Component<IProps> = (props: IProps) => {
   const appendRef = (baseUrl: string) => {
+    if (props.disableRef == true) return baseUrl;
     if (baseUrl.includes('@')) return baseUrl;
     if (baseUrl.includes('?')) {
       return baseUrl + `&ref=${siteRef}`;

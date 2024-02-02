@@ -12,6 +12,7 @@
     "build": "npm-run-all --sequential build:* copy:*",
     "build:api": "tsc -p ./tsconfig.server.json",
     "build:web": "vite build",
+    "data:downloader": "dotenv -- ts-node --project tsconfig.server.json src/data/downloader.ts",
     "data:dev": "dotenv -- ts-node --project tsconfig.server.json src/data/interactive.ts",
     "db:generate": "xata codegen",
     "copy:prod": "node scripts/copyProdFiles.js",

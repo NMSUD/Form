@@ -3,7 +3,6 @@ import { addSpacesForEnum, capitalizeFirstLetter } from '@helpers/stringHelper';
 export enum ApprovalStatus {
   pending,
   changesNeeded,
-  approvedAndProcessing,
   approved,
   denied,
 }
@@ -14,7 +13,6 @@ export const approvalStatusFromString = (approvalStatus: string): ApprovalStatus
   const approvalLookup = {
     [ApprovalStatus[ApprovalStatus.pending]]: ApprovalStatus.pending,
     [ApprovalStatus[ApprovalStatus.changesNeeded]]: ApprovalStatus.changesNeeded,
-    [ApprovalStatus[ApprovalStatus.approvedAndProcessing]]: ApprovalStatus.approvedAndProcessing,
     [ApprovalStatus[ApprovalStatus.approved]]: ApprovalStatus.approved,
     [ApprovalStatus[ApprovalStatus.denied]]: ApprovalStatus.denied,
   };
@@ -26,7 +24,6 @@ export const colourFromApprovalStatus = (approvalStatus: ApprovalStatus): number
   const approvalLookup = {
     [ApprovalStatus.pending]: 5814783,
     [ApprovalStatus.changesNeeded]: 5814783,
-    [ApprovalStatus.approvedAndProcessing]: 32768,
     [ApprovalStatus.approved]: 32768,
     [ApprovalStatus.denied]: 13369858,
   };

@@ -5,7 +5,7 @@ export type IFormDtoMetaDetails<TV> = {
   validationLabel?: string;
   helpText?: string;
   defaultValue?: TV;
-  displayInDiscordMessage?: boolean;
+  displayInDiscordMessage?: (label: string, value: TV) => Array<string>;
   validator: (val: TV) => ValidationResult;
 };
 

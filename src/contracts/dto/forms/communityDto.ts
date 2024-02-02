@@ -10,6 +10,11 @@ import {
 import { webImageRestrictions } from '@validation/imageValidation';
 import { maxLength, minLength, shouldBeUrl } from '@validation/textValidation';
 import { IFormDtoMeta } from './baseFormDto';
+import {
+  arrayDiscordLine,
+  basicDiscordLine,
+  shortLinkDiscordLine,
+} from '@helpers/discordMessageHelper';
 
 export const communityBioMaxLength = 500;
 export const communityContactDetailsMaxLength = 500;
@@ -30,7 +35,7 @@ export interface CommunityDto {
 export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
   profilePicUrl: {
     label: 'Profile Pic Url',
-    displayInDiscordMessage: true,
+    displayInDiscordMessage: shortLinkDiscordLine('click to open'),
     validator: noValidation,
   },
   profilePicFile: {
@@ -47,16 +52,21 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
   name: {
     label: 'Name',
     defaultValue: '',
-    displayInDiscordMessage: true,
+    displayInDiscordMessage: basicDiscordLine,
     validator: multiValidation(minLength(2), maxLength(100)),
   },
   bio: {
     label: 'Bio',
     defaultValue: '',
-    displayInDiscordMessage: true,
+    displayInDiscordMessage: basicDiscordLine,
     validator: multiValidation(minLength(2), maxLength(communityBioMaxLength)),
   },
-  bioMediaUrls: { label: 'Bio Media', validator: noValidation },
+  bioMediaUrls: {
+    label: 'Bio Media',
+    defaultValue: [],
+    displayInDiscordMessage: arrayDiscordLine,
+    validator: noValidation,
+  },
   bioMediaFiles: {
     label: 'Media upload',
     validator: seperateValidation({
@@ -67,20 +77,20 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
   homeGalaxies: {
     label: 'Home Galaxies',
     defaultValue: [],
-    displayInDiscordMessage: true,
+    // displayInDiscordMessage: arrayDiscordLine,
     validator: noValidation,
   },
   tags: {
     label: 'Tags',
     defaultValue: [],
-    displayInDiscordMessage: true,
+    displayInDiscordMessage: arrayDiscordLine,
     validator: minItems(1),
   },
   socials: {
     label: 'Socials',
     defaultValue: [],
     helpText: `Add links by pressing the "ENTER" key or clicking the arrow on the right hand side. These links will be displayed as icons, if we are missing a customised icon for a link, please feel free to let us know if the feedback page!`,
-    displayInDiscordMessage: true,
+    displayInDiscordMessage: arrayDiscordLine,
     validator: multiValidation(
       minItems(1),
       maxItems(10),
@@ -90,7 +100,7 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
   contactDetails: {
     label: 'Contact Details (only visible to NMSUD organisers)',
     helpText: `This is so that we can get in contact with you if there are any issue with your submissions, etc.`,
-    displayInDiscordMessage: true,
+    displayInDiscordMessage: basicDiscordLine,
     defaultValue: '',
     validator: maxLength(communityBioMaxLength),
   },

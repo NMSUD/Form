@@ -8,8 +8,8 @@ import {
 } from '@contracts/generated/discordWebhook';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
-import { getConfig } from '../../internal/configService';
 import { addSpacesForEnum, capitalizeFirstLetter } from '@helpers/stringHelper';
+import { getConfig } from '@services/internal/configService';
 
 export interface IMessageBuilderProps<T, TP> {
   dbId: string;
@@ -34,10 +34,7 @@ export const baseSubmissionMessageEmbed = (
       .replaceAll(`:${apiParams.verify.id}`, dbId)
       .replaceAll(`:${apiParams.verify.segment}`, segment)
       .replaceAll(`:${apiParams.verify.check}`, check.toString())
-      .replaceAll(
-        `:${apiParams.verify.decision}`,
-        approvalStatusToString(ApprovalStatus.approvedAndProcessing),
-      );
+      .replaceAll(`:${apiParams.verify.decision}`, approvalStatusToString(ApprovalStatus.approved));
   const quickRejectUrl =
     apiUrl +
     '/' +
@@ -66,6 +63,8 @@ export const baseSubmissionMessageEmbed = (
 export const baseSubmissionMessageBuilder = (props: {
   content: string;
   colour: number;
+  authorName?: string;
+  iconUrl?: string | null;
   descripLines: Array<string>;
   additionalEmbeds: Array<DiscordWebhookEmbed>;
 }): DiscordWebhook => {
@@ -73,6 +72,10 @@ export const baseSubmissionMessageBuilder = (props: {
     {
       description: props.descripLines.join('\n'),
       color: props.colour,
+      author: {
+        name: props.authorName ?? 'NMSUD form Submission',
+        icon_url: props.iconUrl ?? undefined,
+      },
     },
     ...props.additionalEmbeds,
   ];
@@ -95,7 +98,7 @@ export const getDescriptionLines = <T, TK>(props: {
   for (const dtoMetaPropKey in props.dtoMeta) {
     if (Object.prototype.hasOwnProperty.call(props.dtoMeta, dtoMetaPropKey) == false) continue;
     const dtoMetaProp = props.dtoMeta[dtoMetaPropKey];
-    if (dtoMetaProp.displayInDiscordMessage != true) continue;
+    if (dtoMetaProp.displayInDiscordMessage == null) continue;
 
     const localData =
       (props.data as ObjectWithPropsOfValue<string | Array<string>>)[dtoMetaPropKey] ?? anyObject;
@@ -103,15 +106,27 @@ export const getDescriptionLines = <T, TK>(props: {
       dtoMetaPropKey
     ] ?? { label: capitalizeFirstLetter(addSpacesForEnum(dtoMetaPropKey)) };
 
-    if (Array.isArray(localData)) {
-      descripLines.push(`${localMeta.label}:`);
-      for (const dtoItem of makeArrayOrDefault(localData)) {
-        descripLines.push(`- ${dtoItem}`);
-      }
-      continue;
-    }
-    descripLines.push(`${localMeta.label}: ${localData}`);
+    // if (Array.isArray(localData)) {
+    //   descripLines.push(`${localMeta.label}:`);
+    //   for (const dtoItem of makeArrayOrDefault(localData)) {
+    //     descripLines.push(`- ${dtoItem}`);
+    //   }
+    //   continue;
+    // }
+    // descripLines.push(`${localMeta.label}: ${localData}`);
+    const lines = dtoMetaProp.displayInDiscordMessage(localMeta.label, localData);
+    lines.map((line) => descripLines.push(line));
   }
 
   return descripLines;
 };
+
+export const basicDiscordLine = (label: string, value: string) => [
+  `**${label}**: ${value}`, //
+];
+export const shortLinkDiscordLine = (linkText: string) => (label: string, value: string) => [
+  `**${label}**: [${linkText}](${value})`,
+];
+export const arrayDiscordLine = (label: string, values: Array<string>) => [
+  `**${label}**: ${makeArrayOrDefault(values).join(', ')}`,
+];

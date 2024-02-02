@@ -5,16 +5,18 @@ import { Community } from '@services/external/database/xata';
 import { IApiModule } from '../baseModule';
 import { ICommunityImages, communityFileHandler } from './communityFileHandler';
 import { communityDtoWithImageToPersistence, communityPersistenceToDto } from './communityMapper';
-import { nameof } from '@helpers/propHelper';
-import { IApiSegment } from '@constants/api';
 import { communityPublicUrlHandler } from './communityPublicUrlHandler';
 
 export const communityModule: IApiModule<CommunityDto, ICommunityImages, Community> = {
   name: 'CommunityDto',
-  segment: nameof<IApiSegment>('community'),
+  segment: 'community',
   dtoMeta: CommunityDtoMeta,
+  getName: (persistence: Community) => persistence.name,
+  getIcon: (persistence: Community) => persistence.profilePicUrl,
+
   createRecord: getDatabaseService().community().create,
   readRecord: getDatabaseService().community().read,
+  readAllRecords: getDatabaseService().community().readAll,
   updateRecord: getDatabaseService().community().update,
 
   mapDtoWithImageToPersistence: communityDtoWithImageToPersistence,

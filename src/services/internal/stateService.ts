@@ -3,15 +3,13 @@ import { Container, Service } from 'typedi';
 import { LocalStorageKey } from '@constants/site';
 import { IDropdownOption } from '@contracts/dropdownOption';
 import { debounceLeading } from '@helpers/debounceHelper';
+import { IApiSegment } from '@constants/api';
 import { getLocalStorage } from './localStorageService';
 
-interface ISubmissionState {
-  community: Array<IDropdownOption>;
-  builder: Array<IDropdownOption>;
-  baseBuild: Array<IDropdownOption>;
-}
 interface IState {
-  submissions: ISubmissionState;
+  submissions: {
+    [prop in keyof IApiSegment]: Array<IDropdownOption>;
+  };
 }
 
 @Service()
@@ -20,7 +18,6 @@ export class StateService {
     submissions: {
       community: [],
       builder: [],
-      baseBuild: [],
     },
   };
 
@@ -31,14 +28,19 @@ export class StateService {
     }
   }
 
-  addSubmission(type: keyof ISubmissionState, ddOption: IDropdownOption): void {
-    this.saveToLocalStorage({
+  addSubmission(type: keyof IApiSegment, ddOption: IDropdownOption): void {
+    this._internalState = {
       ...this._internalState,
       submissions: {
         ...this._internalState.submissions,
         [type]: [...this._internalState.submissions[type], ddOption],
       },
-    });
+    };
+    this.saveToLocalStorage(this._internalState);
+  }
+
+  getSubmissions(segment: keyof IApiSegment): Array<IDropdownOption> {
+    return this._internalState.submissions[segment];
   }
 
   saveToLocalStorage = debounceLeading((newState: IState) => {

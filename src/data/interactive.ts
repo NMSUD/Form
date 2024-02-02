@@ -1,12 +1,12 @@
 import 'reflect-metadata';
-import { Container } from 'typedi';
 import prompts from 'prompts';
+import { Container } from 'typedi';
 
-import { APP_TYPE, BOT_PATH, getConfig } from '@services/internal/configService';
 import { AppType } from '@constants/enum/appType';
-import { getDiscordService } from '@services/external/discord/discordService';
 import { DiscordWebhook } from '@contracts/generated/discordWebhook';
 import { addSpacesForEnum, capitalizeFirstLetter } from '@helpers/stringHelper';
+import { getDiscordService } from '@services/external/discord/discordService';
+import { APP_TYPE, BOT_PATH, getConfig } from '@services/internal/configService';
 
 const interactive = async () => {
   Container.set(BOT_PATH, __dirname);

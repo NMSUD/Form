@@ -1,29 +1,25 @@
 import { Component, createSignal } from 'solid-js';
 
-import { IApiSegment } from '@constants/api';
 import { Labels } from '@constants/labels';
 import { funnyPlayerNames } from '@constants/names';
-import { IDropdownOption } from '@contracts/dropdownOption';
 import {
   CommunityDto,
   CommunityDtoMeta,
   communityBioMaxLength,
   communityContactDetailsMaxLength,
 } from '@contracts/dto/forms/communityDto';
-import { nameof } from '@helpers/propHelper';
 import { randomItemFromArray } from '@helpers/randomHelper';
 import { anyObject } from '@helpers/typescriptHacks';
 import { getFormApiService } from '@services/api/formApiService';
-import { getStateService } from '@services/internal/stateService';
-import { Card } from '../../components/common/card';
-import { PageHeader } from '../../components/common/pageHeader';
-import { FormDropdown } from '../../components/form/dropdown/dropdown';
-import { FormBuilder } from '../../components/form/formBuilder';
-import { GridItemSize } from '../../components/form/grid';
-import { FormProfileImageInput } from '../../components/form/image/profileImage';
-import { FormSocialInput } from '../../components/form/socialLink/social';
-import { FormLongInput } from '../../components/form/text/input';
-import { FormTextArea } from '../../components/form/text/textArea';
+import { Card } from '@web/components/common/card';
+import { PageHeader } from '@web/components/common/pageHeader';
+import { FormDropdown } from '@web/components/form/dropdown/dropdown';
+import { FormBuilder } from '@web/components/form/formBuilder';
+import { GridItemSize } from '@web/components/form/grid';
+import { FormProfileImageInput } from '@web/components/form/image/profileImage';
+import { FormSocialInput } from '@web/components/form/socialLink/social';
+import { FormLongInput } from '@web/components/form/text/input';
+import { FormTextArea } from '@web/components/form/text/textArea';
 
 export const CommunityFormPage: Component = () => {
   const [itemBeingEdited, setItemBeingEdited] = createSignal<CommunityDto>({
@@ -40,7 +36,8 @@ export const CommunityFormPage: Component = () => {
         <FormBuilder
           item={itemBeingEdited()}
           id="CommunityDto"
-          segment={nameof<IApiSegment>('community')}
+          segment="community"
+          getName={(dto: CommunityDto) => dto.name}
           formDtoMeta={CommunityDtoMeta}
           mappings={{
             profilePicFile: {
@@ -95,18 +92,7 @@ export const CommunityFormPage: Component = () => {
           updateProperty={(prop: string, value: unknown) => {
             setItemBeingEdited((prev) => ({ ...prev, [prop]: value }));
           }}
-          submit={async (item: CommunityDto, captcha: string) => {
-            const apiResult = await getFormApiService().submitCommunity(item, captcha);
-            if (apiResult.isSuccess === false) return apiResult;
-
-            const dropDownOpt: IDropdownOption = {
-              title: item.name,
-              value: apiResult.value.id,
-              image: apiResult.value.iconUrl,
-            };
-            getStateService().addSubmission('builder', dropDownOpt);
-            return apiResult;
-          }}
+          submit={(data, captcha) => getFormApiService().submitCommunity(data, captcha)}
         />
       </Card>
     </>

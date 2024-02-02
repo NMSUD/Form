@@ -24,7 +24,6 @@ export class DiscordService {
       });
 
       const temp = await apiResult.json();
-      console.log('DiscordService', method, temp);
       return {
         isSuccess: true,
         errorMessage: '',

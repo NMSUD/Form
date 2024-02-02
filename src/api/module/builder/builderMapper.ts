@@ -33,6 +33,7 @@ export const builderPersistenceToDto: Mapper<Builder, BuilderDto> = (persistence
   const dto: BuilderDto = {
     name: persistence.name,
     profilePicFile: anyObject,
+    profilePicUrl: persistence.profilePicUrl ?? '',
     bio: persistence.bio,
     platforms: persistence.platforms.split(',').map(platformTypeFromString),
     startedPlaying: persistence.startedPlaying,

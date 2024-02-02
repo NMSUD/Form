@@ -19,12 +19,14 @@ export class DatabaseService {
     getCrudOperations<Community, CommunityRecord>({
       logName: 'Community',
       repo: this._xata.db.community,
+      files: this._xata.files,
     });
 
   builder = () =>
     getCrudOperations<Builder, BuilderRecord>({
       logName: 'Builder',
       repo: this._xata.db.builder,
+      files: this._xata.files,
     });
 }
 

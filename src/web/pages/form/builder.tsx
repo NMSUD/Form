@@ -1,15 +1,5 @@
 import { Component, createSignal } from 'solid-js';
 
-import { Card } from '../../components/common/card';
-import { PageHeader } from '../../components/common/pageHeader';
-import { FormDropdown } from '../../components/form/dropdown/dropdown';
-import { PlatformTypeDropdown } from '../../components/form/dropdown/platformTypeDropdown';
-import { FormBuilder } from '../../components/form/formBuilder';
-import { GridItemSize } from '../../components/form/grid';
-import { FormProfileImageInput } from '../../components/form/image/profileImage';
-import { FormSocialInput } from '../../components/form/socialLink/social';
-import { FormLongInput } from '../../components/form/text/input';
-import { FormTextArea } from '../../components/form/text/textArea';
 import { Labels } from '@constants/labels';
 import { funnyPlayerNames } from '@constants/names';
 import {
@@ -21,8 +11,16 @@ import {
 import { randomItemFromArray } from '@helpers/randomHelper';
 import { anyObject } from '@helpers/typescriptHacks';
 import { getFormApiService } from '@services/api/formApiService';
-import { nameof } from '@helpers/propHelper';
-import { IApiSegment } from '@constants/api';
+import { Card } from '@web/components/common/card';
+import { PageHeader } from '@web/components/common/pageHeader';
+import { FormDropdown } from '@web/components/form/dropdown/dropdown';
+import { PlatformTypeDropdown } from '@web/components/form/dropdown/platformTypeDropdown';
+import { FormBuilder } from '@web/components/form/formBuilder';
+import { GridItemSize } from '@web/components/form/grid';
+import { FormProfileImageInput } from '@web/components/form/image/profileImage';
+import { FormSocialInput } from '@web/components/form/socialLink/social';
+import { FormLongInput } from '@web/components/form/text/input';
+import { FormTextArea } from '@web/components/form/text/textArea';
 
 export const BuilderFormPage: Component = () => {
   const [itemBeingEdited, setItemBeingEdited] = createSignal<BuilderDto>(anyObject);
@@ -35,7 +33,8 @@ export const BuilderFormPage: Component = () => {
         <FormBuilder
           item={itemBeingEdited()}
           id="BuilderDto"
-          segment={nameof<IApiSegment>('builder')}
+          segment="builder"
+          getName={(dto: BuilderDto) => dto.name}
           formDtoMeta={BuilderDtoMeta}
           mappings={{
             profilePicFile: {
@@ -94,19 +93,7 @@ export const BuilderFormPage: Component = () => {
             console.log('create', { prop, value });
             setItemBeingEdited((prev) => ({ ...prev, [prop]: value }));
           }}
-          submit={async (item: BuilderDto, captcha: string) => {
-            const apiResult = await getFormApiService().submitBuilder(item, captcha);
-            return apiResult;
-            // if (apiResult.isSuccess === false) return apiResult;
-
-            // const dropDownOpt: IDropdownOption = {
-            //     title: item.name,
-            //     value: apiResult.value.id,
-            //     image: apiResult.value.iconUrl,
-            // }
-            // getStateService().addSubmission('builder', dropDownOpt);
-            // return apiResult;
-          }}
+          submit={(data, captcha) => getFormApiService().submitBuilder(data, captcha)}
         />
       </Card>
     </>

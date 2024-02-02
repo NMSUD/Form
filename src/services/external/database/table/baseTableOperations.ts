@@ -1,11 +1,13 @@
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
 import { Result, ResultWithValue } from '@contracts/resultWithValue';
 import { anyObject } from '@helpers/typescriptHacks';
-import { Repository, XataRecord } from '@xata.io/client';
+import { FilesPluginResult, Identifiable, Repository, XataRecord } from '@xata.io/client';
 import { getLog } from '../../../internal/logService';
+import { DatabaseSchema } from '../xata';
 
 export interface ICrudOperationProps<T extends XataRecord<XataRecord<any>>> {
   repo: Repository<T>;
+  files: FilesPluginResult<DatabaseSchema>;
   logName: string;
 }
 
@@ -26,7 +28,7 @@ export const getCrudOperations = <T, TR extends XataRecord<XataRecord<any>>>(
         errorMessage: '',
       };
     } catch (ex) {
-      const errMsg = ex?.toString?.() ?? 'error occurred while creating record in database';
+      const errMsg = `error occurred while creating record in database. ex: ${ex?.toString?.()}`;
       getLog().e(errMsg);
       return {
         isSuccess: false,
@@ -50,7 +52,27 @@ export const getCrudOperations = <T, TR extends XataRecord<XataRecord<any>>>(
         errorMessage: '',
       };
     } catch (ex) {
-      const errMsg = ex?.toString?.() ?? 'error occurred while creating record in database';
+      const errMsg = `error occurred while creating record in database. ex: ${ex?.toString?.()}`;
+      getLog().e(errMsg);
+      return {
+        isSuccess: false,
+        value: anyObject,
+        errorMessage: errMsg,
+      };
+    }
+  },
+
+  readAll: async (): Promise<ResultWithValue<Array<T>>> => {
+    try {
+      const records = await props.repo.getAll();
+
+      return {
+        isSuccess: true,
+        value: records as Array<T>,
+        errorMessage: '',
+      };
+    } catch (ex) {
+      const errMsg = `error occurred while fetching all records in database. ex: ${ex?.toString?.()}`;
       getLog().e(errMsg);
       return {
         isSuccess: false,
@@ -72,7 +94,7 @@ export const getCrudOperations = <T, TR extends XataRecord<XataRecord<any>>>(
         errorMessage: '',
       };
     } catch (ex) {
-      const errMsg = ex?.toString?.() ?? 'error occurred while updating record in database';
+      const errMsg = `error occurred while updating record in database. ex: ${ex?.toString?.()}`;
       getLog().e(errMsg);
       return {
         isSuccess: false,

@@ -1,3 +1,4 @@
+import { IApiSegment } from '@constants/api';
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
 import { IFormDtoMeta } from '@contracts/dto/forms/baseFormDto';
 import { IFormWithFiles } from '@contracts/file';
@@ -12,14 +13,17 @@ export interface IRecordRequirements {
 
 export type IApiModule<TD, TF, TP> = {
   name: string;
-  segment: string;
+  segment: keyof IApiSegment;
   dtoMeta: IFormDtoMeta<TD>;
 
   mapDtoWithImageToPersistence: DtoAndImageMapperToNewPersistence<TD, TF, TP>;
   mapPersistenceToDto: Mapper<TP, TD>;
+  getName: (persistence: TP) => string;
+  getIcon?: (persistence: TP) => string | null | undefined;
 
   createRecord: (persistence: Omit<TP, 'id'>) => Promise<ResultWithValue<TP & IRecordRequirements>>;
   readRecord: (id: string) => Promise<ResultWithValue<TP & IRecordRequirements>>;
+  readAllRecords: () => Promise<ResultWithValue<Array<TP>>>;
   updateRecord: (id: string, persistence: TP & IRecordRequirements) => Promise<Result>;
 
   handleFilesInFormData: (formData: IFormWithFiles) => Promise<ResultWithValue<TF>>;
