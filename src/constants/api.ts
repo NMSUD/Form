@@ -1,15 +1,13 @@
 export const apiParams = {
-  form: {
+  general: {
     segment: 'segment',
   },
   verify: {
     id: 'id',
     check: 'check',
     decision: 'decision',
-    segment: 'segment',
   },
   status: {
-    segment: 'segment',
     id: 'id',
   },
 };
@@ -22,9 +20,9 @@ export const api = {
     image: {
       upload: '',
     },
-    form: `form/:${apiParams.form.segment}/`,
-    verify: `verify/:${apiParams.verify.segment}/:${apiParams.verify.decision}/:${apiParams.verify.id}/:${apiParams.verify.check}`,
-    status: `status/:${apiParams.verify.segment}/:${apiParams.status.id}`,
+    form: `form/:${apiParams.general.segment}/`,
+    verify: `verify/:${apiParams.general.segment}/:${apiParams.verify.decision}/:${apiParams.verify.id}/:${apiParams.verify.check}`,
+    status: `status/:${apiParams.general.segment}/:${apiParams.status.id}`,
   },
 };
 

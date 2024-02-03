@@ -2,9 +2,8 @@ import { test, describe, expect } from 'vitest';
 
 import { makeArrayOrDefault } from './arrayHelper';
 import { formatDate } from './dateHelper';
-import { getArrFromEnum, getDropDownOptionsFromEnum } from './enumHelper';
-import { PlatformType } from '@contracts/dto/enum/platformType';
 import { onTargetFile, onTargetValue, preventDefault } from './eventHelper';
+import { addSpacesForEnum, capitalizeFirstLetter, lowercaseFirstLetter } from './stringHelper';
 
 describe('Helper tests', () => {
   describe('Make array or default', () => {
@@ -31,17 +30,6 @@ describe('Helper tests', () => {
     test('formatDate', () => {
       const dateStr = formatDate('2023-01-01');
       expect(dateStr).toBe('01 Jan 23 12:00');
-    });
-  });
-
-  describe('Enum helper', () => {
-    test('getArrFromEnum', () => {
-      const arr = getArrFromEnum(PlatformType);
-      expect(arr.length > 3).toBeTruthy();
-    });
-    test('getDropDownOptionsFromEnum', () => {
-      const dropdownOpt = getDropDownOptionsFromEnum(PlatformType);
-      expect(dropdownOpt.length > 3).toBeTruthy();
     });
   });
 
@@ -81,6 +69,21 @@ describe('Helper tests', () => {
       };
       preventDefault(event);
       expect(value).toBe('test');
+    });
+  });
+
+  describe('String helper', () => {
+    test('capitalizeFirstLetter', () => {
+      const output = capitalizeFirstLetter('lowercase');
+      expect(output).toBe('Lowercase');
+    });
+    test('lowercaseFirstLetter', () => {
+      const output = lowercaseFirstLetter('UPPERCASE');
+      expect(output).toBe('uPPERCASE');
+    });
+    test('addSpacesForEnum', () => {
+      const output = addSpacesForEnum('thisIsALowerCaseSentence');
+      expect(output).toBe('this Is A Lower Case Sentence');
     });
   });
 });

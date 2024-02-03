@@ -21,39 +21,48 @@ export interface IMessageBuilderProps<T, TP> {
   approvalStatus: ApprovalStatus;
 }
 
+export const discordActionLink = {
+  heading: 'Quick action',
+  reject: '❌ Reject',
+  accept: '✅ Approve',
+  defaultAuthorName: 'NMSUD form Submission',
+};
+
 export const baseSubmissionMessageEmbed = (
   dbId: string,
   check: number,
   segment: string,
 ): DiscordWebhookEmbed => {
   const apiUrl = getConfig().getNmsUdApiUrl();
-  const quickApproveUrl =
-    apiUrl +
-    '/' +
-    api.routes.verify
-      .replaceAll(`:${apiParams.verify.id}`, dbId)
-      .replaceAll(`:${apiParams.verify.segment}`, segment)
-      .replaceAll(`:${apiParams.verify.check}`, check.toString())
-      .replaceAll(`:${apiParams.verify.decision}`, approvalStatusToString(ApprovalStatus.approved));
+
   const quickRejectUrl =
     apiUrl +
     '/' +
     api.routes.verify
       .replaceAll(`:${apiParams.verify.id}`, dbId)
-      .replaceAll(`:${apiParams.verify.segment}`, segment)
+      .replaceAll(`:${apiParams.general.segment}`, segment)
       .replaceAll(`:${apiParams.verify.check}`, check.toString())
       .replaceAll(`:${apiParams.verify.decision}`, approvalStatusToString(ApprovalStatus.denied));
+
+  const quickApproveUrl =
+    apiUrl +
+    '/' +
+    api.routes.verify
+      .replaceAll(`:${apiParams.verify.id}`, dbId)
+      .replaceAll(`:${apiParams.general.segment}`, segment)
+      .replaceAll(`:${apiParams.verify.check}`, check.toString())
+      .replaceAll(`:${apiParams.verify.decision}`, approvalStatusToString(ApprovalStatus.approved));
 
   return {
     fields: [
       {
-        name: 'Quick action',
-        value: `[❌ Reject](${quickRejectUrl})`,
+        name: discordActionLink.heading,
+        value: `[${discordActionLink.reject}](${quickRejectUrl})`,
         inline: true,
       },
       {
-        name: 'Quick action',
-        value: `[✅ Approve](${quickApproveUrl})`,
+        name: discordActionLink.heading,
+        value: `[${discordActionLink.accept}](${quickApproveUrl})`,
         inline: true,
       },
     ],
@@ -73,7 +82,7 @@ export const baseSubmissionMessageBuilder = (props: {
       description: props.descripLines.join('\n'),
       color: props.colour,
       author: {
-        name: props.authorName ?? 'NMSUD form Submission',
+        name: props.authorName ?? discordActionLink.defaultAuthorName,
         icon_url: props.iconUrl ?? undefined,
       },
     },
@@ -106,14 +115,6 @@ export const getDescriptionLines = <T, TK>(props: {
       dtoMetaPropKey
     ] ?? { label: capitalizeFirstLetter(addSpacesForEnum(dtoMetaPropKey)) };
 
-    // if (Array.isArray(localData)) {
-    //   descripLines.push(`${localMeta.label}:`);
-    //   for (const dtoItem of makeArrayOrDefault(localData)) {
-    //     descripLines.push(`- ${dtoItem}`);
-    //   }
-    //   continue;
-    // }
-    // descripLines.push(`${localMeta.label}: ${localData}`);
     const lines = dtoMetaProp.displayInDiscordMessage(localMeta.label, localData);
     lines.map((line) => descripLines.push(line));
   }

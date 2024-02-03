@@ -36,7 +36,7 @@ export const verifyHandlerLookup: IHandlerLookup = {
 export const routeToCorrectHandler =
   (lookup: IHandlerLookup) =>
   async (ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>) => {
-    const segment = ctx.params[apiParams.form.segment];
+    const segment = ctx.params[apiParams.general.segment];
     const lookupThatCanBeIndexed = lookup as { [x: string]: koaRequestHandler };
     const handler = lookupThatCanBeIndexed[segment];
     if (handler == null) {
@@ -53,3 +53,38 @@ export const routeToCorrectHandler =
 
     await handler(ctx, next);
   };
+
+/* The test below only works if unrelated code is commented out... */
+
+/*
+import 'reflect-metadata';
+import { test, describe, expect } from 'vitest';
+
+import { routeToCorrectHandler } from './routeLookup';
+import { apiParams } from '../../constants/api';
+
+describe('Route lookup', () => {
+  describe('routeToCorrectHandler', () => {
+    test('makeArrayOrDefault on undefined', async () => {
+      let hasRun = false;
+      const fakeDoNothing: any = () => {};
+      const fakeCtx = {
+        params: {
+          [apiParams.general.segment]: 'builderTest',
+        },
+      };
+      const fakeNextPromise = new Promise((res, _) => res(''));
+      const routeFunctions: any = routeToCorrectHandler({
+        communityTest: fakeDoNothing,
+        builderTest: async () => {
+          hasRun = true;
+        },
+      });
+      await routeFunctions(fakeCtx, fakeNextPromise);
+      expect(hasRun).toBeTruthy();
+    });
+  });
+});
+
+
+  */

@@ -1,9 +1,10 @@
 import Koa from 'koa';
 
 import { IApiModule } from '@api/module/baseModule';
-import { apiParams } from '@constants/api';
+import { ApiStatusErrorCode, apiParams } from '@constants/api';
 import { getLog } from '@services/internal/logService';
 import { IFormWithApprovalResponse } from '@contracts/response/formResponse';
+import { errorResponse } from '@api/misc/httpResponse/errorResponse';
 
 export const baseStatusHandler =
   <TD, TF, TP>(module: IApiModule<TD, TF, TP>) =>
@@ -15,6 +16,12 @@ export const baseStatusHandler =
     if (recordResult.isSuccess == false) {
       const errMsg = `${handlerName}: ${recordResult.errorMessage}`;
       getLog().e(errMsg);
+      await errorResponse({
+        ctx,
+        next,
+        statusCode: ApiStatusErrorCode.recordNotFound,
+        message: errMsg,
+      });
       return;
     }
 

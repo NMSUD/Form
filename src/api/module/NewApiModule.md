@@ -50,3 +50,7 @@ export const communityFileHandler = async (
 
 - Export a function that takes `DtoAndImageMapperToNewPersistence<dto, imageInterface, dbType>{` and returns `dbType`
 - Export a function that takes `Mapper<Community, CommunityDto>` and returns a `CommunityDto`
+
+<br />
+<br />
+<br />

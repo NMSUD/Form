@@ -7,7 +7,7 @@
   - Run `npm run db:generate` in the project to get the latest types
 
 - [Create new Dto](/src/contracts/dto/forms/NewDto.md)
-- Add new item to the IApiSegment interface in [api.ts](/src/constants/api.ts)
+- Add new item to the `IApiSegment` interface in [api.ts](/src/constants/api.ts)
 - [Create new form page](/src/web/pages/form/NewFormPage.md)
 - [Create API module](/src/api/module/NewApiModule.md)
 
