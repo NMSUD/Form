@@ -1,7 +1,7 @@
 import { themes } from '@storybook/theming';
 import { Preview } from 'storybook-solidjs';
 
-import '../src/scss/custom.scss';
+import '../src/web/scss/custom.scss';
 
 
 const preview: Preview = {

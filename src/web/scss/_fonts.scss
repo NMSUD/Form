@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'nms-portal';
+    src: url(/assets/font/nms-portal-mono.ttf) format('truetype')
+}
+
+.nms-portal-font,
+.nms-portal-font * {
+    font-family: nms-portal !important;
+}

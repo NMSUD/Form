@@ -28,7 +28,7 @@ export const AvatarFromSocialLink: Component<IFormSocialProps> = (props: IFormSo
       href={props.url}
       title={props.url}
       ref={site.ref}
-      additionalClassNames="hover-reveal-child pos-rel noselect"
+      additionalClassNames="hover-reveal-child pos-rel display-inline-block noselect"
       onClick={props.onChange}
     >
       <Avatar

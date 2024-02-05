@@ -1,5 +1,6 @@
 @import "misc";
 @import "form";
+@import "fonts";
 @import "sidebar";
 @import "scrollbar";
 @import "sweetalertDark";
@@ -89,6 +90,10 @@ html body {
 
 .pos-abs {
     position: absolute;
+}
+
+.display-inline-block {
+    display: inline-block;
 }
 
 main.main {

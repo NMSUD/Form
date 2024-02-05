@@ -1,5 +1,6 @@
-import { XataFile } from '@xata.io/client';
+import fs from 'fs';
 import path from 'path';
+import { XataFile } from '@xata.io/client';
 import { Container, Service } from 'typedi';
 
 import { IDatabaseFile } from '@contracts/databaseFile';
@@ -8,13 +9,11 @@ import { ResultWithValue } from '@contracts/resultWithValue';
 import { anyObject } from '@helpers/typescriptHacks';
 import { getLog } from './logService';
 
-const fs = require('fs').promises;
-
 @Service()
 export class ApiFileService {
   formDataToDatabaseFile = async (formData: IFile): Promise<ResultWithValue<IDatabaseFile>> => {
     try {
-      const contents = await fs.readFile(formData.filepath, { encoding: 'base64' });
+      const contents = await fs.readFileSync(formData.filepath, { encoding: 'base64' });
       return {
         isSuccess: true,
         errorMessage: '',
@@ -51,16 +50,20 @@ export class ApiFileService {
       const fileName = `${recordId}_${imgSuffix}.png`;
       const localFile = path.join(imageFolder, fileName);
 
+      if (fs.existsSync(localFile) === true) {
+        fs.unlinkSync(localFile);
+      }
+
       const response = await fetch(imageUrl);
       const arrBuffer = await response.arrayBuffer();
       const buffer = Buffer.from(arrBuffer);
-      await fs.writeFile(localFile, buffer);
+      fs.writeFileSync(localFile, buffer);
 
-      getLog().i(`Downloaded ${fileName}`);
+      getLog().i(`\tDownloaded ${fileName}`);
 
       return {
         isSuccess: true,
-        value: `${imageFolder}/${fileName}`,
+        value: fileName,
         errorMessage: '',
       };
     } catch (ex) {

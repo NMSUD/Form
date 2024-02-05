@@ -4,7 +4,7 @@ body {
     }
 
     @media screen and (max-width: 980px) {
-        .hope-grid {
+        .form .hope-grid {
             grid-template-columns: repeat(2, 1fr);
 
             .hope-grid-item {
