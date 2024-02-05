@@ -1,8 +1,8 @@
 import 'reflect-metadata';
-import { Container } from 'typedi';
-import prompts from 'prompts';
 import fs from 'fs';
 import path from 'path';
+import prompts from 'prompts';
+import { Container } from 'typedi';
 
 import { APP_TYPE, BOT_PATH, getConfig } from '@services/internal/configService';
 import { AppType } from '@constants/enum/appType';
@@ -10,8 +10,10 @@ import { getLog } from '@services/internal/logService';
 import { communityModule } from '@api/module/community/communityModule';
 import { fetchImagesForTable } from './img/baseImgDownloader';
 import { communityImgDownloader } from './img/communityImgDownloader';
+import { generateJsonFile } from './json/jsonGenerator';
+import { stripPropertiesFromObject } from './mapper/stripProperties';
 
-const interactive = async () => {
+const downloader = async () => {
   const dataFolder = path.join(__dirname, '../../data');
   Container.set(BOT_PATH, dataFolder);
   Container.set(APP_TYPE, AppType.DataGenerator);
@@ -21,6 +23,11 @@ const interactive = async () => {
 
   if (fs.existsSync(dataFolder) == false) {
     fs.mkdirSync(dataFolder);
+  }
+
+  const imageFolder = path.join(dataFolder, 'img');
+  if (fs.existsSync(imageFolder) == false) {
+    fs.mkdirSync(imageFolder);
   }
 
   const folderAndFiles = {
@@ -43,11 +50,11 @@ const interactive = async () => {
     processItem: communityImgDownloader,
   });
 
-  // getLog().i('Writing base jsonFiles');
-  // generateJsonFile({
-  //   items: mappedCommunityTable,
-  //   outputFile: folderAndFiles.community.allItems,
-  // });
+  getLog().i('Writing base jsonFiles');
+  generateJsonFile({
+    items: updatedCommunityTable.map(stripPropertiesFromObject),
+    outputFile: folderAndFiles.community.allItems,
+  });
 
   // Image download
   //      each table
@@ -63,14 +70,11 @@ const interactive = async () => {
 
   // fetch all community data
   // each item
-
-  // if (!fs.existsSync(fullDir)) {
-  //     fs.mkdirSync(fullDir);
-  // }
 };
 
-interactive();
+downloader();
 
 const throwError = (errMsg: string) => {
   console.error(errMsg);
+  return 1;
 };

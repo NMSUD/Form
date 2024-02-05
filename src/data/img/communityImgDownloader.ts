@@ -15,12 +15,12 @@ export const communityImgDownloader = async (
   const profilePicDownloadResult = await getApiFileService().downloadXataFile(
     profilePicFile,
     persistence.id,
-    props.imageFolder,
+    props.imagePath,
     'profile_pic',
   );
   if (profilePicDownloadResult.isSuccess) {
     persistence.profilePicFile = null;
-    persistence.profilePicUrl = `${props.imgBaseUrl}/${profilePicDownloadResult.value}`;
+    persistence.profilePicUrl = `${props.imgBaseUrl}/${props.imageFolder}/${profilePicDownloadResult.value}`;
     numFilesDownloaded++;
   }
 
@@ -33,21 +33,21 @@ export const communityImgDownloader = async (
     const bioMediaDownloadResult = await getApiFileService().downloadXataFile(
       bioMedia,
       persistence.id,
-      props.imageFolder,
+      props.imagePath,
       `bio_media_${bioMediaIndex + 1}`,
     );
     if (bioMediaDownloadResult.isSuccess) {
-      bioMediaUrls.push(`${props.imgBaseUrl}/${bioMediaDownloadResult.value}`);
+      bioMediaUrls.push(`${props.imgBaseUrl}/${props.imageFolder}/${bioMediaDownloadResult.value}`);
       persistence.bioMediaFiles = null;
       persistence.bioMediaUrls = bioMediaUrls.join(',');
       numFilesDownloaded++;
     }
   }
 
-  const updatedRecordResult = await getDatabaseService()
-    .community()
-    .update(persistence.id, persistence);
-  if (updatedRecordResult.isSuccess == false) return props.persistence;
+  // const updatedRecordResult = await getDatabaseService()
+  //   .community()
+  //   .update(persistence.id, persistence);
+  // if (updatedRecordResult.isSuccess == false) return props.persistence;
 
   return persistence;
 };
