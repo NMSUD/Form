@@ -1,7 +1,7 @@
 node_modules
-build
-data
-dist
-temp
+/build
+/data
+/dist
+/temp
 .env
 .xata
