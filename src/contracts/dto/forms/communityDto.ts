@@ -20,6 +20,7 @@ export const communityBioMaxLength = 500;
 export const communityContactDetailsMaxLength = 500;
 
 export interface CommunityDto {
+  id: string;
   name: string;
   profilePicUrl: string;
   profilePicFile: File;
@@ -33,6 +34,10 @@ export interface CommunityDto {
 }
 
 export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
+  id: {
+    label: 'Id',
+    validator: noValidation,
+  },
   profilePicUrl: {
     label: 'Profile Pic Url',
     displayInDiscordMessage: shortLinkDiscordLine('click to open'),
@@ -105,3 +110,9 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     validator: maxLength(communityBioMaxLength),
   },
 };
+
+export const communityToDropdown = (r: CommunityDto) => ({
+  title: r.name,
+  value: r.id,
+  image: r.profilePicUrl,
+});

@@ -8,12 +8,16 @@ import {
   builderBioMaxLength,
   builderContactDetailsMaxLength,
 } from '@contracts/dto/forms/builderDto';
+import { communityToDropdown } from '@contracts/dto/forms/communityDto';
+import { formatDate } from '@helpers/dateHelper';
+import { getDropdownOptionsPromise } from '@helpers/dropdownHelper';
 import { randomItemFromArray } from '@helpers/randomHelper';
 import { anyObject } from '@helpers/typescriptHacks';
 import { getFormApiService } from '@services/api/formApiService';
 import { Card } from '@web/components/common/card';
 import { PageHeader } from '@web/components/common/pageHeader';
 import { FormDropdown } from '@web/components/form/dropdown/dropdown';
+import { FormNetworkDropdown } from '@web/components/form/dropdown/networkDropdown';
 import { PlatformTypeDropdown } from '@web/components/form/dropdown/platformTypeDropdown';
 import { FormBuilder } from '@web/components/form/formBuilder';
 import { GridItemSize } from '@web/components/form/grid';
@@ -23,7 +27,12 @@ import { FormLongInput } from '@web/components/form/text/input';
 import { FormTextArea } from '@web/components/form/text/textArea';
 
 export const BuilderFormPage: Component = () => {
-  const [itemBeingEdited, setItemBeingEdited] = createSignal<BuilderDto>(anyObject);
+  const [itemBeingEdited, setItemBeingEdited] = createSignal<BuilderDto>({
+    ...anyObject,
+    startedPlaying: formatDate(new Date(), 'YYYY-MM-DD'),
+  });
+
+  const communityDropdownPromise = getDropdownOptionsPromise('community', communityToDropdown);
 
   return (
     <>
@@ -47,12 +56,31 @@ export const BuilderFormPage: Component = () => {
               gridItemColumnSize: GridItemSize.medium,
               placeholder: randomItemFromArray(funnyPlayerNames),
             },
-            labels: {
+            platforms: {
+              component: PlatformTypeDropdown,
+              gridItemColumnSize: GridItemSize.medium,
+              placeholder: 'Select your platforms',
+              additional: {
+                multiple: (_) => true,
+              },
+            },
+            startedPlaying: {
+              component: FormLongInput,
+              gridItemColumnSize: GridItemSize.smol,
+              placeholder: 'date',
+              additional: {
+                inputType: (_) => 'date',
+                min: (_) => formatDate('2016-08-09', 'YYYY-MM-DD'),
+                max: (_) => formatDate(new Date(), 'YYYY-MM-DD'),
+              },
+            },
+            buildTechniquesUsed: {
               component: FormDropdown,
-              gridItemColumnSize: GridItemSize.long,
+              gridItemColumnSize: GridItemSize.medium,
               placeholder: 'Select your labels',
               additional: {
-                options: (_) => Labels.Builders.map((lbl) => ({ title: lbl, value: lbl })),
+                options: (_) =>
+                  Labels.BuildingTechniques.map((lbl) => ({ title: lbl, value: lbl })),
                 multiple: (_) => true,
               },
             },
@@ -61,12 +89,13 @@ export const BuilderFormPage: Component = () => {
               gridItemColumnSize: GridItemSize.medium,
               placeholder: 'https://youtube.com/...',
             },
-            platforms: {
-              component: PlatformTypeDropdown,
-              gridItemColumnSize: GridItemSize.small,
-              placeholder: 'Select your platforms',
+            communityAffiliations: {
+              component: FormNetworkDropdown,
+              gridItemColumnSize: GridItemSize.long,
+              placeholder: 'Select your communities',
               additional: {
                 multiple: (_) => true,
+                optionsPromise: () => communityDropdownPromise,
               },
             },
             bio: {

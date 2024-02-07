@@ -51,7 +51,7 @@ export class FormApiService extends BaseApiService {
   }
 
   async submitForm(segment: string, formData: FormData): Promise<ResultWithValue<IFormResponse>> {
-    const urlPath = api.routes.form.replace(`:${apiParams.form.segment}`, segment);
+    const urlPath = api.routes.form.replace(`:${apiParams.general.segment}`, segment);
     const url = `${this._apiUrl}/${urlPath}`;
     try {
       const apiResult = await fetch(url, {

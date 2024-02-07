@@ -7,6 +7,7 @@ export class ConfigService {
 
   getNmsUdFormWebUrl = () => this.get('VITE_NMSUD_FORM_WEB_URL');
   getNmsUdApiUrl = () => this.get('VITE_NMSUD_API_URL');
+  getNmsUdFormDataUrl = () => this.get('VITE_NMSUD_FORM_DATA_URL');
   getNmsUdBaseImgUrl = () => this.get('NMSUD_IMG_BASE_URL');
   getApiPort = () => this.getNumber('API_PORT', 3001);
 

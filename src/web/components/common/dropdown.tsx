@@ -113,7 +113,7 @@ export const Dropdown: Component<IProps> = (props: IProps) => {
           <SelectListbox>
             <For each={props.options}>
               {(item) => (
-                <SelectOption value={item.value}>
+                <SelectOption value={item.value} disabled={item.disabled}>
                   <Show when={item.image != null}>
                     <Image
                       src={item.image}

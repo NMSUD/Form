@@ -9,6 +9,8 @@ import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 
 interface IFormLongInputProps extends IFormInputProps<string | number> {
   inputType?: string;
+  min?: string;
+  max?: string;
   disabled?: boolean;
 }
 
@@ -41,6 +43,8 @@ export const FormLongInput: Component<IFormLongInputProps> = (props: IFormLongIn
         placeholder={props.placeholder}
         value={handleSpecialDateLocalValue(props.value, props.inputType)}
         type={props.inputType}
+        min={props.min}
+        max={props.max}
         disabled={props.disabled}
         onBlur={onTargetValue((value) => {
           props.onChange(value);

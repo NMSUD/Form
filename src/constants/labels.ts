@@ -1,4 +1,4 @@
 export const Labels = {
-  Builders: ['Builder', 'Glitch Builder', 'Blender Builder'],
+  BuildingTechniques: ['Survival', 'Creative', 'Glitch', 'Blender'],
   Community: ['Civilization'],
 };
