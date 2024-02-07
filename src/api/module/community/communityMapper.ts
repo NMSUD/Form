@@ -30,6 +30,7 @@ export const communityPersistenceToDto: Mapper<Community, CommunityDto> = (
   persistence: Community,
 ) => {
   const dto: CommunityDto = {
+    id: persistence.id,
     name: persistence.name,
     profilePicFile: anyObject,
     profilePicUrl: persistence.profilePicUrl ?? '',

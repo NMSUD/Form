@@ -4,9 +4,10 @@ import path from 'path';
 import { IRecordRequirements } from '@api/module/baseModule';
 import { getBotPath } from '@services/internal/configService';
 import { IGetImageForRecord } from 'data/contracts/image';
+import { IApiSegment } from '@constants/api';
 
 interface IFetchImagesProps<T> {
-  imageFolder: string;
+  imageFolder: keyof IApiSegment;
   items: Array<T>;
   imgBaseUrl: string;
   processItem: (props: IGetImageForRecord<T>) => Promise<T>;

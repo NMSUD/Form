@@ -44,12 +44,27 @@ export const communityFileHandler = async (
 };
 ```
 
-### Create new Mapper
+### Create a new Mapper
 
 **e.g. `communityMapper.ts`**
 
 - Export a function that takes `DtoAndImageMapperToNewPersistence<dto, imageInterface, dbType>{` and returns `dbType`
 - Export a function that takes `Mapper<Community, CommunityDto>` and returns a `CommunityDto`
+
+### Create a new PublicUrlHandler
+
+**e.g. `communityPublicUrlHandler.ts`**
+
+- Export a function that takes a `dbType` and returns `dbType`
+- Example:
+
+```ts
+export const communityPublicUrlHandler = (persistence: Community): Community => {
+  const localP = { ...persistence };
+  // logic for getting file urls
+  return localP;
+};
+```
 
 <br />
 <br />

@@ -7,6 +7,7 @@ import { Builder } from '@services/external/database/xata';
 import { XataFile } from '@xata.io/client';
 import { IBuilderImages } from './builderFileHandler';
 
+// TODO update properties
 export const builderDtoWithImageToPersistence: DtoAndImageMapperToNewPersistence<
   BuilderDto,
   IBuilderImages,
@@ -29,6 +30,7 @@ export const builderDtoWithImageToPersistence: DtoAndImageMapperToNewPersistence
   return persistence;
 };
 
+// TODO update properties
 export const builderPersistenceToDto: Mapper<Builder, BuilderDto> = (persistence: Builder) => {
   const dto: BuilderDto = {
     name: persistence.name,

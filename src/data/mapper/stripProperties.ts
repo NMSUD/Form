@@ -9,7 +9,8 @@ const propertiesToIgnore = [
 ];
 
 export const stripPropertiesFromObject = <T extends {}>(persistenceObj: T) => {
-  let result = anyObject;
+  // this spread operator is important, otherwise result can be updated by reference
+  let result = { ...anyObject };
   const keys = Object.keys(persistenceObj).filter((k) => k !== 'id');
 
   for (const persistenceProp of ['id', ...keys]) {

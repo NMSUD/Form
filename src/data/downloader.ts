@@ -30,14 +30,6 @@ const downloader = async () => {
     fs.mkdirSync(imageFolder);
   }
 
-  const folderAndFiles = {
-    community: {
-      allItems: 'community.json',
-      folder: 'community',
-      itemTemplate: '{0}.json',
-    },
-  };
-
   getLog().i('Fetching all the data');
   const commuityTableResult = await communityModule.readAllRecords();
   if (commuityTableResult.isSuccess == false) return throwError(commuityTableResult.errorMessage);
@@ -45,7 +37,7 @@ const downloader = async () => {
   getLog().i('Fetch images per record');
   const updatedCommunityTable = await fetchImagesForTable({
     items: commuityTableResult.value,
-    imageFolder: folderAndFiles.community.folder,
+    imageFolder: 'community',
     imgBaseUrl: getConfig().getNmsUdBaseImgUrl(),
     processItem: communityImgDownloader,
   });
@@ -53,7 +45,7 @@ const downloader = async () => {
   getLog().i('Writing base jsonFiles');
   generateJsonFile({
     items: updatedCommunityTable.map(stripPropertiesFromObject),
-    outputFile: folderAndFiles.community.allItems,
+    outputFile: 'community',
   });
 
   // Image download
