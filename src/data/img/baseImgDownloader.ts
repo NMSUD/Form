@@ -5,6 +5,7 @@ import { IRecordRequirements } from '@api/module/baseModule';
 import { getBotPath } from '@services/internal/configService';
 import { IGetImageForRecord } from 'data/contracts/image';
 import { IApiSegment } from '@constants/api';
+import { ApprovalStatus } from '@constants/enum/approvalStatus';
 
 interface IFetchImagesProps<T> {
   imageFolder: keyof IApiSegment;
@@ -22,8 +23,19 @@ export const fetchImagesForTable = async <T extends IRecordRequirements>(
     fs.mkdirSync(imagePath);
   }
 
+  const skipStatuses = [
+    ApprovalStatus.pending,
+    ApprovalStatus.changesNeeded,
+    ApprovalStatus.denied,
+  ];
+
   const recordResult: Array<T> = [];
   for (const record of props.items) {
+    if (skipStatuses.includes(record.approvalStatus)) continue;
+    if (record.approvalStatus === ApprovalStatus.approvedAndProcessed) {
+      recordResult.push(record);
+    }
+
     const mappedRecord = await props.processItem({
       imageFolder: imageFolder,
       imagePath: imagePath,

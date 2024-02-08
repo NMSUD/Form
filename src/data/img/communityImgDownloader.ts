@@ -1,3 +1,4 @@
+import { ApprovalStatus } from '@constants/enum/approvalStatus';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { getDatabaseService } from '@services/external/database/databaseService';
 import { Community } from '@services/external/database/xata';
@@ -7,7 +8,6 @@ import { IGetImageForRecord } from 'data/contracts/image';
 export const communityImgDownloader = async (
   props: IGetImageForRecord<Community>,
 ): Promise<Community> => {
-  let numFilesDownloaded = 0;
   const persistence = { ...props.persistence };
   if (props.persistence.profilePicFile == null) return props.persistence;
 
@@ -21,7 +21,6 @@ export const communityImgDownloader = async (
   if (profilePicDownloadResult.isSuccess) {
     persistence.profilePicFile = null;
     persistence.profilePicUrl = `${props.imgBaseUrl}/${props.imageFolder}/${profilePicDownloadResult.value}`;
-    numFilesDownloaded++;
   }
 
   const bioMediaUrls: Array<string> = [];
@@ -40,14 +39,14 @@ export const communityImgDownloader = async (
       bioMediaUrls.push(`${props.imgBaseUrl}/${props.imageFolder}/${bioMediaDownloadResult.value}`);
       persistence.bioMediaFiles = null;
       persistence.bioMediaUrls = bioMediaUrls.join(',');
-      numFilesDownloaded++;
     }
   }
 
-  // const updatedRecordResult = await getDatabaseService()
-  //   .community()
-  //   .update(persistence.id, persistence);
-  // if (updatedRecordResult.isSuccess == false) return props.persistence;
+  persistence.approvalStatus = ApprovalStatus.approvedAndProcessed;
+  const updatedRecordResult = await getDatabaseService()
+    .community()
+    .update(persistence.id, persistence);
+  if (updatedRecordResult.isSuccess == false) return props.persistence;
 
   return persistence;
 };

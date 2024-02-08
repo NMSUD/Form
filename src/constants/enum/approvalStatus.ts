@@ -4,6 +4,7 @@ export enum ApprovalStatus {
   pending,
   changesNeeded,
   approved,
+  approvedAndProcessed,
   denied,
 }
 
@@ -14,6 +15,7 @@ export const approvalStatusFromString = (approvalStatus: string): ApprovalStatus
     [ApprovalStatus[ApprovalStatus.pending]]: ApprovalStatus.pending,
     [ApprovalStatus[ApprovalStatus.changesNeeded]]: ApprovalStatus.changesNeeded,
     [ApprovalStatus[ApprovalStatus.approved]]: ApprovalStatus.approved,
+    [ApprovalStatus[ApprovalStatus.approvedAndProcessed]]: ApprovalStatus.approvedAndProcessed,
     [ApprovalStatus[ApprovalStatus.denied]]: ApprovalStatus.denied,
   };
   const lookupValue = approvalLookup[approvalStatus];
@@ -25,6 +27,7 @@ export const colourFromApprovalStatus = (approvalStatus: ApprovalStatus): number
     [ApprovalStatus.pending]: 5814783,
     [ApprovalStatus.changesNeeded]: 5814783,
     [ApprovalStatus.approved]: 32768,
+    [ApprovalStatus.approvedAndProcessed]: 7231183,
     [ApprovalStatus.denied]: 13369858,
   };
   return approvalLookup[approvalStatus];
