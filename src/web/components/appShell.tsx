@@ -36,6 +36,7 @@ export const AppShell: Component = () => {
       path: routes.status.pathWithParams,
       component: lazy(() => import('@web/pages/status/status')),
     },
+    { path: routes.about.path, component: lazy(() => import('@web/pages/about')) },
     { path: routes.verify.path, component: HomePage },
     { path: routes.actualHome.path, component: HomePage },
     { path: routes.home.path, component: RedirectToHome },

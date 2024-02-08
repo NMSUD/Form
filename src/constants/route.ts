@@ -45,7 +45,7 @@ export const routes = {
     path: '/status',
     pathWithParams: '/status/:segment/:id',
     sidebarPath: '/status',
-    title: '🔍 View Status',
+    title: '🔍 View submission status',
     addDividerAbove: true,
     showInSidebar: true,
     pathParam: {
@@ -67,7 +67,8 @@ export const routes = {
   },
   about: {
     path: '/about',
-    showInSidebar: false,
+    title: '❓ About us',
+    showInSidebar: true,
   },
 };
 

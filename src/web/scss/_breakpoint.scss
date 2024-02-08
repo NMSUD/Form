@@ -1,76 +1,76 @@
 body {
-    @media only screen and (max-width: 1279px) {
-        //
+  @media only screen and (max-width: 1279px) {
+    //
+  }
+
+  @media screen and (max-width: 980px) {
+    .form .hope-grid {
+      grid-template-columns: repeat(2, 1fr);
+
+      .hope-grid-item {
+        grid-column-start: span 1;
+        grid-column-end: span 1;
+
+        &[data-colspan='12'] {
+          grid-column-start: span 2;
+          grid-column-end: span 2;
+        }
+      }
     }
 
-    @media screen and (max-width: 980px) {
-        .form .hope-grid {
-            grid-template-columns: repeat(2, 1fr);
-
-            .hope-grid-item {
-                grid-column-start: span 1;
-                grid-column-end: span 1;
-
-                &[data-colspan="12"] {
-                    grid-column-start: span 2;
-                    grid-column-end: span 2;
-                }
-            }
-        }
-
-        .form.card {
-            padding: var(--hope-space-4);
-        }
-
-        main.main {
-            transition: opacity 500ms ease-in-out;
-        }
-
-        nav.hide-scrollbar {
-            position: absolute;
-            z-index: 10;
-
-            &.expand {
-                width: 0;
-
-                .drawer-icon {
-                    right: -3em;
-                }
-            }
-
-            &.close+main.main {
-                opacity: 0.2;
-            }
-        }
+    .form.card {
+      padding: var(--hope-space-4);
     }
 
-    @media only screen and (max-width: 768px) {
-        main.main {
-            padding-inline: 2em;
-
-            .hope-grid {
-                .hope-grid-item {
-                    grid-area: span 1 / span 2 / span 1 / span 2;
-                }
-            }
-        }
+    main.main {
+      transition: opacity 500ms ease-in-out;
     }
 
-    @media only screen and (max-width: 500px) {
-        main.main {
-            padding-inline: 1em;
+    nav.hide-scrollbar {
+      position: absolute;
+      z-index: 10;
+
+      &.expand {
+        width: 0;
+
+        .drawer-icon {
+          right: -3em;
         }
+      }
+
+      &.close + main.main {
+        opacity: 0.2;
+      }
     }
+  }
+
+  @media only screen and (max-width: 768px) {
+    main.main {
+      padding-inline: 2em;
+
+      .hope-grid {
+        .hope-grid-item {
+          grid-area: span 1 / span 2 / span 1 / span 2;
+        }
+      }
+    }
+  }
+
+  @media only screen and (max-width: 500px) {
+    main.main {
+      padding-inline: 1em;
+    }
+  }
 }
 
 .hidden-in-desktop {
-    @media screen and (min-width: 980px) {
-        display: none !important;
-    }
+  @media screen and (min-width: 980px) {
+    display: none !important;
+  }
 }
 
 .hidden-in-mobile {
-    @media screen and (max-width: 980px) {
-        display: none !important;
-    }
+  @media screen and (max-width: 980px) {
+    display: none !important;
+  }
 }

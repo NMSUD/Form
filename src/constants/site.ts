@@ -15,6 +15,14 @@ export const site = {
     website: 'https://nmscd.com',
     github: 'https://github.com/NMSCD',
   },
+  nmsud: {
+    name: 'NMSUD',
+    website: 'https://nmsud.com',
+    formRepo: 'https://github.com/NMSUD/Form',
+    formData: 'https://data.nmsud.com',
+    github: 'https://github.com/NMSUD',
+    discord: 'https://discord.gg/jQrNeWeTwR',
+  },
   assistantNMS: {
     name: "Assistant for No Man's Sky",
     email: 'mailto:support@nmsassistant.com',
@@ -22,6 +30,18 @@ export const site = {
     tools: 'https://tools.nmsassistant.com',
     github: 'https://github.com/AssistantNMS',
     discord: 'https://assistantapps.com/discord',
+  },
+  kurt: {
+    name: 'Kurt',
+    website: 'https://kurtlourens.com',
+  },
+  lenni: {
+    name: 'Lenni',
+    website: 'https://lenni009.github.io',
+  },
+  eisvana: {
+    name: 'Eisvana',
+    website: 'https://eisvana.github.io',
   },
 };
 

@@ -1,5 +1,6 @@
 @import "misc";
 @import "form";
+@import "about";
 @import "fonts";
 @import "sidebar";
 @import "scrollbar";
@@ -11,6 +12,7 @@
     --bg-color: #151718;
     --bg-hover-color: #0b0b0c;
     --line-gray-color: #8c9297;
+    --text-color: #ecedee;
 
     // to be overridden by the app at runtime
     --primary-colour: #00ffff;

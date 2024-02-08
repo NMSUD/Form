@@ -1,5 +1,6 @@
 import { Component, JSX } from 'solid-js';
 import { preventDefault } from '@helpers/eventHelper';
+import { site } from '@constants/site';
 
 interface IProps {
   id?: string;
@@ -11,16 +12,14 @@ interface IProps {
   children?: JSX.Element;
 }
 
-export const siteRef = 'nmscdCommunitySearch';
-
 export const BasicLink: Component<IProps> = (props: IProps) => {
   const appendRef = (baseUrl: string) => {
     if (props.disableRef == true) return baseUrl;
     if (baseUrl.includes('@')) return baseUrl;
     if (baseUrl.includes('?')) {
-      return baseUrl + `&ref=${siteRef}`;
+      return baseUrl + `&ref=${site.ref}`;
     }
-    return baseUrl + `?ref=${siteRef}`;
+    return baseUrl + `?ref=${site.ref}`;
   };
 
   const localClick = (e: MouseEvent) => {
@@ -45,3 +44,35 @@ export const BasicLink: Component<IProps> = (props: IProps) => {
     </a>
   );
 };
+
+export const NMSUDHomeLink = (props: any) => (
+  <BasicLink href={site.nmsud.website} title="NMSUD website">
+    {props.children ?? 'NMSUD'}
+  </BasicLink>
+);
+export const NMSUDDiscordLink = (props: any) => (
+  <BasicLink href={site.nmsud.discord} title="NMSUD discord">
+    {props.children ?? 'NMSUD'}
+  </BasicLink>
+);
+export const NMSUDRepoLink = () => (
+  <BasicLink href={site.nmsud.formRepo} title="Github Repo">
+    Github Repo
+  </BasicLink>
+);
+
+export const AssistantNmsHomeLink = () => (
+  <BasicLink href={site.assistantNMS.website} title="AssistantNMS">
+    AssistantNMS
+  </BasicLink>
+);
+export const AssistantAppsDiscordLink = (props: any) => (
+  <BasicLink href={site.assistantApps.discord} title="AssistantApps">
+    {props.children ?? 'AssistantApps Discord'}
+  </BasicLink>
+);
+export const NMSCDLink = () => (
+  <BasicLink href={site.nmscd.website} title="NMSCD">
+    NMSCD
+  </BasicLink>
+);
