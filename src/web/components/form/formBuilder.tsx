@@ -1,23 +1,22 @@
 import { Button, Center, HStack, Tag, Text, notificationService } from '@hope-ui/solid';
 import { Component, For, JSXElement, Show, createSignal } from 'solid-js';
 
+import { IApiSegment } from '@constants/api';
 import { NetworkState } from '@constants/enum/networkState';
 import { AppImage } from '@constants/image';
 import { routes } from '@constants/route';
+import { IDropdownOption } from '@contracts/dropdownOption';
 import { IFormDtoMeta, IFormDtoMetaDetails } from '@contracts/dto/forms/baseFormDto';
-import { IFormResponse } from '@contracts/response/formResponse';
-import { ResultWithValue } from '@contracts/resultWithValue';
 import { ValidationResult } from '@contracts/validationResult';
 import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
+import { getFormApiService } from '@services/api/formApiService';
 import { getCaptchaService } from '@services/external/captchaService';
 import { getConfig } from '@services/internal/configService';
+import { getStateService } from '@services/internal/stateService';
 import { validateObj } from '@validation/baseValidation';
 import { BasicLink } from '@web/components/core/link';
 import { FormFieldGrid, FormFieldGridCell, GridItemSize } from '@web/components/form/grid';
 import { StatusNotificationTile } from '@web/components/form/statusNotificationTile';
-import { IApiSegment } from '@constants/api';
-import { IDropdownOption } from '@contracts/dropdownOption';
-import { getStateService } from '@services/internal/stateService';
 
 interface IPropertyToFormMappingExtraProp<T> {
   [prop: string]: (item: T) => unknown;
@@ -53,9 +52,6 @@ interface IProps<T> {
   mappings: IComponentMapping<T>;
   formDtoMeta: IFormDtoMeta<T>;
   getName: (item: T) => string;
-  updateObject: (item: T) => void;
-  updateProperty: (prop: string, value: unknown) => void;
-  submit: (item: T, captcha: string) => Promise<ResultWithValue<IFormResponse>>;
 }
 
 export const FormBuilder = <T,>(props: IProps<T>) => {
@@ -73,8 +69,18 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
   }, 500);
 
   const updateProperty = (prop: string, value: unknown) => {
-    setItemBeingEdited((prev) => ({ ...prev, [prop]: value }));
-    props.updateProperty(prop, value);
+    const dtoMeta: IFormDtoMetaDetails<string> = (
+      props.formDtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>
+    )?.[prop];
+    const saveToLocalStorage = dtoMeta?.dontSaveToLocalStorage !== true;
+
+    setItemBeingEdited((prev) => {
+      const item = { ...prev, [prop]: value };
+      if (saveToLocalStorage) {
+        getStateService().setForm(props.segment, item);
+      }
+      return item;
+    });
   };
 
   const getExtraProps = (localItem: IPropertyToFormMapping<T>, localItemBeingEdited: T) => {
@@ -131,7 +137,11 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
       captchaResp = captchaResult.value;
     }
 
-    const submitTask = await props.submit(itemBeingEdited(), captchaResp);
+    const submitTask = await getFormApiService().submit(
+      props.segment,
+      itemBeingEdited(),
+      captchaResp,
+    );
     if (submitTask.isSuccess === false) {
       notificationService.show({
         status: 'danger',
@@ -176,6 +186,8 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
       ),
       persistent: true,
     });
+
+    clearForm();
     setNetworkState(NetworkState.Success);
   };
 
@@ -191,6 +203,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
           }
         }
       }
+      getStateService().setForm(props.segment, result);
       return result;
     });
   };

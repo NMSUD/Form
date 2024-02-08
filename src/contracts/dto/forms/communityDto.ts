@@ -40,12 +40,14 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
   },
   profilePicUrl: {
     label: 'Profile Pic Url',
+    dontSaveToLocalStorage: true,
     displayInDiscordMessage: shortLinkDiscordLine('click to open'),
     validator: noValidation,
   },
   profilePicFile: {
     label: 'Profile picture',
     defaultValue: null,
+    dontSaveToLocalStorage: true,
     validator: seperateValidation({
       api: noValidation,
       ui: multiValidation(
@@ -69,11 +71,13 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
   bioMediaUrls: {
     label: 'Bio Media',
     defaultValue: [],
+    dontSaveToLocalStorage: true,
     displayInDiscordMessage: arrayDiscordLine,
     validator: noValidation,
   },
   bioMediaFiles: {
     label: 'Media upload',
+    dontSaveToLocalStorage: true,
     validator: seperateValidation({
       api: noValidation,
       ui: validateForEach(notNull('You need to upload an image')),

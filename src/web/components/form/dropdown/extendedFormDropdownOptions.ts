@@ -5,8 +5,7 @@ import { ResultWithValue } from '@contracts/resultWithValue';
 import { getStateService } from '@services/internal/stateService';
 import { getNmsUdJsonFileService } from '@services/json/nmsudJsonFileService';
 
-// TODO move logic to better place?
-export const getDropdownOptionsPromise = async <T>(
+export const extendedFormDropdownOptions = async <T>(
   segment: keyof IApiSegment,
   mapper: (item: T) => IDropdownOption,
 ): Promise<ResultWithValue<Array<IDropdownOption>>> => {

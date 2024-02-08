@@ -21,7 +21,7 @@ interface IEnhancedDropdown extends IDropdownOption {
 
 interface IRows {
   title: string;
-  segment: string;
+  segment: keyof IApiSegment;
   items: Array<IEnhancedDropdown>;
 }
 
@@ -126,7 +126,14 @@ export const StatusPage: Component = () => {
                           <StatusTile
                             imgUrl={option.image ?? AppImage.fallbackImg}
                             name={option.title ?? ''}
-                            description={getFriendlyApprovalStatus(ApprovalStatus.pending)}
+                            description={getFriendlyApprovalStatus(option.approvalStatus)}
+                            actionText="❌"
+                            actionTooltipText="Click this to stop tracking the status of this submission"
+                            onClick={() => {
+                              getStateService().delSubmission(row.segment, option.value);
+                              setNetworkState(NetworkState.Loading);
+                              loadStatusForAllItems();
+                            }}
                           />
                         )}
                       </For>

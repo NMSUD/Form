@@ -1,16 +1,15 @@
 import { Container, Service } from 'typedi';
 
 import { IApiSegment, api, apiParams } from '@constants/api';
+import { FormDataKey } from '@constants/form';
 import { BuilderDto } from '@contracts/dto/forms/builderDto';
 import { CommunityDto } from '@contracts/dto/forms/communityDto';
 import { IFormResponse } from '@contracts/response/formResponse';
 import { ResultWithValue } from '@contracts/resultWithValue';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
+import { anyObject } from '@helpers/typescriptHacks';
 import { getConfig } from '../internal/configService';
 import { BaseApiService } from './baseApiService';
-import { anyObject } from '@helpers/typescriptHacks';
-import { FormDataKey } from '@constants/form';
-import { nameof } from '@helpers/propHelper';
 
 @Service()
 export class FormApiService extends BaseApiService {
@@ -22,10 +21,22 @@ export class FormApiService extends BaseApiService {
     this._apiUrl = apiUrl;
   }
 
-  async submitCommunity(
-    data: CommunityDto,
+  async submit(
+    segment: keyof IApiSegment,
+    data: unknown,
     captcha: string,
   ): Promise<ResultWithValue<IFormResponse>> {
+    let formData = new FormData();
+    switch (segment) {
+      case 'community':
+        formData = await this.createFormFromCommunity(data as CommunityDto, captcha);
+      case 'builder':
+        formData = await this.createFormFromBuilder(data as BuilderDto, captcha);
+    }
+    return this.submitForm(segment, formData);
+  }
+
+  private async createFormFromCommunity(data: CommunityDto, captcha: string): Promise<FormData> {
     const { profilePicFile, bioMediaFiles, ...dataWithoutFiles } = data;
 
     let formData = new FormData();
@@ -36,10 +47,10 @@ export class FormApiService extends BaseApiService {
     }
     formData.append(FormDataKey.data, JSON.stringify(dataWithoutFiles));
 
-    return this.submitForm(nameof<IApiSegment>('community'), formData);
+    return formData;
   }
 
-  async submitBuilder(data: BuilderDto, captcha: string): Promise<ResultWithValue<IFormResponse>> {
+  private async createFormFromBuilder(data: BuilderDto, captcha: string): Promise<FormData> {
     const { profilePicFile, ...dataWithoutFiles } = data;
 
     let formData = new FormData();
@@ -47,10 +58,13 @@ export class FormApiService extends BaseApiService {
     formData.append(FormDataKey.profilePicFile, profilePicFile);
     formData.append(FormDataKey.data, JSON.stringify(dataWithoutFiles));
 
-    return this.submitForm(nameof<IApiSegment>('builder'), formData);
+    return formData;
   }
 
-  async submitForm(segment: string, formData: FormData): Promise<ResultWithValue<IFormResponse>> {
+  private async submitForm(
+    segment: keyof IApiSegment,
+    formData: FormData,
+  ): Promise<ResultWithValue<IFormResponse>> {
     const urlPath = api.routes.form.replace(`:${apiParams.general.segment}`, segment);
     const url = `${this._apiUrl}/${urlPath}`;
     try {

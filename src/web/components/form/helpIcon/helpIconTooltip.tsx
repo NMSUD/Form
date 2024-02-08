@@ -11,7 +11,7 @@ export const HelpIconTooltip: Component<IProps> = (props: IProps) => {
   return (
     <Show when={props.helpText != null}>
       <Tooltip label={props.helpText} class="noselect">
-        <HelpIcon fontSize="1.25em" marginLeft="$1" paddingBottom="2px" />
+        <HelpIcon fontSize="1.25em" marginLeft="$1" paddingBottom="2px" tabindex="-1" />
       </Tooltip>
     </Show>
   );

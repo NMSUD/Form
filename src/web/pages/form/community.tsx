@@ -8,9 +8,9 @@ import {
   communityBioMaxLength,
   communityContactDetailsMaxLength,
 } from '@contracts/dto/forms/communityDto';
+import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { randomItemFromArray } from '@helpers/randomHelper';
-import { anyObject } from '@helpers/typescriptHacks';
-import { getFormApiService } from '@services/api/formApiService';
+import { getStateService } from '@services/internal/stateService';
 import { Card } from '@web/components/common/card';
 import { PageHeader } from '@web/components/common/pageHeader';
 import { FormDropdown } from '@web/components/form/dropdown/dropdown';
@@ -22,10 +22,10 @@ import { FormLongInput } from '@web/components/form/text/input';
 import { FormTextArea } from '@web/components/form/text/textArea';
 
 export const CommunityFormPage: Component = () => {
-  const [itemBeingEdited, setItemBeingEdited] = createSignal<CommunityDto>({
-    profilePic: '',
-    bioMediaUrls: [],
-    ...anyObject,
+  const dataFromState: CommunityDto = getStateService().getForm('community');
+  const [itemBeingEdited] = createSignal<CommunityDto>({
+    ...dataFromState,
+    bioMediaUrls: makeArrayOrDefault(dataFromState.bioMediaUrls),
   });
 
   return (
@@ -88,11 +88,6 @@ export const CommunityFormPage: Component = () => {
               },
             },
           }}
-          updateObject={(item: CommunityDto) => setItemBeingEdited((_) => item)}
-          updateProperty={(prop: string, value: unknown) => {
-            setItemBeingEdited((prev) => ({ ...prev, [prop]: value }));
-          }}
-          submit={(data, captcha) => getFormApiService().submitCommunity(data, captcha)}
         />
       </Card>
     </>

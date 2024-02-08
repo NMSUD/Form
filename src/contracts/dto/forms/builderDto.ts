@@ -14,11 +14,14 @@ import {
   seperateValidation,
   validateForEach,
 } from '@validation/baseValidation';
+import { maxDate, minDate } from '@validation/dateValidation';
 import { webImageRestrictions } from '@validation/imageValidation';
 import { maxLength, minLength, shouldBeUrl } from '@validation/textValidation';
 
 export const builderBioMaxLength = 500;
 export const builderContactDetailsMaxLength = 500;
+export const builderStartedPlayingMinDate = new Date('2016-08-09');
+export const builderStartedPlayingMaxDate = new Date();
 
 export interface BuilderDto {
   name: string;
@@ -37,12 +40,14 @@ export interface BuilderDto {
 export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
   profilePicUrl: {
     label: 'Profile Pic Url',
+    dontSaveToLocalStorage: true,
     displayInDiscordMessage: shortLinkDiscordLine('click to open'),
     validator: noValidation,
   },
   profilePicFile: {
     label: 'Profile picture',
     defaultValue: null,
+    dontSaveToLocalStorage: true,
     validator: seperateValidation({
       api: noValidation,
       ui: multiValidation(
@@ -73,13 +78,16 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
   startedPlaying: {
     label: 'Date that you started playing',
     displayInDiscordMessage: basicDiscordLine,
-    validator: noValidation,
+    validator: multiValidation(
+      minDate(builderStartedPlayingMinDate),
+      maxDate(builderStartedPlayingMaxDate),
+    ),
   },
   buildTechniquesUsed: {
     label: 'Build techniques used',
     defaultValue: [],
     displayInDiscordMessage: arrayDiscordLine,
-    validator: noValidation,
+    validator: minItems(1),
   },
   communityAffiliations: {
     label: 'Community affiliations',

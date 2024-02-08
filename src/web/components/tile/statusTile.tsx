@@ -6,6 +6,7 @@ interface IProps {
   name: string;
   description: string;
   actionText?: string;
+  actionTooltipText?: string;
   onClick?: () => void;
 }
 
@@ -36,6 +37,7 @@ export const StatusTile: Component<IProps> = (props: IProps) => {
             colorScheme="accent"
             size="sm"
             ml="auto"
+            title={props.actionTooltipText}
             onClick={() => props.onClick?.()}
           >
             {props.actionText}
