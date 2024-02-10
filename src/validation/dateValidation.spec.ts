@@ -12,12 +12,17 @@ describe('Date Validation', () => {
     test('minDate on earlier date', () => {
       const testDate = new Date('2020-01-01');
       const validator = minDate(new Date('2021-01-01'));
-      expect(validator(testDate).isValid).toBeTruthy();
+      expect(validator(testDate).isValid).toBeFalsy();
+    });
+    test('minDate with earlier date string', () => {
+      const testDate: any = '2017-01-12';
+      const validator = minDate(new Date('2021-01-01'));
+      expect(validator(testDate).isValid).toBeFalsy();
     });
     test('minDate on later date', () => {
       const testDate = new Date('2022-01-01');
       const validator = minDate(new Date('2021-01-01'));
-      expect(validator(testDate).isValid).toBeFalsy();
+      expect(validator(testDate).isValid).toBeTruthy();
     });
   });
 
@@ -30,12 +35,12 @@ describe('Date Validation', () => {
     test('maxDate on earlier date', () => {
       const testDate = new Date('2020-01-01');
       const validator = maxDate(new Date('2021-01-01'));
-      expect(validator(testDate).isValid).toBeFalsy();
+      expect(validator(testDate).isValid).toBeTruthy();
     });
     test('maxDate on later date', () => {
       const testDate = new Date('2022-01-01');
       const validator = maxDate(new Date('2021-01-01'));
-      expect(validator(testDate).isValid).toBeTruthy();
+      expect(validator(testDate).isValid).toBeFalsy();
     });
   });
 });
