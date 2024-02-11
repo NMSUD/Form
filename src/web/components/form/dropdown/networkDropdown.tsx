@@ -1,11 +1,9 @@
-import { Component, Match, Show, Switch, createEffect, createSignal } from 'solid-js';
+import { Component, Match, Switch, createSignal } from 'solid-js';
 
-import { IDropdownOption } from '@contracts/dropdownOption';
-import { makeArrayOrDefault } from '@helpers/arrayHelper';
-import { Dropdown } from '../../common/dropdown';
-import { IFormInputProps } from '../formBuilder';
 import { NetworkState } from '@constants/enum/networkState';
+import { IDropdownOption } from '@contracts/dropdownOption';
 import { ResultWithValue } from '@contracts/resultWithValue';
+import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import {
   FormControl,
   FormLabel,
@@ -16,9 +14,11 @@ import {
   Text,
 } from '@hope-ui/solid';
 import { LoadingSpinner } from '@web/components/core/loading';
+import { FormInputProps } from '@web/contracts/formTypes';
+import { Dropdown } from '../../common/dropdown';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 
-interface IProps extends IFormInputProps<Array<string>> {
+interface IProps extends FormInputProps<Array<string>> {
   optionsPromise?: Promise<ResultWithValue<Array<IDropdownOption>>>;
   multiple?: boolean;
 }

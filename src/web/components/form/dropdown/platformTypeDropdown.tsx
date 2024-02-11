@@ -8,10 +8,10 @@ import {
 } from '@contracts/dto/enum/platformType';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { getArrFromEnum } from '@helpers/enumHelper';
+import { FormInputProps } from '@web/contracts/formTypes';
 import { Dropdown } from '../../common/dropdown';
-import { IFormInputProps } from '../formBuilder';
 
-interface IProps extends IFormInputProps<Array<string>> {
+interface IProps extends FormInputProps<Array<string>> {
   multiple?: boolean;
 }
 

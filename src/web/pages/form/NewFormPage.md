@@ -6,7 +6,12 @@
 
 ```tsx
 export const BuilderFormPage: Component = () => {
-  const [itemBeingEdited, setItemBeingEdited] = createSignal<BuilderDto>(anyObject);
+  const dataFromState: BuilderDto = getStateService().getForm('builder');
+  const initialItem: BuilderDto = {
+    ...dataFromState,
+    startedPlaying:
+      dataFromState.startedPlaying ?? formatDate(builderStartedPlayingMaxDate, 'YYYY-MM-DD'),
+  };
 
   return (
     <>
@@ -14,17 +19,16 @@ export const BuilderFormPage: Component = () => {
 
       <Card class="form">
         <FormBuilder
-          item={itemBeingEdited()}
+          item={initialItem}
           id="BuilderDto"
+          segment="builder"
+          getName={/*(dto: BuilderDto) => dto.name*/}
           formDtoMeta={BuilderDtoMeta}
           mappings={
             {
               // Typescript should force you to declare an object for each property in the dto.
             }
           }
-          updateObject={{}}
-          updateProperty={{}}
-          submit={{}}
         />
       </Card>
     </>

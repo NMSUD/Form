@@ -5,12 +5,12 @@ import { NetworkState } from '@constants/enum/networkState';
 import { AppImage } from '@constants/image';
 import { onTargetFile } from '@helpers/eventHelper';
 import { IImageParams, getImageParams } from '@helpers/imageHelper';
+import { FormInputProps } from '@web/contracts/formTypes';
 import { useValidation } from '../../../hooks/useValidation';
-import { IFormInputProps } from '../formBuilder';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 import { FormProfileImageLoading } from './profileImageLoading';
 
-interface IFormProfileImageUrlProps extends IFormInputProps<File> {
+interface IFormProfileImageUrlProps extends FormInputProps<File> {
   imageValue?: string;
 }
 

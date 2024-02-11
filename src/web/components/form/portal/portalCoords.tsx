@@ -4,11 +4,11 @@ import { Component, For, Show, createEffect, createSignal } from 'solid-js';
 
 import { portalValidOptions } from '@constants/form';
 import { onTargetValue } from '@helpers/eventHelper';
+import { FormInputProps } from '@web/contracts/formTypes';
 import { useValidation } from '@web/hooks/useValidation';
-import { IFormInputProps } from '../formBuilder';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 
-interface IFormPortalCoordInputProps extends IFormInputProps<string> {}
+interface IFormPortalCoordInputProps extends FormInputProps<string> {}
 
 export const PortalCoordInput: Component<IFormPortalCoordInputProps> = (
   props: IFormPortalCoordInputProps,

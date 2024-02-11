@@ -1,4 +1,4 @@
-import { Component, createSignal } from 'solid-js';
+import { Component } from 'solid-js';
 
 import { Labels } from '@constants/labels';
 import { funnyPlayerNames } from '@constants/names';
@@ -13,7 +13,6 @@ import {
 import { communityToDropdown } from '@contracts/dto/forms/communityDto';
 import { formatDate } from '@helpers/dateHelper';
 import { randomItemFromArray } from '@helpers/randomHelper';
-import { getStateService } from '@services/internal/stateService';
 import { Card } from '@web/components/common/card';
 import { PageHeader } from '@web/components/common/pageHeader';
 import { FormDropdown } from '@web/components/form/dropdown/dropdown';
@@ -26,17 +25,16 @@ import { FormProfileImageInput } from '@web/components/form/image/profileImage';
 import { FormSocialInput } from '@web/components/form/socialLink/social';
 import { FormLongInput } from '@web/components/form/text/input';
 import { FormTextArea } from '@web/components/form/text/textArea';
+import { PropertyOverrides } from '@web/contracts/formTypes';
 
 export const BuilderFormPage: Component = () => {
-  const dataFromState: BuilderDto = getStateService().getForm('builder');
-  const [itemBeingEdited] = createSignal<BuilderDto>({
-    ...dataFromState,
-    startedPlaying:
-      dataFromState.startedPlaying ?? formatDate(builderStartedPlayingMaxDate, 'YYYY-MM-DD'),
-  });
-  const [communityDropdownPromise] = createSignal(
-    extendedFormDropdownOptions('community', communityToDropdown),
-  );
+  const propertyOverrides: Array<PropertyOverrides<BuilderDto>> = [
+    {
+      startedPlaying: (origVal) =>
+        origVal ?? formatDate(builderStartedPlayingMaxDate, 'YYYY-MM-DD'),
+    },
+  ];
+  const communityDropdownPromise = extendedFormDropdownOptions('community', communityToDropdown);
 
   return (
     <>
@@ -44,11 +42,11 @@ export const BuilderFormPage: Component = () => {
 
       <Card class="form">
         <FormBuilder
-          item={itemBeingEdited()}
           id="BuilderDto"
           segment="builder"
           getName={(dto: BuilderDto) => dto.name}
           formDtoMeta={BuilderDtoMeta}
+          propertyOverrides={propertyOverrides}
           mappings={{
             profilePicFile: {
               component: FormProfileImageInput,
@@ -99,7 +97,7 @@ export const BuilderFormPage: Component = () => {
               placeholder: 'Select your communities',
               additional: {
                 multiple: (_) => true,
-                optionsPromise: () => communityDropdownPromise(),
+                optionsPromise: () => communityDropdownPromise,
               },
             },
             bio: {

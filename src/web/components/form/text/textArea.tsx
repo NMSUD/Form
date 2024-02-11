@@ -2,11 +2,11 @@ import { FormControl, FormErrorMessage, FormLabel, Textarea } from '@hope-ui/sol
 import { Component, Show, createEffect, createSignal } from 'solid-js';
 
 import { onTargetValue } from '@helpers/eventHelper';
+import { FormInputProps } from '@web/contracts/formTypes';
 import { useValidation } from '@web/hooks/useValidation';
-import { IFormInputProps } from '../formBuilder';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 
-interface IFormTextAreaProps extends IFormInputProps<string> {
+interface IFormTextAreaProps extends FormInputProps<string> {
   minH?: string;
   inputType?: string;
   displayTextLength?: boolean;

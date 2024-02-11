@@ -1,5 +1,5 @@
 import { Button, Center, HStack, Tag, Text, notificationService } from '@hope-ui/solid';
-import { Component, For, JSXElement, Show, createSignal } from 'solid-js';
+import { For, JSXElement, Show, createSignal } from 'solid-js';
 
 import { IApiSegment } from '@constants/api';
 import { NetworkState } from '@constants/enum/networkState';
@@ -7,7 +7,7 @@ import { AppImage } from '@constants/image';
 import { routes } from '@constants/route';
 import { IDropdownOption } from '@contracts/dropdownOption';
 import { IFormDtoMeta, IFormDtoMetaDetails } from '@contracts/dto/forms/baseFormDto';
-import { ValidationResult } from '@contracts/validationResult';
+import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
 import { getFormApiService } from '@services/api/formApiService';
 import { getCaptchaService } from '@services/external/captchaService';
@@ -17,46 +17,38 @@ import { validateObj } from '@validation/baseValidation';
 import { BasicLink } from '@web/components/core/link';
 import { FormFieldGrid, FormFieldGridCell, GridItemSize } from '@web/components/form/grid';
 import { StatusNotificationTile } from '@web/components/form/statusNotificationTile';
-
-interface IPropertyToFormMappingExtraProp<T> {
-  [prop: string]: (item: T) => unknown;
-}
-
-export type IComponentMapping<T> = {
-  [prop in keyof T]?: IPropertyToFormMapping<T>;
-};
-
-export type IFormInputProps<T> = {
-  id: string;
-  label: string;
-  helpText?: string;
-  value: T;
-  placeholder: string;
-  showValidationMessages: boolean;
-  validation: (val: T) => ValidationResult;
-  onChange: (newValue: T) => void;
-};
-
-export interface IPropertyToFormMapping<T> {
-  component: Component<IFormInputProps<any>>;
-  gridItemColumnSize: GridItemSize;
-  gridItemRowSize?: GridItemSize;
-  placeholder?: string;
-  additional?: IPropertyToFormMappingExtraProp<T>;
-}
+import {
+  ComponentMapping,
+  IPropertyToFormMapping,
+  PropertyOverrides,
+} from '@web/contracts/formTypes';
 
 interface IProps<T> {
-  item: T;
   id: string;
   segment: keyof IApiSegment;
-  mappings: IComponentMapping<T>;
+  mappings: ComponentMapping<T>;
   formDtoMeta: IFormDtoMeta<T>;
+  propertyOverrides?: Array<PropertyOverrides<T>>;
   getName: (item: T) => string;
 }
 
 export const FormBuilder = <T,>(props: IProps<T>) => {
   let captchaRef: HTMLDivElement;
-  const [itemBeingEdited, setItemBeingEdited] = createSignal<T>(props.item);
+
+  const dataFromState: { [x: string]: unknown } = getStateService().getForm(props.segment);
+  for (const propOverrides of makeArrayOrDefault(props.propertyOverrides)) {
+    for (const property of Object.keys(propOverrides)) {
+      const propKey = property as keyof T;
+      const currVal = dataFromState[property];
+      const propOverrideFunc = propOverrides[propKey];
+      if (propOverrideFunc == null) continue;
+
+      const newValue = propOverrideFunc(currVal);
+      dataFromState[property] = newValue;
+    }
+  }
+
+  const [itemBeingEdited, setItemBeingEdited] = createSignal<T>(dataFromState as T);
   const [forceValidationMessages, setForceValidationMessages] = createSignal<boolean>(false);
   const [networkState, setNetworkState] = createSignal<NetworkState>(NetworkState.Loading);
 
@@ -152,8 +144,9 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
       return;
     }
 
+    const name = submitTask.value.name;
     const dropDownOpt: IDropdownOption = {
-      title: props.getName(itemBeingEdited()),
+      title: name,
       value: submitTask.value.id,
       image: submitTask.value.iconUrl,
     };
@@ -179,7 +172,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
               disableRef={true}
               additionalClassNames="noselect"
             >
-              View Status of {props.segment} '{props.getName(itemBeingEdited())}'
+              View Status of {props.segment} '{name}'
             </BasicLink>
           }
         />

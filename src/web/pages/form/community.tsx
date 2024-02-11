@@ -1,4 +1,4 @@
-import { Component, createSignal } from 'solid-js';
+import { Component } from 'solid-js';
 
 import { Labels } from '@constants/labels';
 import { funnyPlayerNames } from '@constants/names';
@@ -10,7 +10,6 @@ import {
 } from '@contracts/dto/forms/communityDto';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { randomItemFromArray } from '@helpers/randomHelper';
-import { getStateService } from '@services/internal/stateService';
 import { Card } from '@web/components/common/card';
 import { PageHeader } from '@web/components/common/pageHeader';
 import { FormDropdown } from '@web/components/form/dropdown/dropdown';
@@ -20,13 +19,14 @@ import { FormProfileImageInput } from '@web/components/form/image/profileImage';
 import { FormSocialInput } from '@web/components/form/socialLink/social';
 import { FormLongInput } from '@web/components/form/text/input';
 import { FormTextArea } from '@web/components/form/text/textArea';
+import { PropertyOverrides } from '@web/contracts/formTypes';
 
 export const CommunityFormPage: Component = () => {
-  const dataFromState: CommunityDto = getStateService().getForm('community');
-  const [itemBeingEdited] = createSignal<CommunityDto>({
-    ...dataFromState,
-    bioMediaUrls: makeArrayOrDefault(dataFromState.bioMediaUrls),
-  });
+  const propertyOverrides: Array<PropertyOverrides<CommunityDto>> = [
+    {
+      bioMediaUrls: (origVal) => makeArrayOrDefault(origVal),
+    },
+  ];
 
   return (
     <>
@@ -34,11 +34,11 @@ export const CommunityFormPage: Component = () => {
 
       <Card class="form">
         <FormBuilder
-          item={itemBeingEdited()}
           id="CommunityDto"
           segment="community"
           getName={(dto: CommunityDto) => dto.name}
           formDtoMeta={CommunityDtoMeta}
+          propertyOverrides={propertyOverrides}
           mappings={{
             profilePicFile: {
               component: FormProfileImageInput,

@@ -3,11 +3,11 @@ import { Component, Show, createEffect } from 'solid-js';
 import { formatForDateLocal } from '@helpers/dateHelper';
 import { onTargetValue } from '@helpers/eventHelper';
 import { FormControl, FormErrorMessage, FormLabel, Input } from '@hope-ui/solid';
+import { FormInputProps } from '@web/contracts/formTypes';
 import { useValidation } from '@web/hooks/useValidation';
-import { IFormInputProps } from '../formBuilder';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 
-interface IFormLongInputProps extends IFormInputProps<string | number> {
+interface IFormLongInputProps extends FormInputProps<string | number> {
   inputType?: string;
   min?: string;
   max?: string;
