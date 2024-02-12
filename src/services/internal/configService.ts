@@ -17,6 +17,10 @@ export class ConfigService {
 
   getDiscordWebhookUrl = () => this.get('DISCORD_WEBHOOK_URL');
 
+  getGithubActionTriggerOnDecision = () => this.getBool('GITHUB_ACTION_TRIGGER_ON_DECISION');
+  getGithubActionFormDataUrl = () => this.get('GITHUB_ACTION_FORMDATA_DISPATCH_URL');
+  getGithubActionAuthToken = () => this.get('GITHUB_AUTH_TOKEN');
+
   getCaptchaEnabled = () => this.getBool('VITE_ENABLE_CAPTCHA');
   getHCaptchaSecret = () => this.get('HCAPTCHA_SECRET');
   getHCaptchaSiteKey = () => this.get('VITE_HCAPTCHA_SITE_KEY');

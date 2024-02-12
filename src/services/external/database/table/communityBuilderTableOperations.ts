@@ -10,6 +10,7 @@ export const getByBuilderId =
         .filter({
           'builder.id': builderId,
         })
+        .select(['id', 'builder.id', 'builder.name', 'community.id', 'community.name'])
         .getAll();
       return {
         isSuccess: true,
@@ -35,6 +36,7 @@ export const getByCommunityId =
         .filter({
           'community.id': communityId,
         })
+        .select(['id', 'builder.id', 'builder.name', 'community.id', 'community.name'])
         .getAll();
       return {
         isSuccess: true,

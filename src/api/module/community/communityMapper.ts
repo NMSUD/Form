@@ -18,14 +18,15 @@ export const communityDtoWithImageToPersistence: DtoAndImageMapperToNewPersisten
     bio: dto.bio,
     bioMediaFiles: makeArrayOrDefault(images.bioMediaFiles) as Array<XataArrayFile>,
     bioMediaUrls: '',
-    tags: dto.tags.join(','),
-    socials: dto.socials.join(','),
+    tags: dto.tags.filter((t) => t.length > 0).join(','),
+    socials: dto.socials.filter((s) => s.length > 0).join(','),
     contactDetails: dto.contactDetails,
     approvalStatus: ApprovalStatus.pending,
   };
   return persistence;
 };
 
+// TODO update properties
 export const communityPersistenceToDto: Mapper<Community, CommunityDto> = (
   persistence: Community,
 ) => {
@@ -35,11 +36,11 @@ export const communityPersistenceToDto: Mapper<Community, CommunityDto> = (
     profilePicFile: anyObject,
     profilePicUrl: persistence.profilePicUrl ?? '',
     bio: persistence.bio,
-    bioMediaUrls: persistence.bioMediaUrls.split(','),
+    bioMediaUrls: persistence.bioMediaUrls.split(',').filter((u) => u.length > 0),
     bioMediaFiles: anyObject,
     homeGalaxies: [], //persistence.homeGalaxies,
-    tags: persistence.tags.split(','),
-    socials: persistence.socials.split(','),
+    tags: persistence.tags.split(',').filter((t) => t.length > 0),
+    socials: persistence.socials.split(',').filter((s) => s.length > 0),
     contactDetails: persistence.contactDetails,
   };
   return dto;

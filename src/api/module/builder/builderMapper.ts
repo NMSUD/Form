@@ -20,9 +20,13 @@ export const builderDtoWithImageToPersistence: DtoAndImageMapperToNewPersistence
     bio: dto.bio,
     platforms: dto.platforms.map(platformTypeToString).join(','),
     startedPlaying: formatDateForDatabase(dto.startedPlaying),
-    buildTechniquesUsed: dto.buildTechniquesUsed.join(','),
-    labels: makeArrayOrDefault(dto.labels).join(','),
-    socials: dto.socials.join(','),
+    buildTechniquesUsed: makeArrayOrDefault(dto.buildTechniquesUsed)
+      .filter((l) => l.length > 0)
+      .join(','),
+    labels: makeArrayOrDefault(dto.labels)
+      .filter((l) => l.length > 0)
+      .join(','),
+    socials: dto.socials.filter((s) => s.length > 0).join(','),
     contactDetails: dto.contactDetails,
     approvalStatus: ApprovalStatus.pending,
     discordWebhookId: '',
@@ -37,12 +41,15 @@ export const builderPersistenceToDto: Mapper<Builder, BuilderDto> = (persistence
     profilePicFile: anyObject,
     profilePicUrl: persistence.profilePicUrl ?? '',
     bio: persistence.bio,
-    platforms: persistence.platforms.split(',').map(platformTypeFromString),
+    platforms: persistence.platforms
+      .split(',')
+      .filter((p) => p.length > 0)
+      .map(platformTypeFromString),
     startedPlaying: persistence.startedPlaying,
-    buildTechniquesUsed: persistence.buildTechniquesUsed.split(','),
+    buildTechniquesUsed: persistence.buildTechniquesUsed.split(',').filter((bt) => bt.length > 0),
     communityAffiliations: [],
-    labels: persistence.labels.split(','),
-    socials: persistence.socials.split(','),
+    labels: persistence.labels.split(',').filter((l) => l.length > 0),
+    socials: persistence.socials.split(',').filter((s) => s.length > 0),
     contactDetails: persistence.contactDetails,
   };
   return dto;

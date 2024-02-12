@@ -14,6 +14,7 @@ import { baseSubmissionMessageBuilder, getDescriptionLines } from '@helpers/disc
 import { getDiscordService } from '@services/external/discord/discordService';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
+import { getGithubWorkflowService } from '@services/external/githubWorkflowService';
 
 export const baseVerifyHandler =
   <TD, TF, TP>(module: IApiModule<TD, TF, TP>) =>
@@ -103,6 +104,11 @@ export const baseVerifyHandler =
         message: errMsg,
       });
       return;
+    }
+
+    const shouldTrigger = getConfig().getGithubActionTriggerOnDecision();
+    if (shouldTrigger) {
+      await getGithubWorkflowService().createDispatchEvent();
     }
 
     const tempDto = module.mapPersistenceToDto(readRecordResult.value);

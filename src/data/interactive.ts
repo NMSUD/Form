@@ -7,6 +7,7 @@ import { DiscordWebhook } from '@contracts/generated/discordWebhook';
 import { addSpacesForEnum, capitalizeFirstLetter } from '@helpers/stringHelper';
 import { getDiscordService } from '@services/external/discord/discordService';
 import { APP_TYPE, BOT_PATH, getConfig } from '@services/internal/configService';
+import { getGithubWorkflowService } from '@services/external/githubWorkflowService';
 
 const interactive = async () => {
   Container.set(BOT_PATH, __dirname);
@@ -31,6 +32,9 @@ const interactive = async () => {
         message: `Enter discord message id:`,
       });
       await getDiscordService().getDiscordMessage(discordUrl, discordMessageId.value);
+    },
+    triggerGithubAction: async () => {
+      await getGithubWorkflowService().createDispatchEvent();
     },
   };
 

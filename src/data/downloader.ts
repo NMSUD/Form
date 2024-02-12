@@ -1,17 +1,19 @@
 import 'reflect-metadata';
+
 import fs from 'fs';
 import path from 'path';
 import prompts from 'prompts';
 import { Container } from 'typedi';
 
-import { APP_TYPE, BOT_PATH, getConfig } from '@services/internal/configService';
-import { AppType } from '@constants/enum/appType';
-import { getLog } from '@services/internal/logService';
+import { builderModule } from '@api/module/builder/builderModule';
 import { communityModule } from '@api/module/community/communityModule';
-import { fetchImagesForTable } from './img/baseImgDownloader';
+import { AppType } from '@constants/enum/appType';
+import { APP_TYPE, BOT_PATH } from '@services/internal/configService';
+import { processTable } from './functions/processTable';
+import { builderImgDownloader } from './img/builderImgDownloader';
 import { communityImgDownloader } from './img/communityImgDownloader';
-import { generateJsonFile } from './json/jsonGenerator';
-import { stripPropertiesFromObject } from './mapper/stripProperties';
+import { baseNoopEnhancer } from './mapper/baseMapper';
+import { builderEnhancer } from './mapper/builderMapper';
 
 const downloader = async () => {
   const dataFolder = path.join(__dirname, '../../data');
@@ -25,48 +27,22 @@ const downloader = async () => {
     fs.mkdirSync(dataFolder);
   }
 
-  const imageFolder = path.join(dataFolder, 'img');
-  if (fs.existsSync(imageFolder) == false) {
-    fs.mkdirSync(imageFolder);
-  }
-
-  getLog().i('Fetching all the data');
-  const commuityTableResult = await communityModule.readAllRecords();
-  if (commuityTableResult.isSuccess == false) return throwError(commuityTableResult.errorMessage);
-
-  getLog().i('Fetch images per record');
-  const updatedCommunityTable = await fetchImagesForTable({
-    items: commuityTableResult.value,
-    imageFolder: 'community',
-    imgBaseUrl: getConfig().getNmsUdBaseImgUrl(),
-    processItem: communityImgDownloader,
+  await processTable({
+    module: communityModule,
+    processItemImgs: communityImgDownloader,
+    dataEnhancer: baseNoopEnhancer,
   });
 
-  getLog().i('Writing base jsonFiles');
-  generateJsonFile({
-    items: updatedCommunityTable.map(stripPropertiesFromObject),
-    outputFile: 'community',
+  await processTable({
+    module: builderModule,
+    processItemImgs: builderImgDownloader,
+    dataEnhancer: builderEnhancer,
   });
-
-  // Image download
-  //      each table
-  //          each each row
-  //              if it has attachment(s)
-  //                  download
-  //                  edit row with imageUrl(s)
 
   // json generation
   //      json file for each table (e.g community.json)
   //      json file per id (e.g. for id "tester1" => community/tester1.json)
   //      grouped json files (e.g. all builds by a builder with id "bobBuilder" => bases-by-builder/bobBuilder.json)
-
-  // fetch all community data
-  // each item
 };
 
 downloader();
-
-const throwError = (errMsg: string) => {
-  console.error(errMsg);
-  return 1;
-};
