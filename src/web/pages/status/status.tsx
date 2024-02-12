@@ -96,7 +96,7 @@ export const StatusPage: Component = () => {
       <PageHeader text="Status"></PageHeader>
       <Box m={25}></Box>
 
-      <Container maxW="50em" mt="3em" mb="2em">
+      <Container maxW="50em" mt="3em" mb="2em" class="noselect">
         <Alert mt="2em" status="info" variant="subtle">
           <AlertIcon mr="$2_5" />
           <AlertDescription>
@@ -110,7 +110,7 @@ export const StatusPage: Component = () => {
 
       <Switch
         fallback={
-          <Container>
+          <Container class="noselect">
             <Show
               when={rows().length > 0}
               fallback={

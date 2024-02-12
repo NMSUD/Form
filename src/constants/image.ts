@@ -5,6 +5,12 @@ export const AppImage = {
   platformFolder: '/assets/img/platform',
   sidebarLogo: '/assets/img/logo.png',
   fallbackImg: '/assets/img/fallback.png',
+  failedToLoadImg: '/assets/img/failedToLoad.png',
+
+  kurt: '/assets/img/about/kurt.jpg',
+  lenni: '/assets/img/about/lenni.png',
+  t3553ract: '/assets/img/about/t3553ract.jpg',
+  eisvana: '/assets/img/social/eisvana.png',
 };
 
 export const DefaultImageRestrictions: { [prop: string]: IImageRestriction } = {
@@ -18,12 +24,7 @@ export const DefaultImageRestrictions: { [prop: string]: IImageRestriction } = {
 };
 
 export const ExternalImages = {
-  kurt: 'https://avatars.githubusercontent.com/u/15005470?v=4',
-  lenni: 'https://avatars.githubusercontent.com/u/91371655?v=4',
-  t3553ract: 'https://avatars.githubusercontent.com/u/159104713?v=4',
   assistantNMS: 'https://cdn.assistantapps.com/v2/nms/assistantNMSx100.webp',
   nmsud: 'https://avatars.githubusercontent.com/u/157403484?s=200&v=4',
   nmscd: 'https://nmscd.com/assets/favicon/favicon-96x96.png',
-  eisvana:
-    'https://github.com/Eisvana/eisvana.github.io/blob/main/icons/favicon-96x96.png?raw=true',
 };

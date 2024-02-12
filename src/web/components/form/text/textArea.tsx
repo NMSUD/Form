@@ -30,7 +30,7 @@ export const FormTextArea: Component<IFormTextAreaProps> = (props: IFormTextArea
         <HelpIconTooltip helpText={props.helpText} />
 
         <Show when={props.displayTextLength}>
-          <span style={{ float: 'right', 'margin-right': '0.5em' }}>
+          <span class="noselect" style={{ float: 'right', 'margin-right': '0.5em' }}>
             {localTextCount()} / {props.maxTextLength}
           </span>
         </Show>

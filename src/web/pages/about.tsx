@@ -2,7 +2,7 @@
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, Container, Divider, Grid, HStack, Text, } from '@hope-ui/solid';
 import { Component } from 'solid-js';
 
-import { ExternalImages } from '@constants/image';
+import { AppImage, ExternalImages } from '@constants/image';
 import { site } from '@constants/site';
 import { AboutCreditCol } from '@web/components/aboutCreditCol';
 import { PageHeader } from '@web/components/common/pageHeader';
@@ -142,19 +142,19 @@ export const AboutPage: Component = () => {
         </Text>
         <FormFieldGrid>
           <AboutCreditCol
-            imageUrl={ExternalImages.kurt}
+            imageUrl={AppImage.kurt}
             heading={site.kurt.name}
             subtitle="Project Architecture & Development"
             link={site.kurt.website}
           />
           <AboutCreditCol
-            imageUrl={ExternalImages.lenni}
+            imageUrl={AppImage.lenni}
             heading={site.lenni.name}
             subtitle="Software Development"
             link={site.lenni.website}
           />
           <AboutCreditCol
-            imageUrl={ExternalImages.t3553ract}
+            imageUrl={AppImage.t3553ract}
             heading="t3553ract"
             subtitle="Data management"
             link={site.nmsud.website}
@@ -177,7 +177,7 @@ export const AboutPage: Component = () => {
             link={site.assistantNMS.website}
           />
           <AboutCreditCol
-            imageUrl={ExternalImages.eisvana}
+            imageUrl={AppImage.eisvana}
             heading={site.eisvana.name}
             subtitle="Software Development"
             link={site.eisvana.website}

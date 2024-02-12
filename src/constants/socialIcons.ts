@@ -5,6 +5,7 @@ export const socialIcons = [
   'behance.svg',
   'discord.svg',
   'epic.svg',
+  'eisvana.png',
   'facebook.svg',
   'github.svg',
   'instagram.svg',

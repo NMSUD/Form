@@ -37,7 +37,7 @@ export const SidebarNavLink = (props: SidebarNavLinkProps) => {
   const [local, others] = splitProps(props, ['children', 'href', 'isNew']);
 
   return (
-    <StyledNavLink href={local.href} {...others}>
+    <StyledNavLink href={local.href} {...others} class="noselect">
       <span class="max-lines-1">{local.children}</span>
     </StyledNavLink>
   );

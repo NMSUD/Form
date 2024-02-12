@@ -31,6 +31,10 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
     }
   }, [props.showValidationMessages]);
 
+  createEffect(() => {
+    setItems(makeArrayOrDefault(props.value));
+  }, [props.value]);
+
   const handleSpecialKeyPress = (event: HtmlKeyEvent) => {
     if (event.keyCode == 13) {
       addToList(currentLink());

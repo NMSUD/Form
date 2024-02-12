@@ -1,9 +1,11 @@
-import { Component } from 'solid-js';
+import { Component, Match, Switch, createSignal } from 'solid-js';
 import { BasicLink } from './core/link';
 import { Box, Center, Flex, VStack, Image, Text } from '@hope-ui/solid';
 
 import { AppImage } from '@constants/image';
 import { FormFieldGridCell, GridItemSize } from './form/grid';
+import { LoadingSpinner } from './core/loading';
+import { NetworkState } from '@constants/enum/networkState';
 
 interface IAboutCreditColProps {
   imageUrl: string;
@@ -13,19 +15,35 @@ interface IAboutCreditColProps {
 }
 
 export const AboutCreditCol: Component<IAboutCreditColProps> = (props: IAboutCreditColProps) => {
+  const [networkState, setNetworkState] = createSignal<NetworkState>(NetworkState.Loading);
   return (
     <FormFieldGridCell colSpan={GridItemSize.medium} rowSpan={GridItemSize.xsmol}>
       <BasicLink href={props.link} additionalClassNames="credit-col">
         <Box bg="rgba(150,150,150, 0.2)" borderRadius={5}>
           <Flex>
-            <Center maxW="75px" maxH="75px">
-              <Image
-                src={props.imageUrl}
-                fallbackSrc={AppImage.fallbackImg}
-                maxH="100%"
-                borderTopLeftRadius={5}
-                borderBottomLeftRadius={5}
-              />
+            <Center width="75px" height="75px">
+              <Switch
+                fallback={
+                  <Image
+                    src={props.imageUrl}
+                    fallback={<LoadingSpinner />}
+                    maxH="100%"
+                    borderTopLeftRadius={5}
+                    borderBottomLeftRadius={5}
+                    onLoad={() => setNetworkState(NetworkState.Success)}
+                    onError={() => setNetworkState(NetworkState.Error)}
+                  />
+                }
+              >
+                <Match when={networkState() === NetworkState.Error}>
+                  <Image
+                    src={AppImage.failedToLoadImg}
+                    maxH="100%"
+                    borderTopLeftRadius={5}
+                    borderBottomLeftRadius={5}
+                  />
+                </Match>
+              </Switch>
             </Center>
             <Box
               flexGrow="1"

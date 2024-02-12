@@ -50,7 +50,7 @@ export const Sidebar: Component = () => {
       p={isOpen() ? '$6' : '0'}
     >
       <>
-        <Box class="content" opacity={isOpen() ? '1' : '0'}>
+        <Box class="content noselect" opacity={isOpen() ? '1' : '0'}>
           <Box position="relative">
             <Link href={routes.home.path}>
               <Flex>
