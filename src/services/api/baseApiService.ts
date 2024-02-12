@@ -37,7 +37,13 @@ export class BaseApiService {
     let resultValue = anyObject;
     try {
       resultValue = await result.json();
-    } catch (ex) {}
+    } catch (ex) {
+      return {
+        isSuccess: false,
+        value: anyObject,
+        errorMessage: ex?.toString?.() ?? '',
+      };
+    }
 
     return {
       isSuccess: true,

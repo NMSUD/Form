@@ -2,12 +2,13 @@ import { ApprovalStatus } from '@constants/enum/approvalStatus';
 import { platformTypeFromString, platformTypeToString } from '@contracts/dto/enum/platformType';
 import { BuilderDto } from '@contracts/dto/forms/builderDto';
 import { DtoAndImageMapperToNewPersistence, Mapper } from '@contracts/mapper';
+import { formatDateForDatabase } from '@helpers/dateHelper';
 import { anyObject } from '@helpers/typescriptHacks';
 import { Builder } from '@services/external/database/xata';
 import { XataFile } from '@xata.io/client';
 import { IBuilderImages } from './builderFileHandler';
+import { makeArrayOrDefault } from '@helpers/arrayHelper';
 
-// TODO update properties
 export const builderDtoWithImageToPersistence: DtoAndImageMapperToNewPersistence<
   BuilderDto,
   IBuilderImages,
@@ -18,10 +19,9 @@ export const builderDtoWithImageToPersistence: DtoAndImageMapperToNewPersistence
     profilePicFile: images.profilePicFile as XataFile,
     bio: dto.bio,
     platforms: dto.platforms.map(platformTypeToString).join(','),
-    startedPlaying: dto.startedPlaying,
+    startedPlaying: formatDateForDatabase(dto.startedPlaying),
     buildTechniquesUsed: dto.buildTechniquesUsed.join(','),
-    // communityAffiliations: dto.communityAffiliations.join(','),
-    labels: dto.labels.join(','),
+    labels: makeArrayOrDefault(dto.labels).join(','),
     socials: dto.socials.join(','),
     contactDetails: dto.contactDetails,
     approvalStatus: ApprovalStatus.pending,
@@ -30,9 +30,9 @@ export const builderDtoWithImageToPersistence: DtoAndImageMapperToNewPersistence
   return persistence;
 };
 
-// TODO update properties
 export const builderPersistenceToDto: Mapper<Builder, BuilderDto> = (persistence: Builder) => {
   const dto: BuilderDto = {
+    id: persistence.id,
     name: persistence.name,
     profilePicFile: anyObject,
     profilePicUrl: persistence.profilePicUrl ?? '',
@@ -41,7 +41,6 @@ export const builderPersistenceToDto: Mapper<Builder, BuilderDto> = (persistence
     startedPlaying: persistence.startedPlaying,
     buildTechniquesUsed: persistence.buildTechniquesUsed.split(','),
     communityAffiliations: [],
-    // communityAffiliations: persistence.communityAffiliations.join(','),
     labels: persistence.labels.split(','),
     socials: persistence.socials.split(','),
     contactDetails: persistence.contactDetails,

@@ -1,9 +1,9 @@
-# Create contract & meta onjects
+# Create contract & meta objects
 
 _dto: domain transfer object_
 
 - Go to this folder `src/contracts/dto/forms`
-- Create a file (e.g. **builderDto.ts**) with an interface defined inside (e.g. **BuilderBto**)
+- Create a file (e.g. **builderDto.ts**) with an interface defined inside (e.g. **BuilderDto**)
   - Example:
 
 ```ts

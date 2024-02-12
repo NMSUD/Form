@@ -36,11 +36,10 @@ export const StatusPage: Component = () => {
       const segKey = seg as keyof IApiSegment;
       const options = getStateService().getSubmissions(segKey);
 
-      // const itemsToRemove: Array<string> = [];
+      const itemsToRemove: Array<string> = [];
       const enhancedItems: Array<IEnhancedDropdown> = [];
       for (const opt of options) {
         if (enhancedItems.filter((e) => e.value == opt.value).length > 0) {
-          // itemsToRemove.push(opt.value)
           continue;
         }
         const dtoResult =
@@ -48,7 +47,11 @@ export const StatusPage: Component = () => {
             opt.value,
             seg,
           );
-        if (dtoResult.isSuccess == false) continue;
+        if (dtoResult.isSuccess == false) {
+          itemsToRemove.push(opt.value);
+          continue;
+        }
+
         enhancedItems.push({
           title: dtoResult.value.name,
           value: dtoResult.value.id,
@@ -57,6 +60,11 @@ export const StatusPage: Component = () => {
         });
       }
 
+      if (itemsToRemove.length > 0) {
+        for (const itemToRemove of itemsToRemove) {
+          getStateService().delSubmission(segKey, itemToRemove);
+        }
+      }
       if (enhancedItems.length < 1) continue;
 
       rows.push({

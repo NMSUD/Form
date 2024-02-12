@@ -1,7 +1,16 @@
 import { Container, Inject, Service } from 'typedi';
 import { ConfigService } from '../../internal/configService';
 import { getCrudOperations } from './table/baseTableOperations';
-import { Builder, BuilderRecord, Community, CommunityRecord, XataClient } from './xata';
+import { getByBuilderId, getByCommunityId } from './table/communityBuilderTableOperations';
+import {
+  Builder,
+  BuilderRecord,
+  Community,
+  CommunityBuilder,
+  CommunityBuilderRecord,
+  CommunityRecord,
+  XataClient,
+} from './xata';
 
 @Service()
 export class DatabaseService {
@@ -28,6 +37,16 @@ export class DatabaseService {
       repo: this._xata.db.builder,
       files: this._xata.files,
     });
+
+  communityBuilder = () => ({
+    ...getCrudOperations<CommunityBuilder, CommunityBuilderRecord>({
+      logName: 'CommunityBuilder',
+      repo: this._xata.db.communityBuilder,
+      files: this._xata.files,
+    }),
+    getByBuilderId: getByBuilderId(this._xata),
+    getByCommunityId: getByCommunityId(this._xata),
+  });
 }
 
 export const getDatabaseService = () => Container.get(DatabaseService);

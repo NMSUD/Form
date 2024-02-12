@@ -5,12 +5,14 @@ import { Community } from '@services/external/database/xata';
 import { IApiModule } from '../baseModule';
 import { ICommunityImages, communityFileHandler } from './communityFileHandler';
 import { communityDtoWithImageToPersistence, communityPersistenceToDto } from './communityMapper';
+import { CommunityPersistenceMeta } from './communityPersistenceMeta';
 import { communityPublicUrlHandler } from './communityPublicUrlHandler';
 
 export const communityModule: IApiModule<CommunityDto, ICommunityImages, Community> = {
   name: 'CommunityDto',
   segment: 'community',
   dtoMeta: CommunityDtoMeta,
+  persistenceMeta: CommunityPersistenceMeta,
   getName: (persistence: Community) => persistence.name,
   getIcon: (persistence: Community) => persistence.profilePicUrl,
 
@@ -24,5 +26,6 @@ export const communityModule: IApiModule<CommunityDto, ICommunityImages, Communi
 
   handleFilesInFormData: communityFileHandler,
   getPublicUrlsOfUploads: communityPublicUrlHandler,
+
   calculateCheck: (p) => cyrb53([p.id, p.name, p.contactDetails].join('-')),
 };

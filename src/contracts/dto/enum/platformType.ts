@@ -1,7 +1,7 @@
 export enum PlatformType {
   PSX,
   XBX,
-  Steam,
+  PC,
   Apple,
 }
 
@@ -11,7 +11,7 @@ export const friendlyPlatformName = (plat?: PlatformType) => {
       return 'Playstation';
     case PlatformType.XBX:
       return 'Xbox';
-    case PlatformType.Steam:
+    case PlatformType.PC:
       return 'PC';
     case PlatformType.Apple:
       return 'Apple';
@@ -24,10 +24,15 @@ export const platformTypeFromString = (platformType: string): PlatformType => {
   const platformTypeLookup = {
     [PlatformType[PlatformType.PSX]]: PlatformType.PSX,
     [PlatformType[PlatformType.XBX]]: PlatformType.XBX,
-    [PlatformType[PlatformType.Steam]]: PlatformType.Steam,
+    [PlatformType[PlatformType.PC]]: PlatformType.PC,
     [PlatformType[PlatformType.Apple]]: PlatformType.Apple,
+
+    [PlatformType.PSX.toString()]: PlatformType.PSX,
+    [PlatformType.XBX.toString()]: PlatformType.XBX,
+    [PlatformType.PC.toString()]: PlatformType.PC,
+    [PlatformType.Apple.toString()]: PlatformType.Apple,
   };
   const lookupValue = platformTypeLookup[platformType];
   if (lookupValue != null) return lookupValue;
-  return PlatformType.Steam;
+  return PlatformType.PC;
 };

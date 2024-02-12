@@ -90,9 +90,9 @@ export const baseFormHandler =
     }
 
     const persistence = module.mapDtoWithImageToPersistence(data, fileObjResult.value);
-    const formResponse = await module.createRecord(persistence);
-    if (formResponse.isSuccess == false) {
-      const errMsg = `${handlerName} - create db record - ${formResponse.errorMessage}`;
+    const createdRecordResult = await module.createRecord(persistence);
+    if (createdRecordResult.isSuccess == false) {
+      const errMsg = `${handlerName} - create db record - ${createdRecordResult.errorMessage}`;
       getLog().e(errMsg);
       await errorResponse({
         ctx,
@@ -103,10 +103,38 @@ export const baseFormHandler =
       return;
     }
 
-    const persistenceWithImgUrls = module.getPublicUrlsOfUploads(formResponse.value);
+    if (module.createRecordRelationships != null) {
+      const createRelationshipsResult = await module.createRecordRelationships(
+        data,
+        createdRecordResult.value,
+      );
+      if (createRelationshipsResult.isSuccess == false) {
+        const errMsg = `${handlerName} - create db record relationships - ${createRelationshipsResult.errorMessage}`;
+        getLog().e(errMsg);
+        await errorResponse({
+          ctx,
+          next,
+          statusCode: ApiStatusErrorCode.couldNotPersistData,
+          message: errMsg,
+        });
+        return;
+      }
+    }
+
+    const persistenceWithImgUrls = module.getPublicUrlsOfUploads(createdRecordResult.value);
     const authorName = module.getName(persistenceWithImgUrls);
     const iconUrl = module.getIcon?.(persistenceWithImgUrls);
     const msgColour = colourFromApprovalStatus(ApprovalStatus.pending);
+
+    const tempDto = module.mapPersistenceToDto(persistenceWithImgUrls);
+    let dtoForDiscord = { ...tempDto };
+    if (module.mapRecordRelationshipsToDto != null) {
+      const dtoResult = await module.mapRecordRelationshipsToDto(
+        persistenceWithImgUrls.id,
+        tempDto,
+      );
+      dtoForDiscord = dtoResult.value;
+    }
 
     const discordUrl = getConfig().getDiscordWebhookUrl();
     const webhookPayload = baseSubmissionMessageBuilder({
@@ -114,15 +142,15 @@ export const baseFormHandler =
       authorName: authorName,
       iconUrl: iconUrl ?? undefined,
       colour: msgColour,
-      descripLines: getDescriptionLines({
-        data: persistenceWithImgUrls,
+      descripLines: await getDescriptionLines({
+        data: dtoForDiscord,
         dtoMeta: module.dtoMeta,
-        additionalItemsToDisplay: module.additionalPropsToDisplay,
+        persistenceMeta: module.persistenceMeta,
       }),
       additionalEmbeds: [
         baseSubmissionMessageEmbed(
-          formResponse.value.id,
-          module.calculateCheck(formResponse.value),
+          createdRecordResult.value.id,
+          module.calculateCheck(createdRecordResult.value),
           module.segment,
         ),
       ],
@@ -132,16 +160,16 @@ export const baseFormHandler =
       webhookPayload,
     );
     if (discordResponse.isSuccess) {
-      await module.updateRecord(formResponse.value.id, {
+      await module.updateRecord(createdRecordResult.value.id, {
         ...persistenceWithImgUrls,
-        id: formResponse.value.id,
+        id: createdRecordResult.value.id,
         discordWebhookId: discordResponse.value.id,
       } as TP & IRecordRequirements);
     }
 
     ctx.response.status = 200;
     ctx.set('Content-Type', 'application/json');
-    ctx.body = formResponse.value;
+    ctx.body = createdRecordResult.value;
 
     await next();
   };

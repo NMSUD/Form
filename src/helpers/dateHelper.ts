@@ -13,6 +13,8 @@ export const formatDate = (
 
 export const formatForDateLocal = (value: Date | string | number) =>
   formatDate(value, 'YYYY-MM-DDTHH:mm');
+export const formatForDateDropdown = (value: Date | string | number) =>
+  formatDate(value, 'YYYY-MM-DD');
 
 export const addSeconds = (date: Date, seconds: number): Date => {
   try {
@@ -37,3 +39,6 @@ export const isBefore = (date: Date, secondDate: Date): boolean => {
     return false;
   }
 };
+
+export const formatDateForDatabase = (date: Date | string | number): Date =>
+  dayjs(date).format('YYYY-MM-DDThh:mm:ssZ') as unknown as Date;

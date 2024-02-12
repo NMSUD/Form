@@ -6,10 +6,18 @@ export type IFormDtoMetaDetails<TV> = {
   helpText?: string;
   defaultValue?: TV;
   dontSaveToLocalStorage?: boolean;
-  displayInDiscordMessage?: (label: string, value: TV) => Array<string>;
   validator: (val: TV) => ValidationResult;
 };
 
 export type IFormDtoMeta<T> = {
   [prop in keyof T]: IFormDtoMetaDetails<any>;
+};
+
+export type IFormPersistenceMetaDetails<TV> = {
+  label?: string;
+  displayInDiscordMessage?: (label: string, value: TV) => Promise<Array<string>>;
+};
+
+export type IFormPersistenceMeta<T> = {
+  [prop in keyof T]?: IFormPersistenceMetaDetails<any>;
 };

@@ -105,23 +105,34 @@ export const baseVerifyHandler =
       return;
     }
 
+    const tempDto = module.mapPersistenceToDto(readRecordResult.value);
+    let dtoForDiscord = { ...tempDto };
+    if (module.mapRecordRelationshipsToDto != null) {
+      const dtoResult = await module.mapRecordRelationshipsToDto(
+        readRecordResult.value.id,
+        tempDto,
+      );
+      dtoForDiscord = dtoResult.value;
+    }
+
     const discordWebhookId = readRecordResult.value.discordWebhookId;
     if (discordWebhookId != null) {
       getLog().i(`${handlerName}: Updating Discord message`);
       const msgColour = colourFromApprovalStatus(approvalStatus);
       const authorName = module.getName(readRecordResult.value);
       const iconUrl = module.getIcon?.(readRecordResult.value);
+      const descripLines = await getDescriptionLines({
+        data: dtoForDiscord,
+        dtoMeta: module.dtoMeta,
+        persistenceMeta: module.persistenceMeta,
+      });
       const webhookPayload = baseSubmissionMessageBuilder({
         content: '',
         colour: msgColour,
         authorName,
         iconUrl,
         descripLines: [
-          ...getDescriptionLines({
-            data: readRecordResult.value,
-            dtoMeta: module.dtoMeta,
-            additionalItemsToDisplay: module.additionalPropsToDisplay,
-          }),
+          ...descripLines,
           `\n**Decision: ${getFriendlyApprovalStatus(approvalStatus)}**`,
         ],
         additionalEmbeds: [],

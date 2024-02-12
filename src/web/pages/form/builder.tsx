@@ -11,7 +11,7 @@ import {
   builderStartedPlayingMinDate,
 } from '@contracts/dto/forms/builderDto';
 import { communityToDropdown } from '@contracts/dto/forms/communityDto';
-import { formatDate } from '@helpers/dateHelper';
+import { formatDate, formatForDateDropdown } from '@helpers/dateHelper';
 import { randomItemFromArray } from '@helpers/randomHelper';
 import { Card } from '@web/components/common/card';
 import { PageHeader } from '@web/components/common/pageHeader';
@@ -30,8 +30,7 @@ import { PropertyOverrides } from '@web/contracts/formTypes';
 export const BuilderFormPage: Component = () => {
   const propertyOverrides: Array<PropertyOverrides<BuilderDto>> = [
     {
-      startedPlaying: (origVal) =>
-        origVal ?? formatDate(builderStartedPlayingMaxDate, 'YYYY-MM-DD'),
+      startedPlaying: (origVal) => origVal ?? formatForDateDropdown(builderStartedPlayingMaxDate),
     },
   ];
   const communityDropdownPromise = extendedFormDropdownOptions('community', communityToDropdown);
@@ -79,17 +78,17 @@ export const BuilderFormPage: Component = () => {
             buildTechniquesUsed: {
               component: FormDropdown,
               gridItemColumnSize: GridItemSize.medium,
-              placeholder: 'Select your labels',
+              placeholder: 'Select your techniques',
               additional: {
                 options: (_) =>
                   Labels.BuildingTechniques.map((lbl) => ({ title: lbl, value: lbl })),
                 multiple: (_) => true,
               },
             },
-            socials: {
-              component: FormSocialInput,
-              gridItemColumnSize: GridItemSize.medium,
-              placeholder: 'https://youtube.com/...',
+            labels: {
+              component: FormLongInput,
+              gridItemColumnSize: GridItemSize.long,
+              placeholder: 'Select your labels',
             },
             communityAffiliations: {
               component: FormNetworkDropdown,
@@ -99,6 +98,11 @@ export const BuilderFormPage: Component = () => {
                 multiple: (_) => true,
                 optionsPromise: () => communityDropdownPromise,
               },
+            },
+            socials: {
+              component: FormSocialInput,
+              gridItemColumnSize: GridItemSize.long,
+              placeholder: 'https://youtube.com/...',
             },
             bio: {
               component: FormTextArea,

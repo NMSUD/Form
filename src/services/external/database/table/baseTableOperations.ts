@@ -1,7 +1,7 @@
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
 import { Result, ResultWithValue } from '@contracts/resultWithValue';
 import { anyObject } from '@helpers/typescriptHacks';
-import { FilesPluginResult, Identifiable, Repository, XataRecord } from '@xata.io/client';
+import { FilesPluginResult, Repository, XataRecord } from '@xata.io/client';
 import { getLog } from '../../../internal/logService';
 import { DatabaseSchema } from '../xata';
 
@@ -14,6 +14,7 @@ export interface ICrudOperationProps<T extends XataRecord<XataRecord<any>>> {
 export const getCrudOperations = <T, TR extends XataRecord<XataRecord<any>>>(
   props: ICrudOperationProps<TR>,
 ) => ({
+  table: props.repo,
   create: async (persistence: Omit<T, 'id'>): Promise<ResultWithValue<T>> => {
     try {
       const record = await props.repo.create({

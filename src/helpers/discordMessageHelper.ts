@@ -1,6 +1,11 @@
 import { api, apiParams } from '@constants/api';
 import { ApprovalStatus, approvalStatusToString } from '@constants/enum/approvalStatus';
-import { IFormDtoMeta, IFormDtoMetaDetails } from '@contracts/dto/forms/baseFormDto';
+import {
+  IFormDtoMeta,
+  IFormDtoMetaDetails,
+  IFormPersistenceMeta,
+  IFormPersistenceMetaDetails,
+} from '@contracts/dto/forms/baseFormDto';
 import {
   DiscordWebhook,
   DiscordWebhookAttachment,
@@ -10,6 +15,9 @@ import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
 import { addSpacesForEnum, capitalizeFirstLetter } from '@helpers/stringHelper';
 import { getConfig } from '@services/internal/configService';
+import { formatDate } from './dateHelper';
+import { ResultWithValue } from '@contracts/resultWithValue';
+import { getLog } from '@services/internal/logService';
 
 export interface IMessageBuilderProps<T, TP> {
   dbId: string;
@@ -97,37 +105,72 @@ export const baseSubmissionMessageBuilder = (props: {
   };
 };
 
-export const getDescriptionLines = <T, TK>(props: {
+export const getDescriptionLines = async <T, TK>(props: {
   data: T;
-  dtoMeta: IFormDtoMeta<TK>;
-  additionalItemsToDisplay?: Array<string>;
+  dtoMeta: IFormDtoMeta<T>;
+  persistenceMeta: IFormPersistenceMeta<TK>;
 }) => {
   const descripLines: Array<string> = [];
 
-  for (const dtoMetaPropKey in props.dtoMeta) {
-    if (Object.prototype.hasOwnProperty.call(props.dtoMeta, dtoMetaPropKey) == false) continue;
-    const dtoMetaProp = props.dtoMeta[dtoMetaPropKey];
-    if (dtoMetaProp.displayInDiscordMessage == null) continue;
+  for (const dbMetaPropKey in props.persistenceMeta) {
+    if (Object.prototype.hasOwnProperty.call(props.persistenceMeta, dbMetaPropKey) == false) {
+      continue;
+    }
+    const persistenceMetaProp = props.persistenceMeta[dbMetaPropKey];
+    if (persistenceMetaProp?.displayInDiscordMessage == null) continue;
 
     const localData =
-      (props.data as ObjectWithPropsOfValue<string | Array<string>>)[dtoMetaPropKey] ?? anyObject;
-    const localMeta = (props.dtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>)[
-      dtoMetaPropKey
-    ] ?? { label: capitalizeFirstLetter(addSpacesForEnum(dtoMetaPropKey)) };
+      (props.data as ObjectWithPropsOfValue<string | Array<string>>)[dbMetaPropKey] ?? anyObject;
+    const propKey = dbMetaPropKey.toString();
+    const dtoMetaValue = (props.dtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>)[
+      propKey
+    ];
+    const persistenceMetaValue = (
+      props.persistenceMeta as ObjectWithPropsOfValue<IFormPersistenceMetaDetails<string>>
+    )[propKey];
+    let labelString = persistenceMetaValue.label ?? dtoMetaValue.label;
+    if (labelString?.length < 1) {
+      labelString = capitalizeFirstLetter(addSpacesForEnum(dbMetaPropKey));
+    }
 
-    const lines = dtoMetaProp.displayInDiscordMessage(localMeta.label, localData);
+    const lines = await persistenceMetaProp.displayInDiscordMessage(labelString, localData);
     lines.map((line) => descripLines.push(line));
   }
 
   return descripLines;
 };
 
-export const basicDiscordLine = (label: string, value: string) => [
+export const basicDiscordLine = async (label: string, value: string) => [
   `**${label}**: ${value}`, //
 ];
-export const shortLinkDiscordLine = (linkText: string) => (label: string, value: string) => [
+export const shortLinkDiscordLine = (linkText: string) => async (label: string, value: string) => [
   `**${label}**: [${linkText}](${value})`,
 ];
-export const arrayDiscordLine = (label: string, values: Array<string>) => [
+export const arrayDiscordLine = async (label: string, values: Array<string>) => [
   `**${label}**: ${makeArrayOrDefault(values).join(', ')}`,
 ];
+export const shortDateDiscordLine = async (label: string, value: string) => [
+  `**${label}**: ${formatDate(value, 'DD MMM YY')}`, //
+];
+export const arrayFromDatabaseDiscordLines =
+  <T>(props: {
+    dbCall: (id: string) => Promise<ResultWithValue<T>>;
+    mapValue: (db: T) => string;
+  }) =>
+  async (label: string, values: Array<string>) => {
+    const links: Array<string> = [];
+    for (const value of values) {
+      try {
+        const dataResult = await props.dbCall(value);
+        if (dataResult.isSuccess == false) {
+          links.push('**error**');
+          continue;
+        }
+        const dataValue = props.mapValue(dataResult.value);
+        links.push(dataValue);
+      } catch (ex) {
+        getLog().e(`arrayFromDatabaseDiscordLines: ${ex}`);
+      }
+    }
+    return [`**${label}**: ${makeArrayOrDefault(links).join(', ')}`];
+  };

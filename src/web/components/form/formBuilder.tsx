@@ -185,6 +185,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
   };
 
   const clearForm = () => {
+    setForceValidationMessages(false);
     setItemBeingEdited((prev) => {
       const result: T = { ...prev };
 
@@ -193,6 +194,8 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
           const formMeta = props.formDtoMeta[formMetaKey];
           if (formMeta.defaultValue !== undefined) {
             result[formMetaKey] = formMeta.defaultValue;
+          } else {
+            (result[formMetaKey] as unknown) = undefined;
           }
         }
       }
