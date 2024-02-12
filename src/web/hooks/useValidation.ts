@@ -4,7 +4,7 @@ import { ValidationResult } from '@contracts/validationResult';
 
 export const useValidation = <T>(
   validator?: (value: T) => ValidationResult,
-): [Accessor<ValidationResult>, (newValue: T) => void] => {
+): [Accessor<ValidationResult>, (newValue: T) => ValidationResult] => {
   const [isValid, setIsValid] = createSignal<ValidationResult>({ isValid: true });
 
   const calcIsValid = (newValue: T): ValidationResult => {

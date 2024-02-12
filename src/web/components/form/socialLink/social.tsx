@@ -17,8 +17,9 @@ import { useValidation } from '../../../hooks/useValidation';
 import { RightArrowIcon } from '../../common/icon/rightArrowIcon';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 import { AvatarFromSocialLink } from './socialLinkAvatar';
+import { keyboardKeyCode } from '@constants/form';
 
-interface IFormSocialProps extends FormInputProps<Array<string>> {}
+interface IFormSocialProps extends FormInputProps<Array<string>> { }
 
 export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialProps) => {
   const [isValid, calcIsValid] = useValidation(props.validation);
@@ -31,12 +32,8 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
     }
   }, [props.showValidationMessages]);
 
-  createEffect(() => {
-    setItems(makeArrayOrDefault(props.value));
-  }, [props.value]);
-
   const handleSpecialKeyPress = (event: HtmlKeyEvent) => {
-    if (event.keyCode == 13) {
+    if (event.keyCode === keyboardKeyCode.enter) {
       addToList(currentLink());
     }
   };

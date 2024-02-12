@@ -5,6 +5,10 @@ export const FormDataKey = {
   data: 'data',
 };
 
+export const keyboardKeyCode = {
+  'enter': 13
+}
+
 export const portalValidOptions = [
   '0',
   '1',

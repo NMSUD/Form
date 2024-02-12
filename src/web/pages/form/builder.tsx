@@ -26,6 +26,7 @@ import { FormSocialInput } from '@web/components/form/socialLink/social';
 import { FormLongInput } from '@web/components/form/text/input';
 import { FormTextArea } from '@web/components/form/text/textArea';
 import { PropertyOverrides } from '@web/contracts/formTypes';
+import { FormTagInput } from '@web/components/form/tag/tagInput';
 
 export const BuilderFormPage: Component = () => {
   const propertyOverrides: Array<PropertyOverrides<BuilderDto>> = [
@@ -85,11 +86,6 @@ export const BuilderFormPage: Component = () => {
                 multiple: (_) => true,
               },
             },
-            labels: {
-              component: FormLongInput,
-              gridItemColumnSize: GridItemSize.long,
-              placeholder: 'Select your labels',
-            },
             communityAffiliations: {
               component: FormNetworkDropdown,
               gridItemColumnSize: GridItemSize.long,
@@ -98,6 +94,11 @@ export const BuilderFormPage: Component = () => {
                 multiple: (_) => true,
                 optionsPromise: () => communityDropdownPromise,
               },
+            },
+            labels: {
+              component: FormTagInput,
+              gridItemColumnSize: GridItemSize.long,
+              placeholder: 'Select your labels',
             },
             socials: {
               component: FormSocialInput,

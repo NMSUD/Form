@@ -21,12 +21,15 @@ export const extendedFormDropdownOptions = async <T>(
 
   let opts: Array<IDropdownOption> = [];
   if (localOpts.length > 0) {
-    opts = [
-      {
+    if (optsFromApi.length > 0) {
+      opts.push({
         title: 'Your submissions:',
         disabled: true,
         value: '-',
-      },
+      });
+    }
+    opts = [
+      ...opts,
       ...localOpts.map((l) => ({
         ...l,
         title: `${l.title} (Pending approval)`,
@@ -41,13 +44,15 @@ export const extendedFormDropdownOptions = async <T>(
   }
 
   if (optsFromApi.length > 0) {
-    opts = [
-      ...opts,
-      {
+    if (localOpts.length > 0) {
+      opts.push({
         title: 'Approved submissions:',
         disabled: true,
         value: '---',
-      },
+      });
+    }
+    opts = [
+      ...opts,
       ...optsFromApi,
     ];
   }
