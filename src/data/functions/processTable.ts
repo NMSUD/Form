@@ -22,7 +22,7 @@ export const processTable = async <TD extends {}, TF, TP extends IRecordRequirem
   const updatedTable = await fetchImagesForTable({
     items: tableResult.value,
     imageFolder: tableProps.module.segment,
-    imgBaseUrl: getConfig().getNmsUdBaseImgUrl(),
+    imgBaseUrl: getConfig().getNmsUdFormDataUrl(),
     processItemImgs: tableProps.processItemImgs,
   });
 

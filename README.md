@@ -87,6 +87,8 @@ There are [some basic docs](./docs/CreateNewForm.md) on what is required to crea
 
 This project makes use of [Docker][docker] to create an "easy" way of running the whole solution. However the resulting [Docker][docker] image of this solution will not uploaded to a public [Docker Hub][dockerHub]. Any images that you see that claim to be of this project are forks of this project or fradulent. If this changes, this part of the README.md will be update.
 
+For info on how to build the [Docker][docker] image, take a look at this [document](./scripts/Docker.md).
+
 <br />
 
 ## 🔗 Links
