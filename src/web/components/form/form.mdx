@@ -17,18 +17,18 @@ These components are used in the `formBuilder.tsx` to render easy to use compone
 
 ## IFormInput
 
-Below is what the `IFormInputProps` looks like (at the time of writing, this will likely fall out of date quickly 😅).
+Below is what the `FormInputProps` looks like (at the time of writing, this will likely fall out of date quickly 😅).
 
 ```ts
-export type IFormInputProps<T> = {
-    id: string;
-    label: string;
-    helpText: string;
-    value: T;
-    placeholder: string;
-    showValidationMessages: boolean;
-    validation: (val: T) => ValidationResult;
-    onChange: (newValue: T) => void;
+export type FormInputProps<T> = {
+  id: string;
+  label: string;
+  helpText?: string;
+  value: T;
+  placeholder: string;
+  showValidationMessages: boolean;
+  validation: (val: T) => ValidationResult;
+  onChange: (newValue: T) => void;
 };
 ``` 
 
@@ -41,7 +41,7 @@ You can see some basics, such as a value property and an onChange function.
 If there are additional properties that your component needs, you can specify them like this:
 
 ```ts
-interface IFormLongInputProps extends IFormInputProps<string> {
+interface IFormLongInputProps extends FormInputProps<string> {
     inputType?: string;
     disabled?: boolean;
 }
