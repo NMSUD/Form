@@ -1,5 +1,5 @@
 # Intro 
-Great to have a chat with you. I really liked the idea of having a chat with someone from xata instead of filling in a feedback form, but I feel really bad now that I am talking to the CTO, I don't want to waste your time. We have a small project that makes use of your free tier and even though we do expect to grow out of the free tier, it wont be by much. Your pricing is very generous and better than AirTable for example
+Great to have a chat with you. I really liked the idea of having a chat with someone from xata instead of filling in a feedback form. We have a small project that makes use of your free tier and even though we might grow out of the free tier, it wont be by much. Your pricing is very generous and better than AirTable for example
 
 # What are we building?
 We are building a form for users to fill in details about their groups, personal profiles and the projects they have created. Letting them link multiple aspects together. So a group has many members and people have 0 or many groups and each profile can have 1 or many projects. and there are more tables and relationships to come.

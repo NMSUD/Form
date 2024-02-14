@@ -1,6 +1,7 @@
 {
   "name": "nmsud.form",
   "version": "1.0.2",
+  "author": "Kurt Lourens",
   "description": "A custom solution for capturing data for the yearly Unification Days event",
   "scripts": {
     "setup": "npm-run-all --sequential setup:*",
@@ -19,7 +20,6 @@
     "test:dev": "vitest",
     "test": "vitest run"
   },
-  "author": "Kurt Lourens",
   "dependencies": {
     "@hope-ui/solid": "^0.6.7",
     "@koa/cors": "^5.0.0",

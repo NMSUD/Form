@@ -24,7 +24,15 @@ export const addSeconds = (date: Date, seconds: number): Date => {
   }
 };
 
-export const addDate = (date: Date, days: number): Date => {
+export const addMinutes = (date: Date, minutes: number): Date => {
+  try {
+    return dayjs(date).add(minutes, 'minutes').toDate();
+  } catch {
+    return date;
+  }
+};
+
+export const addDays = (date: Date, days: number): Date => {
   try {
     return dayjs(date).add(days, 'days').toDate();
   } catch {

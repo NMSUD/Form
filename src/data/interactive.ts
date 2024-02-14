@@ -1,13 +1,15 @@
 import 'reflect-metadata';
+
 import prompts from 'prompts';
 import { Container } from 'typedi';
 
 import { AppType } from '@constants/enum/appType';
 import { DiscordWebhook } from '@contracts/generated/discordWebhook';
+import { formatDate } from '@helpers/dateHelper';
 import { addSpacesForEnum, capitalizeFirstLetter } from '@helpers/stringHelper';
 import { getDiscordService } from '@services/external/discord/discordService';
-import { APP_TYPE, BOT_PATH, getConfig } from '@services/internal/configService';
 import { getGithubWorkflowService } from '@services/external/githubWorkflowService';
+import { APP_TYPE, BOT_PATH, getConfig } from '@services/internal/configService';
 
 const interactive = async () => {
   Container.set(BOT_PATH, __dirname);
@@ -36,15 +38,26 @@ const interactive = async () => {
     triggerGithubAction: async () => {
       await getGithubWorkflowService().createDispatchEvent();
     },
+    getGithubActionRuns: async () => {
+      const runsResult = await getGithubWorkflowService().getWorkflowRuns();
+      if (runsResult.isSuccess == false) {
+        console.log('Could not get runs');
+        return;
+      }
+      console.log(`\tNum runs: ${runsResult.value.total_count}`);
+      for (const run of runsResult.value.workflow_runs) {
+        console.log(`\tRun date: ${formatDate(run.run_started_at)}`);
+      }
+    },
   };
 
   const menuChoice = await prompts({
     type: 'select',
     name: 'value',
     message: 'What would you like to do?',
-    choices: Object.keys(menuLookup).map((ml) => ({
-      title: capitalizeFirstLetter(addSpacesForEnum(ml)),
-      value: ml,
+    choices: Object.keys(menuLookup).map((menuItem) => ({
+      title: capitalizeFirstLetter(addSpacesForEnum(menuItem)),
+      value: menuItem,
     })),
   });
 

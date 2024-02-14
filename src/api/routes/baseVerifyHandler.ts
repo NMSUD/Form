@@ -106,10 +106,8 @@ export const baseVerifyHandler =
       return;
     }
 
-    const shouldTrigger = getConfig().getGithubActionTriggerOnDecision();
-    if (shouldTrigger) {
-      await getGithubWorkflowService().createDispatchEvent();
-    }
+    const githubWorkflowTriggerTask = getGithubWorkflowService().triggerWorkflowIfNotRunRecently();
+    let discordMessageTask: Promise<unknown> = Promise.resolve();
 
     const tempDto = module.mapPersistenceToDto(readRecordResult.value);
     let dtoForDiscord = { ...tempDto };
@@ -143,12 +141,17 @@ export const baseVerifyHandler =
         ],
         additionalEmbeds: [],
       });
-      await getDiscordService().updateDiscordMessage(
+      discordMessageTask = getDiscordService().updateDiscordMessage(
         getConfig().getDiscordWebhookUrl(),
         discordWebhookId,
         webhookPayload,
       );
     }
+
+    await Promise.all([
+      githubWorkflowTriggerTask,
+      discordMessageTask, //
+    ]);
 
     ctx.response.status = 303;
     ctx.redirect(urlSegments.join(''));
