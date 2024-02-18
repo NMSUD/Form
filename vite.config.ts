@@ -7,6 +7,20 @@ import path from 'path';
 const testDef = {
   test: {
     exclude: [...configDefaults.exclude, './build/**', './dist/**'],
+    coverage: {
+      extension: ['.ts'],
+      include: ['src'],
+      exclude: [
+        'src/api/api.ts',
+        'src/api/types',
+        'src/api/contracts',
+        'src/constants',
+        'src/contracts',
+        'src/data',
+        'src/web/contracts',
+        'src/web/hooks',
+      ],
+    },
   },
 };
 

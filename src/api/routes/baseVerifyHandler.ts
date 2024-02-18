@@ -2,7 +2,7 @@ import Koa from 'koa';
 
 import { IVerifyRequestParams } from '@api/contracts/verifyRequestParam';
 import { errorResponse } from '@api/misc/httpResponse/errorResponse';
-import { IApiModule } from '@api/module/baseModule';
+import { IApiModule } from '@api/types/baseModule';
 import { ApiStatusErrorCode, apiParams } from '@constants/api';
 import {
   approvalStatusFromString,

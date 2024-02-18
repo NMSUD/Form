@@ -2,7 +2,7 @@ import { CommunityDto, CommunityDtoMeta } from '@contracts/dto/forms/communityDt
 import { cyrb53 } from '@helpers/hashHelper';
 import { getDatabaseService } from '@services/external/database/databaseService';
 import { Community } from '@services/external/database/xata';
-import { IApiModule } from '../baseModule';
+import { IApiModule } from '../../types/baseModule';
 import { ICommunityImages, communityFileHandler } from './communityFileHandler';
 import { communityDtoWithImageToPersistence, communityPersistenceToDto } from './communityMapper';
 import { CommunityPersistenceMeta } from './communityPersistenceMeta';

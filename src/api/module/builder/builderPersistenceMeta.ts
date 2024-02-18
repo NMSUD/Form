@@ -9,7 +9,7 @@ import {
 } from '@helpers/discordMessageHelper';
 import { getDatabaseService } from '@services/external/database/databaseService';
 import { Community } from '@services/external/database/xata';
-import { IRecordRequirements } from '../baseModule';
+import { IRecordRequirements } from '../../types/baseModule';
 import { friendlyPlatformName } from '@contracts/dto/enum/platformType';
 
 export const BuilderPersistenceMeta: IFormPersistenceMeta<BuilderDto> = {

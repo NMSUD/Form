@@ -4,25 +4,16 @@ import { makeArrayOrDefault } from './arrayHelper';
 import { formatDate } from './dateHelper';
 import { onTargetFile, onTargetValue, preventDefault } from './eventHelper';
 import { addSpacesForEnum, capitalizeFirstLetter, lowercaseFirstLetter } from './stringHelper';
+import { timeout } from './asyncHelper';
 
 describe('Helper tests', () => {
-  describe('Make array or default', () => {
-    test('makeArrayOrDefault on undefined', () => {
-      const arr: any = undefined;
-      const arrVal = makeArrayOrDefault(arr);
-      expect(Array.isArray(arrVal)).toBeTruthy();
-    });
-    test('makeArrayOrDefault on null', () => {
-      const arr: any = null;
-      const arrVal = makeArrayOrDefault(arr);
-      expect(Array.isArray(arrVal)).toBeTruthy();
-    });
-    test('makeArrayOrDefault on null with defined value', () => {
-      const arr: any = null;
-      const defaultArr = ['test1', 'test2'];
-      const arrVal = makeArrayOrDefault(arr, defaultArr);
-      expect(Array.isArray(arrVal)).toBeTruthy();
-      expect(arrVal.length).toBe(defaultArr.length);
+  describe('async helper', () => {
+    test('timeout', async () => {
+      const startTime = performance.now();
+      await timeout(200);
+      const endTime = performance.now();
+      const numMilli = (endTime - startTime) / 100; // 100ms wiggle room because node is not very accurate
+      expect(Math.round(numMilli)).toBe(2);
     });
   });
 

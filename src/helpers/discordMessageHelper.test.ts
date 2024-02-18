@@ -82,17 +82,17 @@ describe('Discord message helper', () => {
   });
 
   describe('Discord display funcs', () => {
-    test('basicDiscordLine', () => {
-      const out = basicDiscordLine('label', 'value');
+    test('basicDiscordLine', async () => {
+      const out = await basicDiscordLine('label', 'value');
       expect(out[0]).toBe('**label**: value');
     });
-    test('shortLinkDiscordLine', () => {
+    test('shortLinkDiscordLine', async () => {
       const outFunc = shortLinkDiscordLine('linkText');
-      const out = outFunc('label', 'value');
+      const out = await outFunc('label', 'value');
       expect(out[0]).toBe('**label**: [linkText](value)');
     });
-    test('arrayDiscordLine', () => {
-      const out = arrayDiscordLine('label', ['1', '2', '3']);
+    test('arrayDiscordLine', async () => {
+      const out = await arrayDiscordLine('label', ['1', '2', '3']);
       expect(out[0]).toBe('**label**: 1, 2, 3');
     });
   });

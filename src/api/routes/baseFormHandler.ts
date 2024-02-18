@@ -2,7 +2,7 @@ import Koa from 'koa';
 
 import { hasCaptcha } from '@api/guard/hasCaptcha';
 import { errorResponse } from '@api/misc/httpResponse/errorResponse';
-import { IApiModule, IRecordRequirements } from '@api/module/baseModule';
+import { IApiModule, IRecordRequirements } from '@api/types/baseModule';
 import { ApiStatusErrorCode } from '@constants/api';
 import { ApprovalStatus, colourFromApprovalStatus } from '@constants/enum/approvalStatus';
 import { FormDataKey } from '@constants/form';

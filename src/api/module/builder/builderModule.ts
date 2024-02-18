@@ -2,7 +2,7 @@ import { BuilderDto, BuilderDtoMeta } from '@contracts/dto/forms/builderDto';
 import { cyrb53 } from '@helpers/hashHelper';
 import { getDatabaseService } from '@services/external/database/databaseService';
 import { Builder } from '@services/external/database/xata';
-import { IApiModule } from '../baseModule';
+import { IApiModule } from '../../types/baseModule';
 import { IBuilderImages, builderFileHandler } from './builderFileHandler';
 import { builderDtoWithImageToPersistence, builderPersistenceToDto } from './builderMapper';
 import { BuilderPersistenceMeta } from './builderPersistenceMeta';

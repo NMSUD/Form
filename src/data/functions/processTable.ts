@@ -1,4 +1,4 @@
-import { IApiModule, IRecordRequirements } from '@api/module/baseModule';
+import { IApiModule, IRecordRequirements } from '@api/types/baseModule';
 import { Mapper } from '@contracts/mapper';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';

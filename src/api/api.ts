@@ -13,13 +13,9 @@ import { api } from '@constants/api';
 import { AppType } from '@constants/enum/appType';
 import { APP_TYPE, BOT_PATH, getBotPath, getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
+import { handleRouteLookup } from './handleRouteLookup';
 import { versionEndpoint } from './misc/misc';
-import {
-  formHandlerLookup,
-  routeToCorrectHandler,
-  statusHandlerLookup,
-  verifyHandlerLookup,
-} from './routes/routeLookup';
+import { formHandlerLookup, statusHandlerLookup, verifyHandlerLookup } from './routes/routeLookup';
 
 Container.set(BOT_PATH, __dirname);
 Container.set(APP_TYPE, AppType.Api);
@@ -31,9 +27,9 @@ getLog().i('Starting up http server');
 const bodyOptions = koaBody({ multipart: true });
 const router = new Router();
 
-router.post(`/${api.routes.form}`, bodyOptions, routeToCorrectHandler(formHandlerLookup));
-router.get(`/${api.routes.verify}`, routeToCorrectHandler(verifyHandlerLookup));
-router.get(`/${api.routes.status}`, routeToCorrectHandler(statusHandlerLookup));
+router.post(`/${api.routes.form}`, bodyOptions, handleRouteLookup(formHandlerLookup));
+router.get(`/${api.routes.verify}`, handleRouteLookup(verifyHandlerLookup));
+router.get(`/${api.routes.status}`, handleRouteLookup(statusHandlerLookup));
 
 // misc
 router.get('/version', versionEndpoint('secret'));

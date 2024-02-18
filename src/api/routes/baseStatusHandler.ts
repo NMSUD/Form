@@ -1,6 +1,6 @@
 import Koa from 'koa';
 
-import { IApiModule } from '@api/module/baseModule';
+import { IApiModule } from '@api/types/baseModule';
 import { ApiStatusErrorCode, apiParams } from '@constants/api';
 import { getLog } from '@services/internal/logService';
 import { IFormWithApprovalResponse } from '@contracts/response/formResponse';

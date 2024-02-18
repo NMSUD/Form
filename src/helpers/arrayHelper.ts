@@ -5,6 +5,6 @@ export const makeArrayOrDefault = <T>(
   if (propsVal == null) return defaultValue;
   if (Array.isArray(propsVal) == true) return [...propsVal];
 
-  if (propsVal != null) return [propsVal];
-  return defaultValue;
+  // make array of whatever is passed in
+  return [propsVal];
 };

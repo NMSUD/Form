@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { describe, expect, test } from 'vitest';
 
 import { getArrFromEnum, getDropDownOptionsFromEnum } from './enumHelper';

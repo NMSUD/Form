@@ -62,20 +62,32 @@ describe('Base Validation', () => {
   });
 
   describe('Seperate Validation', () => {
-    test('only run validators base on platform', () => {
-      Container.set(APP_TYPE, AppType.Api);
+    test.each([
+      [AppType.Api],
+      [AppType.UI], //
+    ])('only run validators base on platform %s', (appType) => {
+      Container.set(APP_TYPE, appType as AppType);
       let count = 0;
       const fakeValidator = () => {
-        count++;
+        count = appType;
         return { isValid: true };
       };
-      const valArr = [fakeValidator, fakeValidator, fakeValidator];
       const validator = seperateValidation({
-        api: multiValidation(...valArr),
-        ui: multiValidation(...[...valArr, ...valArr]),
+        api: fakeValidator,
+        ui: fakeValidator,
       });
       validator(anyObject);
-      expect(count).toBe(valArr.length);
+      expect(count).toBe(appType);
+    });
+    test('return success if platform not accounted for', () => {
+      Container.set(APP_TYPE, AppType.Interactive);
+      const fakeValidator = () => ({ isValid: false });
+      const validator = seperateValidation({
+        api: fakeValidator,
+        ui: fakeValidator,
+      });
+      const result = validator(anyObject);
+      expect(result.isValid).toBeTruthy();
     });
   });
 
