@@ -10,18 +10,20 @@ describe('Route lookup', () => {
     let hasRun = false;
     const fakeDoNothing: any = () => {};
     const fakeCtx = {
+      set: () => null,
       params: {
-        [apiParams.general.segment]: 'builderTest',
+        [apiParams.general.segment]: 'builder',
       },
+      response: {},
     };
-    const fakeNextPromise = new Promise((res, _) => res(''));
+    const next = vi.fn().mockResolvedValue(fakePromise());
     const routeFunctions: any = handleRouteLookup({
-      communityTest: fakeDoNothing,
-      builderTest: async () => {
+      community: fakeDoNothing,
+      builder: async () => {
         hasRun = true;
       },
     });
-    await routeFunctions(fakeCtx, fakeNextPromise);
+    await routeFunctions(fakeCtx, next);
     expect(hasRun).toBeTruthy();
   });
   test('handler not found based on segment in params', async () => {
@@ -35,9 +37,11 @@ describe('Route lookup', () => {
         [apiParams.general.segment]: 'builderTest',
       },
     };
+    const fakeDoNothing: any = () => {};
     const next = vi.fn().mockResolvedValue(fakePromise());
     const routeFunctions: any = handleRouteLookup({
-      communityTest: () => {},
+      community: fakeDoNothing,
+      builder: fakeDoNothing,
     });
     await routeFunctions(ctx, next);
     expect(ctx.response.status).toBe(ApiStatusErrorCode.segmentNotFound);

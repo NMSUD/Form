@@ -36,7 +36,7 @@ export const BuilderPersistenceMeta: IFormPersistenceMeta<BuilderDto> = {
   },
   communityAffiliations: {
     displayInDiscordMessage: arrayFromDatabaseDiscordLines<Community & IRecordRequirements>({
-      dbCall: getDatabaseService().community().read,
+      dbCall: (id) => getDatabaseService().community().read(id),
       mapValue: (communityBuilder) => communityBuilder.name ?? '??',
     }),
   },

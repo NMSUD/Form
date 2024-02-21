@@ -8,6 +8,8 @@ const testDef = {
   test: {
     exclude: [...configDefaults.exclude, './build/**', './dist/**'],
     coverage: {
+      enabled: true,
+      reporter: ['text', 'html'],
       extension: ['.ts'],
       include: ['src'],
       exclude: [
@@ -17,6 +19,8 @@ const testDef = {
         'src/constants',
         'src/contracts',
         'src/data',
+        'src/services/api',
+        'src/services/external',
         'src/web/contracts',
         'src/web/hooks',
       ],

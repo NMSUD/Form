@@ -43,7 +43,8 @@ export const ApiStatusErrorCode = {
   decisionNotFound: 462,
   recordNotFound: 463,
   badCaptcha: 520,
-  invalidFormData: 521,
-  couldNotPersistData: 522,
-  calculatedCheckFailed: 523,
+  invalidFormFiles: 521,
+  invalidFormData: 522,
+  couldNotPersistData: 523,
+  calculatedCheckFailed: 524,
 };

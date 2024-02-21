@@ -8,6 +8,7 @@ import { communityDtoWithImageToPersistence, communityPersistenceToDto } from '.
 import { CommunityPersistenceMeta } from './communityPersistenceMeta';
 import { communityPublicUrlHandler } from './communityPublicUrlHandler';
 
+const getDbTable = () => getDatabaseService().community();
 export const communityModule: IApiModule<CommunityDto, ICommunityImages, Community> = {
   name: 'CommunityDto',
   segment: 'community',
@@ -16,10 +17,10 @@ export const communityModule: IApiModule<CommunityDto, ICommunityImages, Communi
   getName: (persistence: Community) => persistence.name,
   getIcon: (persistence: Community) => persistence.profilePicUrl,
 
-  createRecord: getDatabaseService().community().create,
-  readRecord: getDatabaseService().community().read,
-  readAllRecords: getDatabaseService().community().readAll,
-  updateRecord: getDatabaseService().community().update,
+  createRecord: (persistence) => getDbTable().create(persistence),
+  readRecord: (id: string) => getDbTable().read(id),
+  readAllRecords: () => getDbTable().readAll(),
+  updateRecord: (id, persistence) => getDbTable().update(id, persistence),
 
   mapDtoWithImageToPersistence: communityDtoWithImageToPersistence,
   mapPersistenceToDto: communityPersistenceToDto,

@@ -2,7 +2,7 @@ import { BuilderDto, BuilderDtoMeta } from '@contracts/dto/forms/builderDto';
 import { cyrb53 } from '@helpers/hashHelper';
 import { getDatabaseService } from '@services/external/database/databaseService';
 import { Builder } from '@services/external/database/xata';
-import { IApiModule } from '../../types/baseModule';
+import { IApiModule, IRecordRequirements } from '../../types/baseModule';
 import { IBuilderImages, builderFileHandler } from './builderFileHandler';
 import { builderDtoWithImageToPersistence, builderPersistenceToDto } from './builderMapper';
 import { BuilderPersistenceMeta } from './builderPersistenceMeta';
@@ -12,6 +12,7 @@ import {
   builderCreateRelationships,
 } from './builderRelationshipsHandler';
 
+const getDbTable = () => getDatabaseService().builder();
 export const builderModule: IApiModule<BuilderDto, IBuilderImages, Builder> = {
   name: 'BuilderDto',
   segment: 'builder',
@@ -24,11 +25,11 @@ export const builderModule: IApiModule<BuilderDto, IBuilderImages, Builder> = {
   mapPersistenceToDto: builderPersistenceToDto,
   mapRecordRelationshipsToDto: builderAdditionalPropertiesToDto,
 
-  createRecord: getDatabaseService().builder().create,
+  createRecord: (persistence) => getDbTable().create(persistence),
   createRecordRelationships: builderCreateRelationships,
-  readRecord: getDatabaseService().builder().read,
-  readAllRecords: getDatabaseService().builder().readAll,
-  updateRecord: getDatabaseService().builder().update,
+  readRecord: (id) => getDbTable().read(id),
+  readAllRecords: () => getDbTable().readAll(),
+  updateRecord: (id, persistence) => getDbTable().update(id, persistence),
 
   handleFilesInFormData: builderFileHandler,
   getPublicUrlsOfUploads: builderPublicUrlHandler,

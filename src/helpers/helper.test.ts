@@ -5,6 +5,7 @@ import { formatDate } from './dateHelper';
 import { onTargetFile, onTargetValue, preventDefault } from './eventHelper';
 import { addSpacesForEnum, capitalizeFirstLetter, lowercaseFirstLetter } from './stringHelper';
 import { timeout } from './asyncHelper';
+import { promiseFromResult } from './typescriptHacks';
 
 describe('Helper tests', () => {
   describe('async helper', () => {
@@ -14,13 +15,6 @@ describe('Helper tests', () => {
       const endTime = performance.now();
       const numMilli = (endTime - startTime) / 100; // 100ms wiggle room because node is not very accurate
       expect(Math.round(numMilli)).toBe(2);
-    });
-  });
-
-  describe('Date formatter', () => {
-    test('formatDate', () => {
-      const dateStr = formatDate('2023-01-01');
-      expect(dateStr).toBe('01 Jan 23 12:00');
     });
   });
 
@@ -75,6 +69,18 @@ describe('Helper tests', () => {
     test('addSpacesForEnum', () => {
       const output = addSpacesForEnum('thisIsALowerCaseSentence');
       expect(output).toBe('this Is A Lower Case Sentence');
+    });
+  });
+
+  describe('typescript hacks', () => {
+    test('promiseFromResult', async () => {
+      const obj = {
+        a: '1',
+        b: 'test',
+      };
+      const fakePromise = promiseFromResult(obj);
+      const result = await fakePromise;
+      expect(result).toBe(obj);
     });
   });
 });

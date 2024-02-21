@@ -24,14 +24,14 @@ describe('Discord message helper', () => {
     });
     test('should add a reject option', () => {
       const webhookEmbed = baseSubmissionMessageEmbed('', 0, '');
-      const fieldValues = webhookEmbed.fields.map((f) => f.value);
+      const fieldValues = (webhookEmbed?.fields ?? []).map((f) => f.value);
       expect(
         fieldValues.filter((fv) => fv.includes(`[${discordActionLink.reject}]`)).length, //
       ).toBe(1);
     });
     test('should add an accept option', () => {
       const webhookEmbed = baseSubmissionMessageEmbed('', 0, '');
-      const fieldValues = webhookEmbed.fields.map((f) => f.value);
+      const fieldValues = (webhookEmbed?.fields ?? []).map((f) => f.value);
       expect(
         fieldValues.filter((fv) => fv.includes(`[${discordActionLink.accept}]`)).length, //
       ).toBe(1);
@@ -42,7 +42,7 @@ describe('Discord message helper', () => {
       const segment = 'test';
       const expectedRejected = `[${discordActionLink.reject}](${fakeApiUrl}/verify/${segment}/denied/${dbId}/${check})`;
       const webhookEmbed = baseSubmissionMessageEmbed(dbId, check, segment);
-      expect(webhookEmbed.fields[0].value).toBe(expectedRejected);
+      expect((webhookEmbed?.fields ?? [])[0].value).toBe(expectedRejected);
     });
   });
 
@@ -63,7 +63,7 @@ describe('Discord message helper', () => {
         descripLines: [],
         additionalEmbeds: [],
       });
-      expect(webhookEmbeds.embeds[0].author.name).toBe(discordActionLink.defaultAuthorName);
+      expect(webhookEmbeds.embeds[0].author!.name).toBe(discordActionLink.defaultAuthorName);
     });
     test('should add additional embeds', () => {
       const webhookEmbeds = baseSubmissionMessageBuilder({

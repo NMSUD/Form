@@ -9,13 +9,13 @@ export const defaultEndpoint = async (
   next: () => Promise<Koa.BaseResponse>,
 ) => {
   ctx.body = '<p>You should <b>not</b> be here... Well done I guess 🤔</p>';
+  ctx.response.status = 200;
 
   await next();
 };
 
 export const versionEndpoint =
-  (authToken: string) =>
-  async (ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>) => {
+  (authToken: string) => async (ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>) => {
     const isAdmin = await isRequestAuthed(authToken, ctx, next);
 
     let output = `DOCKER_BUILD_VERSION: ${getConfig().buildVersion() ?? '???'}\n`;

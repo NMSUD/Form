@@ -1,5 +1,5 @@
-import { Container, Inject, Service } from 'typedi';
-import { ConfigService } from '../../internal/configService';
+import { Container, Service } from 'typedi';
+import { getConfig } from '../../internal/configService';
 import { getCrudOperations } from './table/baseTableOperations';
 import { getByBuilderId, getByCommunityId } from './table/communityBuilderTableOperations';
 import {
@@ -16,7 +16,8 @@ import {
 export class DatabaseService {
   private _xata: XataClient;
 
-  constructor(@Inject() config: ConfigService) {
+  constructor() {
+    const config = getConfig();
     this._xata = new XataClient({
       apiKey: config.getXataApiKey(),
       databaseURL: config.getXataDbUrl(),
