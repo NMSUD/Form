@@ -8,7 +8,6 @@ export const builderEnhancer: Mapper<BuilderDto, Promise<unknown>> = async (dto:
 
   const communitiesResult = await getDatabaseService().communityBuilder().getByBuilderId(dto.id);
   if (communitiesResult.isSuccess === true) {
-    console.log(communitiesResult.value);
     communityAffiliationsEnhanced = communitiesResult.value.map((comm) => ({
       id: comm.community?.id,
       name: comm.community?.name,

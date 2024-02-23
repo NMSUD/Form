@@ -37,10 +37,6 @@ export const fetchImagesForTable = async <T extends IRecordRequirements>(
   const recordResult: Array<T> = [];
   for (const record of props.items) {
     if (skipStatuses.includes(record.approvalStatus)) continue;
-    if (record.approvalStatus === ApprovalStatus.approvedAndProcessed) {
-      recordResult.push(record);
-      continue;
-    }
 
     const mappedRecord = await props.processItemImgs({
       imageFolder: imageSegmentFolder,

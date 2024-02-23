@@ -1,27 +1,30 @@
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
-import { getDatabaseService } from '@services/external/database/databaseService';
 import { Community } from '@services/external/database/xata';
-import { getApiFileService } from '@services/internal/apiFileService';
 import { IGetImageForRecord } from 'data/contracts/image';
+import { IImageDownloadRequest, imageListDownloader } from './imageListDownloader';
+import { getLog } from '@services/internal/logService';
 
 export const communityImgDownloader = async (
   props: IGetImageForRecord<Community>,
 ): Promise<Community> => {
+  const listOfImagesToDownload: Array<IImageDownloadRequest> = [];
   const persistence = { ...props.persistence };
-  if (props.persistence.profilePicFile == null) return props.persistence;
 
-  const profilePicFile = props.persistence.profilePicFile;
-  const profilePicDownloadResult = await getApiFileService().downloadXataFile(
-    profilePicFile,
-    persistence.id,
-    props.imagePath,
-    'profile_pic',
-  );
-  if (profilePicDownloadResult.isSuccess) {
-    persistence.profilePicFile = null;
-    persistence.profilePicUrl = `${props.imgBaseUrl}/${props.imageFolder}/${profilePicDownloadResult.value}`;
+  let profilePicFileUrl: string | null | undefined = props.persistence.profilePicFile?.url;
+  if (persistence.approvalStatus === ApprovalStatus.approvedAndProcessed) {
+    profilePicFileUrl = persistence.profilePicUrl;
   }
+  listOfImagesToDownload.push({
+    fileName: `${persistence.id}_profile_pic.png`,
+    folder: props.imagePath,
+    url: profilePicFileUrl,
+    onSuccess: (newFileName: string) => {
+      getLog().i(`\t\tDownloaded ${newFileName}`);
+      persistence.profilePicFile = null;
+      persistence.profilePicUrl = `${props.imgBaseUrl}/${props.imageFolder}/${newFileName}`;
+    },
+  });
 
   const bioMediaUrls: Array<string> = [];
   const bioMediaFiles = makeArrayOrDefault(props.persistence.bioMediaFiles);
@@ -29,24 +32,30 @@ export const communityImgDownloader = async (
     const bioMedia = bioMediaFiles[bioMediaIndex];
     if (bioMedia == null) continue;
 
-    const bioMediaDownloadResult = await getApiFileService().downloadXataFile(
-      bioMedia,
-      persistence.id,
-      props.imagePath,
-      `bio_media_${bioMediaIndex + 1}`,
-    );
-    if (bioMediaDownloadResult.isSuccess) {
-      bioMediaUrls.push(`${props.imgBaseUrl}/${props.imageFolder}/${bioMediaDownloadResult.value}`);
-      persistence.bioMediaFiles = null;
-      persistence.bioMediaUrls = bioMediaUrls.join(',');
-    }
+    listOfImagesToDownload.push({
+      fileName: `${persistence.id}_bio_media_${bioMediaIndex + 1}.png`,
+      folder: props.imagePath,
+      url: profilePicFileUrl,
+      onSuccess: (newFileName: string) => {
+        getLog().i(`\t\tDownloaded ${newFileName}`);
+        bioMediaUrls.push(`${props.imgBaseUrl}/${props.imageFolder}/${newFileName}`);
+        persistence.bioMediaFiles = null;
+        persistence.bioMediaUrls = bioMediaUrls.join(',');
+      },
+    });
   }
 
-  persistence.approvalStatus = ApprovalStatus.approvedAndProcessed;
-  const updatedRecordResult = await getDatabaseService()
-    .community()
-    .update(persistence.id, persistence);
-  if (updatedRecordResult.isSuccess == false) return props.persistence;
+  await imageListDownloader(listOfImagesToDownload);
+
+  if (persistence.approvalStatus === ApprovalStatus.approvedAndProcessed) {
+    return persistence;
+  }
+
+  // persistence.approvalStatus = ApprovalStatus.approvedAndProcessed;
+  // const updatedRecordResult = await getDatabaseService()
+  //   .community()
+  //   .update(persistence.id, persistence);
+  // if (updatedRecordResult.isSuccess == false) return props.persistence;
 
   return persistence;
 };
