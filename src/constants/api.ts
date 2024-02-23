@@ -29,12 +29,13 @@ export const api = {
 export interface IApiSegment {
   community: string;
   builder: string;
-  // planetaryBase: string;
+  planetBase: string;
 }
 
 export const segmentLabels: IApiSegment = {
   community: 'Community',
   builder: 'Builder',
+  planetBase: 'Build',
 };
 
 export const ApiStatusErrorCode = {

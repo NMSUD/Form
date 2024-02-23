@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { ConfigService } from '../internal/configService';
+import { ConfigService } from './configService';
 
 describe('Config service', () => {
   test('can access process variables', () => {

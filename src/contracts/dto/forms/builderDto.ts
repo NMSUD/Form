@@ -1,6 +1,6 @@
 import { DefaultImageRestrictions } from '@constants/image';
 import { PlatformType } from '@contracts/dto/enum/platformType';
-import { IFormDtoMeta } from '@contracts/dto/forms/baseFormDto';
+import { IFormDtoMeta, contactDetails } from '@contracts/dto/forms/baseFormDto';
 import { formatForDateDropdown } from '@helpers/dateHelper';
 import { minItems } from '@validation/arrayValidation';
 import {
@@ -15,7 +15,6 @@ import { webImageRestrictions } from '@validation/imageValidation';
 import { maxLength, minLength, shouldBeUrl } from '@validation/textValidation';
 
 export const builderBioMaxLength = 500;
-export const builderContactDetailsMaxLength = 500;
 export const builderStartedPlayingMinDate = new Date('2016-08-09');
 export const builderStartedPlayingMaxDate = new Date();
 
@@ -88,6 +87,8 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
   communityAffiliations: {
     label: 'Community affiliations',
     defaultValue: [],
+    helpText:
+      'Are you unable to find a community? Ask the community to add it on this site, or add it yourself on the community form.',
     validator: noValidation,
   },
   labels: {
@@ -105,10 +106,5 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     defaultValue: [],
     validator: validateForEach(multiValidation(minLength(2), shouldBeUrl)),
   },
-  contactDetails: {
-    label: 'Contact Details (only visible to NMSUD organisers)',
-    helpText: `This is so that we can get in contact with you if there are any issue with your submissions, etc.`,
-    defaultValue: '',
-    validator: maxLength(builderContactDetailsMaxLength),
-  },
+  contactDetails,
 };

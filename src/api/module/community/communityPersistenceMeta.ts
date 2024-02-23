@@ -19,7 +19,7 @@ export const CommunityPersistenceMeta: IFormPersistenceMeta<CommunityDto> = {
   bioMediaUrls: {
     displayInDiscordMessage: arrayDiscordLine,
   },
-  homeGalaxies: {
+  homeGalaxy: {
     // displayInDiscordMessage: arrayDiscordLine,
   },
   tags: {

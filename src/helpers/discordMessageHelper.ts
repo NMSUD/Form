@@ -11,13 +11,12 @@ import {
   DiscordWebhookAttachment,
   DiscordWebhookEmbed,
 } from '@contracts/generated/discordWebhook';
+import { ResultWithValue } from '@contracts/resultWithValue';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
-import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
 import { addSpacesForEnum, capitalizeFirstLetter } from '@helpers/stringHelper';
+import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
 import { getConfig } from '@services/internal/configService';
 import { formatDate } from './dateHelper';
-import { ResultWithValue } from '@contracts/resultWithValue';
-import { getLog } from '@services/internal/logService';
 
 export interface IMessageBuilderProps<T, TP> {
   dbId: string;
@@ -160,17 +159,13 @@ export const arrayFromDatabaseDiscordLines =
   async (label: string, values: Array<string>) => {
     const links: Array<string> = [];
     for (const value of values) {
-      try {
-        const dataResult = await props.dbCall(value);
-        if (dataResult.isSuccess == false) {
-          links.push('**error**');
-          continue;
-        }
-        const dataValue = props.mapValue(dataResult.value);
-        links.push(dataValue);
-      } catch (ex) {
-        getLog().e(`arrayFromDatabaseDiscordLines: ${ex}`);
+      const dataResult = await props.dbCall(value);
+      if (dataResult.isSuccess == false) {
+        links.push('**error**');
+        continue;
       }
+      const dataValue = props.mapValue(dataResult.value);
+      links.push(dataValue);
     }
     return [`**${label}**: ${makeArrayOrDefault(links).join(', ')}`];
   };

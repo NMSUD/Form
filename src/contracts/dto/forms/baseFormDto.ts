@@ -1,4 +1,5 @@
 import { ValidationResult } from '@contracts/validationResult';
+import { maxLength } from '@validation/textValidation';
 
 export type IFormDtoMetaDetails<TV> = {
   label: string;
@@ -20,4 +21,12 @@ export type IFormPersistenceMetaDetails<TV> = {
 
 export type IFormPersistenceMeta<T> = {
   [prop in keyof T]?: IFormPersistenceMetaDetails<any>;
+};
+
+export const contactDetailsMaxLength = 500;
+export const contactDetails = {
+  label: 'Contact Details (only visible to NMSUD organisers)',
+  helpText: `This is so that we can get in contact with you if there are any issue with your submissions, etc.`,
+  defaultValue: '',
+  validator: maxLength(contactDetailsMaxLength),
 };

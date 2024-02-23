@@ -6,6 +6,8 @@ import { onTargetFile, onTargetValue, preventDefault } from './eventHelper';
 import { addSpacesForEnum, capitalizeFirstLetter, lowercaseFirstLetter } from './stringHelper';
 import { timeout } from './asyncHelper';
 import { promiseFromResult } from './typescriptHacks';
+import { randomIntFromRange, randomItemFromArray } from './randomHelper';
+import { nameof } from './propHelper';
 
 describe('Helper tests', () => {
   describe('async helper', () => {
@@ -54,6 +56,32 @@ describe('Helper tests', () => {
       };
       preventDefault(event);
       expect(value).toBe('test');
+    });
+  });
+
+  describe('prop helper', () => {
+    test('nameof', () => {
+      const testObj = {
+        test: 'teste',
+        tester: 'teste',
+        testest: 'teste',
+      };
+      expect(nameof<typeof testObj>('testest')).toBe('testest');
+    });
+  });
+
+  describe('Random helper', () => {
+    test.each([[], [], []])('randomIntFromRange', () => {
+      const min = 1;
+      const max = 10;
+      const output = randomIntFromRange(min + 1, max);
+      expect(output).toBeLessThan(max);
+      expect(output).toBeGreaterThan(min);
+    });
+    test.each([[], [], []])('randomItemFromArray', () => {
+      const items = ['test1', 'test2', 'test3'];
+      const output = randomItemFromArray(items);
+      expect(items.includes(output)).toBeTruthy();
     });
   });
 

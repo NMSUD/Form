@@ -32,34 +32,26 @@ export class ApiFileService {
     }
   };
 
-  downloadXataFile = async (
-    xataFile: XataFile,
-    recordId: string,
+  downloadFileFromUrl = async (
+    imageUrl: string,
     imageFolder: string,
-    imgSuffix: string,
+    fileName: string,
   ): Promise<ResultWithValue<string>> => {
     try {
-      const imageUrl = xataFile.url;
-      if (imageUrl == null) {
+      if (imageUrl == null || imageUrl.length < 10) {
         throw 'File url is null';
       }
-      if (recordId == null) {
-        throw 'Record Id is null';
-      }
 
-      const fileName = `${recordId}_${imgSuffix}.png`;
-      const localFile = path.join(imageFolder, fileName);
+      const destFile = path.join(imageFolder, fileName);
 
-      if (fs.existsSync(localFile) === true) {
-        fs.unlinkSync(localFile);
+      if (fs.existsSync(destFile) === true) {
+        fs.unlinkSync(destFile);
       }
 
       const response = await fetch(imageUrl);
       const arrBuffer = await response.arrayBuffer();
       const buffer = Buffer.from(arrBuffer);
-      fs.writeFileSync(localFile, buffer);
-
-      getLog().i(`\tDownloaded ${fileName}`);
+      fs.writeFileSync(destFile, buffer);
 
       return {
         isSuccess: true,

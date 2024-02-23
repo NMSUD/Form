@@ -13,7 +13,7 @@ export class NmsUdJsonFileService extends BaseApiService {
   }
 
   async getListOf<T>(segment: keyof IApiSegment): Promise<ResultWithValue<Array<T>>> {
-    const url = `/${segment}.json`;
+    const url = `${segment}.json`;
     return this.get<Array<T>>(url);
   }
 }

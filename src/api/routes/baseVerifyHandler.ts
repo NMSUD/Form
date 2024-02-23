@@ -41,7 +41,7 @@ export const baseVerifyHandler =
     }
 
     const readRecordResult = await module.readRecord(params.id);
-    if (readRecordResult.isSuccess == false || readRecordResult.value == null) {
+    if (readRecordResult.isSuccess == false) {
       const errMsg = `${handlerName}: An error occurred while getting a db record with id: ${params.id}`;
       getLog().e(errMsg);
       await errorResponse({

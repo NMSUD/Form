@@ -1,6 +1,6 @@
 import { getLog } from '@services/internal/logService';
 
-export interface IAddScriptToHead {
+interface IAddScriptToHead {
   id: string;
   url: string;
   async?: boolean;

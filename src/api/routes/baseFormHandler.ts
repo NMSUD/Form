@@ -60,7 +60,6 @@ export const baseFormHandler =
     let data: TD = anyObject;
     try {
       const dataString = formDataBody[FormDataKey.data];
-      console.log('dataString', dataString);
       data = JSON.parse(dataString);
     } catch (ex) {
       const errMsg = `${handlerName} formdata mapping: ${ex?.toString?.()}`;

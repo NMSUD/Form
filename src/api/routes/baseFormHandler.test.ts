@@ -1,17 +1,15 @@
 import 'reflect-metadata';
 import { describe, expect, test, vi } from 'vitest';
 
-import { IApiModule } from '@api/types/baseModule';
+import { fakeModule } from '@api/types/baseModule.test';
+import { ApiStatusErrorCode } from '@constants/api';
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
-import { IFormWithFiles } from '@contracts/file';
+import { FormDataKey } from '@constants/form';
 import { fakePromise, promiseFromResult } from '@helpers/typescriptHacks';
+import { DiscordService } from '@services/external/discord/discordService';
 import { ConfigService } from '@services/internal/configService';
 import Container from 'typedi';
 import { baseFormHandler } from './baseFormHandler';
-import { FormDataKey } from '@constants/form';
-import { ApiStatusErrorCode } from '@constants/api';
-import { DiscordService } from '@services/external/discord/discordService';
-import { fakeModule } from '@api/types/baseModule.test';
 
 describe('Form handler', () => {
   test('invalid captcha', async () => {

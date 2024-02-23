@@ -34,9 +34,9 @@ export const routes = {
       title: '🏘️ Community',
       showInSidebar: true,
     },
-    base: {
-      path: '/base',
-      sidebarPath: '/form/base',
+    planetBuild: {
+      path: '/planetBuild',
+      sidebarPath: '/form/planetBuild',
       title: '🏡 Planetary Base',
       showInSidebar: true,
     },

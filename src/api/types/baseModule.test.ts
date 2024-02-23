@@ -93,7 +93,7 @@ export const fakeModule: IApiModule<typeof domain, typeof file, typeof persisten
     approvalStatus: ApprovalStatus.pending,
   }),
 
-  calculateCheck: (pers) => 2,
+  calculateCheck: (pers) => 1234,
 };
 
 describe('ApiModule', () => {

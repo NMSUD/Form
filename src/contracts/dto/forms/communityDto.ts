@@ -9,10 +9,9 @@ import {
 } from '@validation/baseValidation';
 import { webImageRestrictions } from '@validation/imageValidation';
 import { maxLength, minLength, shouldBeUrl } from '@validation/textValidation';
-import { IFormDtoMeta } from './baseFormDto';
+import { IFormDtoMeta, contactDetails } from './baseFormDto';
 
 export const communityBioMaxLength = 500;
-export const communityContactDetailsMaxLength = 500;
 
 export interface CommunityDto {
   id: string;
@@ -100,16 +99,5 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
       validateForEach(multiValidation(minLength(2), shouldBeUrl)),
     ),
   },
-  contactDetails: {
-    label: 'Contact Details (only visible to NMSUD organisers)',
-    helpText: `This is so that we can get in contact with you if there are any issue with your submissions, etc.`,
-    defaultValue: '',
-    validator: maxLength(communityBioMaxLength),
-  },
+  contactDetails,
 };
-
-export const communityToDropdown = (r: CommunityDto) => ({
-  title: r.name,
-  value: r.id,
-  image: r.profilePicUrl,
-});
