@@ -1,5 +1,5 @@
 export const Labels = {
-  Builders: ['Survival', 'Creative', 'Glitch', 'Blender'],
-  BuildingTechniques: ['Survival', 'Creative', 'Glitch', 'Blender'],
+  Builders: ['Youtuber', 'Twitch Streamer'],
+  BuildingTechniques: ['Survival', 'Creative', 'Glitch', 'Mods', 'Save editing', 'Blender'],
   Community: ['Civilization'],
 };

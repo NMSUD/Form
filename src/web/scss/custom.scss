@@ -6,97 +6,100 @@
 @import 'scrollbar';
 @import 'sweetalertDark';
 @import 'breakpoint';
+@import 'assistantApps';
 
 :root {
-    --bg-color: #151718;
-    --bg-hover-color: #0b0b0c;
-    --line-gray-color: #8c9297;
-    --text-color: #ecedee;
+  --bg-color: #151718;
+  --bg-hover-color: #0b0b0c;
+  --line-gray-color: #8c9297;
+  --text-color: #ecedee;
 
-    // to be overridden by the app at runtime
-    --primary-colour: #00ffff;
-    --primary-colour-darken-25: darken(#00ffff, 25%);
-    --link-color: #00ffff;
-    --text-selection-color: #385e8a;
+  // to be overridden by the app at runtime
+  --primary-colour: #00ffff;
+  --primary-colour-darken-25: darken(#00ffff, 25%);
+  --link-color: #00ffff;
+  --text-selection-color: #385e8a;
+
+  --assistantapps-font-weight: 100;
+  --assistantapps-font-family: 'Quicksand', sans-serif;
 }
 
 html body {
-    font-family: 'Quicksand', sans-serif;
+  font-family: var(--assistantapps-font-family);
 
-    ::selection {
-        background: var(--text-selection-color);
-        color: white;
-    }
+  ::selection {
+    background: var(--text-selection-color);
+    color: white;
+  }
 
-    ::-moz-selection {
-        background: var(--text-selection-color);
-        color: white;
-    }
+  ::-moz-selection {
+    background: var(--text-selection-color);
+    color: white;
+  }
 
-    ::-webkit-calendar-picker-indicator {
-        filter: invert(100%);
-    }
+  ::-webkit-calendar-picker-indicator {
+    filter: invert(100%);
+  }
 
-    a {
-        color: var(--link-color);
-    }
+  a {
+    color: var(--link-color);
+  }
 }
 
 .pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .noselect {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .no-drag,
-.no-drag>.hope-avatar__image {
-    user-drag: none;
-    -webkit-user-drag: none;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
+.no-drag > .hope-avatar__image {
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 
 .max-lines-1 {
-    white-space: nowrap;
-    overflow: hidden;
-    display: block;
-    text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  text-overflow: ellipsis;
 }
 
 .hover-reveal-child {
-    &:hover {
-        .reveal {
-            opacity: 1;
-        }
-    }
-
+  &:hover {
     .reveal {
-        opacity: 0;
-        transition: opacity 250ms ease-in-out;
+      opacity: 1;
     }
+  }
+
+  .reveal {
+    opacity: 0;
+    transition: opacity 250ms ease-in-out;
+  }
 }
 
 .pos-rel {
-    position: relative;
+  position: relative;
 }
 
 .pos-abs {
-    position: absolute;
+  position: absolute;
 }
 
 .display-inline-block {
-    display: inline-block;
+  display: inline-block;
 }
 
 main.main {
-    padding-inline: 3em;
+  padding-inline: 3em;
 }

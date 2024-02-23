@@ -4,8 +4,17 @@ import { Router, hashIntegration } from '@solidjs/router';
 
 import { AppShell } from '@web/components/appShell';
 import { CustomThemeProvider } from '@web/components/themeProvider';
+import { AssistantAppsAppNoticeList } from '@web/types/assistantApps';
 
 import './scss/custom.scss';
+
+declare module 'solid-js' {
+  namespace JSX {
+    interface IntrinsicElements {
+      ['assistant-apps-app-notice-list']: AssistantAppsAppNoticeList;
+    }
+  }
+}
 
 const root = document.getElementById('form-app');
 

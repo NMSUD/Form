@@ -93,7 +93,12 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
   labels: {
     label: 'Labels',
     defaultValue: [],
-    validator: noValidation,
+    validator: multiValidation(
+      minItems(1),
+      validateForEach(
+        minLength(1), //
+      ),
+    ),
   },
   socials: {
     label: 'Socials',

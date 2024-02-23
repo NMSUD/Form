@@ -22,7 +22,8 @@ export interface CommunityDto {
   bio: string;
   bioMediaUrls: Array<string>;
   bioMediaFiles: Array<File>;
-  homeGalaxies: Array<string>;
+  homeGalaxy: string;
+  coordinates: string;
   tags: Array<string>;
   socials: Array<string>;
   contactDetails: string;
@@ -74,10 +75,14 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
       ui: validateForEach(notNull('You need to upload an image')),
     }),
   },
-  homeGalaxies: {
-    label: 'Home Galaxies',
+  homeGalaxy: {
+    label: 'Home Galaxy',
     defaultValue: [],
-    // displayInDiscordMessage: arrayDiscordLine,
+    validator: noValidation,
+  },
+  coordinates: {
+    label: 'Coordinates',
+    defaultValue: '',
     validator: noValidation,
   },
   tags: {

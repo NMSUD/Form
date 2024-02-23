@@ -1,6 +1,7 @@
 export const site = {
   ref: 'nmsud',
   assistantApps: {
+    appGuid: '82e3ee0e-ad76-40b3-cfc7-08dc33b02b7f',
     name: 'AssistantApps',
     email: 'mailto:support@assistantapps.com',
     website: 'https://assistantapps.com',

@@ -23,6 +23,7 @@ const testDef = {
         'src/services/external',
         'src/web/contracts',
         'src/web/hooks',
+        'src/web/types',
       ],
     },
   },
