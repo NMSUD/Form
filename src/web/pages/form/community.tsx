@@ -6,7 +6,6 @@ import {
   CommunityDto,
   CommunityDtoMeta,
   communityBioMaxLength,
-  communityContactDetailsMaxLength,
 } from '@contracts/dto/forms/communityDto';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { randomItemFromArray } from '@helpers/randomHelper';
@@ -20,6 +19,7 @@ import { FormSocialInput } from '@web/components/form/socialLink/social';
 import { FormLongInput } from '@web/components/form/text/input';
 import { FormTextArea } from '@web/components/form/text/textArea';
 import { PropertyOverrides } from '@web/contracts/formTypes';
+import { contactDetailsMaxLength } from '@contracts/dto/forms/baseFormDto';
 
 export const CommunityFormPage: Component = () => {
   const propertyOverrides: Array<PropertyOverrides<CommunityDto>> = [
@@ -72,7 +72,7 @@ export const CommunityFormPage: Component = () => {
             bio: {
               component: FormTextArea,
               gridItemColumnSize: GridItemSize.full,
-              placeholder: 'Hi, my name is ...',
+              placeholder: 'We are a community that focusses on ...',
               additional: {
                 displayTextLength: (_) => true,
                 maxTextLength: (_) => communityBioMaxLength,
@@ -84,7 +84,7 @@ export const CommunityFormPage: Component = () => {
               placeholder: 'Email, Discord, etc',
               additional: {
                 displayTextLength: (_) => true,
-                maxTextLength: (_) => communityContactDetailsMaxLength,
+                maxTextLength: (_) => contactDetailsMaxLength,
               },
             },
           }}

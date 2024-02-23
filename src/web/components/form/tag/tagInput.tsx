@@ -35,6 +35,12 @@ export const FormTagInput: Component<IProps> = (props: IProps) => {
     }
   }, [props.showValidationMessages]);
 
+  createEffect(() => {
+    if (props.value == null || props.value.length === 0) {
+      setItems([]);
+    }
+  }, [props.value]);
+
   const handleSpecialKeyPress = (event: HtmlKeyEvent) => {
     if (event.keyCode == keyboardKeyCode.enter) {
       onAdd();

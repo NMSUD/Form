@@ -14,7 +14,7 @@ export const PortalCoordInput: Component<IFormPortalCoordInputProps> = (
   props: IFormPortalCoordInputProps,
 ) => {
   const [isValid, calcIsValid] = useValidation(props.validation);
-  const [portalCode, setPortalCode] = createSignal<string>('');
+  const [portalCode, setPortalCode] = createSignal<string>(props.value);
 
   const onTextType = (newValue: string) => {
     setPortalCode(newValue);
@@ -61,14 +61,14 @@ export const PortalCoordInput: Component<IFormPortalCoordInputProps> = (
           onInput={onTargetValue(onTextType)}
         />
         <SimpleGrid
-          columns={{ '@initial': 2, '@sm': 4, '@md': 8, '@lg': 16 }}
+          columns={{ '@initial': 3, '@sm': 4, '@md': 8, '@lg': 16 }}
           mt="$2"
           class="nms-portal-font"
           gap="4px"
         >
           <For each={portalValidOptions}>
             {(char) => (
-              <Button variant="outline" size="lg" onClick={onTextButtonClick(char)}>
+              <Button variant="outline" size="lg" p="0" onClick={onTextButtonClick(char)}>
                 <Text size="4xl">{char.toUpperCase()}</Text>
               </Button>
             )}

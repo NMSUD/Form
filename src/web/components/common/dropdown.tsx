@@ -1,22 +1,5 @@
-import {
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Image,
-  Select,
-  SelectContent,
-  SelectIcon,
-  SelectListbox,
-  SelectOption,
-  SelectOptionIndicator,
-  SelectOptionText,
-  SelectPlaceholder,
-  SelectTrigger,
-  SelectValue,
-  Tag,
-  TagLabel,
-} from '@hope-ui/solid';
+// prettier-ignore
+import { Flex, FormControl, FormErrorMessage, FormLabel, Image, Select, SelectContent, SelectIcon, SelectListbox, SelectOption, SelectOptionIndicator, SelectOptionText, SelectPlaceholder, SelectTrigger, SelectValue, Tag, TagLabel, } from '@hope-ui/solid';
 import { Component, For, JSX, Show, createEffect, createSignal } from 'solid-js';
 
 import { IDropdownOption } from '@contracts/dropdownOption';
@@ -83,26 +66,31 @@ export const Dropdown: Component<IProps> = (props: IProps) => {
             {({ selectedOptions }) => (
               <Flex alignItems="flex-start">
                 <For each={selectedOptions}>
-                  {(selectedOption) => (
-                    <Tag borderRadius={5} m="0.125em 0.25em 0.125em 0">
-                      <Show
-                        when={
-                          getOptionFromValue(selectedOption.value) != null &&
-                          getOptionFromValue(selectedOption.value)!.image != null
-                        }
-                      >
-                        <Image
-                          src={getOptionFromValue(selectedOption.value)!.image}
-                          alt={getOptionFromValue(selectedOption.value)!.title}
-                          borderRadius={3}
-                          height="1em"
-                          width="1em"
-                          mr="0.5em"
-                        />
-                      </Show>
-                      <TagLabel textAlign="start">{selectedOption.textValue}</TagLabel>
-                    </Tag>
-                  )}
+                  {(selectedOption) => {
+                    const safeOption = getOptionFromValue(selectedOption.value);
+                    return (
+                      <Tag borderRadius={5} m="0.125em 0.25em 0.125em 0">
+                        <Show
+                          when={safeOption != null}
+                          fallback={
+                            <TagLabel textAlign="start">{selectedOption.textValue}</TagLabel>
+                          }
+                        >
+                          <Show when={safeOption!.image != null}>
+                            <Image
+                              src={safeOption!.image}
+                              alt={safeOption!.title}
+                              borderRadius={3}
+                              height="1em"
+                              width="1em"
+                              mr="0.5em"
+                            />
+                          </Show>
+                          <TagLabel textAlign="start">{safeOption!.title}</TagLabel>
+                        </Show>
+                      </Tag>
+                    );
+                  }}
                 </For>
               </Flex>
             )}
@@ -124,7 +112,7 @@ export const Dropdown: Component<IProps> = (props: IProps) => {
                       ml="0.5em"
                     />
                   </Show>
-                  <SelectOptionText>{item.title}</SelectOptionText>
+                  <SelectOptionText>{item.listTitle ?? item.title}</SelectOptionText>
                   <SelectOptionIndicator />
                 </SelectOption>
               )}

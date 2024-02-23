@@ -2,15 +2,14 @@ import { Component } from 'solid-js';
 
 import { Labels } from '@constants/labels';
 import { funnyPlayerNames } from '@constants/names';
+import { contactDetailsMaxLength } from '@contracts/dto/forms/baseFormDto';
 import {
   BuilderDto,
   BuilderDtoMeta,
   builderBioMaxLength,
-  builderContactDetailsMaxLength,
   builderStartedPlayingMaxDate,
   builderStartedPlayingMinDate,
 } from '@contracts/dto/forms/builderDto';
-import { communityToDropdown } from '@contracts/dto/forms/communityDto';
 import { formatDate, formatForDateDropdown } from '@helpers/dateHelper';
 import { randomItemFromArray } from '@helpers/randomHelper';
 import { Card } from '@web/components/common/card';
@@ -23,10 +22,11 @@ import { FormBuilder } from '@web/components/form/formBuilder';
 import { GridItemSize } from '@web/components/form/grid';
 import { FormProfileImageInput } from '@web/components/form/image/profileImage';
 import { FormSocialInput } from '@web/components/form/socialLink/social';
+import { FormTagInput } from '@web/components/form/tag/tagInput';
 import { FormLongInput } from '@web/components/form/text/input';
 import { FormTextArea } from '@web/components/form/text/textArea';
 import { PropertyOverrides } from '@web/contracts/formTypes';
-import { FormTagInput } from '@web/components/form/tag/tagInput';
+import { communityToDropdown } from '../../../mapper/communityDropdown';
 
 export const BuilderFormPage: Component = () => {
   const propertyOverrides: Array<PropertyOverrides<BuilderDto>> = [
@@ -120,7 +120,7 @@ export const BuilderFormPage: Component = () => {
               placeholder: 'Email, Discord, etc',
               additional: {
                 displayTextLength: (_) => true,
-                maxTextLength: (_) => builderContactDetailsMaxLength,
+                maxTextLength: (_) => contactDetailsMaxLength,
               },
             },
           }}

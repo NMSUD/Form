@@ -26,6 +26,10 @@ export const AppShell: Component = () => {
           path: routes.form.community.path,
           component: lazy(() => import('@web/pages/form/community')),
         },
+        {
+          path: routes.form.planetBuild.path,
+          component: lazy(() => import('@web/pages/form/planetBuild')),
+        },
       ],
     },
     {
