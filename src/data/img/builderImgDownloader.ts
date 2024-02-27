@@ -1,9 +1,8 @@
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
-import { getDatabaseService } from '@services/external/database/databaseService';
 import { Builder } from '@services/external/database/xata';
-import { IGetImageForRecord } from 'data/contracts/image';
-import { IImageDownloadRequest, imageListDownloader } from './imageListDownloader';
 import { getLog } from '@services/internal/logService';
+import { IGetImageForRecord } from '../contracts/image';
+import { IImageDownloadRequest, imageListDownloader } from './imageListDownloader';
 
 export const builderImgDownloader = async (
   props: IGetImageForRecord<Builder>,

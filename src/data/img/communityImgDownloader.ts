@@ -1,7 +1,7 @@
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { Community } from '@services/external/database/xata';
-import { IGetImageForRecord } from 'data/contracts/image';
+import { IGetImageForRecord } from '../contracts/image';
 import { IImageDownloadRequest, imageListDownloader } from './imageListDownloader';
 import { getLog } from '@services/internal/logService';
 

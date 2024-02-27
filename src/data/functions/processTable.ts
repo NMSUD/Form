@@ -2,10 +2,10 @@ import { IApiModule, IRecordRequirements } from '@api/types/baseModule';
 import { Mapper } from '@contracts/mapper';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
-import { IGetImageForRecord } from 'data/contracts/image';
-import { fetchImagesForTable } from 'data/img/baseImgDownloader';
-import { generateJsonFile } from 'data/json/jsonGenerator';
-import { stripPropertiesFromObject } from 'data/mapper/stripProperties';
+import { IGetImageForRecord } from '../contracts/image';
+import { fetchImagesForTable } from '../img/baseImgDownloader';
+import { generateJsonFile } from '../json/jsonGenerator';
+import { stripPropertiesFromObject } from '../mapper/stripProperties';
 
 export const processTable = async <TD extends {}, TF, TP extends IRecordRequirements>(tableProps: {
   module: IApiModule<TD, TF, TP>;

@@ -3,7 +3,7 @@ import path from 'path';
 
 import { IRecordRequirements } from '@api/types/baseModule';
 import { getBotPath } from '@services/internal/configService';
-import { IGetImageForRecord } from 'data/contracts/image';
+import { IGetImageForRecord } from '../contracts/image';
 import { IApiSegment } from '@constants/api';
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
 

@@ -19,6 +19,7 @@ describe('Route lookup', () => {
     const next = vi.fn().mockResolvedValue(fakePromise());
     const routeFunctions: any = handleRouteLookup({
       community: fakeDoNothing,
+      planetBase: fakeDoNothing,
       builder: async () => {
         hasRun = true;
       },
@@ -41,6 +42,7 @@ describe('Route lookup', () => {
     const next = vi.fn().mockResolvedValue(fakePromise());
     const routeFunctions: any = handleRouteLookup({
       community: fakeDoNothing,
+      planetBase: fakeDoNothing,
       builder: fakeDoNothing,
     });
     await routeFunctions(ctx, next);
