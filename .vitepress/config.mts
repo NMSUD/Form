@@ -1,0 +1,40 @@
+import { defineConfig } from 'vitepress';
+import { nav } from './config.navbar.mts';
+import { sidebar } from './config.sidebar.mts';
+
+export default defineConfig({
+  title: 'NMSUD Form',
+  description: 'A custom solution for capturing data for the yearly Unification Days event',
+  srcExclude: ['**/README.md', '**/TODO*.md'],
+  lang: 'en-GB',
+  themeConfig: {
+    logo: '/assets/img/logo.png',
+    nav: nav,
+    sidebar: sidebar,
+    search: { provider: 'local' },
+    editLink: {
+      pattern: 'https://github.com/NMSUD/Form/edit/main/docs/:path',
+      text: 'Edit this page on GitHub',
+    },
+    socialLinks: [
+      {
+        icon: 'github',
+        link: 'https://github.com/NMSUD',
+        ariaLabel: 'Github Org',
+      },
+    ],
+    footer: {
+      message: 'Released under the GNU General Public License v3.0.',
+      copyright: 'Copyright © 2024-present NMSUD',
+    },
+  },
+  markdown: {
+    image: {
+      lazyLoading: true,
+    },
+  },
+  rewrites: {
+    'docs/index.md': 'index.md',
+    'coverage/index.html': '/coverage/index.html',
+  },
+});

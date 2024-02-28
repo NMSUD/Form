@@ -42,15 +42,16 @@ This script is able to pull all the uploaded images and the records out of the d
 
 ### Steps:
 
+<!-- This is used in vitepress, dont change the possition of the folling lines (46 to 54) -->
+
 1. Clone this repository.
-2. Rename the `env.dart.template` file to `env.dart`.
+2. Copy and rename the `env.dart.template` file to `env.dart`.
 3. In the directory where the `package.json` file is, run `npm i` to install all the required packages.
 4. Run `npm run setup` to run the initial setup.
 5. Run the app
    - **Web** can be run locally using `npm run start:web`.
    - **API** can be run locally using `npm run start:api`.
    - **Data** can be run locally using `npm run start:data`.
-   - **Web & API**, using `npm run dev`.
 
 <br />
 

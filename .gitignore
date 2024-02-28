@@ -6,3 +6,8 @@ node_modules
 .env
 .xata
 /coverage
+/storybook-static
+/.vitepress/cache
+/.vitepress/dist
+docs/.vitepress/cache
+docs/.vitepress/dist
