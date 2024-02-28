@@ -1,15 +1,18 @@
-import { defineConfig } from 'vite';
-import { configDefaults } from 'vitest/config';
-import solidPlugin from 'vite-plugin-solid';
-import loadVersion from 'vite-plugin-package-version';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { defineConfig } from 'vite';
+import loadVersion from 'vite-plugin-package-version';
+import solidPlugin from 'vite-plugin-solid';
+import { configDefaults } from 'vitest/config';
+
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
 
 const testDef = {
   test: {
     exclude: [...configDefaults.exclude, './build/**', './dist/**'],
     coverage: {
       enabled: true,
-      reporter: ['text', 'html'],
+      reporter: ['html'],
       extension: ['.ts'],
       include: ['src'],
       exclude: [
@@ -43,13 +46,13 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@api': path.resolve(__dirname, './src/api'),
-      '@web': path.resolve(__dirname, './src/web'),
-      '@constants': path.resolve(__dirname, './src/constants'),
-      '@contracts': path.resolve(__dirname, './src/contracts'),
-      '@helpers': path.resolve(__dirname, './src/helpers'),
-      '@services': path.resolve(__dirname, './src/services'),
-      '@validation': path.resolve(__dirname, './src/validation'),
+      '@api': path.resolve(currentDir, './src/api'),
+      '@web': path.resolve(currentDir, './src/web'),
+      '@constants': path.resolve(currentDir, './src/constants'),
+      '@contracts': path.resolve(currentDir, './src/contracts'),
+      '@helpers': path.resolve(currentDir, './src/helpers'),
+      '@services': path.resolve(currentDir, './src/services'),
+      '@validation': path.resolve(currentDir, './src/validation'),
     },
   },
   ...testDef,
