@@ -35,6 +35,11 @@ export default defineConfig({
   },
   rewrites: {
     'docs/index.md': 'index.md',
-    'coverage/index.html': '/coverage/index.html',
   },
+  ignoreDeadLinks: [
+    // ignore all localhost links
+    /^https?:\/\/localhost/,
+    // ignore all links include "/coverage/""
+    /\/coverage\//,
+  ],
 });
