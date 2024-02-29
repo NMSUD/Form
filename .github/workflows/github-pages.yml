@@ -35,7 +35,7 @@ jobs:
       - name: Set up documentation pages
         run: |
           npm run docs:build
-          cp -r ./.vitepress/dist ./pages
+          cp -r ./.vitepress/dist/. ./pages
 
       - name: Create code coverage report
         run: |
