@@ -30,7 +30,7 @@ jobs:
           cp -r ./public/assets ./pages
           cd pages
           touch .nojekyll
-          echo "nmsud-form-docs.nmsassistant.com" > ./pages/CNAME
+          echo "nmsud-form-docs.nmsassistant.com" > CNAME
 
       - name: Set up documentation pages
         run: |
