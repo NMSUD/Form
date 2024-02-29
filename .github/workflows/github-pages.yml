@@ -39,7 +39,7 @@ jobs:
 
       - name: Create code coverage report
         run: |
-          npm run coverage
+          npm run test:coverage
           cp -r ./coverage ./pages/coverage
 
       - name: Create Storybook export

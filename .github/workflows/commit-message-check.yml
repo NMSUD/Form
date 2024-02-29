@@ -12,6 +12,7 @@ concurrency:
 
 jobs:
   check-commit-message:
+    environment: github-pages
     runs-on: ubuntu-latest
 
     permissions:
@@ -23,7 +24,7 @@ jobs:
         id: 'get-pr-commits'
         uses: tim-actions/get-pr-commits@master
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.CHECK_COMMIT_GITHUB_TOKEN }}
 
       - name: WIP notice
         run: echo "This is WIP (work in progress)"
