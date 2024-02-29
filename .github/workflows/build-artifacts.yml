@@ -1,0 +1,45 @@
+name: BuildArtifacts
+run-name: Build Artifacts
+
+on:
+  push:
+    branches: ['main']
+
+concurrency:
+  group: 'artifacts'
+  cancel-in-progress: true
+
+jobs:
+  artifacts:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Get Package Version
+        run: |
+          version=$(cat package.json | grep \"version\" | cut -d'"' -f 4)
+          echo "VERSION=${version}" >> $GITHUB_ENV
+
+      - name: Install npm packages
+        run: npm ci
+
+      - name: Build all projects
+        run: npm run build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: web-${{ env.VERSION }}
+          path: 'dist'
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: server-${{ env.VERSION }}
+          path: 'build'

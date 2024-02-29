@@ -1,0 +1,52 @@
+name: GithubPages
+run-name: Github Pages
+
+on:
+  push:
+    branches: ['main']
+
+concurrency:
+  group: 'githubpages'
+  cancel-in-progress: true
+
+jobs:
+  ghubpages:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Install npm packages
+        run: npm ci
+
+      - name: Create output folder
+        run: |
+          mkdir pages
+          cp -r ./public/assets ./pages
+          cd pages
+          touch .nojekyll
+
+      - name: Set up documentation pages
+        run: |
+          npm run docs:build
+          cp -r ./.vitepress/dist ./pages
+
+      - name: Create code coverage report
+        run: |
+          npm run coverage
+          cp -r ./coverage ./pages/coverage
+
+      - name: Create Storybook export
+        run: |
+          npm run storybook:build
+          cp -r ./storybook-static ./pages/storybook
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: pages
