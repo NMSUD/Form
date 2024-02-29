@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Goals</title>
+    <meta name="description" content="Goals for the NMSUD data capture" />
+
+    <link rel="stylesheet" href="./assets/css/pico.min.css" />
+    <link rel="stylesheet" href="./assets/css/simple-grid.min.css" />
+    <link rel="stylesheet" href="./assets/css/plans.css" />
+</head>
+
+<body>
+    <main class="container">
+        <section id="goals" class="mt-1">
+            <h2>Goals</h2>
+            <br />
+        </section>
+
+        <section>
+            <h2 class="mb-1">An out-the-box solution</h2>
+
+            <div class="row mb-2">
+                <div class="col-5">
+                    <img src="./assets/img/plans/airtable.jpg" />
+                </div>
+                <div class="col-7">
+                    <p>
+                        For the <a href="https://">Community Search page</a>, we used <a
+                            href="https://airtable.com">AirTable</a>. <br />
+                        This works really well, we have an interface where we can manage all the submission from a
+                        nice UI. We have a view where we can drag cards (user submissions) into categories like
+                        <kbd>Live</kbd>, <kbd>Trash</kbd>, <kbd>Unknown</kbd>, etc
+                    </p>
+                    <p>
+                        There are of course free-tier limits, there is a limit on the number of rows per "base" but most
+                        concerningly there is a limit on the amount of attachments that can be uploaded.
+                    </p>
+                    <mark class="warning">
+                        Free-tier limits on uploads might become an issue.
+                    </mark>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="mb-1">Users submitting uploads</h2>
+
+            <div class="row mb-2">
+                <div class="col-8">
+                    <p>
+                        There is an option to create forms where users can upload images, however there are no options
+                        to limit the size of these images. This could be a problem for the NMSUD as screenshots of bases
+                        are bigger than icons and banners. The free tier of <a href="https://airtable.com">AirTable</a>
+                        allows for 1GB of uploads.
+                    </p>
+                    <mark class="warning">
+                        I would not suggest paying for <a href="https://airtable.com">AirTable</a> at all.
+                    </mark><br />
+                    <mark class="error">They want $20 per "seat" per month paid annually.</mark>
+                </div>
+                <div class="col-4">
+                    <img src="./assets/img/plans/airtableForm2.png" />
+                </div>
+            </div>
+
+            <h4 class="ta-center mb-2">To get around the file upload, we could use something like <b>imgur.com</b></h4>
+
+            <div class="row mb-2">
+                <div class="col-4">
+                    <img src="./assets/img/plans/imgur.png" />
+                </div>
+                <div class="col-8">
+                    <p>
+                        From my experience, this doesn't work very well. It is quite confusing for users to go to a
+                        different website to upload images and get a URL.
+                    </p>
+                    <mark class="warning">
+                        External image hosting sites are not a good solution.
+                    </mark>
+                </div>
+            </div>
+
+            <h4 class="ta-center mb-2"></h4>
+
+            <div class="row mb-3">
+                <div class="col-8">
+                    <p>
+                        We also need to provide an easy way for users to enter glyphs/coordinates in an easy way. It
+                        seems that we cannot expect people to submit hex codes or use discord emojis, people often get
+                        the galactic coordinates and glyphs confused.
+                    </p>
+                    <p>
+                        If we go down a custom form path, we would be able to have custom components as well as the
+                        ability to limit image upload sizes. We can then use this custom solution to push the data into
+                        something like <a href="https://airtable.com">AirTable</a> where we would have an easy space to
+                        manage the data and images.
+                    </p>
+                    <mark>We will need to build a custom form.</mark>
+                </div>
+                <div class="col-4">
+                    <img src="./assets/img/plans/glyphs.png" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <img src="./assets/img/plans/captcha.png" />
+                </div>
+                <div class="col-8">
+                    <p>
+                        With a custom form, we can also add some spam protection like a captcha.
+                    </p>
+                    <mark>This is a bit smoother and more reliable than expecting users to login</mark>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Dealing with images</h2>
+            <div class="col-12 mb-1">
+                <i>Simplified example, imagine users can only upload bases</i>
+            </div>
+
+            <div class="row mb-1">
+                <div class="col-4">
+                    <form>
+                        <label for="storage-available">Total storage available</label>
+                        <fieldset role="group">
+                            <input id="storage-available" type="number" min="0" value="1" step="0.5"
+                                onchange="calculateStorageSpace()" />
+                            <input type="submit" value="GB" disabled />
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="col-4">
+                    <label for="storage-total-uploads">Total uploads allowed <small><i>(per person)</i></small></label>
+                    <input id="storage-total-uploads" type="number" min="0" value="5"
+                        onchange="calculateStorageSpace()" />
+                </div>
+                <div class="col-4">
+                    <label for="storage-max-upload-size">Max upload size <small><i>(per file)</i></small></label>
+                    <fieldset role="group">
+                        <input id="storage-max-upload-size" type="number" min="0" value="1"
+                            onchange="calculateStorageSpace()" />
+                        <input type="submit" value="MB" disabled />
+                    </fieldset>
+                </div>
+                <div class="col-12">
+                    <h4 class="ta-center mb-2">
+                        <span>At least</span>
+                        <span id="storage-num-people">0</span>
+                        <span>build submissions can be stored</span>
+                    </h4>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-8">
+                    <p>
+                        We have <i><u>potentially</u></i> a lot of data to store, especially over the long term. Using a
+                        cloud provider, we could store a lot of images relatively cheaply. The AWS cost calculator is
+                        pretty difficult to use, but I estimate it would cost less than $1 per month. There is also a
+                        cheaper option called <b><a href="https://wasabi.com">Wasabi</a></b> which looks very
+                        interesting.
+                    </p>
+                    <mark>A Cloud Provider makes our systems more stable and predictable.</mark><br />
+                    <mark class="warning">This will likely cost us less than $1 per month.</mark>
+                </div>
+                <div class="col-4">
+                    <img src="./assets/img/plans/aws.png" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <img src="./assets/img/plans/imgGen.png" />
+                </div>
+                <div class="col-8">
+                    <p>
+                        We can get around using a paid-for Cloud Provider by using Github Pages is a kind of clever way.
+                    </p>
+                    <p>
+                        We could download the images from Airtable on a schedule (using Github Actions), saving the
+                        images into a Github Pages repo and removing the images from Airtable so that we never run out
+                        of the free space given in the free tier.
+                    </p>
+                    <mark>With this approach, we would need to make use of fewer external services.</mark><br />
+                    <mark class="warning">This is a bit of a complex workaround.</mark>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="mb-1">Managing and verifying submissions</h2>
+
+            <div class="row mb-2">
+                <div class="col-8">
+                    <p>
+                        For the managing the data from a nice UI, I believe that <a
+                            href="https://airtable.com">AirTable</a> will be the best choice. It has a nice UI
+                        <i>(although no dark mode 😞)</i>. It makes creating and editing columns or forms easy.
+                    </p>
+                    <p>
+                        <a href="https://xata.io">Xata.io</a> is an alternative data management tool, it has fantastic
+                        developer experience, generating the database connection code and TS typings for you. However
+                        it's UI is slightly less convenient to use.
+                    </p>
+                </div>
+                <div class="col-4">
+                    <img src="./assets/img/plans/airtable.jpg" />
+                </div>
+                <div class="col-12">
+                    <mark>
+                        Easy to use UI, means that we can get help from other NMSUD organisers for approving submissions
+                    </mark>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="mb-1">Wrapping up the data collection</h2>
+
+            <div class="row mb-2">
+                <div class="col-5">
+                    <img src="./assets/img/plans/customFormPersistToAirtable.png" />
+                </div>
+                <div class="col-7">
+                    <p>
+                        I think that we should go ahead with creating a custom form UI and back-end for collection user
+                        submissions. Making use of a captcha to reduce spam, a cloud provider for images and an online
+                        database management tool for easy data manipulation and for verifying submissions.
+                    </p>
+                    <p>
+                        The choice between captcha providers, Cloud Storage providers and online database management
+                        tools is not very significant and is mostly preference.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-8">
+                    <p>
+                        Github is the best all in one option for our code repositories, build pipelines and simple web
+                        hosting. It will be worth it to create an NMSUD Github Organisation, otherwise the custom form
+                        app and data collector repositories will be placed in the NMSCD Github Org.
+                    </p>
+                    <mark>
+                        Yet another Github Organisation for Kurt & Lenni! 🥳
+                    </mark>
+                </div>
+                <div class="col-4">
+                    <img src="./assets/img/plans/githubPages.png" />
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="mb-1">Fun stuff</h2>
+
+            <div class="row mb-2">
+                <div class="col-4">
+                    <img src="./assets/img/plans/staticSiteGen.png" />
+                </div>
+                <div class="col-8">
+                    <p>
+                        Ideas:
+                    </p>
+                    <ul>
+                        <li>Have a page for submitting a builder profile</li>
+                        <ul class="mb-0">
+                            <li>Then allow users to select a builder when submitting a base, etc</li>
+                        </ul>
+                        <li>The data collector should take the data from the db and generate multiple ways to read the
+                            data</li>
+                        <ul class="mb-0">
+                            <li>For example, 1 json file that is a list of all builders so the request would be:
+                                <code>domain.com/builders.json</code>
+                            </li>
+                            <li>Then a json file for each builder, so the request would be:
+                                <code>domain.com/builders/NirwanaSAO.json</code>
+                            </li>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <script defer src="./assets/js/plans.js"></script>
+</body>
+
+</html>
