@@ -1,5 +1,7 @@
 # Getting started
 
+Details on what you need to get the solution running locally
+
 ## Installation
 
 ### Prerequisites

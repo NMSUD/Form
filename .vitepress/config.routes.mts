@@ -47,6 +47,24 @@ export const vitePressRoutes = {
       link: '/docs/project-structure/standards',
     },
   },
+  form: {
+    general: {
+      text: 'General',
+      link: '/docs/form/general',
+    },
+    dto: {
+      text: 'DTO',
+      link: '/docs/form/new-dto',
+    },
+    page: {
+      text: 'Page',
+      link: '/docs/form/new-form-page',
+    },
+    apiModule: {
+      text: 'API Module',
+      link: '/docs/form/new-api-module',
+    },
+  },
   testing: {
     unitTests: {
       text: 'Unit Tests',
@@ -69,6 +87,20 @@ export const vitePressRoutes = {
     docker: {
       text: 'Docker',
       link: '/docs/deploy/docker',
+    },
+  },
+  githubDocs: {
+    contributing: {
+      text: 'Contributing',
+      link: '/docs/misc/contributing',
+    },
+    security: {
+      text: 'Security',
+      link: '/docs/misc/security',
+    },
+    codeOfConduct: {
+      text: 'Code of Conduct',
+      link: '/docs/misc/code-of-conduct',
     },
   },
 };

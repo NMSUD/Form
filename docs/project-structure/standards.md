@@ -1,6 +1,6 @@
 # Standards
 
-This page will list a few of the rules for working in this project. If you disagree with any of the rules below, please feel free to suggest improvements with whatever changes are requried in a pull request.
+This page will list a few of the rules for working in this project. If you disagree with any of the rules below, please feel free to suggest improvements with whatever changes are required in a pull request.
 
 ## General rules
 
@@ -14,6 +14,7 @@ This page will list a few of the rules for working in this project. If you disag
 - Use Arrow functions by default, only using the conventional functional declaration or classes when `this` is required.
 - Unit tests for a file should be placed next to the file being tested
 - The filename of the unit test file should match the file being tested but it should have the suffix `.test.ts`
+- When creating an injectable service, you should export a function to get the service from the dependency injection container
 
 ## Web
 

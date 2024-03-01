@@ -6,12 +6,11 @@
 
 ```tsx
 export const BuilderFormPage: Component = () => {
-  const dataFromState: BuilderDto = getStateService().getForm('builder');
-  const initialItem: BuilderDto = {
-    ...dataFromState,
-    startedPlaying:
-      dataFromState.startedPlaying ?? formatDate(builderStartedPlayingMaxDate, 'YYYY-MM-DD'),
-  };
+  const propertyOverrides: Array<PropertyOverrides<BuilderDto>> = [
+    {
+      startedPlaying: (origVal) => origVal ?? formatForDateDropdown(builderStartedPlayingMaxDate),
+    },
+  ];
 
   return (
     <>
@@ -19,11 +18,11 @@ export const BuilderFormPage: Component = () => {
 
       <Card class="form">
         <FormBuilder
-          item={initialItem}
           id="BuilderDto"
           segment="builder"
-          getName={/*(dto: BuilderDto) => dto.name*/}
+          getName={(dto: BuilderDto) => dto.name}
           formDtoMeta={BuilderDtoMeta}
+          propertyOverrides={propertyOverrides}
           mappings={
             {
               // Typescript should force you to declare an object for each property in the dto.
@@ -59,7 +58,3 @@ export default BuilderFormPage;
     ]
 },
 ```
-
-<br />
-<br />
-<br />

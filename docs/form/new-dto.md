@@ -1,4 +1,4 @@
-# Create contract & meta objects
+# Create DTO & meta objects
 
 _dto: domain transfer object_
 
@@ -12,6 +12,7 @@ export interface BuilderDto {
   profilePicFile: File;
   bio: string;
   contactDetails: string;
+  // ...
 }
 ```
 

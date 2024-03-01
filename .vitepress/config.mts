@@ -41,5 +41,8 @@ export default defineConfig({
     /^https?:\/\/localhost/,
     // ignore all links include "/coverage/""
     /\/coverage\//,
+    /nmsassistant.com/,
+    /nmscd.com/,
+    /nmsud.com/,
   ],
 });

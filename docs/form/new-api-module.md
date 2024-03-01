@@ -1,4 +1,4 @@
-# Creating a new Module
+# Creating a new API Module
 
 - Go to this folder `src/api/modules`
 - Create a folder for the new module (e.g. **community**)
@@ -65,7 +65,3 @@ export const communityPublicUrlHandler = (persistence: Community): Community => 
   return localP;
 };
 ```
-
-<br />
-<br />
-<br />

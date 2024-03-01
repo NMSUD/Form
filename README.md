@@ -24,7 +24,7 @@ This is the website that contains the forms that users will see. It allows for u
 
 ### API
 
-This is able to accept requests, prevent spam, unpack and verify the contents and ultimately securly store the information in a database.
+This is able to accept requests, prevent spam, unpack and verify the contents and ultimately securely store the information in a database.
 
 ### Data generator
 
@@ -42,7 +42,7 @@ This script is able to pull all the uploaded images and the records out of the d
 
 ### Steps:
 
-<!-- This is used in vitepress, dont change the possition of the folling lines (46 to 54) -->
+<!-- This is used in vitepress, don't change the position of the following lines (46 to 54) -->
 
 1. Clone this repository.
 2. Copy and rename the `env.dart.template` file to `env.dart`.
@@ -78,17 +78,9 @@ Please take a look at the [Contribution Guideline](./.github/CONTRIBUTING.md) be
 
 <br />
 
-## 📄 Creating a new form
+## 📄 Documentation
 
-There are [some basic docs](./docs/CreateNewForm.md) on what is required to create a new form in this project.
-
-<br />
-
-## 🐋 Docker
-
-This project makes use of [Docker][docker] to create an "easy" way of running the whole solution. However the resulting [Docker][docker] image of this solution will not uploaded to a public [Docker Hub][dockerHub]. Any images that you see that claim to be of this project are forks of this project or fradulent. If this changes, this part of the README.md will be update.
-
-For info on how to build the [Docker][docker] image, take a look at this [document](./scripts/Docker.md).
+Here is some [documentation][documentation] about the project. Here you can find information on how run the project on your machine, how the project was setup, how to add new forms, how to run unit tests and more.
 
 <br />
 
@@ -104,4 +96,5 @@ For info on how to build the [Docker][docker] image, take a look at this [docume
 [nmsudWebsite]: https://nmsud.com
 [docker]: https://www.docker.com
 [dockerHub]: https://hub.docker.com
+[documentation]: https://.com
 [discord]: https://discord.gg/jQrNeWeTwR

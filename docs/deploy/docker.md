@@ -1,5 +1,7 @@
 # Docker
 
+This project makes use of [Docker][docker] to create an "easy" way of running the whole solution. However the resulting [Docker][docker] image of this solution will not be uploaded to a public [Docker Hub][dockerHub]. Any images that claim to be of this project are fraudulent or forks of this project. If we decide to publish an _official_ [Docker][docker] image, this part of the documentation will be updated.
+
 _While the front-end is a ~~simple~~ SolidJS app, which we could host on GithubPages, it will be served up by KoaJS in the docker image_
 
 ## Why?
@@ -17,12 +19,11 @@ From the root directory of this project (where the `Dockerfile` is), run `sh ./s
 If you want to tag and push this image to your own registry, you can simply change the properties that start with `DOCKER_` in the `.env`.
 
 > [!IMPORTANT]
-> Do not try to impersonate this project by pushing this image to a container image library like [dockerhub][dockerhub] with the same name or similar.
+> Do not try to impersonate this project by pushing this image to a container image library like [docker hub][dockerhub] with the same name or similar.
 
 <!-- Links used in the page -->
 
 [nmsudWebsite]: https://nmsud.com
 [docker]: https://www.docker.com
 [dockerhub]: https://hub.docker.com
-[dockerHub]: https://hub.docker.com
 [discord]: https://discord.gg/jQrNeWeTwR

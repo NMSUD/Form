@@ -47,20 +47,19 @@ This is the back-end code of the project. This contains a KoaJS API, any backend
 
 ## Data
 
-Dignissimos fuga soluta at fuga sit non suscipit suscipit. Soluta officiis incidunt non sit molestias sit velit. Aut reiciendis tenetur pariatur eligendi ut. Omnis ad sit explicabo. Non consequatur odit eligendi occaecati recusandae.
+_TODO_
 
 ## Services
 
-Dignissimos fuga soluta at fuga sit non suscipit suscipit. Soluta officiis incidunt non sit molestias sit velit. Aut reiciendis tenetur pariatur eligendi ut. Omnis ad sit explicabo. Non consequatur odit eligendi occaecati recusandae.
+_TODO_
 
 ## Validation
 
-Ullam ut nam enim voluptates. Iste est occaecati sunt consequuntur et officiis fugit dolore. Accusamus ea doloremque atque autem. Esse similique sint sint dolorem sunt accusamus eaque. Iste voluptate laboriosam voluptatum neque eveniet id ex dolorem.
+_TODO_
 
 ## Web
 
-Ullam ut nam enim voluptates. Iste est occaecati sunt consequuntur et officiis fugit dolore. Accusamus ea doloremque atque autem. Esse similique sint sint dolorem sunt accusamus eaque. Iste voluptate laboriosam voluptatum neque eveniet id ex dolorem.
-
+_TODO_
 
 <!-- Links used in the page -->
 

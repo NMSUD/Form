@@ -25,6 +25,16 @@ export const sidebar: DefaultTheme.SidebarItem[] = [
     ],
   },
   {
+    text: 'Form',
+    collapsed: false,
+    items: [
+      vitePressRoutes.form.general,
+      vitePressRoutes.form.dto,
+      vitePressRoutes.form.page,
+      vitePressRoutes.form.apiModule,
+    ],
+  },
+  {
     text: 'Testing',
     collapsed: false,
     items: [
@@ -39,6 +49,15 @@ export const sidebar: DefaultTheme.SidebarItem[] = [
     items: [
       vitePressRoutes.deploying.githubActions, //
       vitePressRoutes.deploying.docker,
+    ],
+  },
+  {
+    text: 'Github docs',
+    collapsed: true,
+    items: [
+      vitePressRoutes.githubDocs.contributing,
+      vitePressRoutes.githubDocs.security,
+      vitePressRoutes.githubDocs.codeOfConduct,
     ],
   },
 ];

@@ -24,9 +24,10 @@ It is totally expected that when making changes to tests, the report will only s
 
 ## Production coverage report
 
-On merge into `main`, a coverage report is generated and hosted in Github Pages along side this documentation site. You can view the coverage reports [here](/coverage/index.html).
+On merge into `main`, a coverage report is generated and hosted in Github Pages along side this documentation site. You can view the coverage reports [here][coverageReportPage].
 
 <!-- Links used in the page -->
 
 [vitest]: https://vitest.dev
+[coverageReportPage]: https://nmsud-form-docs.nmsassistant.com/coverage/index.html
 

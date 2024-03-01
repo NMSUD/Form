@@ -1,4 +1,4 @@
-# Steps for creating a new Form
+# Creating a new Form
 
 - Create a database table
   - Log into [Xata.io](https://xata.io) and open the `nmsud-submission` database

@@ -2,6 +2,7 @@
     "recommendations": [
         "pkief.material-icon-theme",
         "esbenp.prettier-vscode",
-        "seatonjiang.gitmoji-vscode"
+        "seatonjiang.gitmoji-vscode",
+        "streetsidesoftware.code-spell-checker"
     ]
 }

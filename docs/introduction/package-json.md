@@ -10,7 +10,7 @@ I will admit, there are a lot of scripts and dependencies. It would take far too
 - `npm run setup` - _All scripts that are important for getting the the developer environment ready_
 - `npm run build` - _Generate the output of one or more projects within this solution_
 - `npm run data:<id>` - _Various data projects, 
-  - `npm run data:downloader` is used by [FormData][formDataGithub], to download all the data from the database and write them to disk in the correst format. 
+  - `npm run data:downloader` is used by [FormData][formDataGithub], to download all the data from the database and write them to disk in the correct format. 
   - `npm run data:interactive` is used to quickly run functions from an interactive console
 - `npm run storybook` - _Storybook tasks_
 - `npm run docs` - Documentation generation

@@ -17,8 +17,6 @@ These are mostly guidelines, not rules. Use your best judgment, and feel free to
   * [I found a 🐛Bug🐛 and I want to report it](#i-found-a-bug-and-want-to-report-it)
   * [Suggesting a Feature](#suggesting-a-feature)
 
-<br />
-
 ## What should I know before I get started?
 
 ### Project History
@@ -32,8 +30,6 @@ While this project solves quite a simple problem, capturing data for multiple fo
 - Automation
 - Verify submissions
 - Low cost 
-
-<br />
 
 ## How Can I Contribute?
 
