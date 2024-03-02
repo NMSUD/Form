@@ -1,6 +1,6 @@
 # What is Form
 
-Form is _(a bad name for this solution but mainly)_ a custom solution to accepting submissions from [No Man's Sky][nomanssky] players for the [Unification Day][nmsudWebsite] event.
+Form is _(a bad name for this solution but is mainly)_ a custom solution to accepting submissions from [No Man's Sky][nomanssky] players for the [Unification Day][nmsudWebsite] event.
 
 ## Why?
 
