@@ -150,3 +150,19 @@ main.main img {
 #local-search .DocSearch.DocSearch-Button {
   justify-content: space-between;
 }
+
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  margin-top: -4px;
+  margin-bottom: -4px;
+  background-color: var(--vp-c-bg-soft);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: var(--vp-c-brand-soft);
+}
