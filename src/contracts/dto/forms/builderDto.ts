@@ -7,7 +7,7 @@ import {
   multiValidation,
   noValidation,
   notNull,
-  seperateValidation,
+  separateValidation,
   validateForEach,
 } from '@validation/baseValidation';
 import { maxDate, minDate } from '@validation/dateValidation';
@@ -40,16 +40,16 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
   },
   profilePicUrl: {
     label: 'Profile Pic Url',
-    dontSaveToLocalStorage: true,
+    saveToLocalStorage: true,
     validator: noValidation,
   },
   profilePicFile: {
     label: 'Profile picture',
     defaultValue: null,
-    dontSaveToLocalStorage: true,
-    validator: seperateValidation({
-      api: noValidation,
-      ui: multiValidation(
+    saveToLocalStorage: true,
+    validator: separateValidation({
+      Api: noValidation,
+      UI: multiValidation(
         notNull('You need to upload an image'),
         webImageRestrictions(DefaultImageRestrictions.profilePic),
       ),

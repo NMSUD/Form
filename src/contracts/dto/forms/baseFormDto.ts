@@ -6,7 +6,7 @@ export type IFormDtoMetaDetails<TV> = {
   validationLabel?: string;
   helpText?: string;
   defaultValue?: TV;
-  dontSaveToLocalStorage?: boolean;
+  saveToLocalStorage?: boolean;
   validator: (val: TV) => ValidationResult;
 };
 

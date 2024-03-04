@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from 'storybook-solidjs';
 
 import { BuilderDtoMeta } from '@contracts/dto/forms/builderDto';
 import { PlatformTypeDropdown } from './platformTypeDropdown';
-import { UseHopeUIThemeProvider, getIFormInputArgTypes } from '../../storybook';
+import { UseHopeUIThemeProvider, getFormInputArgTypes } from '../../storybook';
 
 const meta = {
   title: 'Form/PlatformTypeDropdown',
@@ -10,7 +10,7 @@ const meta = {
   decorators: [UseHopeUIThemeProvider],
   tags: ['autodocs'],
   argTypes: {
-    ...getIFormInputArgTypes(),
+    ...getFormInputArgTypes(),
   },
 } satisfies Meta<typeof PlatformTypeDropdown>;
 

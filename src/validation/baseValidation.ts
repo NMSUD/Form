@@ -31,20 +31,15 @@ export const multiValidation =
     return { isValid: true };
   };
 
-export const seperateValidation =
+export const separateValidation =
   <T>(validators: {
-    ui: (validationVal: T) => ValidationResult;
-    api: (validationVal: T) => ValidationResult;
+    [key in keyof typeof AppType]?: (validationVal: T) => ValidationResult;
   }) =>
   (value: T): ValidationResult => {
-    if (getAppType() === AppType.UI) {
-      return validators.ui(value);
-    }
-    if (getAppType() === AppType.Api) {
-      return validators.api(value);
-    }
+    let validatorForAppType = validators[getAppType()];
+    if (validatorForAppType == null) return { isValid: true };
 
-    return { isValid: true };
+    return validatorForAppType(value);
   };
 
 export const validateForEach =
@@ -62,7 +57,7 @@ export const validateForEach =
 export const validateObj = <T>(props: {
   data: T;
   validationObj: IFormDtoMeta<T>;
-  inludeLabelInErrMsgs?: boolean;
+  includeLabelInErrMsgs?: boolean;
 }): Array<ValidationResult> => {
   const validationMessages: Array<ValidationResult> = [];
   for (const mappedBodyParam in props.validationObj) {
@@ -82,7 +77,7 @@ export const validateObj = <T>(props: {
         const propLabel = validationLabel ?? label;
         validationMessages.push({
           isValid: validationResult.isValid,
-          errorMessage: props.inludeLabelInErrMsgs ? `${propLabel}: ${errMsg}` : errMsg,
+          errorMessage: props.includeLabelInErrMsgs ? `${propLabel}: ${errMsg}` : errMsg,
         });
       }
     } catch (ex) {

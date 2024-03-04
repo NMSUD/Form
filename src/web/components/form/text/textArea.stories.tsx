@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-solidjs';
 
-import { UseHopeUIThemeProvider, getIFormInputArgTypes } from '../../storybook';
+import { UseHopeUIThemeProvider, getFormInputArgTypes } from '../../storybook';
 import { FormTextArea } from './textArea';
 import { maxLength } from '@validation/textValidation';
 
@@ -10,7 +10,7 @@ const meta = {
   decorators: [UseHopeUIThemeProvider],
   tags: ['autodocs'],
   argTypes: {
-    ...getIFormInputArgTypes(),
+    ...getFormInputArgTypes(),
   },
 } satisfies Meta<typeof FormTextArea>;
 

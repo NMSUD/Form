@@ -5,7 +5,7 @@ This project uses [vitest][vitest] to run unit tests. Please have a look at the 
 
 ## Running locally
 
-Use the following command to get the uni tests running with a watch on the files changed.
+Use the following command to get the unit tests running with a watch on the files changed.
 
 ```sh
 $ npm run test:dev

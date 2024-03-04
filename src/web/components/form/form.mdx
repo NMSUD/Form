@@ -4,18 +4,18 @@ import { Meta, Controls } from '@storybook/blocks';
 
 # Form components
 
-These components are used in the `formBuilder.tsx` to render easy to use components for users to enter data with validation. A form component has a few requirements in order to work in the forms, they should make use of the `IFormInputProps<T>` interface where T is the type of the property. For example a text input form component would have props of type `IFormInputProps<string>`.
+These components are used in the `formBuilder.tsx` to render easy to use components for users to enter data with validation. A form component has a few requirements in order to work in the forms, they should make use of the `FormInputProps<T>` interface where T is the type of the property. For example a text input form component would have props of type `FormInputProps<string>`.
 
 <br />
 
 ## Table of Contents
 
-- [IFormInput](#iforminput)
-- [Extending IFormInput](#extending-iforminput)
+- [FormInput](#forminput)
+- [Extending FormInput](#extending-forminput)
 
 <br />
 
-## IFormInput
+## FormInput
 
 Below is what the `FormInputProps` looks like (at the time of writing, this will likely fall out of date quickly 😅).
 
@@ -30,22 +30,19 @@ export type FormInputProps<T> = {
   validation: (val: T) => ValidationResult;
   onChange: (newValue: T) => void;
 };
-``` 
+```
 
 You can see some basics, such as a value property and an onChange function.
 
 <br />
 
-## Extending IFormInput
+## Extending FormInput
 
 If there are additional properties that your component needs, you can specify them like this:
 
 ```ts
 interface IFormLongInputProps extends FormInputProps<string> {
-    inputType?: string;
-    disabled?: boolean;
+  inputType?: string;
+  disabled?: boolean;
 }
 ```
-
-
-

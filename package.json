@@ -15,7 +15,7 @@
     "data:downloader": "dotenv -- ts-node --project tsconfig.server.json src/data/downloader.ts",
     "data:dev": "dotenv -- ts-node --project tsconfig.server.json src/data/interactive.ts",
     "db:generate": "xata codegen",
-    "storybook": "storybook dev -p 6006",
+    "storybook:dev": "storybook dev -p 3003",
     "storybook:build": "storybook build --disable-telemetry",
     "docs:dev": "vitepress dev --port 3002",
     "docs:build": "vitepress build",

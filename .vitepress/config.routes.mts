@@ -30,21 +30,13 @@ export const vitePressRoutes = {
       text: 'Dependency Injection',
       link: '/docs/project-structure/dependency-injection',
     },
-    api: {
-      text: 'API',
-      link: '/docs/project-structure/api',
-    },
-    data: {
-      text: 'Data',
-      link: '/docs/project-structure/data',
-    },
-    web: {
-      text: 'Web',
-      link: '/docs/project-structure/web',
-    },
     standards: {
       text: 'Standards',
       link: '/docs/project-structure/standards',
+    },
+    validators: {
+      text: 'Validators',
+      link: '/docs/project-structure/validators',
     },
   },
   form: {

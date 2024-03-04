@@ -21,6 +21,8 @@ This page will list a few of the rules for working in this project. If you disag
 - Avoid default exports.
   - Except for lazy loaded pages, the need default exports.
 - 1 component per file.
+- [Storybook][storybook] stories should be located next to the component being tested.
+- A [Storybook][storybook] story file should only test a single component.
 - Do not import anything from `@api` and `@data` when within the `web` folder
 
 ## API & Data
@@ -31,3 +33,4 @@ This page will list a few of the rules for working in this project. If you disag
 <!-- Links used in the page -->
 
 [gitmojiWebsite]: https://gitmoji.dev
+[storybook]: https://storybook.js.org

@@ -4,7 +4,7 @@ import {
   multiValidation,
   noValidation,
   notNull,
-  seperateValidation,
+  separateValidation,
   validateForEach,
 } from '@validation/baseValidation';
 import { webImageRestrictions } from '@validation/imageValidation';
@@ -35,16 +35,16 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
   },
   profilePicUrl: {
     label: 'Profile Pic Url',
-    dontSaveToLocalStorage: true,
+    saveToLocalStorage: true,
     validator: noValidation,
   },
   profilePicFile: {
     label: 'Profile picture',
     defaultValue: null,
-    dontSaveToLocalStorage: true,
-    validator: seperateValidation({
-      api: noValidation,
-      ui: multiValidation(
+    saveToLocalStorage: true,
+    validator: separateValidation({
+      Api: noValidation,
+      UI: multiValidation(
         notNull('You need to upload an image'),
         webImageRestrictions(DefaultImageRestrictions.profilePic),
       ),
@@ -63,15 +63,15 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
   bioMediaUrls: {
     label: 'Bio Media',
     defaultValue: [],
-    dontSaveToLocalStorage: true,
+    saveToLocalStorage: true,
     validator: noValidation,
   },
   bioMediaFiles: {
     label: 'Media upload',
-    dontSaveToLocalStorage: true,
-    validator: seperateValidation({
-      api: noValidation,
-      ui: validateForEach(notNull('You need to upload an image')),
+    saveToLocalStorage: true,
+    validator: separateValidation({
+      Api: noValidation,
+      UI: validateForEach(notNull('You need to upload an image')),
     }),
   },
   homeGalaxy: {

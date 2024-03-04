@@ -10,7 +10,7 @@ import {
   multiValidation,
   noValidation,
   notNull,
-  seperateValidation,
+  separateValidation,
   validateForEach,
   validateObj,
 } from './baseValidation';
@@ -61,7 +61,7 @@ describe('Base Validation', () => {
     });
   });
 
-  describe('Seperate Validation', () => {
+  describe('Separate Validation', () => {
     test.each([
       [AppType.Api],
       [AppType.UI], //
@@ -72,9 +72,9 @@ describe('Base Validation', () => {
         count = appType;
         return { isValid: true };
       };
-      const validator = seperateValidation({
-        api: fakeValidator,
-        ui: fakeValidator,
+      const validator = separateValidation({
+        Api: fakeValidator,
+        UI: fakeValidator,
       });
       validator(anyObject);
       expect(count).toBe(appType);
@@ -82,9 +82,9 @@ describe('Base Validation', () => {
     test('return success if platform not accounted for', () => {
       Container.set(APP_TYPE, AppType.Interactive);
       const fakeValidator = () => ({ isValid: false });
-      const validator = seperateValidation({
-        api: fakeValidator,
-        ui: fakeValidator,
+      const validator = separateValidation({
+        Api: fakeValidator,
+        UI: fakeValidator,
       });
       const result = validator(anyObject);
       expect(result.isValid).toBeTruthy();

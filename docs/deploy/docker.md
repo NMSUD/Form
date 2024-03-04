@@ -2,7 +2,7 @@
 
 This project makes use of [Docker][docker] to create an "easy" way of running the whole solution. However the resulting [Docker][docker] image of this solution will not be uploaded to a public [Docker Hub][dockerHub]. Any images that claim to be of this project are fraudulent or forks of this project. If we decide to publish an _official_ [Docker][docker] image, this part of the documentation will be updated.
 
-_While the front-end is a ~~simple~~ SolidJS app, which we could host on GithubPages, it will be served up by KoaJS in the docker image_
+_While the front-end is a ~~simple~~ [SolidJS][solidjs] app, which we could host on GithubPages, it will be served up by KoaJS in the docker image_
 
 ## Why?
 
@@ -26,4 +26,5 @@ If you want to tag and push this image to your own registry, you can simply chan
 [nmsudWebsite]: https://nmsud.com
 [docker]: https://www.docker.com
 [dockerhub]: https://hub.docker.com
+[solidjs]: https://www.solidjs.com
 [discord]: https://discord.gg/jQrNeWeTwR

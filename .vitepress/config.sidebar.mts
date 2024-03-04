@@ -22,6 +22,7 @@ export const sidebar: DefaultTheme.SidebarItem[] = [
       //   vitePressRoutes.projectStructure.data,
       //   vitePressRoutes.projectStructure.web,
       vitePressRoutes.projectStructure.standards,
+      vitePressRoutes.projectStructure.validators,
     ],
   },
   {
