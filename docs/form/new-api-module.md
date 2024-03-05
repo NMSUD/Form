@@ -1,5 +1,9 @@
 # Creating a new API Module
 
+How to create a module to handle form submissions and other logic
+
+## Create the new module
+
 - Go to this folder `src/api/modules`
 - Create a folder for the new module (e.g. **community**)
 - Create a file (e.g. **communityModule.ts**) making use of `IApiModule<dto, imageInterface, dbType>`
@@ -9,21 +13,27 @@
 ```ts
 export const communityModule: IApiModule<CommunityDto, ICommunityImages, Community> = {
   name: 'CommunityDto',
-  validationObj: CommunityDtoMeta,
-  createRecord: getDatabaseService().community().create,
-  readRecord: getDatabaseService().community().read,
-  updateRecord: getDatabaseService().community().update,
+  segment: 'community',
+  dtoMeta: CommunityDtoMeta,
+  persistenceMeta: CommunityPersistenceMeta,
+  getName: (persistence: Community) => persistence.name,
+
+  createRecord: (persistence) => getDbTable().create(persistence),
+  readRecord: (id: string) => getDbTable().read(id),
+  readAllRecords: () => getDbTable().readAll(),
+  updateRecord: (id, persistence) => getDbTable().update(id, persistence),
 
   mapDtoWithImageToPersistence: communityDtoWithImageToPersistence,
   mapPersistenceToDto: communityPersistenceToDto,
 
   handleFilesInFormData: communityFileHandler,
-  discordMessageBuilder: communityMessageBuilder,
+  getPublicUrlsOfUploads: communityPublicUrlHandler,
+
   calculateCheck: (p) => cyrb53([p.id, p.name, p.contactDetails].join('-')),
 };
 ```
 
-### Create new FileHandler
+## Create the new FileHandler
 
 **e.g. `communityFileHandler.ts`**
 
@@ -44,14 +54,14 @@ export const communityFileHandler = async (
 };
 ```
 
-### Create a new Mapper
+## Create a new Mapper
 
 **e.g. `communityMapper.ts`**
 
 - Export a function that takes `DtoAndImageMapperToNewPersistence<dto, imageInterface, dbType>{` and returns `dbType`
 - Export a function that takes `Mapper<Community, CommunityDto>` and returns a `CommunityDto`
 
-### Create a new PublicUrlHandler
+## Create a new PublicUrlHandler
 
 **e.g. `communityPublicUrlHandler.ts`**
 

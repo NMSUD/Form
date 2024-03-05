@@ -118,7 +118,7 @@ describe('Base Validation', () => {
       };
       const testDto: TestDto = {
         name: 'fred',
-        descrip: 'fredster',
+        descrip: 'Forester',
       };
       const testValidation: IFormDtoMeta<TestDto> = {
         name: {

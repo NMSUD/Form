@@ -12,6 +12,7 @@
         "codegen",
         "copyfiles",
         "cyrb",
+        "descrip",
         "dockerhub",
         "docsearch",
         "esbenp",
