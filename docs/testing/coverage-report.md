@@ -1,3 +1,7 @@
+<script setup>
+import { data } from '../loadDocsUrl.data.ts'
+</script>
+
 # Coverage Report
 
 When running unit tests via the `npm run test:dev` command, [vitest][vitest] will also generate a coverage report (thanks to our project's config). This coverage report is great for helping you find pieces of code that do not have unit tests. 
@@ -24,10 +28,9 @@ It is totally expected that when making changes to tests, the report will only s
 
 ## Production coverage report
 
-On merge into `main`, a coverage report is generated and hosted in Github Pages along side this documentation site. You can view the coverage reports [here][coverageReportPage].
+On merge into `main`, a coverage report is generated and hosted in Github Pages along side this documentation site. You can view the coverage reports <!--@include: ../generated.md{1,1}-->
 
 <!-- Links used in the page -->
 
 [vitest]: https://vitest.dev
-[coverageReportPage]: https://nmsud-form-docs.nmsassistant.com/coverage/index.html
 

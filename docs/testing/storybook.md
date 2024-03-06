@@ -67,12 +67,11 @@ There hasn't been a story that required dependencies to be mocked. In theory, co
 
 ## Production Storybook
 
-On merge into `main`, an export of the [Storybook][storybook] UI is generated and hosted in Github Pages along side this documentation site. You can view the hosted Storybook page [here][formsStorybook].
+On merge into `main`, an export of the [Storybook][storybook] UI is generated and hosted in Github Pages along side this documentation site. You can <!--@include: ../generated.md{2,2}-->.
 
 
 <!-- Links used in the page -->
 
 [storybook]: https://storybook.js.org
 [storybookVisualTest]: https://storybook.js.org/blog/visual-tests-addon-beta/
-[formsStorybook]: https://nmsud-form-docs.nmsassistant.com/storybook
 

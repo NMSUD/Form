@@ -7,7 +7,7 @@ on:
     branches: main
 
 concurrency:
-  group: 'checkcommit'
+  group: 'check_commit'
   cancel-in-progress: true
 
 jobs:
@@ -29,6 +29,11 @@ jobs:
       - name: WIP notice
         run: echo "This is WIP (work in progress)"
 
+      - name: Setup variables
+        run: |
+          documentationUrl=$(cat ./public/CNAME)
+          echo "DOCUMENTATION_URL=${documentationUrl}" >> $GITHUB_ENV
+
       - name: Check PR commits
         run: |
           commits = ${{ steps.get-pr-commits.outputs.commits }}
@@ -41,6 +46,6 @@ jobs:
         if: failure()
         uses: mshick/add-pr-comment@v2
         with:
-          message: Please check the commit messages in this PR! It seems that you have not used emojis, this is a requirement for this project as per our documentation (https://nmsud-form-docs.nmsassistant.com) 
+          message: Please check the commit messages in this PR! It seems that you have not used emojis, this is a requirement for this project as per our documentation (https://${{ env.DOCUMENTATION_URL }}) 
           refresh-message-position: true
           allow-repeats: true

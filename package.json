@@ -9,7 +9,7 @@
     "start:api": "nodemon src/api/api.ts",
     "start:public": "cd public && npx alive-server",
     "start:web": "vite",
-    "build": "npm-run-all --sequential build:*",
+    "build": "npm-run-all --sequential prebuild:* build:*",
     "build:web": "vite build",
     "build:server": "tsc -p ./tsconfig.server.json && resolve-tspaths -p ./tsconfig.server.json --out ./build/src",
     "data:downloader": "dotenv -- ts-node --project tsconfig.server.json src/data/downloader.ts",

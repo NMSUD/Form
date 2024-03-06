@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ghubpages:
+  githubpages:
     runs-on: ubuntu-latest
 
     permissions:
@@ -24,17 +24,26 @@ jobs:
       - name: Install npm packages
         run: npm ci
 
+      - name: Setup variables
+        run: |
+          documentationUrl=$(cat ./public/CNAME)
+          echo "DOCUMENTATION_URL=${documentationUrl}" >> $GITHUB_ENV
+
       - name: Create output folder
         run: |
           mkdir pages
           cp -r ./public/assets ./pages
-          cd pages
-          touch .nojekyll
-          echo "nmsud-form-docs.nmsassistant.com" > CNAME
+          cp ./public/CNAME ./pages/CNAME
+          touch ./pages/.nojekyll
+
+      - name: Debugging plz remove
+        run: cat ./pages/CNAME
 
       - name: Set up documentation pages
         run: |
           npm run docs:build
+          echo "[coverage report](https://${{ env.DOCUMENTATION_URL }}/coverage/index.html)" > ./docs/generated.md
+          echo "[view the hosted Storybook page](https://${{ env.DOCUMENTATION_URL }}/storybook)" >> ./docs/generated.md
           cp -r ./.vitepress/dist/. ./pages
 
       - name: Create code coverage report

@@ -80,7 +80,7 @@ Please take a look at the [Contribution Guideline](./.github/CONTRIBUTING.md) be
 
 ## 📄 Documentation
 
-Here is some [documentation][documentation] about the project. Here you can find information on how run the project on your machine, how the project was setup, how to add new forms, how to run unit tests and more.
+We have a [documentation][documentation] website, here you can find information on how to run the project on your machine, how the project was setup, how to add new forms, how to run unit tests and more.
 
 <br />
 
