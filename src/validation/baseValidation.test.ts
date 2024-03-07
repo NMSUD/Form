@@ -66,7 +66,7 @@ describe('Base Validation', () => {
       [AppType.Api],
       [AppType.UI], //
     ])('only run validators base on platform %s', (appType) => {
-      Container.set(APP_TYPE, appType as AppType);
+      Container.set(APP_TYPE, AppType[appType]);
       let count = 0;
       const fakeValidator = () => {
         count = appType;
