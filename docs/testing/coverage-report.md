@@ -1,7 +1,3 @@
-<script setup>
-import { data } from '../loadDocsUrl.data.ts'
-</script>
-
 # Coverage Report
 
 When running unit tests via the `npm run test:dev` command, [vitest][vitest] will also generate a coverage report (thanks to our project's config). This coverage report is great for helping you find pieces of code that do not have unit tests. 

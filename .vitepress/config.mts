@@ -35,7 +35,7 @@ export default defineConfig({
     },
   },
   sitemap: {
-    hostname: fs.readFileSync('./public/CNAME', 'utf8'),
+    hostname: 'https://' + fs.readFileSync('./public/CNAME', 'utf8'),
     lastmodDateOnly: true,
   },
   rewrites: {
