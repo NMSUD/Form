@@ -14,9 +14,6 @@ jobs:
   check-commit-message:
     environment: github-pages
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    strategy:
-      fail-fast: false
 
     permissions:
       contents: write
@@ -37,16 +34,16 @@ jobs:
           documentationUrl=$(cat ./public/CNAME)
           echo "DOCUMENTATION_URL=${documentationUrl}" >> $GITHUB_ENV
 
-      - name: WIP notice
-        run: |
-          echo "This is WIP (work in progress)"
-          cat ./public/CNAME
-          echo "${{ env.DOCUMENTATION_URL }}"
+      # - name: Check PR commits
+      #   run: |
+      #     echo ${{ steps.get-pr-commits.outputs.commits }} > ./commits.json
+      #     cat ./commits.json
 
-      - name: Check PR commits
-        run: |
-          echo ${{ steps.get-pr-commits.outputs.commits }} > commits.json
-          cat commits.json
+      #     commits = ${{ steps.get-pr-commits.outputs.commits }}
+      #     for value in "${commits[@]}"
+      #     do
+      #       echo "Value for item array is: $value"
+      #     done
 
       - name: Post PR Comment
         if: failure()
