@@ -1,5 +1,5 @@
-name: TestBuild
-run-name: Test Build
+name: Test Build
+run-name: TestBuild
 
 on:
   pull_request:

@@ -1,5 +1,5 @@
-name: GithubPages
-run-name: Github Pages
+name: Github Pages
+run-name: GithubPages
 
 on:
   push:
