@@ -1,5 +1,5 @@
-name: CommitMessageCheck
-run-name: Commit Message Check
+name: Commit Message Check
+run-name: CommitMessageCheck
 
 on:
   pull_request:

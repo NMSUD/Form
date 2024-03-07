@@ -1,5 +1,5 @@
-name: BuildArtifacts
-run-name: Build Artifacts
+name: Build Artifacts
+run-name: BuildArtifacts
 
 on:
   push:
