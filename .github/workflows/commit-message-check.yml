@@ -22,15 +22,12 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
-        
+
       - name: Get PR Commits
         id: 'get-pr-commits'
         uses: tim-actions/get-pr-commits@master
         with:
           token: ${{ secrets.CHECK_COMMIT_GITHUB_TOKEN }}
-
-      - name: WIP notice
-        run: echo "This is WIP (work in progress)"
 
       - name: Setup variables
         run: |
@@ -39,16 +36,18 @@ jobs:
 
       - name: Check PR commits
         run: |
-          commits = ${{ steps.get-pr-commits.outputs.commits }}
-          for value in "${commits[@]}"
-          do
-            echo "Value for item array is: $value"
-          done
+          echo ${{ steps.get-pr-commits.outputs.commits }} > commits.json
+          cat commits.json
+
+      - name: WIP notice
+        run: |
+          echo "This is WIP (work in progress)"
+          cat ./public/CNAME
 
       - name: Post PR Comment
         if: failure()
         uses: mshick/add-pr-comment@v2
         with:
-          message: Please check the commit messages in this PR! It seems that you have not used emojis, this is a requirement for this project as per our documentation (https://${{ env.DOCUMENTATION_URL }}) 
+          message: Please check the commit messages in this PR! It seems that you have not used emojis, this is a requirement for this project as per our documentation ${{ env.DOCUMENTATION_URL }}
           refresh-message-position: true
           allow-repeats: true
