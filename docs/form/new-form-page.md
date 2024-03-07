@@ -1,14 +1,19 @@
 # Create the form page
 
+How to create a form for users to fill in.
+
+## Form page
+
 - Go to this folder `src/web/pages/form`
 - Create a file (e.g. **builder.tsx**) with a component that uses `<FormBuilder />`
   - Example:
 
 ```tsx
 export const BuilderFormPage: Component = () => {
+  const defaultStartDate = formatForDateDropdown(builderStartedPlayingMaxDate)
   const propertyOverrides: Array<PropertyOverrides<BuilderDto>> = [
     {
-      startedPlaying: (origVal) => origVal ?? formatForDateDropdown(builderStartedPlayingMaxDate),
+      startedPlaying: (origVal) => origVal ?? defaultStartDate,
     },
   ];
 
@@ -25,7 +30,8 @@ export const BuilderFormPage: Component = () => {
           propertyOverrides={propertyOverrides}
           mappings={
             {
-              // Typescript should force you to declare an object for each property in the dto.
+              // Typescript should force you to declare an object 
+              // for each property in the dto.
             }
           }
         />
@@ -37,7 +43,11 @@ export const BuilderFormPage: Component = () => {
 export default BuilderFormPage;
 ```
 
-### Set up routing
+> [!IMPORTANT]
+> The default export is important for these pages, it allows us to lazy load the pages to improve the initial paint of the main app.
+
+
+## Set up routing
 
 - Go to `src/web/appShell.tsx`
 - Add your page to the useRoutes function

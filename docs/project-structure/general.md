@@ -55,14 +55,16 @@ _TODO_
 
 ## Validation
 
-_TODO_
+This folder is specifically for all the validation logic, the validators are shared between the front-end and back-end with some validators specific to some environments.
 
 ## Web
 
-_TODO_
+This is the front-end code of the project. It is a [SolidJS][solidjs] app and is focused on rendering the form pages, handling the user input, validating and sending the data in the correct format to the back-end. This front-end could be deployed separately from the back-end, although the current plan for the [deploying of the project with Docker](../deploy/docker.md) is to package the front-end in the [Docker][docker] container.
 
 <!-- Links used in the page -->
 
 [khaoztopsy]: https://github.com/Khaoz-Topsy
 [koajs]: https://koajs.com
+[docker]: https://www.docker.com
+[solidjs]: https://www.solidjs.com
 

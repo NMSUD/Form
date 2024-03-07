@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import { defineConfig } from 'vitepress';
 import { nav } from './config.navbar.mts';
 import { sidebar } from './config.sidebar.mts';
@@ -32,6 +33,10 @@ export default defineConfig({
     image: {
       lazyLoading: true,
     },
+  },
+  sitemap: {
+    hostname: fs.readFileSync('./public/CNAME', 'utf8'),
+    lastmodDateOnly: true,
   },
   rewrites: {
     'docs/index.md': 'index.md',

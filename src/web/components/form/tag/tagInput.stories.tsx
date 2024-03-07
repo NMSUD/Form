@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-solidjs';
 
-import { UseHopeUIThemeProvider, getIFormInputArgTypes } from '../../storybook';
+import { UseHopeUIThemeProvider, getFormInputArgTypes } from '../../storybook';
 import { CommunityDtoMeta } from '@contracts/dto/forms/communityDto';
 import { socialIcons } from '@constants/socialIcons';
 import { FormTagInput } from './tagInput';
@@ -11,7 +11,7 @@ const meta = {
   decorators: [UseHopeUIThemeProvider],
   tags: ['autodocs'],
   argTypes: {
-    ...getIFormInputArgTypes(),
+    ...getFormInputArgTypes(),
   },
 } satisfies Meta<typeof FormTagInput>;
 
@@ -24,7 +24,7 @@ export const Basic: Story = {
     placeholder: 'this is a placeholder',
     helpText: 'This is a help icon with a tooltip',
     validation: CommunityDtoMeta.tags.validator,
-    onChange: () => { },
+    onChange: () => {},
   },
 };
 

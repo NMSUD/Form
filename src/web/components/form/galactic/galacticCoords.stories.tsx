@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-solidjs';
 
-import { UseHopeUIThemeProvider, getIFormInputArgTypes } from '../../storybook';
+import { UseHopeUIThemeProvider, getFormInputArgTypes } from '../../storybook';
 import { GalacticCoordsInput } from './galacticCoords';
 
 const meta = {
@@ -9,7 +9,7 @@ const meta = {
   decorators: [UseHopeUIThemeProvider],
   tags: ['autodocs'],
   argTypes: {
-    ...getIFormInputArgTypes(),
+    ...getFormInputArgTypes(),
   },
 } satisfies Meta<typeof GalacticCoordsInput>;
 

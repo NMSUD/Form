@@ -1,5 +1,4 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
 hero:
@@ -11,18 +10,20 @@ hero:
       text: Introduction
       link: /docs/introduction/what-is-form
     - theme: alt
-      text: How to guides
-      link: /docs/api-examples
+      text: Creating a new Form
+      link: /docs/form/general
   image:
     src: /assets/img/logo.png
     alt: Logo
 
 features:
+  - icon: 🤖
+    title: Automation
+    details: A focus on automation and avoiding repetitive work
+  - icon: 🔏
+    title: Strongly typed
+    details: Leveraging types to help us code fast with confidence
   - icon: 📝
-    title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    title: Quick start
+    details: Focused on getting you up and running as quick as possible
 ---

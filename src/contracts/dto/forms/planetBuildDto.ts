@@ -4,7 +4,7 @@ import {
   multiValidation,
   noValidation,
   notNull,
-  seperateValidation,
+  separateValidation,
   validateForEach,
 } from '@validation/baseValidation';
 import { maxLength, minLength } from '@validation/textValidation';
@@ -37,15 +37,15 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
   mediaUrls: {
     label: 'Media',
     defaultValue: [],
-    dontSaveToLocalStorage: true,
+    saveToLocalStorage: true,
     validator: noValidation,
   },
   mediaFiles: {
     label: 'Media upload',
-    dontSaveToLocalStorage: true,
-    validator: seperateValidation({
-      api: noValidation,
-      ui: validateForEach(notNull('You need to upload an image')),
+    saveToLocalStorage: true,
+    validator: separateValidation({
+      Api: noValidation,
+      UI: validateForEach(notNull('You need to upload an image')),
     }),
   },
   galaxy: {

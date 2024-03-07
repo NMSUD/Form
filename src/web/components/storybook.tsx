@@ -19,7 +19,7 @@ export const displayFrame = (title: string) => (Story: Component) => (
   </Container>
 );
 
-export const getIFormInputArgTypes = () => ({
+export const getFormInputArgTypes = () => ({
   id: { control: 'text' },
   label: { control: 'text' },
   helpText: { control: 'text' },

@@ -64,7 +64,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     const dtoMeta: IFormDtoMetaDetails<string> = (
       props.formDtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>
     )?.[prop];
-    const saveToLocalStorage = dtoMeta?.dontSaveToLocalStorage !== true;
+    const saveToLocalStorage = dtoMeta?.saveToLocalStorage === true;
 
     setItemBeingEdited((prev) => {
       const item = { ...prev, [prop]: value };
@@ -97,7 +97,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     const failedValidationMsgs = validateObj({
       data: itemBeingEdited(),
       validationObj: props.formDtoMeta,
-      inludeLabelInErrMsgs: true,
+      includeLabelInErrMsgs: true,
     }).filter((v) => v.isValid === false);
 
     if (failedValidationMsgs.length > 0) {

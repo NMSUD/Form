@@ -2,6 +2,8 @@
 
 _dto: domain transfer object_
 
+## Create a DTO
+
 - Go to this folder `src/contracts/dto/forms`
 - Create a file (e.g. **builderDto.ts**) with an interface defined inside (e.g. **BuilderDto**)
   - Example:
@@ -15,6 +17,8 @@ export interface BuilderDto {
   // ...
 }
 ```
+
+## Meta for the new DTO
 
 - In the same file, create a meta object
 

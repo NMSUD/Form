@@ -28,7 +28,7 @@
  *   custom containers.
  *
  * - `default`: The color used purely for subtle indication without any
- *   special meanings attched to it such as bg color for menu hover state.
+ *   special meanings attached to it such as bg color for menu hover state.
  *
  * - `brand`: Used for primary brand colors, such as link text, button with
  *   brand theme, etc.
@@ -149,4 +149,21 @@ main.main img {
 
 #local-search .DocSearch.DocSearch-Button {
   justify-content: space-between;
+}
+
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  margin-top: -4px;
+  margin-bottom: -4px;
+  background-color: var(--vp-c-bg-soft);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: var(--vp-c-brand-soft);
 }

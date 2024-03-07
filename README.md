@@ -67,8 +67,8 @@ To run the tests, use the command `npm run test`.
 
 This project has [Storybook](https://storybook.js.com) set up. This is mostly for visual testing and is suitable for components such as the reusable form components in `src/components/form`.
 
-To run storybook use the command `npm run storybook`. \
-Then open [localhost:6006](http://localhost:6006)
+To run storybook use the command `npm run storybook:dev`. \
+Then open [localhost:3003](http://localhost:3003)
 
 <br />
 
@@ -80,7 +80,7 @@ Please take a look at the [Contribution Guideline](./.github/CONTRIBUTING.md) be
 
 ## 📄 Documentation
 
-Here is some [documentation][documentation] about the project. Here you can find information on how run the project on your machine, how the project was setup, how to add new forms, how to run unit tests and more.
+We have a [documentation][documentation] website, here you can find information on how to run the project on your machine, how the project was setup, how to add new forms, how to run unit tests and more.
 
 <br />
 
@@ -96,5 +96,5 @@ Here is some [documentation][documentation] about the project. Here you can find
 [nmsudWebsite]: https://nmsud.com
 [docker]: https://www.docker.com
 [dockerHub]: https://hub.docker.com
-[documentation]: https://.com
+[documentation]: https://nmsud-form-docs.nmsassistant.com
 [discord]: https://discord.gg/jQrNeWeTwR

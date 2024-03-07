@@ -1,6 +1,6 @@
 {
   "name": "nmsud.form",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Kurt Lourens",
   "description": "A custom solution for capturing data for the yearly Unification Days event",
   "scripts": {
@@ -9,13 +9,13 @@
     "start:api": "nodemon src/api/api.ts",
     "start:public": "cd public && npx alive-server",
     "start:web": "vite",
-    "build": "npm-run-all --sequential build:*",
+    "build": "npm-run-all --sequential prebuild:* build:*",
     "build:web": "vite build",
     "build:server": "tsc -p ./tsconfig.server.json && resolve-tspaths -p ./tsconfig.server.json --out ./build/src",
     "data:downloader": "dotenv -- ts-node --project tsconfig.server.json src/data/downloader.ts",
     "data:dev": "dotenv -- ts-node --project tsconfig.server.json src/data/interactive.ts",
     "db:generate": "xata codegen",
-    "storybook": "storybook dev -p 6006",
+    "storybook:dev": "storybook dev -p 3003",
     "storybook:build": "storybook build --disable-telemetry",
     "docs:dev": "vitepress dev --port 3002",
     "docs:build": "vitepress build",
