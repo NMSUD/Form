@@ -27,7 +27,7 @@ describe('Verify handler', () => {
     const next = vi.fn().mockResolvedValue(fakePromise());
     const formHandler = baseVerifyHandler(fakeModule);
     await formHandler(ctx, next);
-    expect(ctx.response.status).toBe(ApiStatusErrorCode.decisionNotFound);
+    expect(ctx.response.status).toBe(ApiStatusErrorCode.decisionNotFound.code);
   });
   test('record not found', async () => {
     const ctx: any = {
@@ -52,7 +52,7 @@ describe('Verify handler', () => {
       },
     });
     await formHandler(ctx, next);
-    expect(ctx.response.status).toBe(ApiStatusErrorCode.recordNotFound);
+    expect(ctx.response.status).toBe(ApiStatusErrorCode.recordNotFound.code);
   });
   test('setting approval status the same as already in db', async () => {
     class MockConfigService {
@@ -107,7 +107,7 @@ describe('Verify handler', () => {
     const next = vi.fn().mockResolvedValue(fakePromise());
     const formHandler = baseVerifyHandler(fakeModule);
     await formHandler(ctx, next);
-    expect(ctx.response.status).toBe(ApiStatusErrorCode.calculatedCheckFailed);
+    expect(ctx.response.status).toBe(ApiStatusErrorCode.calculatedCheckFailed.code);
   });
   test('valid check updates record', async () => {
     class MockConfigService {
@@ -172,7 +172,7 @@ describe('Verify handler', () => {
       },
     });
     await formHandler(ctx, next);
-    expect(ctx.response.status).toBe(ApiStatusErrorCode.couldNotPersistData);
+    expect(ctx.response.status).toBe(ApiStatusErrorCode.couldNotPersistData.code);
   });
   test('runs mapRecordRelationshipsToDto', async () => {
     class MockConfigService {

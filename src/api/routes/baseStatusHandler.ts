@@ -19,7 +19,7 @@ export const baseStatusHandler =
       await errorResponse({
         ctx,
         next,
-        statusCode: ApiStatusErrorCode.recordNotFound,
+        statusCode: ApiStatusErrorCode.recordNotFound.code,
         message: errMsg,
       });
       return;

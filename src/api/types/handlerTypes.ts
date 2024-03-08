@@ -1,6 +1,7 @@
 import Koa from 'koa';
 
 import { IApiSegment } from '@constants/api';
+import { IApiModule } from './baseModule';
 
 export type koaRequestHandler = (
   ctx: Koa.DefaultContext,
@@ -9,4 +10,7 @@ export type koaRequestHandler = (
 
 export type IHandlerLookup = {
   [prop in keyof IApiSegment]: koaRequestHandler;
+};
+export type ModuleLookupType = {
+  [prop in keyof IApiSegment]: IApiModule<any, any, any>;
 };

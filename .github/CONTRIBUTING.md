@@ -54,5 +54,5 @@ You can create a feature request from [here](https://github.com/NMSUD/Form/issue
 <!-- Links used in the page -->
 [nmsudWebsite]: https://nmsud.com
 [githubSecurityAdvisory]: https://github.com/NMSUD/Form/security/advisories
-[contactEmail]: support@nmsassistant.com
+[contactEmail]: mailto:support@nmsassistant.com
 [discord]: https://discord.gg/jQrNeWeTwR

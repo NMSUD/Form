@@ -4,11 +4,12 @@ import { test, describe, expect, vi } from 'vitest';
 import { handleRouteLookup } from './handleRouteLookup';
 import { apiParams, ApiStatusErrorCode } from '@constants/api';
 import { fakePromise } from '@helpers/typescriptHacks';
+import { koaRequestHandler } from './types/handlerTypes';
+import { IApiModule } from './types/baseModule';
 
 describe('Route lookup', () => {
   test('use handler based on segment in params', async () => {
     let hasRun = false;
-    const fakeDoNothing: any = () => {};
     const fakeCtx = {
       set: () => null,
       params: {
@@ -17,11 +18,19 @@ describe('Route lookup', () => {
       response: {},
     };
     const next = vi.fn().mockResolvedValue(fakePromise());
-    const routeFunctions: any = handleRouteLookup({
-      community: fakeDoNothing,
-      planetBase: fakeDoNothing,
-      builder: async () => {
+    const fakeHandler = (module: IApiModule<any, any, any>): koaRequestHandler => {
+      if ((module as any).update) {
         hasRun = true;
+      }
+
+      return vi.fn();
+    };
+    const routeFunctions: any = handleRouteLookup({
+      handlerFunc: fakeHandler,
+      module: {
+        builder: { update: true } as any,
+        community: {} as any,
+        planetBase: {} as any,
       },
     });
     await routeFunctions(fakeCtx, next);
@@ -38,14 +47,17 @@ describe('Route lookup', () => {
         [apiParams.general.segment]: 'builderTest',
       },
     };
-    const fakeDoNothing: any = () => {};
     const next = vi.fn().mockResolvedValue(fakePromise());
+    const fakeHandler = vi.fn();
     const routeFunctions: any = handleRouteLookup({
-      community: fakeDoNothing,
-      planetBase: fakeDoNothing,
-      builder: fakeDoNothing,
+      handlerFunc: fakeHandler,
+      module: {
+        builder: { update: true } as any,
+        community: {} as any,
+        planetBase: {} as any,
+      },
     });
     await routeFunctions(ctx, next);
-    expect(ctx.response.status).toBe(ApiStatusErrorCode.segmentNotFound);
+    expect(ctx.response.status).toBe(ApiStatusErrorCode.segmentNotFound.code);
   });
 });

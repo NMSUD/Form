@@ -29,7 +29,7 @@ describe('Status handler', () => {
       },
     });
     await formHandler(ctx, next);
-    expect(ctx.response.status).toBe(ApiStatusErrorCode.recordNotFound);
+    expect(ctx.response.status).toBe(ApiStatusErrorCode.recordNotFound.code);
   });
   test('record found', async () => {
     const ctx: any = {

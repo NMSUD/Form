@@ -39,13 +39,40 @@ export const segmentLabels: IApiSegment = {
 };
 
 export const ApiStatusErrorCode = {
-  validation: 460,
-  segmentNotFound: 461,
-  decisionNotFound: 462,
-  recordNotFound: 463,
-  badCaptcha: 520,
-  invalidFormFiles: 521,
-  invalidFormData: 522,
-  couldNotPersistData: 523,
-  calculatedCheckFailed: 524,
+  validation: {
+    code: 460,
+    message: 'Validation failed for the data supplied',
+  },
+  segmentNotFound: {
+    code: 461,
+    message: 'Invalid segment provided',
+  },
+  decisionNotFound: {
+    code: 462,
+    message: 'Invalid decision provided',
+  },
+  recordNotFound: {
+    code: 463,
+    message: 'No records found for the provided id',
+  },
+  badCaptcha: {
+    code: 520,
+    message: 'Invalid captcha provided',
+  },
+  invalidFormFiles: {
+    code: 521,
+    message: 'Media attached to request was in the incorrect format',
+  },
+  invalidFormData: {
+    code: 522,
+    message: 'The formData of the request was invalid',
+  },
+  couldNotPersistData: {
+    code: 523,
+    message: 'Unable to save the data provided to the database',
+  },
+  calculatedCheckFailed: {
+    code: 524,
+    message: 'The provided check and calculated checks do not match',
+  },
 };

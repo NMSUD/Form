@@ -15,5 +15,5 @@ We try our best to avoid storing any Personal Identifiable Information (PII). We
 
 <!-- Links used in the page -->
 [githubSecurityAdvisory]: https://github.com/NMSUD/Form/security/advisories
-[contactEmail]: support@nmsassistant.com
+[contactEmail]: mailto:support@nmsassistant.com
 [discord]: https://discord.gg/jQrNeWeTwR
