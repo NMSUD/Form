@@ -1,11 +1,14 @@
-import { ISwaggerPath, SwaggerPathMethod } from '@api/contracts/swagger';
+import { OpenAPIV3_1 } from 'openapi-types';
+
 import { ApiStatusErrorCode, apiParams } from '@constants/api';
 import { replaceVariableSyntax, requiredPathParams } from './common';
+import { SwaggerBuilder } from '@api/utils/swagger';
 
-export const baseVerifyHandlerSwaggerPaths = (props: {
+export const baseVerifyHandlerSwagger = (props: {
   path: string;
-  method: SwaggerPathMethod;
-}): ISwaggerPath => {
+  method: string;
+  swaggerBuilder: SwaggerBuilder;
+}) => {
   const correctedPath = replaceVariableSyntax(
     props.path,
     apiParams.general.segment,
@@ -13,7 +16,7 @@ export const baseVerifyHandlerSwaggerPaths = (props: {
     apiParams.verify.decision,
     apiParams.verify.check,
   );
-  return {
+  const swaggerPath: OpenAPIV3_1.PathItemObject = {
     [`/${correctedPath}`]: {
       [props.method]: {
         tags: ['Verify'],
@@ -45,4 +48,5 @@ export const baseVerifyHandlerSwaggerPaths = (props: {
       },
     },
   };
+  props.swaggerBuilder.addPath(swaggerPath);
 };

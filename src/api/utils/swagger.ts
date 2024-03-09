@@ -1,4 +1,5 @@
-import { ISwaggerPath } from '@api/contracts/swagger';
+import { OpenAPIV3_1 } from 'openapi-types';
+
 import { site } from '@constants/site';
 import { getBotPath } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
@@ -6,18 +7,16 @@ import * as fs from 'fs';
 import path from 'path';
 
 export class SwaggerBuilder {
-  private paths: any = {};
-  private components: Array<unknown> = [];
+  private paths = {};
+  private components = {};
 
-  addPath(path: ISwaggerPath) {
+  addPath(path: OpenAPIV3_1.PathItemObject) {
     this.paths = {
       ...this.paths,
       ...path,
     };
   }
-  addComponent() {
-    this.components.push();
-  }
+  addComponent() {}
 
   private _getVersionNum(): string {
     try {
@@ -65,7 +64,6 @@ export class SwaggerBuilder {
       },
       paths: this.paths,
     };
-    console.log(spec);
     return spec;
   }
 }

@@ -1,4 +1,4 @@
-import { ISwaggerPathParameter } from '@api/contracts/swagger';
+import { OpenAPIV3_1 } from 'openapi-types';
 
 export const replaceVariableSyntax = (fullPath: string, ...variables: Array<string>) => {
   let result = fullPath.toString();
@@ -8,7 +8,7 @@ export const replaceVariableSyntax = (fullPath: string, ...variables: Array<stri
   return result;
 };
 export const requiredPathParams = (...variables: Array<string>) => {
-  const result: Array<ISwaggerPathParameter> = [];
+  const result: Array<OpenAPIV3_1.ParameterObject> = [];
   for (const variable of variables) {
     result.push({
       name: variable,

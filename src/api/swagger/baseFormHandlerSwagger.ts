@@ -1,13 +1,15 @@
-import { ISwaggerPath, SwaggerPathMethod } from '@api/contracts/swagger';
+import { OpenAPIV3_1 } from 'openapi-types';
 import { ApiStatusErrorCode, apiParams } from '@constants/api';
 import { replaceVariableSyntax, requiredPathParams } from './common';
+import { SwaggerBuilder } from '@api/utils/swagger';
 
-export const baseFormHandlerSwaggerPaths = (props: {
+export const baseFormHandlerSwagger = (props: {
   path: string;
-  method: SwaggerPathMethod;
-}): ISwaggerPath => {
+  method: string;
+  swaggerBuilder: SwaggerBuilder;
+}) => {
   const correctedPath = replaceVariableSyntax(props.path, apiParams.general.segment);
-  return {
+  const swaggerPath: OpenAPIV3_1.PathsObject = {
     [`/${correctedPath}`]: {
       [props.method]: {
         tags: ['Form'],
@@ -46,4 +48,5 @@ export const baseFormHandlerSwaggerPaths = (props: {
       },
     },
   };
+  props.swaggerBuilder.addPath(swaggerPath);
 };

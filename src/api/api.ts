@@ -19,10 +19,10 @@ import { versionEndpoint } from './misc/misc';
 import { baseFormHandler } from './routes/baseFormHandler';
 import { baseStatusHandler } from './routes/baseStatusHandler';
 import { baseVerifyHandler } from './routes/baseVerifyHandler';
-import { baseFormHandlerSwaggerPaths } from './swagger/baseFormHandlerSwagger';
-import { baseVerifyHandlerSwaggerPaths } from './swagger/baseVerifyHandlerSwagger';
+import { baseFormHandlerSwagger } from './swagger/baseFormHandlerSwagger';
+import { baseVerifyHandlerSwagger } from './swagger/baseVerifyHandlerSwagger';
 import { SwaggerBuilder } from './utils/swagger';
-import { baseStatusHandlerSwaggerPaths } from './swagger/baseStatusHandlerSwagger';
+import { baseStatusHandlerSwagger } from './swagger/baseStatusHandlerSwagger';
 
 Container.set(BOT_PATH, __dirname);
 Container.set(APP_TYPE, AppType.Api);
@@ -39,29 +39,27 @@ router.post(
   bodyOptions,
   handleRouteLookup({ handlerFunc: baseFormHandler }),
 );
-router.get(`/${api.routes.verify}`, handleRouteLookup({ handlerFunc: baseVerifyHandler }));
-router.get(`/${api.routes.status}`, handleRouteLookup({ handlerFunc: baseStatusHandler }));
-router.get('/version', versionEndpoint('secret'));
+baseFormHandlerSwagger({
+  path: api.routes.form,
+  method: 'post',
+  swaggerBuilder: swaggerBuilder,
+});
 
-// swagger
-swaggerBuilder.addPath(
-  baseFormHandlerSwaggerPaths({
-    path: api.routes.form,
-    method: 'post',
-  }),
-);
-swaggerBuilder.addPath(
-  baseVerifyHandlerSwaggerPaths({
-    path: api.routes.verify,
-    method: 'get',
-  }),
-);
-swaggerBuilder.addPath(
-  baseStatusHandlerSwaggerPaths({
-    path: api.routes.status,
-    method: 'get',
-  }),
-);
+router.get(`/${api.routes.verify}`, handleRouteLookup({ handlerFunc: baseVerifyHandler }));
+baseVerifyHandlerSwagger({
+  path: api.routes.verify,
+  method: 'get',
+  swaggerBuilder: swaggerBuilder,
+});
+
+router.get(`/${api.routes.status}`, handleRouteLookup({ handlerFunc: baseStatusHandler }));
+baseStatusHandlerSwagger({
+  path: api.routes.status,
+  method: 'get',
+  swaggerBuilder: swaggerBuilder,
+});
+
+router.get('/version', versionEndpoint('secret'));
 
 // middleware
 koa.use(bodyParser());
