@@ -23,6 +23,7 @@ export const api = {
     form: `form/:${apiParams.general.segment}/`,
     verify: `verify/:${apiParams.general.segment}/:${apiParams.verify.decision}/:${apiParams.verify.id}/:${apiParams.verify.check}`,
     status: `status/:${apiParams.general.segment}/:${apiParams.status.id}`,
+    version: 'version',
   },
 };
 

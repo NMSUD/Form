@@ -1,10 +1,10 @@
 import { OpenAPIV3_1 } from 'openapi-types';
+import * as fs from 'fs';
+import path from 'path';
 
 import { site } from '@constants/site';
 import { getBotPath } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
-import * as fs from 'fs';
-import path from 'path';
 
 export class SwaggerBuilder {
   private paths = {};
@@ -16,7 +16,13 @@ export class SwaggerBuilder {
       ...path,
     };
   }
-  addComponent() {}
+
+  addComponent(component: Record<string, OpenAPIV3_1.SchemaObject>) {
+    this.components = {
+      ...this.components,
+      ...component,
+    };
+  }
 
   private _getVersionNum(): string {
     try {
@@ -63,6 +69,9 @@ export class SwaggerBuilder {
         version: this._getVersionNum(),
       },
       paths: this.paths,
+      components: {
+        schemas: this.components,
+      },
     };
     return spec;
   }

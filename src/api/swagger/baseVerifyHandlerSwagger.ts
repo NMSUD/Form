@@ -1,8 +1,8 @@
 import { OpenAPIV3_1 } from 'openapi-types';
 
-import { ApiStatusErrorCode, apiParams } from '@constants/api';
-import { replaceVariableSyntax, requiredPathParams } from './common';
 import { SwaggerBuilder } from '@api/utils/swagger';
+import { ApiStatusErrorCode, apiParams } from '@constants/api';
+import { commonPathParam, replaceVariableSyntax } from './commonSwaggerOptions';
 
 export const baseVerifyHandlerSwagger = (props: {
   path: string;
@@ -22,12 +22,12 @@ export const baseVerifyHandlerSwagger = (props: {
         tags: ['Verify'],
         description:
           'Verifies (approve, deny, etc) a form submission and returns the created record',
-        parameters: requiredPathParams(
-          apiParams.general.segment,
-          apiParams.verify.id,
-          apiParams.verify.decision,
-          apiParams.verify.check,
-        ),
+        parameters: [
+          commonPathParam.segment,
+          commonPathParam.verifyDecision,
+          commonPathParam.verifyId,
+          commonPathParam.verifyCheck,
+        ],
         responses: {
           '303': {
             description: 'Form was successfully verified',

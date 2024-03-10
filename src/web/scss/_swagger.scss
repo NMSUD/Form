@@ -5,3 +5,7 @@
 tr.response:not([data-code^='2']) .model-example {
   display: none;
 }
+
+table td:nth-child(3) {
+  display: none;
+}

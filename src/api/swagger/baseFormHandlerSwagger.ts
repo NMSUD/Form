@@ -1,7 +1,11 @@
-import { OpenAPIV3_1 } from 'openapi-types';
-import { ApiStatusErrorCode, apiParams } from '@constants/api';
-import { replaceVariableSyntax, requiredPathParams } from './common';
 import { SwaggerBuilder } from '@api/utils/swagger';
+import { ApiStatusErrorCode, apiParams } from '@constants/api';
+import { OpenAPIV3_1 } from 'openapi-types';
+import {
+  commonPathParam,
+  componentsFromModule,
+  replaceVariableSyntax,
+} from './commonSwaggerOptions';
 
 export const baseFormHandlerSwagger = (props: {
   path: string;
@@ -9,23 +13,33 @@ export const baseFormHandlerSwagger = (props: {
   swaggerBuilder: SwaggerBuilder;
 }) => {
   const correctedPath = replaceVariableSyntax(props.path, apiParams.general.segment);
+  const componentsFromMod = componentsFromModule();
+  const componentsReqAndResp = componentsFromMod.map((comp) => ({
+    $ref: `#/components/schemas/${comp}`,
+  }));
   const swaggerPath: OpenAPIV3_1.PathsObject = {
     [`/${correctedPath}`]: {
       [props.method]: {
         tags: ['Form'],
-        description: 'Handles a form submission and returns the created record',
-        parameters: requiredPathParams(apiParams.general.segment),
+        description: `Handles a form submission (either ${componentsFromMod.join(', ')}) and returns the created record`,
+        parameters: [commonPathParam.segment],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                oneOf: componentsReqAndResp,
+              },
+            },
+          },
+        },
         responses: {
           '200': {
             description: 'Form was successfully handled',
             content: {
               'application/json': {
-                // schema: {
-                //   type: 'object',
-                //   items: {
-                //     $ref: '#/components/schemas/pet',
-                //   },
-                // },
+                schema: {
+                  oneOf: componentsReqAndResp,
+                },
               },
             },
           },

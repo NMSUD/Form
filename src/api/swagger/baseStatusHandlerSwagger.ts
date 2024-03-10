@@ -1,8 +1,8 @@
 import { OpenAPIV3_1 } from 'openapi-types';
 
-import { ApiStatusErrorCode, apiParams } from '@constants/api';
-import { replaceVariableSyntax, requiredPathParams } from './common';
 import { SwaggerBuilder } from '@api/utils/swagger';
+import { ApiStatusErrorCode, apiParams } from '@constants/api';
+import { commonPathParam, replaceVariableSyntax } from './commonSwaggerOptions';
 
 export const baseStatusHandlerSwagger = (props: {
   path: string;
@@ -19,7 +19,7 @@ export const baseStatusHandlerSwagger = (props: {
       [props.method]: {
         tags: ['Status'],
         description: 'Gets the status of a form submission and returns the record',
-        parameters: requiredPathParams(apiParams.general.segment, apiParams.verify.id),
+        parameters: [commonPathParam.segment, commonPathParam.verifyId],
         responses: {
           '200': {
             description: 'Form submission status',

@@ -20,9 +20,12 @@ import { baseFormHandler } from './routes/baseFormHandler';
 import { baseStatusHandler } from './routes/baseStatusHandler';
 import { baseVerifyHandler } from './routes/baseVerifyHandler';
 import { baseFormHandlerSwagger } from './swagger/baseFormHandlerSwagger';
-import { baseVerifyHandlerSwagger } from './swagger/baseVerifyHandlerSwagger';
-import { SwaggerBuilder } from './utils/swagger';
 import { baseStatusHandlerSwagger } from './swagger/baseStatusHandlerSwagger';
+import { baseVerifyHandlerSwagger } from './swagger/baseVerifyHandlerSwagger';
+import { registerSwaggerModuleComponents } from './swagger/registerSwaggerModuleComponents';
+import { SwaggerBuilder } from './utils/swagger';
+import { registerSwaggerStaticComponents } from './swagger/registerSwaggerStaticComponents';
+import { versionSwagger } from './swagger/versionSwagger';
 
 Container.set(BOT_PATH, __dirname);
 Container.set(APP_TYPE, AppType.Api);
@@ -39,27 +42,35 @@ router.post(
   bodyOptions,
   handleRouteLookup({ handlerFunc: baseFormHandler }),
 );
+router.get(`/${api.routes.verify}`, handleRouteLookup({ handlerFunc: baseVerifyHandler }));
+router.get(`/${api.routes.status}`, handleRouteLookup({ handlerFunc: baseStatusHandler }));
+router.get(`/${api.routes.version}`, versionEndpoint(getConfig().getApiSecret()));
+
+// Swagger
+registerSwaggerStaticComponents(swaggerBuilder);
+registerSwaggerModuleComponents({
+  swaggerBuilder: swaggerBuilder,
+});
 baseFormHandlerSwagger({
   path: api.routes.form,
   method: 'post',
   swaggerBuilder: swaggerBuilder,
 });
-
-router.get(`/${api.routes.verify}`, handleRouteLookup({ handlerFunc: baseVerifyHandler }));
 baseVerifyHandlerSwagger({
   path: api.routes.verify,
   method: 'get',
   swaggerBuilder: swaggerBuilder,
 });
-
-router.get(`/${api.routes.status}`, handleRouteLookup({ handlerFunc: baseStatusHandler }));
 baseStatusHandlerSwagger({
   path: api.routes.status,
   method: 'get',
   swaggerBuilder: swaggerBuilder,
 });
-
-router.get('/version', versionEndpoint('secret'));
+versionSwagger({
+  path: api.routes.version,
+  method: 'get',
+  swaggerBuilder: swaggerBuilder,
+});
 
 // middleware
 koa.use(bodyParser());
