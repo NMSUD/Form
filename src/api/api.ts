@@ -23,9 +23,9 @@ import { baseFormHandlerSwagger } from './swagger/baseFormHandlerSwagger';
 import { baseStatusHandlerSwagger } from './swagger/baseStatusHandlerSwagger';
 import { baseVerifyHandlerSwagger } from './swagger/baseVerifyHandlerSwagger';
 import { registerSwaggerModuleComponents } from './swagger/registerSwaggerModuleComponents';
-import { SwaggerBuilder } from './utils/swagger';
 import { registerSwaggerStaticComponents } from './swagger/registerSwaggerStaticComponents';
 import { versionSwagger } from './swagger/versionSwagger';
+import { SwaggerBuilder } from './utils/swagger';
 
 Container.set(BOT_PATH, __dirname);
 Container.set(APP_TYPE, AppType.Api);
@@ -79,6 +79,8 @@ koa.use(serve(path.join(getBotPath(), '../public')));
 koa.use(cors());
 koa.use(
   koaSwagger({
+    title: 'NMSUD Form API',
+    favicon: '/assets/favicon/favicon.ico',
     routePrefix: '/swagger',
     swaggerOptions: { spec: swaggerBuilder.toSpec() },
     customCSS: swaggerBuilder.getCustomCss(),
