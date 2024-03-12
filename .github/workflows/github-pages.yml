@@ -36,9 +36,6 @@ jobs:
           cp ./public/CNAME ./pages/CNAME
           touch ./pages/.nojekyll
 
-      - name: Debugging plz remove
-        run: cat ./pages/CNAME
-
       - name: Set up documentation pages
         run: |
           npm run docs:build

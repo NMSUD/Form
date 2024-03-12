@@ -47,15 +47,14 @@ export class SwaggerBuilder {
     }
   }
 
-  toSpec(): Record<string, unknown> {
-    const spec = {
+  toSpec(): OpenAPIV3_1.Document {
+    const spec: OpenAPIV3_1.Document = {
       openapi: '3.1.0',
       info: {
         title: 'NMSUD Form API',
-        summary: 'A short summary of the API.', // TODO
-        description:
-          'A description of the API. CommonMark syntax MAY be used for rich text representation.', // TODO
-        termsOfService: 'https://google.com', // TODO
+        summary: 'API functions for you to test',
+        description: 'How the API for receiving data from the NMSUD Form UI works',
+        termsOfService: 'https://nmsud.com/terms_and_conditions.html', // TODO
         contact: {
           name: site.nmsud.name,
           url: site.nmsud.website,

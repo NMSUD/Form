@@ -6,11 +6,15 @@ const require = createRequire(import.meta.url);
 const pkg = require('../package.json');
 
 export const nav: DefaultTheme.NavItem[] = [
-  vitePressRoutes.home,
   {
-    text: 'Examples',
-    link: '/docs/markdown-examples',
-    activeMatch: '/examples/',
+    ...vitePressRoutes.introduction.whatIsForm,
+    text: 'Introduction',
+    activeMatch: '/docs/introduction',
+  },
+  {
+    ...vitePressRoutes.projectStructure.general,
+    text: 'Project structure',
+    activeMatch: '/docs/project-structure',
   },
   {
     text: pkg.version,
