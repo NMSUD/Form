@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { maxLength, minLength } from './textValidation';
+import { maxLength, minLength, shouldBeUrl } from './textValidation';
 
 describe('Text Validation', () => {
   describe('min length', () => {
@@ -46,6 +46,25 @@ describe('Text Validation', () => {
       const text = 'abc';
       const validator = maxLength(5);
       expect(validator(text).isValid).toBeTruthy();
+    });
+  });
+
+  describe('should be url', () => {
+    test('shouldBeUrl on null', () => {
+      const text: any = null;
+      expect(shouldBeUrl(text).isValid).toBeFalsy();
+    });
+    test('shouldBeUrl on empty string', () => {
+      const text = '';
+      expect(shouldBeUrl(text).isValid).toBeFalsy();
+    });
+    test('shouldBeUrl with an invalid url', () => {
+      const text = 'testerString';
+      expect(shouldBeUrl(text).isValid).toBeFalsy();
+    });
+    test('shouldBeUrl with a valid url', () => {
+      const text = 'http://google.com';
+      expect(shouldBeUrl(text).isValid).toBeTruthy();
     });
   });
 });

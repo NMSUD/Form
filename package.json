@@ -1,6 +1,6 @@
 {
   "name": "nmsud.form",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "Kurt Lourens",
   "description": "A custom solution for capturing data for the yearly Unification Days event",
   "scripts": {
@@ -37,6 +37,8 @@
     "koa-body": "^6.0.1",
     "koa-bodyparser": "^4.3.0",
     "koa-static": "^5.0.0",
+    "koa2-swagger-ui": "^5.10.0",
+    "openapi-types": "^12.1.3",
     "prompts": "^2.4.2",
     "reflect-metadata": "^0.2.1",
     "sharp": "^0.33.2",

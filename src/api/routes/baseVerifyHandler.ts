@@ -34,7 +34,7 @@ export const baseVerifyHandler =
       await errorResponse({
         ctx,
         next,
-        statusCode: ApiStatusErrorCode.decisionNotFound,
+        statusCode: ApiStatusErrorCode.decisionNotFound.code,
         message: errMsg,
       });
       return;
@@ -47,7 +47,7 @@ export const baseVerifyHandler =
       await errorResponse({
         ctx,
         next,
-        statusCode: ApiStatusErrorCode.recordNotFound,
+        statusCode: ApiStatusErrorCode.recordNotFound.code,
         message: errMsg,
       });
       return;
@@ -81,7 +81,7 @@ export const baseVerifyHandler =
       await errorResponse({
         ctx,
         next,
-        statusCode: ApiStatusErrorCode.calculatedCheckFailed,
+        statusCode: ApiStatusErrorCode.calculatedCheckFailed.code,
         message: errMsg,
       });
       return;
@@ -100,7 +100,7 @@ export const baseVerifyHandler =
       await errorResponse({
         ctx,
         next,
-        statusCode: ApiStatusErrorCode.couldNotPersistData,
+        statusCode: ApiStatusErrorCode.couldNotPersistData.code,
         message: errMsg,
       });
       return;

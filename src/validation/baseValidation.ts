@@ -81,7 +81,12 @@ export const validateObj = <T>(props: {
         });
       }
     } catch (ex) {
-      getLog().e(`exception while processing ${mappedBodyParam}`, ex);
+      const errMsg = `exception while processing ${mappedBodyParam}`;
+      getLog().e(errMsg, ex);
+      validationMessages.push({
+        isValid: false,
+        errorMessage: errMsg,
+      });
     }
   }
 

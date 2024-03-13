@@ -19,6 +19,7 @@ export const site = {
   nmsud: {
     name: 'NMSUD',
     website: 'https://nmsud.com',
+    email: 'mailto:support@nmsassistant.com',
     formRepo: 'https://github.com/NMSUD/Form',
     formData: 'https://data.nmsud.com',
     github: 'https://github.com/NMSUD',

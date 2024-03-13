@@ -6,12 +6,12 @@ import { IApiModule, IRecordRequirements } from '@api/types/baseModule';
 import { ApiStatusErrorCode } from '@constants/api';
 import { ApprovalStatus, colourFromApprovalStatus } from '@constants/enum/approvalStatus';
 import { FormDataKey } from '@constants/form';
-import { anyObject } from '@helpers/typescriptHacks';
 import {
   baseSubmissionMessageBuilder,
   baseSubmissionMessageEmbed,
   getDescriptionLines,
 } from '@helpers/discordMessageHelper';
+import { anyObject } from '@helpers/typescriptHacks';
 import { getDiscordService } from '@services/external/discord/discordService';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
@@ -37,7 +37,7 @@ export const baseFormHandler =
         await errorResponse({
           ctx,
           next,
-          statusCode: ApiStatusErrorCode.badCaptcha,
+          statusCode: ApiStatusErrorCode.badCaptcha.code,
           message: errMsg,
         });
         return;
@@ -51,7 +51,7 @@ export const baseFormHandler =
       await errorResponse({
         ctx,
         next,
-        statusCode: ApiStatusErrorCode.invalidFormFiles,
+        statusCode: ApiStatusErrorCode.invalidFormFiles.code,
         message: errMsg,
       });
       return;
@@ -67,7 +67,7 @@ export const baseFormHandler =
       await errorResponse({
         ctx,
         next,
-        statusCode: ApiStatusErrorCode.invalidFormData,
+        statusCode: ApiStatusErrorCode.invalidFormData.code,
         message: errMsg,
       });
       return;
@@ -83,7 +83,7 @@ export const baseFormHandler =
       await errorResponse({
         ctx,
         next,
-        statusCode: ApiStatusErrorCode.validation,
+        statusCode: ApiStatusErrorCode.validation.code,
         message: `Validation failed: ${failedValidationMsgs.map((v) => v.errorMessage).join(',\n')}`,
       });
       return;
@@ -97,7 +97,7 @@ export const baseFormHandler =
       await errorResponse({
         ctx,
         next,
-        statusCode: ApiStatusErrorCode.couldNotPersistData,
+        statusCode: ApiStatusErrorCode.couldNotPersistData.code,
         message: errMsg,
       });
       return;
@@ -114,7 +114,7 @@ export const baseFormHandler =
         await errorResponse({
           ctx,
           next,
-          statusCode: ApiStatusErrorCode.couldNotPersistData,
+          statusCode: ApiStatusErrorCode.couldNotPersistData.code,
           message: errMsg,
         });
         return;

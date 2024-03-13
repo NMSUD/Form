@@ -23,6 +23,11 @@ export const DefaultImageRestrictions: { [prop: string]: IImageRestriction } = {
   },
 };
 
+export const DefaultImageSize = {
+  height: 512,
+  width: 512,
+};
+
 export const ExternalImages = {
   assistantNMS: 'https://cdn.assistantapps.com/v2/nms/assistantNMSx100.webp',
   nmsud: 'https://avatars.githubusercontent.com/u/157403484?s=200&v=4',

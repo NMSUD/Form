@@ -1,0 +1,58 @@
+name: Github Tag and Release
+run-name: GithubTagAndRelease
+
+on:
+  push:
+    branches: ['main']
+
+concurrency:
+  group: 'githubrelease'
+  cancel-in-progress: true
+
+jobs:
+  github:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Get Package Version
+        run: |
+          version=$(cat package.json | grep \"version\" | cut -d'"' -f 4)
+          echo "VERSION=${version}" >> $GITHUB_ENV
+
+      - name: Install npm packages
+        run: npm ci
+
+      - name: Build all projects
+        run: npm run build
+
+      - name: Zip web files
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r web.zip dist
+
+      - name: Zip server files
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r server.zip build
+
+      - name: Push tag
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.CHECK_COMMIT_GITHUB_TOKEN }}
+          custom_tag: ${{ env.TAG }}
+
+      - name: Create Release for Tag
+        uses: softprops/action-gh-release@v1
+        with:
+          name: '${{ env.TAG }}'
+          tag_name: ${{ env.TAG }}
+          body_path: ${{ github.workspace }}/CHANGELOG.md
+          files: |
+            web.zip
+            server.zip

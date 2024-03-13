@@ -31,7 +31,7 @@ describe('Form handler', () => {
     const next = vi.fn().mockResolvedValue(fakePromise());
     const formHandler = baseFormHandler(fakeModule);
     await formHandler(ctx, next);
-    expect(ctx.response.status).toBe(ApiStatusErrorCode.badCaptcha);
+    expect(ctx.response.status).toBe(ApiStatusErrorCode.badCaptcha.code);
   });
   test('error handling files', async () => {
     class MockConfigService {
@@ -63,7 +63,7 @@ describe('Form handler', () => {
       },
     });
     await formHandler(ctx, next);
-    expect(ctx.response.status).toBe(ApiStatusErrorCode.invalidFormFiles);
+    expect(ctx.response.status).toBe(ApiStatusErrorCode.invalidFormFiles.code);
   });
   test('invalid json in form request', async () => {
     class MockConfigService {
@@ -84,7 +84,7 @@ describe('Form handler', () => {
     const next = vi.fn().mockResolvedValue(fakePromise());
     const formHandler = baseFormHandler(fakeModule);
     await formHandler(ctx, next);
-    expect(ctx.response.status).toBe(ApiStatusErrorCode.invalidFormData);
+    expect(ctx.response.status).toBe(ApiStatusErrorCode.invalidFormData.code);
   });
   test('errors return on form validation', async () => {
     class MockConfigService {
@@ -105,7 +105,7 @@ describe('Form handler', () => {
     const next = vi.fn().mockResolvedValue(fakePromise());
     const formHandler = baseFormHandler(fakeModule);
     await formHandler(ctx, next);
-    expect(ctx.response.status).toBe(ApiStatusErrorCode.validation);
+    expect(ctx.response.status).toBe(ApiStatusErrorCode.validation.code);
   });
   test('errors return on failure to create persistence', async () => {
     class MockConfigService {
@@ -139,7 +139,7 @@ describe('Form handler', () => {
       },
     });
     await formHandler(ctx, next);
-    expect(ctx.response.status).toBe(ApiStatusErrorCode.couldNotPersistData);
+    expect(ctx.response.status).toBe(ApiStatusErrorCode.couldNotPersistData.code);
   });
   test('errors return on failure to create persistence relationships', async () => {
     class MockConfigService {
@@ -174,7 +174,7 @@ describe('Form handler', () => {
       },
     });
     await formHandler(ctx, next);
-    expect(ctx.response.status).toBe(ApiStatusErrorCode.couldNotPersistData);
+    expect(ctx.response.status).toBe(ApiStatusErrorCode.couldNotPersistData.code);
   });
   test('only use mapRecordRelationshipsToDto if provided', async () => {
     class MockConfigService {

@@ -1,13 +1,11 @@
-import { test, describe, expect } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
-import { makeArrayOrDefault } from './arrayHelper';
-import { formatDate } from './dateHelper';
-import { onTargetFile, onTargetValue, preventDefault } from './eventHelper';
-import { addSpacesForEnum, capitalizeFirstLetter, lowercaseFirstLetter } from './stringHelper';
 import { timeout } from './asyncHelper';
-import { promiseFromResult } from './typescriptHacks';
-import { randomIntFromRange, randomItemFromArray } from './randomHelper';
+import { onTargetFile, onTargetValue, preventDefault } from './eventHelper';
 import { nameof } from './propHelper';
+import { randomIntFromRange, randomItemFromArray } from './randomHelper';
+import { addSpacesForEnum, capitalizeFirstLetter, lowercaseFirstLetter } from './stringHelper';
+import { promiseFromResult } from './typescriptHacks';
 
 describe('Helper tests', () => {
   describe('async helper', () => {
@@ -62,11 +60,11 @@ describe('Helper tests', () => {
   describe('prop helper', () => {
     test('nameof', () => {
       const testObj = {
-        test: 'teste',
-        tester: 'teste',
-        testest: 'teste',
+        test: 'test',
+        tester: 'test',
+        testerTest: 'test',
       };
-      expect(nameof<typeof testObj>('testest')).toBe('testest');
+      expect(nameof<typeof testObj>('testerTest')).toBe('testerTest');
     });
   });
 

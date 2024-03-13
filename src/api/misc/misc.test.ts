@@ -52,6 +52,6 @@ describe('Misc endpoints', () => {
   //     communityTest: () => {},
   //   });
   //   await routeFunctions(ctx, next);
-  //   expect(ctx.response.status).toBe(ApiStatusErrorCode.segmentNotFound);
+  //   expect(ctx.response.status).toBe(ApiStatusErrorCode.segmentNotFound.code);
   // });
 });

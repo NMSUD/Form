@@ -3,7 +3,6 @@ import Container from 'typedi';
 
 import { StateService } from './stateService';
 import { LocalStorageService } from './localStorageService';
-import { LocalStorageKey } from '@constants/site';
 
 describe('LocalStorage service', () => {
   describe('submission', () => {

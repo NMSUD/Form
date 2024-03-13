@@ -1,5 +1,4 @@
 import { getApiFileService } from '@services/internal/apiFileService';
-import { getLog } from '@services/internal/logService';
 
 export interface IImageDownloadRequest {
   url?: string | null;

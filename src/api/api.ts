@@ -6,6 +6,7 @@ import Koa from 'koa';
 import koaBody from 'koa-body';
 import bodyParser from 'koa-bodyparser';
 import serve from 'koa-static';
+import { koaSwagger } from 'koa2-swagger-ui';
 import path from 'path';
 import { Container } from 'typedi';
 
@@ -15,30 +16,76 @@ import { APP_TYPE, BOT_PATH, getBotPath, getConfig } from '@services/internal/co
 import { getLog } from '@services/internal/logService';
 import { handleRouteLookup } from './handleRouteLookup';
 import { versionEndpoint } from './misc/misc';
-import { formHandlerLookup, statusHandlerLookup, verifyHandlerLookup } from './routes/routeLookup';
+import { baseFormHandler } from './routes/baseFormHandler';
+import { baseStatusHandler } from './routes/baseStatusHandler';
+import { baseVerifyHandler } from './routes/baseVerifyHandler';
+import { baseFormHandlerSwagger } from './swagger/baseFormHandlerSwagger';
+import { baseStatusHandlerSwagger } from './swagger/baseStatusHandlerSwagger';
+import { baseVerifyHandlerSwagger } from './swagger/baseVerifyHandlerSwagger';
+import { registerSwaggerModuleComponents } from './swagger/registerSwaggerModuleComponents';
+import { registerSwaggerStaticComponents } from './swagger/registerSwaggerStaticComponents';
+import { versionSwagger } from './swagger/versionSwagger';
+import { SwaggerBuilder } from './swagger/swaggerBuilder';
 
 Container.set(BOT_PATH, __dirname);
 Container.set(APP_TYPE, AppType.Api);
 
 const koa = new Koa();
-
 getLog().i('Starting up http server');
 
 const bodyOptions = koaBody({ multipart: true });
+const swaggerBuilder = new SwaggerBuilder();
 const router = new Router();
 
-router.post(`/${api.routes.form}`, bodyOptions, handleRouteLookup(formHandlerLookup));
-router.get(`/${api.routes.verify}`, handleRouteLookup(verifyHandlerLookup));
-router.get(`/${api.routes.status}`, handleRouteLookup(statusHandlerLookup));
+router.post(
+  `/${api.routes.form}`,
+  bodyOptions,
+  handleRouteLookup({ handlerFunc: baseFormHandler }),
+);
+router.get(`/${api.routes.verify}`, handleRouteLookup({ handlerFunc: baseVerifyHandler }));
+router.get(`/${api.routes.status}`, handleRouteLookup({ handlerFunc: baseStatusHandler }));
+router.get(`/${api.routes.version}`, versionEndpoint(getConfig().getApiSecret()));
 
-// misc
-router.get('/version', versionEndpoint('secret'));
+// Swagger
+registerSwaggerStaticComponents(swaggerBuilder);
+registerSwaggerModuleComponents({
+  swaggerBuilder: swaggerBuilder,
+});
+baseFormHandlerSwagger({
+  path: api.routes.form,
+  method: 'post',
+  swaggerBuilder: swaggerBuilder,
+});
+baseVerifyHandlerSwagger({
+  path: api.routes.verify,
+  method: 'get',
+  swaggerBuilder: swaggerBuilder,
+});
+baseStatusHandlerSwagger({
+  path: api.routes.status,
+  method: 'get',
+  swaggerBuilder: swaggerBuilder,
+});
+versionSwagger({
+  path: api.routes.version,
+  method: 'get',
+  swaggerBuilder: swaggerBuilder,
+});
 
 // middleware
 koa.use(bodyParser());
 koa.use(router.routes());
 koa.use(serve(path.join(getBotPath(), '../public')));
 koa.use(cors());
+koa.use(
+  koaSwagger({
+    title: 'NMSUD Form API',
+    favicon: '/assets/favicon/favicon.ico',
+    routePrefix: '/swagger',
+    swaggerOptions: { spec: swaggerBuilder.toSpec() },
+    customCSS: swaggerBuilder.getCustomCss(),
+  }),
+);
 
 const port = getConfig().getApiPort();
 koa.listen(port);

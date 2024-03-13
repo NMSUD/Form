@@ -1,9 +1,9 @@
+import { processImageFromFormData } from '@api/facade/processImage';
 import { FormDataKey } from '@constants/form';
 import { IDatabaseFile } from '@contracts/databaseFile';
 import { IFormWithFiles } from '@contracts/file';
 import { ResultWithValue } from '@contracts/resultWithValue';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
-import { getApiFileService } from '@services/internal/apiFileService';
 import { getLog } from '@services/internal/logService';
 
 export interface IBuilderImages {
@@ -19,34 +19,34 @@ export const builderFileHandler = async (
   };
 
   const profilePicFileFromForm = formData[FormDataKey.profilePicFile];
-  const profilePicFileResult = await getApiFileService() //
-    .formDataToDatabaseFile(profilePicFileFromForm);
-  if (profilePicFileResult.isSuccess == false) {
-    getLog().e('handleBuilderFormSubmission profilePicFileFromForm', profilePicFileResult.value);
+  const resizedProfilePicResult = await processImageFromFormData(profilePicFileFromForm);
+  if (resizedProfilePicResult.isSuccess == false) {
+    getLog().e('handleBuilderFormSubmission profilePicFileFromForm', resizedProfilePicResult.value);
     return {
       isSuccess: false,
       value: result,
-      errorMessage: profilePicFileResult.errorMessage,
+      errorMessage: resizedProfilePicResult.errorMessage,
     };
   }
-  result.profilePicFile = profilePicFileResult.value;
+  result.profilePicFile = resizedProfilePicResult.value;
 
   const bioMediaFilesFromForm = formData[FormDataKey.bioMediaFiles];
   for (const bioMediaFileFromForm of makeArrayOrDefault(bioMediaFilesFromForm)) {
-    const bioMediaDbFileResult = await getApiFileService() //
-      .formDataToDatabaseFile(bioMediaFileFromForm);
-    if (bioMediaDbFileResult.isSuccess == false) {
+    const bioMediaDbBufferResult = await processImageFromFormData(bioMediaFileFromForm);
+    if (bioMediaDbBufferResult.isSuccess == false) {
       getLog().e(
         'handleBuilderFormSubmission bioMediaFileFromForm',
-        bioMediaDbFileResult.errorMessage,
+        bioMediaDbBufferResult.errorMessage,
       );
       return {
         isSuccess: false,
         value: result,
-        errorMessage: profilePicFileResult.errorMessage,
+        errorMessage: bioMediaDbBufferResult.errorMessage,
       };
     }
-    result.bioMediaFiles?.push(bioMediaDbFileResult.value);
+
+    if (result.bioMediaFiles == null) result.bioMediaFiles = [];
+    result.bioMediaFiles.push(bioMediaDbBufferResult.value);
   }
 
   return {

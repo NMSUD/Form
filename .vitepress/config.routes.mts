@@ -94,5 +94,17 @@ export const vitePressRoutes = {
       text: 'Code of Conduct',
       link: '/docs/misc/code-of-conduct',
     },
+    privacyPolicy: {
+      text: 'Privacy Policy',
+      link: '/docs/misc/privacy-policy',
+    },
+    termsAndConditions: {
+      text: 'Terms and Conditions',
+      link: '/docs/misc/terms-and-conditions',
+    },
+    changelog: {
+      text: 'Changelog',
+      link: '/docs/misc/changelog',
+    },
   },
 };
