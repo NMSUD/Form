@@ -64,7 +64,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     const dtoMeta: IFormDtoMetaDetails<string> = (
       props.formDtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>
     )?.[prop];
-    const saveToLocalStorage = dtoMeta?.saveToLocalStorage === true;
+    const saveToLocalStorage = dtoMeta?.saveToLocalStorage !== false;
 
     setItemBeingEdited((prev) => {
       const item = { ...prev, [prop]: value };

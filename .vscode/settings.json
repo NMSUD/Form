@@ -26,13 +26,17 @@
         "lastmod",
         "lenni",
         "Lourens",
+        "Milli",
         "mshick",
+        "nameof",
+        "Nefilmjp",
         "nmsassistant",
         "nmscd",
         "NMSUD",
         "nojekyll",
         "openapi",
         "pkief",
+        "ract",
         "seatonjiang",
         "sergeysova",
         "solidjs",
@@ -44,7 +48,8 @@
         "typedi",
         "typeof",
         "vitepress",
-        "Xata"
+        "Xata",
+        "xatarc"
     ],
     "cSpell.ignorePaths": [
         "node_modules",

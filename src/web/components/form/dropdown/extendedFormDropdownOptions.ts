@@ -51,10 +51,7 @@ export const extendedFormDropdownOptions = async <T>(
         value: '---',
       });
     }
-    opts = [
-      ...opts,
-      ...optsFromApi,
-    ];
+    opts = [...opts, ...optsFromApi];
   }
 
   return {
