@@ -1,4 +1,5 @@
-import { BuilderDto, BuilderDtoMeta } from '@contracts/dto/forms/builderDto';
+import { BuilderDto } from '@contracts/dto/forms/builderDto';
+import { BuilderDtoMeta } from '@contracts/dto/forms/meta/builderDto.meta';
 import { cyrb53 } from '@helpers/hashHelper';
 import { getDatabaseService } from '@services/external/database/databaseService';
 import { Builder } from '@services/external/database/xata';

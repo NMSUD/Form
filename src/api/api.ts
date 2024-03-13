@@ -22,10 +22,10 @@ import { baseVerifyHandler } from './routes/baseVerifyHandler';
 import { baseFormHandlerSwagger } from './swagger/baseFormHandlerSwagger';
 import { baseStatusHandlerSwagger } from './swagger/baseStatusHandlerSwagger';
 import { baseVerifyHandlerSwagger } from './swagger/baseVerifyHandlerSwagger';
+import { registerSwaggerStaticComponents } from './swagger/commonSwaggerOptions';
 import { registerSwaggerModuleComponents } from './swagger/registerSwaggerModuleComponents';
-import { registerSwaggerStaticComponents } from './swagger/registerSwaggerStaticComponents';
-import { versionSwagger } from './swagger/versionSwagger';
 import { SwaggerBuilder } from './swagger/swaggerBuilder';
+import { versionSwagger } from './swagger/versionSwagger';
 
 Container.set(BOT_PATH, __dirname);
 Container.set(APP_TYPE, AppType.Api);

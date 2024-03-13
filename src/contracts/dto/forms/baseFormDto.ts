@@ -6,6 +6,14 @@ export type IFormDtoMetaDetails<TV> = {
   validationLabel?: string;
   helpText?: string;
   defaultValue?: TV;
+  swaggerSchema?: {
+    ref?: string;
+    type: string;
+    format?: string;
+    itemsType?: string;
+    itemsRef?: string;
+    itemsFormat?: string;
+  };
   saveToLocalStorage?: boolean;
   validator: (val: TV) => ValidationResult;
 };

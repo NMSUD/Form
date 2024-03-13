@@ -3,13 +3,13 @@ import { Component } from 'solid-js';
 import { Labels } from '@constants/labels';
 import { funnyPlayerNames } from '@constants/names';
 import { contactDetailsMaxLength } from '@contracts/dto/forms/baseFormDto';
+import { BuilderDto } from '@contracts/dto/forms/builderDto';
 import {
-  BuilderDto,
   BuilderDtoMeta,
   builderBioMaxLength,
   builderStartedPlayingMaxDate,
   builderStartedPlayingMinDate,
-} from '@contracts/dto/forms/builderDto';
+} from '@contracts/dto/forms/meta/builderDto.meta';
 import { formatDate, formatForDateDropdown } from '@helpers/dateHelper';
 import { randomItemFromArray } from '@helpers/randomHelper';
 import { Card } from '@web/components/common/card';

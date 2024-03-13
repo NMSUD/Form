@@ -1,12 +1,9 @@
-import 'reflect-metadata';
+import path from 'path';
 import Container from 'typedi';
 import { describe, expect, test, vi } from 'vitest';
-import path from 'path';
 
 import { BOT_PATH } from '@services/internal/configService';
-import { baseFormHandlerSwagger } from './baseFormHandlerSwagger';
-import { SwaggerBuilder } from './swaggerBuilder';
-import { registerSwaggerStaticComponents } from './registerSwaggerStaticComponents';
+import { registerSwaggerStaticComponents } from './commonSwaggerOptions';
 
 describe('Swagger static components', () => {
   test('expected components exist', async () => {
@@ -16,6 +13,6 @@ describe('Swagger static components', () => {
       addComponent,
     };
     registerSwaggerStaticComponents(swaggerBuilder);
-    expect(addComponent).toBeCalledTimes(2);
+    expect(addComponent).toBeCalledTimes(3);
   });
 });

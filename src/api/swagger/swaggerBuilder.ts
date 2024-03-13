@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import path from 'path';
 
 import { site } from '@constants/site';
-import { getBotPath } from '@services/internal/configService';
+import { getBotPath, getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
 
 export class SwaggerBuilder {
@@ -52,9 +52,8 @@ export class SwaggerBuilder {
       openapi: '3.1.0',
       info: {
         title: 'NMSUD Form API',
-        summary: 'API functions for you to test',
-        description: 'How the API for receiving data from the NMSUD Form UI works',
-        termsOfService: 'https://nmsud.com/terms_and_conditions.html', // TODO
+        summary: 'An "easy to use" way of interacting with the API powering the NMSUD Form UI',
+        termsOfService: getConfig().getNmsUdFormDocsUrl() + '/misc/terms_and_conditions.html',
         contact: {
           name: site.nmsud.name,
           url: site.nmsud.website,

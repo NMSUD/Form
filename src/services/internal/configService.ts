@@ -8,6 +8,8 @@ export class ConfigService {
   getNmsUdFormWebUrl = () => this.get('VITE_NMSUD_FORM_WEB_URL');
   getNmsUdApiUrl = () => this.get('VITE_NMSUD_API_URL');
   getNmsUdFormDataUrl = () => this.get('VITE_NMSUD_FORM_DATA_URL');
+  getNmsUdFormDocsUrl = () => this.get('VITE_NMSUD_FORM_DOCS_URL');
+
   getApiPort = () => this.getNumber('API_PORT', 3001);
   getApiSecret = () => this.get('API_SECRET');
 

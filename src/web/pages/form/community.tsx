@@ -2,11 +2,12 @@ import { Component } from 'solid-js';
 
 import { Labels } from '@constants/labels';
 import { funnyPlayerNames } from '@constants/names';
+import { contactDetailsMaxLength } from '@contracts/dto/forms/baseFormDto';
+import { CommunityDto } from '@contracts/dto/forms/communityDto';
 import {
-  CommunityDto,
   CommunityDtoMeta,
   communityBioMaxLength,
-} from '@contracts/dto/forms/communityDto';
+} from '@contracts/dto/forms/meta/communityDto.meta';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { randomItemFromArray } from '@helpers/randomHelper';
 import { Card } from '@web/components/common/card';
@@ -19,7 +20,6 @@ import { FormSocialInput } from '@web/components/form/socialLink/social';
 import { FormLongInput } from '@web/components/form/text/input';
 import { FormTextArea } from '@web/components/form/text/textArea';
 import { PropertyOverrides } from '@web/contracts/formTypes';
-import { contactDetailsMaxLength } from '@contracts/dto/forms/baseFormDto';
 
 export const CommunityFormPage: Component = () => {
   const propertyOverrides: Array<PropertyOverrides<CommunityDto>> = [
