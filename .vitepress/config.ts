@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import { defineConfig } from 'vitepress';
-import { head } from './config.head.mts';
-import { nav } from './config.navbar.mts';
-import { sidebar } from './config.sidebar.mts';
+import { head } from './config.head';
+import { nav } from './config.navbar';
+import { sidebar } from './config.sidebar';
 
 export default defineConfig({
   title: 'NMSUD Form',
