@@ -12,6 +12,7 @@ concurrency:
 
 jobs:
   check-commit-message:
+    name: Check commit messages
     environment: github-pages
     runs-on: ubuntu-latest
 

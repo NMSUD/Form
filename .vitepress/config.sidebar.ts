@@ -1,5 +1,5 @@
 import { type DefaultTheme } from 'vitepress';
-import { vitePressRoutes } from './config.routes.mts';
+import { vitePressRoutes } from './config.routes';
 
 export const sidebar: DefaultTheme.SidebarItem[] = [
   {

@@ -11,6 +11,7 @@ concurrency:
 
 jobs:
   githubpages:
+    name: Github Pages
     runs-on: ubuntu-latest
 
     permissions:

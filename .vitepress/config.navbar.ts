@@ -1,6 +1,6 @@
 import { createRequire } from 'module';
 import { type DefaultTheme } from 'vitepress';
-import { vitePressRoutes } from './config.routes.mts';
+import { vitePressRoutes } from './config.routes';
 
 const require = createRequire(import.meta.url);
 const pkg = require('../package.json');
