@@ -14,11 +14,17 @@ This workflow builds all of the pages that are hosted on Github Pages. This incl
 
 This workflow runs the [unit tests](../testing/unit-tests.md), if any do not pass, the workflow should fail. This only needs to run on Pull requests into `main`
 
-## Build Artifacts
+## Github Tag and Release
 
-> [build-artifacts.yml](../../.github/workflows/build-artifacts.yml)
+> [github-tag-release](../../.github/workflows/github-tag-release.yml)
 
-This builds the projects in this repo and uploads the artifacts to Github, for potential future use 
+This tags the repo, builds the projects, creates a release with the version number in package.json and uploads the build files to the release.
+
+## Pull Request Checks
+
+> [pr-checks.yml](../../.github/workflows/pr-checks.yml)
+
+> Work In Progress, this workflow will perform several checks to make sure that the changes in the PR are adequate.
 
 ## Commit message check
 

@@ -4,7 +4,7 @@ We take security issues seriously, we will do our best to address any vulnerabil
 
 ## Reporting a Vulnerability
 
-We welcome the disclosure of any security vulnerabilities found through a [Github Security advisory][githubSecurityAdvisory], via our [discord][discord] or via an [email][contactEmail]. You can typically expect a 
+We welcome the disclosure of any security vulnerabilities found through a [Github Security advisory][githubSecurityAdvisory], via our [discord][discord] or via <!--@include: ../docs/contact.md{1,1}-->. You can typically expect a 
 response within two business days, and we typically have fixes out in under a week from the initial disclosure.
 
 Please do not open issues for anything you think might have a security implication.
@@ -15,5 +15,4 @@ We try our best to avoid storing any Personal Identifiable Information (PII). We
 
 <!-- Links used in the page -->
 [githubSecurityAdvisory]: https://github.com/NMSUD/Form/security/advisories
-[contactEmail]: mailto:support@nmsassistant.com
 [discord]: https://discord.gg/jQrNeWeTwR

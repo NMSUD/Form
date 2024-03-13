@@ -53,12 +53,15 @@ export const sidebar: DefaultTheme.SidebarItem[] = [
     ],
   },
   {
-    text: 'Github docs',
+    text: 'Other docs',
     collapsed: true,
     items: [
       vitePressRoutes.githubDocs.contributing,
       vitePressRoutes.githubDocs.security,
       vitePressRoutes.githubDocs.codeOfConduct,
+      vitePressRoutes.githubDocs.privacyPolicy,
+      vitePressRoutes.githubDocs.termsAndConditions,
+      vitePressRoutes.githubDocs.changelog,
     ],
   },
 ];
