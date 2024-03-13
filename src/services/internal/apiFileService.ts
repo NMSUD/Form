@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import { XataFile } from '@xata.io/client';
 import { Container, Service } from 'typedi';
 
 import { IDatabaseFile } from '@contracts/databaseFile';
@@ -11,6 +10,23 @@ import { getLog } from './logService';
 
 @Service()
 export class ApiFileService {
+  formDataToBuffer = async (formData: IFile): Promise<ResultWithValue<Buffer>> => {
+    try {
+      const contents = await fs.readFileSync(formData.filepath);
+      return {
+        isSuccess: true,
+        errorMessage: '',
+        value: contents,
+      };
+    } catch (ex) {
+      return {
+        isSuccess: false,
+        value: anyObject,
+        errorMessage: `Error occurred during file upload: ${ex?.toString?.()}`,
+      };
+    }
+  };
+
   formDataToDatabaseFile = async (formData: IFile): Promise<ResultWithValue<IDatabaseFile>> => {
     try {
       const contents = await fs.readFileSync(formData.filepath, { encoding: 'base64' });
