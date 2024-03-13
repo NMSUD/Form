@@ -12,6 +12,7 @@ concurrency:
 
 jobs:
   paths-filter:
+    name: Filter out non code changes
     runs-on: ubuntu-latest
     outputs:
       code-changed: ${{ steps.filter.outputs.src }}
@@ -83,8 +84,6 @@ jobs:
       
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
 
       - name: Get changed files
         id: changed-files
