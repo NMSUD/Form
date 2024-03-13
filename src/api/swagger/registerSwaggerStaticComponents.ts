@@ -1,4 +1,4 @@
-import { SwaggerBuilder } from '@api/utils/swagger';
+import { SwaggerBuilder } from '@api/swagger/swaggerBuilder';
 import { segmentLabels } from '@constants/api';
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
 import { getArrFromEnum } from '@helpers/enumHelper';

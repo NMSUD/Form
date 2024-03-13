@@ -1,4 +1,4 @@
-import { SwaggerBuilder } from '@api/utils/swagger';
+import { SwaggerBuilder } from '@api/swagger/swaggerBuilder';
 import { ApiStatusErrorCode, apiParams } from '@constants/api';
 import { OpenAPIV3_1 } from 'openapi-types';
 import {

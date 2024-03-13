@@ -136,5 +136,27 @@ describe('Base Validation', () => {
       });
       expect(validatorResults.length).toBe(2);
     });
+    test('handles exceptions', () => {
+      interface TestDto {
+        name: string;
+      }
+      const testDto: TestDto = {
+        name: 'fred',
+      };
+      const testValidation: IFormDtoMeta<TestDto> = {
+        name: {
+          label: 'Name',
+          validator: () => {
+            throw 'tester';
+          },
+        },
+      };
+      const validatorResults = validateObj<TestDto>({
+        data: testDto,
+        validationObj: testValidation,
+      });
+      expect(validatorResults.length).toBe(1);
+      expect(validatorResults[0].errorMessage).toContain('name');
+    });
   });
 });

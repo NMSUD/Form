@@ -1,6 +1,6 @@
 import { OpenAPIV3_1 } from 'openapi-types';
 
-import { SwaggerBuilder } from '@api/utils/swagger';
+import { SwaggerBuilder } from '@api/swagger/swaggerBuilder';
 
 export const versionSwagger = (props: {
   path: string;

@@ -25,7 +25,7 @@ import { baseVerifyHandlerSwagger } from './swagger/baseVerifyHandlerSwagger';
 import { registerSwaggerModuleComponents } from './swagger/registerSwaggerModuleComponents';
 import { registerSwaggerStaticComponents } from './swagger/registerSwaggerStaticComponents';
 import { versionSwagger } from './swagger/versionSwagger';
-import { SwaggerBuilder } from './utils/swagger';
+import { SwaggerBuilder } from './swagger/swaggerBuilder';
 
 Container.set(BOT_PATH, __dirname);
 Container.set(APP_TYPE, AppType.Api);
