@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">23.72% </span>
+                <span class="strong">23.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/59</span>
+                <span class='fraction'>14/60</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">23.72% </span>
+                <span class="strong">23.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/59</span>
+                <span class='fraction'>14/60</span>
             </div>
         
             
@@ -122,7 +122,8 @@
 <a name='L57'></a><a href='#L57'>57</a>
 <a name='L58'></a><a href='#L58'>58</a>
 <a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -181,12 +182,13 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { FormDataKey } from '@constants/form';
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { processImageFromFormData } from '@api/facade/processImage';
+import { FormDataKey } from '@constants/form';
 import { IDatabaseFile } from '@contracts/databaseFile';
 import { IFormWithFiles } from '@contracts/file';
 import { ResultWithValue } from '@contracts/resultWithValue';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
-import { getApiFileService } from '@services/internal/apiFileService';
 import { getLog } from '@services/internal/logService';
 &nbsp;
 export interface ICommunityImages {
@@ -202,36 +204,37 @@ export const communityFileHandler = <span class="fstat-no" title="function not c
 <span class="cstat-no" title="statement not covered" >  };</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  const profilePicFileFromForm = formData[FormDataKey.profilePicFile];</span>
-<span class="cstat-no" title="statement not covered" >  const profilePicFileResult = await getApiFileService().formDataToDatabaseFile(</span>
-<span class="cstat-no" title="statement not covered" >    profilePicFileFromForm, //</span>
-<span class="cstat-no" title="statement not covered" >  );</span>
-<span class="cstat-no" title="statement not covered" >  if (profilePicFileResult.isSuccess == false) {</span>
-<span class="cstat-no" title="statement not covered" >    getLog().e('handleCommunityFormSubmission profilePicFileFromForm', profilePicFileResult.value);</span>
+<span class="cstat-no" title="statement not covered" >  const resizedProfilePicResult = await processImageFromFormData(profilePicFileFromForm);</span>
+<span class="cstat-no" title="statement not covered" >  if (resizedProfilePicResult.isSuccess == false) {</span>
+<span class="cstat-no" title="statement not covered" >    getLog().e(</span>
+<span class="cstat-no" title="statement not covered" >      'handleCommunityFormSubmission profilePicFileFromForm',</span>
+<span class="cstat-no" title="statement not covered" >      resizedProfilePicResult.value,</span>
+<span class="cstat-no" title="statement not covered" >    );</span>
 <span class="cstat-no" title="statement not covered" >    return {</span>
 <span class="cstat-no" title="statement not covered" >      isSuccess: false,</span>
 <span class="cstat-no" title="statement not covered" >      value: result,</span>
-<span class="cstat-no" title="statement not covered" >      errorMessage: profilePicFileResult.errorMessage,</span>
+<span class="cstat-no" title="statement not covered" >      errorMessage: resizedProfilePicResult.errorMessage,</span>
 <span class="cstat-no" title="statement not covered" >    };</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" >  result.profilePicFile = profilePicFileResult.value;</span>
+<span class="cstat-no" title="statement not covered" >  result.profilePicFile = resizedProfilePicResult.value;</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  const bioMediaFilesFromForm = formData[FormDataKey.bioMediaFiles];</span>
 <span class="cstat-no" title="statement not covered" >  for (const bioMediaFileFromForm of makeArrayOrDefault(bioMediaFilesFromForm)) {</span>
-<span class="cstat-no" title="statement not covered" >    const bioMediaDbFileResult = await getApiFileService().formDataToDatabaseFile(</span>
-<span class="cstat-no" title="statement not covered" >      bioMediaFileFromForm, //</span>
-<span class="cstat-no" title="statement not covered" >    );</span>
-<span class="cstat-no" title="statement not covered" >    if (bioMediaDbFileResult.isSuccess == false) {</span>
+<span class="cstat-no" title="statement not covered" >    const bioMediaDbBufferResult = await processImageFromFormData(bioMediaFileFromForm);</span>
+<span class="cstat-no" title="statement not covered" >    if (bioMediaDbBufferResult.isSuccess == false) {</span>
 <span class="cstat-no" title="statement not covered" >      getLog().e(</span>
-<span class="cstat-no" title="statement not covered" >        'handleCommunityFormSubmission bioMediaFileFromForm',</span>
-<span class="cstat-no" title="statement not covered" >        bioMediaDbFileResult.errorMessage,</span>
+<span class="cstat-no" title="statement not covered" >        'handleBuilderFormSubmission bioMediaFileFromForm',</span>
+<span class="cstat-no" title="statement not covered" >        bioMediaDbBufferResult.errorMessage,</span>
 <span class="cstat-no" title="statement not covered" >      );</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
 <span class="cstat-no" title="statement not covered" >        isSuccess: false,</span>
 <span class="cstat-no" title="statement not covered" >        value: result,</span>
-<span class="cstat-no" title="statement not covered" >        errorMessage: profilePicFileResult.errorMessage,</span>
+<span class="cstat-no" title="statement not covered" >        errorMessage: bioMediaDbBufferResult.errorMessage,</span>
 <span class="cstat-no" title="statement not covered" >      };</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >    result.bioMediaFiles?.push(bioMediaDbFileResult.value);</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    if (result.bioMediaFiles == null) result.bioMediaFiles = [];</span>
+<span class="cstat-no" title="statement not covered" >    result.bioMediaFiles.push(bioMediaDbBufferResult.value);</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  return {</span>
@@ -247,7 +250,7 @@ export const communityFileHandler = <span class="fstat-no" title="function not c
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-07T16:39:09.590Z
+                at 2024-03-13T16:02:05.099Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

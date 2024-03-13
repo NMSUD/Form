@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">65% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>26/40</span>
+                <span class='fraction'>40/40</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">65% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>26/40</span>
+                <span class='fraction'>40/40</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -107,7 +107,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">32x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -117,7 +117,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -129,20 +129,20 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ValidationResult } from '@contracts/validationResult';
 &nbsp;
 export const minLength =
@@ -168,21 +168,21 @@ export const maxLength =
     };
   };
 &nbsp;
-export const shouldBeUrl = <span class="fstat-no" title="function not covered" >(value: string): ValidationResult =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  const safeValue = `${value}`;</span>
-<span class="cstat-no" title="statement not covered" >  const isHttps = [safeValue.includes?.('http://'), safeValue.includes?.('https://')];</span>
-<span class="cstat-no" title="statement not covered" >  const hasHttp = isHttps.filter((h) =&gt; h === true).length &gt; 0;</span>
-<span class="cstat-no" title="statement not covered" >  const numPeriods = safeValue.split('').filter((c) =&gt; c === '.').length;</span>
-<span class="cstat-no" title="statement not covered" >  const isLastCharPeriod = safeValue[safeValue.length - 1] === '.';</span>
-<span class="cstat-no" title="statement not covered" >  if (hasHttp &amp;&amp; numPeriods &gt; 0 &amp;&amp; !isLastCharPeriod) {</span>
-<span class="cstat-no" title="statement not covered" >    return { isValid: true };</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  return {</span>
-<span class="cstat-no" title="statement not covered" >    isValid: false,</span>
-<span class="cstat-no" title="statement not covered" >    errorMessage: `Should be a valid link/url. (${value}) does not meet the requirements.`,</span>
-<span class="cstat-no" title="statement not covered" >  };</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+export const shouldBeUrl = (value: string): ValidationResult =&gt; {
+  const safeValue = `${value}`;
+  const isHttps = [safeValue.includes?.('http://'), safeValue.includes?.('https://')];
+  const hasHttp = isHttps.filter((h) =&gt; h === true).length &gt; 0;
+  const numPeriods = safeValue.split('').filter((c) =&gt; c === '.').length;
+  const isLastCharPeriod = safeValue[safeValue.length - 1] === '.';
+  if (hasHttp &amp;&amp; numPeriods &gt; 0 &amp;&amp; !isLastCharPeriod) {
+    return { isValid: true };
+  }
+&nbsp;
+  return {
+    isValid: false,
+    errorMessage: `Should be a valid link/url. (${value}) does not meet the requirements.`,
+  };
+};
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -190,7 +190,7 @@ export const shouldBeUrl = <span class="fstat-no" title="function not covered" >
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-07T16:39:09.590Z
+                at 2024-03-13T16:02:05.099Z
             </div>
         <script src="../prettify.js"></script>
         <script>
