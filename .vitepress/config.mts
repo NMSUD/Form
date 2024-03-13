@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { defineConfig } from 'vitepress';
+import { head } from './config.head.mts';
 import { nav } from './config.navbar.mts';
 import { sidebar } from './config.sidebar.mts';
 
@@ -8,6 +9,7 @@ export default defineConfig({
   description: 'A custom solution for capturing data for the yearly Unification Days event',
   srcExclude: ['**/README.md', '**/TODO*.md'],
   lang: 'en-GB',
+  head: head,
   themeConfig: {
     logo: '/assets/img/logo.png',
     nav: nav,

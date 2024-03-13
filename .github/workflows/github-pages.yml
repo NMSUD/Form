@@ -38,9 +38,9 @@ jobs:
 
       - name: Set up documentation pages
         run: |
-          npm run docs:build
           echo "[coverage report](https://${{ env.DOCUMENTATION_URL }}/coverage/index.html)" > ./docs/generated.md
           echo "[view the hosted Storybook page](https://${{ env.DOCUMENTATION_URL }}/storybook)" >> ./docs/generated.md
+          npm run docs:build
           cp -r ./.vitepress/dist/. ./pages
 
       - name: Create code coverage report
