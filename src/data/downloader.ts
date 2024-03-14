@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 
 import fs from 'fs';
+import url from 'url';
 import path from 'path';
 import prompts from 'prompts';
 import { Container } from 'typedi';
@@ -15,8 +16,11 @@ import { communityImgDownloader } from './img/communityImgDownloader';
 import { baseNoopEnhancer } from './mapper/baseMapper';
 import { builderEnhancer } from './mapper/builderMapper';
 
+const currentFileName = url.fileURLToPath(import.meta.url);
+const directory = path.dirname(currentFileName);
+
 const downloader = async () => {
-  const dataFolder = path.join(__dirname, '../../data');
+  const dataFolder = path.join(directory, '../../data');
   Container.set(BOT_PATH, dataFolder);
   Container.set(APP_TYPE, AppType.DataGenerator);
 
