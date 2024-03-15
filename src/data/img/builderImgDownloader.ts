@@ -1,4 +1,5 @@
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
+import { getDatabaseService } from '@services/external/database/databaseService';
 import { Builder } from '@services/external/database/xata';
 import { getLog } from '@services/internal/logService';
 import { IGetImageForRecord } from '../contracts/image';
@@ -31,11 +32,11 @@ export const builderImgDownloader = async (
     return persistence;
   }
 
-  // persistence.approvalStatus = ApprovalStatus.approvedAndProcessed;
-  // const updatedRecordResult = await getDatabaseService()
-  //   .builder()
-  //   .update(persistence.id, persistence);
-  // if (updatedRecordResult.isSuccess == false) return props.persistence;
+  persistence.approvalStatus = ApprovalStatus.approvedAndProcessed;
+  const updatedRecordResult = await getDatabaseService()
+    .builder()
+    .update(persistence.id, persistence);
+  if (updatedRecordResult.isSuccess == false) return props.persistence;
 
   return persistence;
 };

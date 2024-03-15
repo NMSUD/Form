@@ -11,7 +11,6 @@ import { communityPublicUrlHandler } from './communityPublicUrlHandler';
 
 const getDbTable = () => getDatabaseService().community();
 export const communityModule: IApiModule<CommunityDto, ICommunityImages, Community> = {
-  name: 'CommunityDto',
   segment: 'community',
   dtoMeta: CommunityDtoMeta,
   persistenceMeta: CommunityPersistenceMeta,

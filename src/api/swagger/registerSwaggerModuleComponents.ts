@@ -1,6 +1,7 @@
 import { moduleLookup } from '@api/module/moduleLookup';
 import { SwaggerBuilder } from '@api/swagger/swaggerBuilder';
 import { IApiSegment, segmentLabels } from '@constants/api';
+import { segmentToDtoName } from './commonSwaggerOptions';
 
 export const registerSwaggerModuleComponents = (props: { swaggerBuilder: SwaggerBuilder }) => {
   for (const segment of Object.keys(segmentLabels)) {
@@ -52,7 +53,7 @@ export const registerSwaggerModuleComponents = (props: { swaggerBuilder: Swagger
     }
 
     props.swaggerBuilder.addComponent({
-      [module.name]: {
+      [segmentToDtoName(module.segment)]: {
         type: 'object',
         properties: propsObj,
         additionalProperties: false,

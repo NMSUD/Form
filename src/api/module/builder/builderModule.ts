@@ -15,7 +15,6 @@ import {
 
 const getDbTable = () => getDatabaseService().builder();
 export const builderModule: IApiModule<BuilderDto, IBuilderImages, Builder> = {
-  name: 'BuilderDto',
   segment: 'builder',
   dtoMeta: BuilderDtoMeta,
   persistenceMeta: BuilderPersistenceMeta,

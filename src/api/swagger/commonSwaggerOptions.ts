@@ -86,6 +86,8 @@ export const formWithApprovalResponseComponent: Record<string, OpenAPIV3_1.Schem
   },
 };
 
+export const segmentToDtoName = (segment: string) => capitalizeFirstLetter(segment) + 'Dto';
+
 export const registerSwaggerStaticComponents = (swaggerBuilder: SwaggerBuilder) => {
   swaggerBuilder.addComponent(segmentComponent);
   swaggerBuilder.addComponent(approvalStatusComponent);
@@ -96,7 +98,7 @@ export const componentsFromModule = (): Array<string> => {
   let components: Array<string> = [];
   for (const segment of Object.keys(segmentLabels)) {
     const module = moduleLookup[segment as keyof IApiSegment];
-    components.push(module.name);
+    components.push(segmentToDtoName(module.segment));
   }
   return components;
 };

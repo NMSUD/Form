@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 > _2024-0---_
 
+### Added
+
+### Changed
+
+- Apps now start with the package.json type set to module
+- Moved from `ts-node` to [tsx](https://www.npmjs.com/package/tsx)
+
+### Removed
+
+- `nodemon` dependency
+- `ts-node` dependency
+
 ## [1.0.5]
 
 > _2024-03-13_

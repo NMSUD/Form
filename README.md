@@ -11,8 +11,27 @@
   
   ![madeWithLove](https://github.com/NMSUD/.github/blob/main/badge/made-with-love.svg)
   ![gitmoji](https://github.com/NMSUD/.github/blob/main/badge/gitmoji.svg?raw=true)<br />
-  ![Profile views](https://komarev.com/ghpvc/?username=NMSUD&color=green&style=for-the-badge)<br />
-  
+
+![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
+![Vitest](https://img.shields.io/badge/Vitest-202127?style=for-the-badge&logo=vitest)
+![Vitepress](https://img.shields.io/badge/vitepress-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
+![Typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)<br />
+
+![SolidJS](https://img.shields.io/badge/Solid%20JS-2C4F7C?style=for-the-badge&logo=solid&logoColor=white)
+![HopeUI](https://img.shields.io/badge/HopeUI-05a2c2?style=for-the-badge&logo=chakraui&logoColor=white)
+![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
+![Storybook](https://img.shields.io/badge/-Storybook-FF4785?style=for-the-badge&logo=storybook&logoColor=white)
+<br />
+
+![koaJS](https://img.shields.io/badge/koaJS-%23404d59.svg?style=for-the-badge)
+![xata](https://img.shields.io/badge/xata.io-%239478FF.svg?style=for-the-badge)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Github Actions](https://img.shields.io/badge/Github%20Actions-2088FF?style=for-the-badge&logo=github%20actions&logoColor=white)
+<br />
+
+[![Supported by the No Man's Sky Community Developers & Designers](https://raw.githubusercontent.com/NMSCD/About/master/badge/green-ftb.svg)][nmscd]<br />
+![Profile views](https://komarev.com/ghpvc/?username=NMSUD&color=green&style=for-the-badge)
+
   <br /> 
 </div>
 
@@ -94,6 +113,7 @@ We have a [documentation][documentation] website, here you can find information 
 <!-- Links used in the page -->
 
 [nmsudWebsite]: https://nmsud.com
+[nmscd]: https://github.com/NMSCD?ref=nmsudForm
 [docker]: https://www.docker.com
 [dockerHub]: https://hub.docker.com
 [documentation]: https://nmsud-form-docs.nmsassistant.com
