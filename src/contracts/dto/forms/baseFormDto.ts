@@ -1,19 +1,25 @@
 import { ValidationResult } from '@contracts/validationResult';
 import { maxLength } from '@validation/textValidation';
 
+export type SwaggerPropertySchemaForItem = {
+  $ref?: string;
+  type?: string;
+  format?: string;
+};
+
+export type SwaggerPropertySchema = {
+  $ref?: string;
+  type?: string;
+  format?: string;
+  items?: SwaggerPropertySchemaForItem;
+};
+
 export type IFormDtoMetaDetails<TV> = {
   label: string;
   validationLabel?: string;
   helpText?: string;
   defaultValue?: TV;
-  swaggerSchema?: {
-    ref?: string;
-    type: string;
-    format?: string;
-    itemsType?: string;
-    itemsRef?: string;
-    itemsFormat?: string;
-  };
+  swaggerSchema?: SwaggerPropertySchema;
   saveToLocalStorage?: boolean;
   validator: (val: TV) => ValidationResult;
 };

@@ -26,7 +26,9 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
     defaultValue: [],
     swaggerSchema: {
       type: 'array',
-      itemsType: 'string',
+      items: {
+        type: 'string',
+      },
     },
     saveToLocalStorage: true,
     validator: noValidation,
@@ -36,7 +38,10 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
     saveToLocalStorage: true,
     swaggerSchema: {
       type: 'array',
-      itemsType: 'file',
+      items: {
+        type: 'string',
+        format: 'binary',
+      },
     },
     validator: separateValidation({
       Api: noValidation,
@@ -63,7 +68,7 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
     defaultValue: [],
     swaggerSchema: {
       type: 'array',
-      itemsType: 'string',
+      items: { type: 'string' },
     },
     validator: minLength(2),
   },
@@ -72,10 +77,9 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
     defaultValue: [],
     swaggerSchema: {
       type: 'array',
-      itemsType: 'string',
+      items: { type: 'string' },
     },
-    helpText:
-      'Please let us know if there is a missing build technique and we will likely add your suggestion',
+    helpText: `Please let us know if there is a missing build technique and we will likely add your suggestion`,
     validator: minItems(1),
   },
   builders: {
@@ -83,10 +87,9 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
     defaultValue: [],
     swaggerSchema: {
       type: 'array',
-      itemsType: 'string',
+      items: { type: 'string' },
     },
-    helpText:
-      'Are you unable to find a Builder? Ask the Builder to add their profile on this site, or add it yourself on the builder form.',
+    helpText: `Are you unable to find a Builder? Ask the Builder to add their profile on this site, or add it yourself on the builder form.`,
     validator: minItems(1),
   },
   contactDetails,

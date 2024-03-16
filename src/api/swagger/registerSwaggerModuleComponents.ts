@@ -14,33 +14,7 @@ export const registerSwaggerModuleComponents = (props: { swaggerBuilder: Swagger
         type: 'string',
       };
       if (dtoMetaObj.swaggerSchema != null) {
-        typeDescrip = {};
-        if (dtoMetaObj.swaggerSchema?.ref != null) {
-          typeDescrip.$ref = dtoMetaObj.swaggerSchema.ref;
-        }
-        if (dtoMetaObj.swaggerSchema?.type != null) {
-          typeDescrip.type = dtoMetaObj.swaggerSchema.type;
-        }
-        if (dtoMetaObj.swaggerSchema?.format != null) {
-          typeDescrip.format = dtoMetaObj.swaggerSchema.format;
-        }
-        const propsThatNeedItemProp = [
-          dtoMetaObj.swaggerSchema?.itemsType,
-          dtoMetaObj.swaggerSchema?.itemsRef,
-          dtoMetaObj.swaggerSchema?.itemsFormat,
-        ];
-        if (propsThatNeedItemProp.filter(Boolean).length > 0) {
-          typeDescrip.items = {};
-        }
-        if (dtoMetaObj.swaggerSchema?.itemsType != null) {
-          typeDescrip.items.type = dtoMetaObj.swaggerSchema.itemsType;
-        }
-        if (dtoMetaObj.swaggerSchema?.itemsRef != null) {
-          typeDescrip.items.$ref = dtoMetaObj.swaggerSchema.itemsRef;
-        }
-        if (dtoMetaObj.swaggerSchema?.itemsFormat != null) {
-          typeDescrip.items.format = dtoMetaObj.swaggerSchema.itemsFormat;
-        }
+        typeDescrip = dtoMetaObj.swaggerSchema;
       }
 
       propsObj = {

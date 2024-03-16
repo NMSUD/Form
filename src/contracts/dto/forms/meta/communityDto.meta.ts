@@ -54,7 +54,7 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     defaultValue: [],
     swaggerSchema: {
       type: 'array',
-      itemsType: 'string',
+      items: { type: 'string' },
     },
     saveToLocalStorage: true,
     validator: noValidation,
@@ -63,8 +63,7 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     label: 'Media upload',
     swaggerSchema: {
       type: 'array',
-      itemsType: 'string',
-      itemsFormat: 'binary',
+      items: { type: 'string', format: 'binary' },
     },
     saveToLocalStorage: true,
     validator: separateValidation({
@@ -77,7 +76,7 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     defaultValue: [],
     swaggerSchema: {
       type: 'array',
-      itemsType: 'string',
+      items: { type: 'string' },
     },
     validator: noValidation,
   },
@@ -91,7 +90,7 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     defaultValue: [],
     swaggerSchema: {
       type: 'array',
-      itemsType: 'string',
+      items: { type: 'string' },
     },
     validator: minItems(1),
   },
@@ -100,7 +99,7 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     defaultValue: [],
     swaggerSchema: {
       type: 'array',
-      itemsType: 'string',
+      items: { type: 'string' },
     },
     helpText: `Add links by pressing the "ENTER" key or clicking the arrow on the right hand side. These links will be displayed as icons, if we are missing a customised icon for a link, please feel free to let us know if the feedback page!`,
     validator: multiValidation(

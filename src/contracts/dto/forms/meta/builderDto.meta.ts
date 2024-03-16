@@ -31,7 +31,8 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
   profilePicFile: {
     label: 'Profile picture',
     swaggerSchema: {
-      type: 'binary',
+      type: 'string',
+      format: 'binary',
     },
     defaultValue: null,
     saveToLocalStorage: true,
@@ -59,7 +60,7 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     defaultValue: [],
     swaggerSchema: {
       type: 'array',
-      itemsType: 'number',
+      items: { type: 'number' },
     },
     validator: minItems(1),
   },
@@ -67,7 +68,7 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     label: 'Date that you started playing',
     swaggerSchema: {
       type: 'string',
-      itemsFormat: 'date-time',
+      items: { format: 'date-time' },
     },
     defaultValue: formatForDateDropdown(new Date()),
     validator: multiValidation(
@@ -79,7 +80,7 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     label: 'Build techniques used',
     swaggerSchema: {
       type: 'array',
-      itemsType: 'string',
+      items: { type: 'string' },
     },
     defaultValue: [],
     validator: minItems(1),
@@ -88,7 +89,7 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     label: 'Community affiliations',
     swaggerSchema: {
       type: 'array',
-      itemsType: 'string',
+      items: { type: 'string' },
     },
     defaultValue: [],
     helpText:
@@ -100,7 +101,7 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     defaultValue: [],
     swaggerSchema: {
       type: 'array',
-      itemsType: 'string',
+      items: { type: 'string' },
     },
     validator: multiValidation(
       minItems(1),
@@ -114,7 +115,7 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     defaultValue: [],
     swaggerSchema: {
       type: 'array',
-      itemsType: 'string',
+      items: { type: 'string' },
     },
     validator: validateForEach(multiValidation(minLength(2), shouldBeUrl)),
   },
