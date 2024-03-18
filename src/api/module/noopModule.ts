@@ -18,7 +18,7 @@ const fakeArrayResult = {
 };
 
 export const noopModule: IApiModule<string, string, IRecordRequirements> = {
-  segment: 'planetBase',
+  segment: 'planetBuild',
   dtoMeta: '',
   persistenceMeta: {},
   getName: (persistence: IRecordRequirements) => persistence.id,

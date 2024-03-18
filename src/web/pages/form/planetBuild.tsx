@@ -29,7 +29,7 @@ export const PlanetBuildFormPage: Component = () => {
       <Card class="form">
         <FormBuilder
           id="PlanetBuildDto"
-          segment="planetBase"
+          segment="planetBuild"
           getName={(dto: PlanetBuildDto) => dto.name}
           formDtoMeta={PlanetBuildDtoMeta}
           mappings={{

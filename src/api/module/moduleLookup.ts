@@ -6,5 +6,5 @@ import { noopModule } from './noopModule';
 export const moduleLookup: ModuleLookupType = {
   community: communityModule,
   builder: builderModule,
-  planetBase: noopModule,
+  planetBuild: noopModule,
 };

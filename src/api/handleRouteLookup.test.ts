@@ -30,7 +30,7 @@ describe('Route lookup', () => {
       module: {
         builder: { update: true } as any,
         community: {} as any,
-        planetBase: {} as any,
+        planetBuild: {} as any,
       },
     });
     await routeFunctions(fakeCtx, next);
@@ -54,7 +54,7 @@ describe('Route lookup', () => {
       module: {
         builder: { update: true } as any,
         community: {} as any,
-        planetBase: {} as any,
+        planetBuild: {} as any,
       },
     });
     await routeFunctions(ctx, next);

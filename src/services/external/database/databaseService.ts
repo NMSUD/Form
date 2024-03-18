@@ -12,16 +12,16 @@ import {
   CommunityBuilder,
   CommunityBuilderRecord,
   CommunityRecord,
-  PlanetBase,
-  PlanetBaseBuilder,
-  PlanetBaseBuilderRecord,
-  PlanetBaseRecord,
+  PlanetBuild,
+  PlanetBuildBuilder,
+  PlanetBuildBuilderRecord,
+  PlanetBuildRecord,
   XataClient,
 } from './xata';
 import {
-  getPlanetBaseByBuilderId,
-  getPlanetBaseByPlanetBaseId,
-} from './table/planetBaseBuilderTableOperations';
+  getPlanetBuildByBuilderId,
+  getPlanetBuildByPlanetBuildId,
+} from './table/planetBuildBuilderTableOperations';
 
 @Service()
 export class DatabaseService {
@@ -60,21 +60,21 @@ export class DatabaseService {
     getByCommunityId: getCommunityBuilderRecordByCommunityId(this._xata),
   });
 
-  planetBase = () =>
-    getCrudOperations<PlanetBase, PlanetBaseRecord>({
-      logName: 'PlanetBase',
-      repo: this._xata.db.planetBase,
+  planetBuild = () =>
+    getCrudOperations<PlanetBuild, PlanetBuildRecord>({
+      logName: 'PlanetBuild',
+      repo: this._xata.db.planetBuild,
       files: this._xata.files,
     });
 
-  planetBaseBuilder = () => ({
-    ...getCrudOperations<PlanetBaseBuilder, PlanetBaseBuilderRecord>({
-      logName: 'PlanetBaseBuilder',
-      repo: this._xata.db.planetBaseBuilder,
+  planetBuildBuilder = () => ({
+    ...getCrudOperations<PlanetBuildBuilder, PlanetBuildBuilderRecord>({
+      logName: 'PlanetBuildBuilder',
+      repo: this._xata.db.planetBuildBuilder,
       files: this._xata.files,
     }),
-    getByBuilderId: getPlanetBaseByBuilderId(this._xata),
-    getByPlanetBaseId: getPlanetBaseByPlanetBaseId(this._xata),
+    getByBuilderId: getPlanetBuildByBuilderId(this._xata),
+    getByPlanetBuildId: getPlanetBuildByPlanetBuildId(this._xata),
   });
 }
 

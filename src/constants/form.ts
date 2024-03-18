@@ -2,6 +2,7 @@ export const FormDataKey = {
   captcha: 'captcha',
   profilePicFile: 'profilePicFile',
   bioMediaFiles: 'bioMediaFiles[]',
+  mediaFiles: 'mediaFiles[]',
   data: 'data',
 };
 
