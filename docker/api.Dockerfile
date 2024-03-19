@@ -1,6 +1,10 @@
+# syntax=docker/dockerfile:1
+
+ARG NODE_VERSION=20.8.0
 ARG BUILD_VERSION=???
 ARG API_PORT=3001
-FROM node:20.0.0-bullseye-slim as builder
+
+FROM node:${NODE_VERSION}-bullseye-slim as builder
 
 WORKDIR /usr/src/app
 

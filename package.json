@@ -9,7 +9,7 @@
     "setup:hook": "git config core.hooksPath .githooks/",
     "start:api": "dotenv -- tsx watch --ignore src/**/*.spec.ts --tsconfig tsconfig.server.json src/api/api.ts",
     "start:public": "cd public && npx alive-server",
-    "start:web": "vite",
+    "start:web": "vite --host",
     "build": "npm-run-all --sequential build:*",
     "build:web": "vite build",
     "build:server": "tsc -p ./tsconfig.server.json && resolve-tspaths -p ./tsconfig.server.json --out ./build/src",
@@ -33,7 +33,11 @@
     "reflect-metadata": "^0.2.1",
     "solid-js": "^1.7.6",
     "solid-transition-group": "^0.0.10",
-    "typedi": "^0.10.0"
+    "typedi": "^0.10.0",
+    "vite": "^4.3.9",
+    "vite-plugin-package-version": "^1.0.2",
+    "vite-plugin-solid": "^2.7.0",
+    "vitest": "^1.2.2"
   },
   "devDependencies": {
     "@hcaptcha/types": "^1.0.3",
@@ -76,10 +80,6 @@
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.7.1",
     "typescript": "^5.1.3",
-    "vite": "^4.3.9",
-    "vite-plugin-package-version": "^1.0.2",
-    "vite-plugin-solid": "^2.7.0",
-    "vitepress": "^1.0.0-rc.44",
-    "vitest": "^1.2.2"
+    "vitepress": "^1.0.0-rc.44"
   }
 }

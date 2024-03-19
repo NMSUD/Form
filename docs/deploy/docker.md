@@ -8,7 +8,14 @@ _While the front-end is a ~~simple~~ [SolidJS][solidjs] app, which we could host
 
 Docker makes it easy to run applications without having anything installed on the host machine (other than docker). 
 
-## Build
+## Developing
+
+- Ensure that you `.env` is correct
+- Run `docker compose watch`
+  - This will run containers for the front-end and api
+  - Any changes made will be synced to the container
+
+## Build for production
 
 Ensure that you have [Docker][docker] installed. Also check that you have created a `.env` file (based on the `.env.template file`) and that you have filled in the variables. 
 

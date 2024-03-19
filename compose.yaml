@@ -1,0 +1,47 @@
+services:
+  web:
+    container_name: NMSUD-Form-Web
+    build:
+      context: .
+      dockerfile: ./docker/dev.web.Dockerfile
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /usr/src/app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./package.json
+        - action: rebuild
+          path: ./package-lock.json
+        - action: rebuild
+          path: ./vite.config.ts
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+  api:
+    container_name: NMSUD-Form-Api
+    build:
+      context: .
+      dockerfile: ./docker/dev.api.Dockerfile
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /usr/src/app
+          ignore:
+            - node_modules/
+            - build
+            - dist
+        - action: rebuild
+          path: ./package.json
+        - action: rebuild
+          path: ./package-lock.json
+        - action: rebuild
+          path: ./vite.config.ts
+    ports:
+      - ${API_PORT}:${API_PORT}
+    env_file:
+      - .env

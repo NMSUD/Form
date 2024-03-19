@@ -18,7 +18,7 @@ echo "registry: $DOCKER_REGISTRY/$DOCKER_TAG_NAME"
 
 docker build \
     -t $DOCKER_TAG_NAME \
-    -f Dockerfile \
+    -f ./docker/api.Dockerfile \
     --build-arg BUILD_VERSION=$version \
     --build-arg API_PORT=$API_PORT \
     --no-cache .

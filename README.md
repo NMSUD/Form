@@ -53,15 +53,15 @@ This script is able to pull all the uploaded images and the records out of the d
 
 ## 🏃‍♂️ Running the project
 
+<!-- This is used in vitepress, don't change the position of the following lines (58 to 73) -->
+
 ### Requirements
 
-- Almost any desktop computer (eg.. MacOS X, Linux, Windows)
-- An IDE with (e.g. IntelliJ, Android Studio, VSCode etc)
-- [NodeJS](https://nodejs.org) installed
+- [Node.js](https://nodejs.org/) version 18 or higher.
+- Terminal for running `npm` scripts.
+- [VSCode](https://code.visualstudio.com/) is recommended.
 
 ### Steps:
-
-<!-- This is used in vitepress, don't change the position of the following lines (46 to 54) -->
 
 1. Clone this repository.
 2. Copy and rename the `env.dart.template` file to `env.dart`.
