@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Apps now start with the package.json type set to module
 - Moved from `ts-node` to [tsx](https://www.npmjs.com/package/tsx)
+- How the Docker files are setup
+  - Improved Docker setup in general
+  - Added Docker setup for the web project
+  - Setup dev environment using Docker
 
 ### Removed
 
