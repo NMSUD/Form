@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from 'storybook-solidjs';
 
+import { CommunityDtoMeta } from '@contracts/dto/forms/meta/communityDto.meta';
 import { UseHopeUIThemeProvider, getFormInputArgTypes } from '../../storybook';
-import { CommunityDtoMeta } from '@contracts/dto/forms/communityDto';
-import { socialIcons } from '@constants/socialIcons';
 import { FormTagInput } from './tagInput';
 
 const meta = {

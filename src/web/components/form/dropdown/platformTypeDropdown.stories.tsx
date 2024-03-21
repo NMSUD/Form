@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from 'storybook-solidjs';
 
-import { BuilderDtoMeta } from '@contracts/dto/forms/builderDto';
-import { PlatformTypeDropdown } from './platformTypeDropdown';
+import { BuilderDtoMeta } from '@contracts/dto/forms/meta/builderDto.meta';
 import { UseHopeUIThemeProvider, getFormInputArgTypes } from '../../storybook';
+import { PlatformTypeDropdown } from './platformTypeDropdown';
 
 const meta = {
   title: 'Form/PlatformTypeDropdown',
