@@ -1,1 +1,0 @@
-import{_ as e,c as a,o as t,a5 as i}from"./chunks/framework.SJ4fLVJa.js";const g=JSON.parse('{"title":"Changelog","description":"","frontmatter":{},"headers":[],"relativePath":"CHANGELOG.md","filePath":"CHANGELOG.md"}'),l={name:"CHANGELOG.md"},o=i("",19),r=[o];function d(n,s,h,c,u,m){return t(),a("div",null,r)}const _=e(l,[["render",d]]);export{g as __pageData,_ as default};
