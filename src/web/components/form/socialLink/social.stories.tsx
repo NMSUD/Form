@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from 'storybook-solidjs';
 
+import { socialIcons } from '@constants/socialIcons';
+import { CommunityDtoMeta } from '@contracts/dto/forms/meta/communityDto.meta';
 import { UseHopeUIThemeProvider, getFormInputArgTypes } from '../../storybook';
 import { FormSocialInput } from './social';
-import { CommunityDtoMeta } from '@contracts/dto/forms/communityDto';
-import { socialIcons } from '@constants/socialIcons';
 
 const meta = {
   title: 'Form/SocialInput',
