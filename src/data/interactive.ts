@@ -1,5 +1,7 @@
 import 'reflect-metadata';
 
+import url from 'url';
+import path from 'path';
 import prompts from 'prompts';
 import { Container } from 'typedi';
 
@@ -11,8 +13,11 @@ import { getDiscordService } from '@services/external/discord/discordService';
 import { getGithubWorkflowService } from '@services/external/githubWorkflowService';
 import { APP_TYPE, BOT_PATH, getConfig } from '@services/internal/configService';
 
+const currentFileName = url.fileURLToPath(import.meta.url);
+const directory = path.dirname(currentFileName);
+
 const interactive = async () => {
-  Container.set(BOT_PATH, __dirname);
+  Container.set(BOT_PATH, directory);
   Container.set(APP_TYPE, AppType.Interactive);
   console.log('Welcome to the interactive data scripts');
 

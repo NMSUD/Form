@@ -5,9 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<!-- ## [Unreleased] -->
+## [Unreleased]
 
-## [1.0.5]
+## [1.0.6]
+
+> _2024-03-21_
+
+### Added
+
+- Handling of `PlanetBuild` submissions
+
+### Changed
+
+- Apps now start with the package.json type set to module
+- Moved from `ts-node` to [tsx](https://www.npmjs.com/package/tsx)
+- How the Docker files are setup
+  - Improved Docker setup in general
+  - Added Docker setup for the web project
+  - Setup dev environment using Docker
+
+### Removed
+
+- `nodemon` dependency
+- `ts-node` dependency
+
+## 1.0.5
 
 > _2024-03-13_
 
@@ -52,5 +74,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Data downloader
 
 [unreleased]: https://github.com/NMSUD/Form/compare/1.0.6...HEAD
-[1.0.6]: https://github.com/NMSUD/Form/compare/1.0.6...1.0.5
-[1.0.5]: https://github.com/NMSUD/Form/releases/tag/1.0.5
+[1.0.7]: https://github.com/NMSUD/Form/compare/1.0.7...1.0.6
+[1.0.6]: https://github.com/NMSUD/Form/releases/tag/1.0.6

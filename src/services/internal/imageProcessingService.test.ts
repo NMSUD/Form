@@ -1,8 +1,12 @@
 import fs from 'fs';
+import url from 'url';
 import path from 'path';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 
 import { ImageProcessingService } from './imageProcessingService';
+
+const currentFileName = url.fileURLToPath(import.meta.url);
+const directory = path.dirname(currentFileName);
 
 describe('Image processing service', () => {
   const testImages = [
@@ -15,13 +19,13 @@ describe('Image processing service', () => {
   ];
   beforeAll(async () => {
     for (const testImage of testImages) {
-      const fileLocation = path.join(__dirname, testImage.output);
+      const fileLocation = path.join(directory, testImage.output);
       fs.copyFileSync(testImage.input, fileLocation);
     }
   });
   afterAll(() => {
     for (const testImage of testImages) {
-      const fileLocation = path.join(__dirname, testImage.output);
+      const fileLocation = path.join(directory, testImage.output);
       if (fs.existsSync(fileLocation) === true) {
         fs.unlinkSync(fileLocation);
       }
@@ -31,7 +35,7 @@ describe('Image processing service', () => {
   test('metadata has correct data', async () => {
     const service = new ImageProcessingService();
     const metadataTestImg = testImages[0];
-    const fileLocation = path.join(__dirname, metadataTestImg.output);
+    const fileLocation = path.join(directory, metadataTestImg.output);
     const metadata = await service.getMetaData({
       input: fileLocation,
     });
@@ -51,7 +55,7 @@ describe('Image processing service', () => {
   test('resize image', async () => {
     const service = new ImageProcessingService();
     const metadataTestImg = testImages[0];
-    const fileLocation = path.join(__dirname, metadataTestImg.output);
+    const fileLocation = path.join(directory, metadataTestImg.output);
     const expectedWidth = 200;
 
     const resizeResult = await service.resize({

@@ -34,12 +34,12 @@ describe('LocalStorage service', () => {
         submissions: {
           community: [],
           builder: [newBuilder],
-          planetBase: [],
+          planetBuild: [],
         },
         form: {
           community: null,
           builder: null,
-          planetBase: null,
+          planetBuild: null,
         },
       });
     });

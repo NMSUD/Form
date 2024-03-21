@@ -22,12 +22,12 @@ export class StateService {
     submissions: {
       community: [],
       builder: [],
-      planetBase: [],
+      planetBuild: [],
     },
     form: {
       community: null,
       builder: null,
-      planetBase: null,
+      planetBuild: null,
     },
   };
 

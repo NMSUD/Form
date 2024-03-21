@@ -15,7 +15,6 @@ const persistence = {
   testP: 'test',
 };
 export const fakeModule: IApiModule<typeof domain, typeof file, typeof persistence> = {
-  name: '',
   segment: 'community',
   dtoMeta: {
     test: {
@@ -36,11 +35,11 @@ export const fakeModule: IApiModule<typeof domain, typeof file, typeof persisten
     test: 'mapped from persistence',
   }),
 
-  createRecord: (pers) => {
+  createRecord: (persistence) => {
     return promiseFromResult({
       isSuccess: true,
       value: {
-        ...pers,
+        ...persistence,
         id: 'createdId',
         approvalStatus: ApprovalStatus.pending,
       },
@@ -71,7 +70,7 @@ export const fakeModule: IApiModule<typeof domain, typeof file, typeof persisten
       errorMessage: '',
     });
   },
-  updateRecord: (id: string, pers) => {
+  updateRecord: (id: string, persistence) => {
     return promiseFromResult({
       isSuccess: true,
       errorMessage: '',
@@ -87,13 +86,13 @@ export const fakeModule: IApiModule<typeof domain, typeof file, typeof persisten
       errorMessage: '',
     });
   },
-  getPublicUrlsOfUploads: (pers) => ({
-    ...pers,
+  getPublicUrlsOfUploads: (persistence) => ({
+    ...persistence,
     id: 'publicUrls',
     approvalStatus: ApprovalStatus.pending,
   }),
 
-  calculateCheck: (pers) => 1234,
+  calculateCheck: (persistence) => 1234,
 };
 
 describe('ApiModule', () => {
@@ -101,6 +100,6 @@ describe('ApiModule', () => {
     expectTypeOf(fakeModule).toMatchTypeOf<
       IApiModule<typeof domain, typeof file, typeof persistence>
     >();
-    expectTypeOf(fakeModule.name).toMatchTypeOf<string>();
+    expectTypeOf(fakeModule.segment).toMatchTypeOf<string>();
   });
 });

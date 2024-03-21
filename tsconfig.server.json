@@ -8,7 +8,7 @@
     "jsx": "preserve",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "Node",
     "types": [
       "vite/client"
@@ -49,15 +49,12 @@
       ]
     }
   },
-  "ts-node": {
-    "require": ["tsconfig-paths/register"]
-  },
   "include": [
-    "src/**/*",
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    "**/*.spec.ts",
+    "**/*.test.ts",
     "build",
     "dist",
     "public",

@@ -1,9 +1,10 @@
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
+import { getDatabaseService } from '@services/external/database/databaseService';
 import { Community } from '@services/external/database/xata';
+import { getLog } from '@services/internal/logService';
 import { IGetImageForRecord } from '../contracts/image';
 import { IImageDownloadRequest, imageListDownloader } from './imageListDownloader';
-import { getLog } from '@services/internal/logService';
 
 export const communityImgDownloader = async (
   props: IGetImageForRecord<Community>,
@@ -51,11 +52,11 @@ export const communityImgDownloader = async (
     return persistence;
   }
 
-  // persistence.approvalStatus = ApprovalStatus.approvedAndProcessed;
-  // const updatedRecordResult = await getDatabaseService()
-  //   .community()
-  //   .update(persistence.id, persistence);
-  // if (updatedRecordResult.isSuccess == false) return props.persistence;
+  persistence.approvalStatus = ApprovalStatus.approvedAndProcessed;
+  const updatedRecordResult = await getDatabaseService()
+    .community()
+    .update(persistence.id, persistence);
+  if (updatedRecordResult.isSuccess == false) return props.persistence;
 
   return persistence;
 };

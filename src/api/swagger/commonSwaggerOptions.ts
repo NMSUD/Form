@@ -2,6 +2,10 @@ import { OpenAPIV3_1 } from 'openapi-types';
 
 import { moduleLookup } from '@api/module/moduleLookup';
 import { IApiSegment, apiParams, segmentLabels } from '@constants/api';
+import { getArrFromEnum } from '@helpers/enumHelper';
+import { ApprovalStatus } from '@constants/enum/approvalStatus';
+import { capitalizeFirstLetter } from '@helpers/stringHelper';
+import { SwaggerBuilder } from './swaggerBuilder';
 
 export const replaceVariableSyntax = (fullPath: string, ...variables: Array<string>) => {
   let result = fullPath.toString();
@@ -47,11 +51,54 @@ export const commonPathParam = {
   ),
 };
 
+export const segmentComponent: Record<string, OpenAPIV3_1.SchemaObject> = {
+  segment: {
+    type: 'string',
+    enum: Object.keys(segmentLabels),
+    additionalProperties: false,
+  },
+};
+export const approvalStatusComponent: Record<string, OpenAPIV3_1.SchemaObject> = {
+  ApprovalStatus: {
+    type: 'string',
+    enum: getArrFromEnum(ApprovalStatus).map(capitalizeFirstLetter),
+    additionalProperties: false,
+  },
+};
+export const formWithApprovalResponseComponent: Record<string, OpenAPIV3_1.SchemaObject> = {
+  IFormWithApprovalResponse: {
+    type: 'object',
+    properties: {
+      id: {
+        type: 'string',
+      },
+      name: {
+        type: 'string',
+      },
+      iconUrl: {
+        type: 'string',
+      },
+      approvalStatus: {
+        $ref: '#/components/schemas/ApprovalStatus',
+      },
+    },
+    additionalProperties: false,
+  },
+};
+
+export const segmentToDtoName = (segment: string) => capitalizeFirstLetter(segment) + 'Dto';
+
+export const registerSwaggerStaticComponents = (swaggerBuilder: SwaggerBuilder) => {
+  swaggerBuilder.addComponent(segmentComponent);
+  swaggerBuilder.addComponent(approvalStatusComponent);
+  swaggerBuilder.addComponent(formWithApprovalResponseComponent);
+};
+
 export const componentsFromModule = (): Array<string> => {
   let components: Array<string> = [];
   for (const segment of Object.keys(segmentLabels)) {
     const module = moduleLookup[segment as keyof IApiSegment];
-    components.push(module.name);
+    components.push(segmentToDtoName(module.segment));
   }
   return components;
 };

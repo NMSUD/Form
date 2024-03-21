@@ -8,10 +8,10 @@ export const builderCreateRelationships = async (
   persistence: Builder,
 ): Promise<Result> => {
   const itemsToCreate: Array<{ builder: string; community: string }> = [];
-  for (const commAffil of dto.communityAffiliations) {
+  for (const commAffiliations of dto.communityAffiliations) {
     itemsToCreate.push({
       builder: persistence.id,
-      community: commAffil,
+      community: commAffiliations,
     });
   }
 

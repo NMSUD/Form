@@ -1,7 +1,10 @@
 import { Container, Service } from 'typedi';
 import { getConfig } from '../../internal/configService';
 import { getCrudOperations } from './table/baseTableOperations';
-import { getByBuilderId, getByCommunityId } from './table/communityBuilderTableOperations';
+import {
+  getCommunityBuilderRecordByBuilderId,
+  getCommunityBuilderRecordByCommunityId,
+} from './table/communityBuilderTableOperations';
 import {
   Builder,
   BuilderRecord,
@@ -9,8 +12,16 @@ import {
   CommunityBuilder,
   CommunityBuilderRecord,
   CommunityRecord,
+  PlanetBuild,
+  PlanetBuildBuilder,
+  PlanetBuildBuilderRecord,
+  PlanetBuildRecord,
   XataClient,
 } from './xata';
+import {
+  getPlanetBuildByBuilderId,
+  getPlanetBuildByPlanetBuildId,
+} from './table/planetBuildBuilderTableOperations';
 
 @Service()
 export class DatabaseService {
@@ -45,8 +56,25 @@ export class DatabaseService {
       repo: this._xata.db.communityBuilder,
       files: this._xata.files,
     }),
-    getByBuilderId: getByBuilderId(this._xata),
-    getByCommunityId: getByCommunityId(this._xata),
+    getByBuilderId: getCommunityBuilderRecordByBuilderId(this._xata),
+    getByCommunityId: getCommunityBuilderRecordByCommunityId(this._xata),
+  });
+
+  planetBuild = () =>
+    getCrudOperations<PlanetBuild, PlanetBuildRecord>({
+      logName: 'PlanetBuild',
+      repo: this._xata.db.planetBuild,
+      files: this._xata.files,
+    });
+
+  planetBuildBuilder = () => ({
+    ...getCrudOperations<PlanetBuildBuilder, PlanetBuildBuilderRecord>({
+      logName: 'PlanetBuildBuilder',
+      repo: this._xata.db.planetBuildBuilder,
+      files: this._xata.files,
+    }),
+    getByBuilderId: getPlanetBuildByBuilderId(this._xata),
+    getByPlanetBuildId: getPlanetBuildByPlanetBuildId(this._xata),
   });
 }
 

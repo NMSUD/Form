@@ -11,8 +11,7 @@ export interface IRecordRequirements {
   approvalStatus: ApprovalStatus;
 }
 
-export type IApiModule<TD, TF, TP> = {
-  name: string;
+export interface IApiModule<TD, TF, TP> {
   segment: keyof IApiSegment;
   dtoMeta: IFormDtoMeta<TD>;
   persistenceMeta: IFormPersistenceMeta<TP>;
@@ -33,4 +32,4 @@ export type IApiModule<TD, TF, TP> = {
   getPublicUrlsOfUploads: (persistence: TP) => TP & IRecordRequirements;
 
   calculateCheck: (persistence: TP) => number;
-};
+}

@@ -3,12 +3,13 @@ import 'reflect-metadata';
 import cors from '@koa/cors';
 import Router from '@koa/router';
 import Koa from 'koa';
-import koaBody from 'koa-body';
+import { koaBody } from 'koa-body';
 import bodyParser from 'koa-bodyparser';
 import serve from 'koa-static';
 import { koaSwagger } from 'koa2-swagger-ui';
 import path from 'path';
 import { Container } from 'typedi';
+import url from 'url';
 
 import { api } from '@constants/api';
 import { AppType } from '@constants/enum/appType';
@@ -22,72 +23,79 @@ import { baseVerifyHandler } from './routes/baseVerifyHandler';
 import { baseFormHandlerSwagger } from './swagger/baseFormHandlerSwagger';
 import { baseStatusHandlerSwagger } from './swagger/baseStatusHandlerSwagger';
 import { baseVerifyHandlerSwagger } from './swagger/baseVerifyHandlerSwagger';
+import { registerSwaggerStaticComponents } from './swagger/commonSwaggerOptions';
 import { registerSwaggerModuleComponents } from './swagger/registerSwaggerModuleComponents';
-import { registerSwaggerStaticComponents } from './swagger/registerSwaggerStaticComponents';
-import { versionSwagger } from './swagger/versionSwagger';
 import { SwaggerBuilder } from './swagger/swaggerBuilder';
+import { versionSwagger } from './swagger/versionSwagger';
 
-Container.set(BOT_PATH, __dirname);
-Container.set(APP_TYPE, AppType.Api);
+const currentFileName = url.fileURLToPath(import.meta.url);
+const directory = path.dirname(currentFileName);
 
-const koa = new Koa();
-getLog().i('Starting up http server');
+const main = async () => {
+  Container.set(BOT_PATH, directory);
+  Container.set(APP_TYPE, AppType.Api);
 
-const bodyOptions = koaBody({ multipart: true });
-const swaggerBuilder = new SwaggerBuilder();
-const router = new Router();
+  const koa = new Koa();
+  getLog().i('Starting up http server');
 
-router.post(
-  `/${api.routes.form}`,
-  bodyOptions,
-  handleRouteLookup({ handlerFunc: baseFormHandler }),
-);
-router.get(`/${api.routes.verify}`, handleRouteLookup({ handlerFunc: baseVerifyHandler }));
-router.get(`/${api.routes.status}`, handleRouteLookup({ handlerFunc: baseStatusHandler }));
-router.get(`/${api.routes.version}`, versionEndpoint(getConfig().getApiSecret()));
+  const bodyOptions = koaBody({ multipart: true });
+  const swaggerBuilder = new SwaggerBuilder();
+  const router = new Router();
 
-// Swagger
-registerSwaggerStaticComponents(swaggerBuilder);
-registerSwaggerModuleComponents({
-  swaggerBuilder: swaggerBuilder,
-});
-baseFormHandlerSwagger({
-  path: api.routes.form,
-  method: 'post',
-  swaggerBuilder: swaggerBuilder,
-});
-baseVerifyHandlerSwagger({
-  path: api.routes.verify,
-  method: 'get',
-  swaggerBuilder: swaggerBuilder,
-});
-baseStatusHandlerSwagger({
-  path: api.routes.status,
-  method: 'get',
-  swaggerBuilder: swaggerBuilder,
-});
-versionSwagger({
-  path: api.routes.version,
-  method: 'get',
-  swaggerBuilder: swaggerBuilder,
-});
+  router.post(
+    `/${api.routes.form}`,
+    bodyOptions,
+    handleRouteLookup({ handlerFunc: baseFormHandler }),
+  );
+  router.get(`/${api.routes.verify}`, handleRouteLookup({ handlerFunc: baseVerifyHandler }));
+  router.get(`/${api.routes.status}`, handleRouteLookup({ handlerFunc: baseStatusHandler }));
+  router.get(`/${api.routes.version}`, versionEndpoint(getConfig().getApiSecret()));
 
-// middleware
-koa.use(bodyParser());
-koa.use(router.routes());
-koa.use(serve(path.join(getBotPath(), '../public')));
-koa.use(cors());
-koa.use(
-  koaSwagger({
-    title: 'NMSUD Form API',
-    favicon: '/assets/favicon/favicon.ico',
-    routePrefix: '/swagger',
-    swaggerOptions: { spec: swaggerBuilder.toSpec() },
-    customCSS: swaggerBuilder.getCustomCss(),
-  }),
-);
+  // Swagger
+  registerSwaggerStaticComponents(swaggerBuilder);
+  registerSwaggerModuleComponents({
+    swaggerBuilder: swaggerBuilder,
+  });
+  baseFormHandlerSwagger({
+    path: api.routes.form,
+    method: 'post',
+    swaggerBuilder: swaggerBuilder,
+  });
+  baseVerifyHandlerSwagger({
+    path: api.routes.verify,
+    method: 'get',
+    swaggerBuilder: swaggerBuilder,
+  });
+  baseStatusHandlerSwagger({
+    path: api.routes.status,
+    method: 'get',
+    swaggerBuilder: swaggerBuilder,
+  });
+  versionSwagger({
+    path: api.routes.version,
+    method: 'get',
+    swaggerBuilder: swaggerBuilder,
+  });
 
-const port = getConfig().getApiPort();
-koa.listen(port);
+  // middleware
+  koa.use(bodyParser());
+  koa.use(router.routes());
+  koa.use(serve(path.join(getBotPath(), '../public')));
+  koa.use(cors());
+  koa.use(
+    koaSwagger({
+      title: 'NMSUD Form API',
+      favicon: '/assets/favicon/favicon.ico',
+      routePrefix: '/swagger',
+      swaggerOptions: { spec: swaggerBuilder.toSpec() },
+      customCSS: swaggerBuilder.getCustomCss(),
+    }),
+  );
 
-getLog().i(`Koa setup complete. Available on port ${port}\n`);
+  const port = getConfig().getApiPort();
+  koa.listen(port);
+
+  getLog().i(`Koa setup complete. Available on port ${port}\n`);
+};
+
+main();

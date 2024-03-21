@@ -23,6 +23,13 @@ export const baseStatusHandlerSwagger = (props: {
         responses: {
           '200': {
             description: 'Form submission status',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/IFormWithApprovalResponse',
+                },
+              },
+            },
           },
           [ApiStatusErrorCode.recordNotFound.code]: {
             description: ApiStatusErrorCode.recordNotFound.message,

@@ -2,7 +2,7 @@ import { getLog } from '../../../internal/logService';
 import { ResultWithValue } from '@contracts/resultWithValue';
 import { XataClient, CommunityBuilderRecord } from '../xata';
 
-export const getByBuilderId =
+export const getCommunityBuilderRecordByBuilderId =
   (xata: XataClient) =>
   async (builderId: string): Promise<ResultWithValue<Array<CommunityBuilderRecord>>> => {
     try {
@@ -18,7 +18,7 @@ export const getByBuilderId =
         errorMessage: '',
       };
     } catch (ex) {
-      const errMsg = `getByBuilderId: ${ex?.toString?.()}`;
+      const errMsg = `getCommunityBuilderRecordByBuilderId: ${ex?.toString?.()}`;
       getLog().e(errMsg);
       return {
         isSuccess: false,
@@ -28,7 +28,7 @@ export const getByBuilderId =
     }
   };
 
-export const getByCommunityId =
+export const getCommunityBuilderRecordByCommunityId =
   (xata: XataClient) =>
   async (communityId: string): Promise<ResultWithValue<Array<CommunityBuilderRecord>>> => {
     try {
@@ -44,7 +44,7 @@ export const getByCommunityId =
         errorMessage: '',
       };
     } catch (ex) {
-      const errMsg = `getByCommunityId: ${ex?.toString?.()}`;
+      const errMsg = `getCommunityBuilderRecordByCommunityId: ${ex?.toString?.()}`;
       getLog().e(errMsg);
       return {
         isSuccess: false,

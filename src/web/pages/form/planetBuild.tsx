@@ -4,7 +4,8 @@ import { portalValidOptions } from '@constants/form';
 import { galaxies } from '@constants/galaxy';
 import { Labels } from '@constants/labels';
 import { contactDetailsMaxLength } from '@contracts/dto/forms/baseFormDto';
-import { PlanetBuildDto, PlanetBuildDtoMeta } from '@contracts/dto/forms/planetBuildDto';
+import { PlanetBuildDtoMeta } from '@contracts/dto/forms/meta/planetBuildDto.meta';
+import { PlanetBuildDto } from '@contracts/dto/forms/planetBuildDto';
 import { Card } from '@web/components/common/card';
 import { PageHeader } from '@web/components/common/pageHeader';
 import { FormDropdown } from '@web/components/form/dropdown/dropdown';
@@ -28,7 +29,7 @@ export const PlanetBuildFormPage: Component = () => {
       <Card class="form">
         <FormBuilder
           id="PlanetBuildDto"
-          segment="planetBase"
+          segment="planetBuild"
           getName={(dto: PlanetBuildDto) => dto.name}
           formDtoMeta={PlanetBuildDtoMeta}
           mappings={{

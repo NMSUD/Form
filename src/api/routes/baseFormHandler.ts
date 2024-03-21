@@ -20,7 +20,7 @@ import { validateObj } from '@validation/baseValidation';
 export const baseFormHandler =
   <TD, TF, TP>(module: IApiModule<TD, TF, TP>) =>
   async (ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>) => {
-    const handlerName = `formHandler-${module.name}`;
+    const handlerName = `formHandler-${module.segment}`;
     getLog().i(handlerName);
 
     const formDataFiles = ctx.request?.files ?? anyObject;
@@ -62,7 +62,7 @@ export const baseFormHandler =
       const dataString = formDataBody[FormDataKey.data];
       data = JSON.parse(dataString);
     } catch (ex) {
-      const errMsg = `${handlerName} formdata mapping: ${ex?.toString?.()}`;
+      const errMsg = `${handlerName} formData mapping: ${ex?.toString?.()}`;
       getLog().e(errMsg);
       await errorResponse({
         ctx,

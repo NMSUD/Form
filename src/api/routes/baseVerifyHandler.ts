@@ -24,7 +24,7 @@ export const baseVerifyHandler =
       decision: ctx.params[apiParams.verify.decision],
       check: ctx.params[apiParams.verify.check],
     };
-    const handlerName = `verifyHandler ${module.name} ${params.id}`;
+    const handlerName = `verifyHandler ${module.segment} ${params.id}`;
     getLog().i(handlerName);
 
     const approvalStatus = approvalStatusFromString(params.decision);

@@ -1,4 +1,5 @@
-import { CommunityDto, CommunityDtoMeta } from '@contracts/dto/forms/communityDto';
+import { CommunityDto } from '@contracts/dto/forms/communityDto';
+import { CommunityDtoMeta } from '@contracts/dto/forms/meta/communityDto.meta';
 import { cyrb53 } from '@helpers/hashHelper';
 import { getDatabaseService } from '@services/external/database/databaseService';
 import { Community } from '@services/external/database/xata';
@@ -10,7 +11,6 @@ import { communityPublicUrlHandler } from './communityPublicUrlHandler';
 
 const getDbTable = () => getDatabaseService().community();
 export const communityModule: IApiModule<CommunityDto, ICommunityImages, Community> = {
-  name: 'CommunityDto',
   segment: 'community',
   dtoMeta: CommunityDtoMeta,
   persistenceMeta: CommunityPersistenceMeta,
