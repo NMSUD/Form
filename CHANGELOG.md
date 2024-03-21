@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.6]
 
-> _2024-0---_
+> _2024-03-21_
 
 ### Added
 
@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `nodemon` dependency
 - `ts-node` dependency
 
-## [1.0.5]
+## 1.0.5
 
 > _2024-03-13_
 
@@ -74,5 +74,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Data downloader
 
 [unreleased]: https://github.com/NMSUD/Form/compare/1.0.6...HEAD
-[1.0.6]: https://github.com/NMSUD/Form/compare/1.0.6...1.0.5
-[1.0.5]: https://github.com/NMSUD/Form/releases/tag/1.0.5
+[1.0.7]: https://github.com/NMSUD/Form/compare/1.0.7...1.0.6
+[1.0.6]: https://github.com/NMSUD/Form/releases/tag/1.0.6
