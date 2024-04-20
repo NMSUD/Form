@@ -14,6 +14,7 @@ export const communityModule: IApiModule<CommunityDto, ICommunityImages, Communi
   segment: 'community',
   dtoMeta: CommunityDtoMeta,
   persistenceMeta: CommunityPersistenceMeta,
+  sendDiscordMessageOnSubmission: true,
   getName: (persistence: Community) => persistence.name,
   getIcon: (persistence: Community) => persistence.profilePicUrl,
 

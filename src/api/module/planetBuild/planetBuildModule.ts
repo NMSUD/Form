@@ -21,6 +21,7 @@ export const planetBuildModule: IApiModule<PlanetBuildDto, IPlanetBuildImages, P
   segment: 'planetBuild',
   dtoMeta: PlanetBuildDtoMeta,
   persistenceMeta: PlanetBuildPersistenceMeta,
+  sendDiscordMessageOnSubmission: true,
   getName: (persistence: PlanetBuild) => persistence.name,
   getIcon: (persistence: PlanetBuild) => persistence.mediaUrls?.[0] ?? '',
 

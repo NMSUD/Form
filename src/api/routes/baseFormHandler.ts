@@ -16,6 +16,7 @@ import { getDiscordService } from '@services/external/discord/discordService';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
 import { validateObj } from '@validation/baseValidation';
+import { successResponse } from '@api/misc/httpResponse/successResponse';
 
 export const baseFormHandler =
   <TD, TF, TP>(module: IApiModule<TD, TF, TP>) =>
@@ -136,6 +137,11 @@ export const baseFormHandler =
       dtoForDiscord = dtoResult.value;
     }
 
+    if (module.sendDiscordMessageOnSubmission != true) {
+      await successResponse({ ctx, body: createdRecordResult.value, next });
+      return;
+    }
+
     const discordUrl = getConfig().getDiscordWebhookUrl();
     const webhookPayload = baseSubmissionMessageBuilder({
       content: '',
@@ -167,9 +173,5 @@ export const baseFormHandler =
       } as TP & IRecordRequirements);
     }
 
-    ctx.response.status = 200;
-    ctx.set('Content-Type', 'application/json');
-    ctx.body = createdRecordResult.value;
-
-    await next();
+    await successResponse({ ctx, body: createdRecordResult.value, next });
   };

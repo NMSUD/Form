@@ -15,6 +15,7 @@ export interface IApiModule<TD, TF, TP> {
   segment: keyof IApiSegment;
   dtoMeta: IFormDtoMeta<TD>;
   persistenceMeta: IFormPersistenceMeta<TP>;
+  sendDiscordMessageOnSubmission: boolean;
   getName: (persistence: TP) => string;
   getIcon?: (persistence: TP) => string | null | undefined;
 

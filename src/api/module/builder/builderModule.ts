@@ -18,6 +18,7 @@ export const builderModule: IApiModule<BuilderDto, IBuilderImages, Builder> = {
   segment: 'builder',
   dtoMeta: BuilderDtoMeta,
   persistenceMeta: BuilderPersistenceMeta,
+  sendDiscordMessageOnSubmission: true,
   getName: (persistence: Builder) => persistence.name,
   getIcon: (persistence: Builder) => persistence.profilePicUrl,
 
