@@ -93,4 +93,4 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
     validator: minItems(1),
   },
   contactDetails,
-};
+} as const;

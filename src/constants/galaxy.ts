@@ -255,4 +255,4 @@ export const galaxies = [
   'Tuhgrespod',
   'Iousongola',
   'Odyalutai',
-];
+] as const;

@@ -4,11 +4,11 @@ export const FormDataKey = {
   bioMediaFiles: 'bioMediaFiles[]',
   mediaFiles: 'mediaFiles[]',
   data: 'data',
-};
+} as const;
 
 export const keyboardKeyCode = {
   enter: 13,
-};
+} as const;
 
 export const portalValidOptions = [
   '0',
@@ -27,7 +27,7 @@ export const portalValidOptions = [
   'd',
   'e',
   'f',
-];
+] as const;
 
 export const galacticCoordValidOptions = [
   '0',
@@ -47,4 +47,4 @@ export const galacticCoordValidOptions = [
   'e',
   'f',
   ':',
-];
+] as const;

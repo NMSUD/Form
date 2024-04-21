@@ -31,4 +31,4 @@ export const socialIcons = [
   'x.svg',
   'xbox.svg',
   'youtube.svg',
-];
+] as const;

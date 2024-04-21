@@ -70,7 +70,7 @@ export const routes = {
     title: '❓ About us',
     showInSidebar: true,
   },
-};
+} as const;
 
 export const removeAuthPrefix = (route: string) => route.replace('/auth', '');
 

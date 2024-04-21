@@ -45,9 +45,9 @@ export const site = {
     name: 'Eisvana',
     website: 'https://eisvana.github.io',
   },
-};
+} as const;
 
 export const LocalStorageKey = {
   main: 'nmsud-form',
   submissions: 'nmsud-submissions',
-};
+} as const;

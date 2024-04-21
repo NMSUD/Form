@@ -120,4 +120,4 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     validator: validateForEach(multiValidation(minLength(2), shouldBeUrl)),
   },
   contactDetails,
-};
+} as const;

@@ -76,4 +76,4 @@ export const ApiStatusErrorCode = {
     code: 524,
     message: 'The provided check and calculated checks do not match',
   },
-};
+} as const;

@@ -23,6 +23,7 @@
         "githubrelease",
         "gitmoji",
         "hcaptcha",
+        "Hesperius",
         "Intelli",
         "Khaoz",
         "Kurt",
@@ -57,7 +58,8 @@
         "typeof",
         "vitepress",
         "Xata",
-        "xatarc"
+        "xatarc",
+        "Youtuber"
     ],
     "cSpell.ignorePaths": [
         "node_modules",
@@ -67,6 +69,9 @@
         "build",
         "coverage",
         "dist",
-        "storybook-static"
+        "storybook-static",
+        "src/constants/galaxy.ts",
+        "src/constants/names.ts",
+        "src/constants/socialIcons.ts"
     ]
 }

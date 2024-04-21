@@ -109,4 +109,4 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     ),
   },
   contactDetails,
-};
+} as const;
