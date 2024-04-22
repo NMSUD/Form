@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.7] - 2024-0-----
 
+### Added
+
+- Additional fields on Community and Builder JSON exports
+
+### Changed
+
+- Refactored API & Downloader logic to take advantage of how similar actions are performed on database tables
+- Storybook version and the addons we use
+- Improved the automation of release notes
+
 ## [1.0.6] - 2024-03-21
 
 ### Added

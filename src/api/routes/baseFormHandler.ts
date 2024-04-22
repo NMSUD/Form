@@ -2,6 +2,7 @@ import Koa from 'koa';
 
 import { hasCaptcha } from '@api/guard/hasCaptcha';
 import { errorResponse } from '@api/misc/httpResponse/errorResponse';
+import { successResponse } from '@api/misc/httpResponse/successResponse';
 import { IApiModule, IRecordRequirements } from '@api/types/baseModule';
 import { ApiStatusErrorCode } from '@constants/api';
 import { ApprovalStatus, colourFromApprovalStatus } from '@constants/enum/approvalStatus';
@@ -16,7 +17,6 @@ import { getDiscordService } from '@services/external/discord/discordService';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
 import { validateObj } from '@validation/baseValidation';
-import { successResponse } from '@api/misc/httpResponse/successResponse';
 
 export const baseFormHandler =
   <TD, TF, TP>(module: IApiModule<TD, TF, TP>) =>

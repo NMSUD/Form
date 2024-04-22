@@ -1,6 +1,6 @@
-import { getLog } from '../../../internal/logService';
 import { ResultWithValue } from '@contracts/resultWithValue';
-import { XataClient, CommunityBuilderRecord } from '../xata';
+import { getLog } from '../../../internal/logService';
+import { CommunityBuilderRecord, XataClient } from '../xata';
 
 export const getCommunityBuilderRecordByBuilderId =
   (xata: XataClient) =>
@@ -10,7 +10,15 @@ export const getCommunityBuilderRecordByBuilderId =
         .filter({
           'builder.id': builderId,
         })
-        .select(['id', 'builder.id', 'builder.name', 'community.id', 'community.name'])
+        .select([
+          'id',
+          'builder.id',
+          'builder.name',
+          'builder.profilePicUrl',
+          'community.id',
+          'community.name',
+          'community.profilePicUrl',
+        ])
         .getAll();
       return {
         isSuccess: true,
@@ -36,7 +44,15 @@ export const getCommunityBuilderRecordByCommunityId =
         .filter({
           'community.id': communityId,
         })
-        .select(['id', 'builder.id', 'builder.name', 'community.id', 'community.name'])
+        .select([
+          'id',
+          'builder.id',
+          'builder.name',
+          'builder.profilePicUrl',
+          'community.id',
+          'community.name',
+          'community.profilePicUrl',
+        ])
         .getAll();
       return {
         isSuccess: true,
@@ -49,6 +65,34 @@ export const getCommunityBuilderRecordByCommunityId =
       return {
         isSuccess: false,
         value: [],
+        errorMessage: errMsg,
+      };
+    }
+  };
+
+export const getNumberOfBuildersByCommunityId =
+  (xata: XataClient) =>
+  async (communityId: string): Promise<ResultWithValue<number>> => {
+    try {
+      const records = await xata.db.communityBuilder.summarize({
+        summaries: {
+          numBuilders: { count: '*' },
+        },
+        filter: {
+          'community.id': communityId,
+        },
+      });
+      return {
+        isSuccess: true,
+        value: records.summaries[0].numBuilders,
+        errorMessage: '',
+      };
+    } catch (ex) {
+      const errMsg = `getNumberOfBuildersByCommunityId: ${ex?.toString?.()}`;
+      getLog().e(errMsg);
+      return {
+        isSuccess: false,
+        value: -1,
         errorMessage: errMsg,
       };
     }

@@ -2,16 +2,20 @@ import fs from 'fs';
 import path from 'path';
 
 import { IRecordRequirements } from '@api/types/baseModule';
-import { getBotPath } from '@services/internal/configService';
-import { IGetImageForRecord } from '../contracts/image';
 import { IApiSegment } from '@constants/api';
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
+import { Result } from '@contracts/resultWithValue';
+import { getBotPath } from '@services/internal/configService';
+import { getLog } from '@services/internal/logService';
+import { IProcessedRecord } from 'data/contracts/processedRecord';
+import { IGetImageForRecord } from '../contracts/image';
 
-interface IFetchImagesProps<T> {
+interface IFetchImagesProps<TP> {
   imageFolder: keyof IApiSegment;
-  items: Array<T>;
+  items: Array<TP>;
   imgBaseUrl: string;
-  processItemImgs: (props: IGetImageForRecord<T>) => Promise<T>;
+  processItemImgs: (props: IGetImageForRecord<TP>) => Promise<IProcessedRecord<TP>>;
+  updateItemInDb: (props: TP) => Promise<Result>;
 }
 
 export const fetchImagesForTable = async <T extends IRecordRequirements>(
@@ -28,15 +32,11 @@ export const fetchImagesForTable = async <T extends IRecordRequirements>(
     fs.mkdirSync(imagePath);
   }
 
-  const skipStatuses = [
-    ApprovalStatus.pending,
-    ApprovalStatus.changesNeeded,
-    ApprovalStatus.denied,
-  ];
+  const allowedStatuses = [ApprovalStatus.approved, ApprovalStatus.approvedAndProcessed];
 
   const recordResult: Array<T> = [];
   for (const record of props.items) {
-    if (skipStatuses.includes(record.approvalStatus)) continue;
+    if (allowedStatuses.includes(record.approvalStatus) === false) continue;
 
     const mappedRecord = await props.processItemImgs({
       imageFolder: imageSegmentFolder,
@@ -44,7 +44,21 @@ export const fetchImagesForTable = async <T extends IRecordRequirements>(
       persistence: record,
       imgBaseUrl: props.imgBaseUrl,
     });
-    recordResult.push(mappedRecord);
+
+    if (mappedRecord.persistence.approvalStatus !== ApprovalStatus.approvedAndProcessed) {
+      mappedRecord.persistence.approvalStatus = ApprovalStatus.approvedAndProcessed;
+    }
+
+    if (mappedRecord.needsUpdating) {
+      getLog().i(`record ${mappedRecord.persistence.id} needs updating`);
+      const updatedRecordResult = await props.updateItemInDb(mappedRecord.persistence);
+      if (updatedRecordResult.isSuccess === false) {
+        const errMsg = `Error occurred while updating a processed record: ${updatedRecordResult.errorMessage}`;
+        getLog().e(errMsg);
+      }
+    }
+
+    recordResult.push(mappedRecord.persistence);
   }
 
   return recordResult;
