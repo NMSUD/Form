@@ -15,6 +15,9 @@ import { builderImgDownloader } from './img/builderImgDownloader';
 import { communityImgDownloader } from './img/communityImgDownloader';
 import { builderEnhancer } from './mapper/builderMapper';
 import { communityEnhancer } from './mapper/communityMapper';
+import { planetBuildModule } from '@api/module/planetBuild/planetBuildModule';
+import { baseNoopEnhancer } from './mapper/baseMapper';
+import { planetBuildImgDownloader } from './img/planetBuildImgDownloader';
 
 const currentFileName = url.fileURLToPath(import.meta.url);
 const directory = path.dirname(currentFileName);
@@ -40,6 +43,13 @@ const downloader = async () => {
     processItemImgs: builderImgDownloader,
     updateItemInDb: (p) => getDatabaseService().builder().update(p.id, p),
     dataEnhancer: builderEnhancer,
+  });
+
+  await processTable({
+    module: planetBuildModule,
+    processItemImgs: planetBuildImgDownloader,
+    updateItemInDb: (p) => getDatabaseService().planetBuild().update(p.id, p),
+    dataEnhancer: baseNoopEnhancer,
   });
 
   // json generation

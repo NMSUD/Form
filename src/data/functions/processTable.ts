@@ -4,7 +4,7 @@ import { Result } from '@contracts/resultWithValue';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
 import { IGetImageForRecord } from '../contracts/image';
-import { fetchImagesForTable } from '../img/baseImgDownloader';
+import { fetchImagesForTable } from '../img/logic/baseImgDownloader';
 import { generateJsonFile } from '../json/jsonGenerator';
 import { stripPropertiesFromObject } from '../mapper/stripProperties';
 import { IProcessedRecord } from 'data/contracts/processedRecord';
@@ -21,7 +21,7 @@ export const processTable = async <TD extends {}, TF, TP extends IRecordRequirem
   const tableResult = await tableProps.module.readAllRecords();
   if (tableResult.isSuccess == false) return throwError(tableResult.errorMessage);
 
-  getLog().i('\tFetch images per row');
+  getLog().i('\tDownloading images per row');
   const updatedTable = await fetchImagesForTable({
     items: tableResult.value,
     imageFolder: tableProps.module.segment,
@@ -30,6 +30,7 @@ export const processTable = async <TD extends {}, TF, TP extends IRecordRequirem
     updateItemInDb: tableProps.updateItemInDb,
   });
 
+  getLog().i('\tEnriching data per row');
   const enrichedDtoRows: Array<unknown> = [];
   for (const tableRow of updatedTable) {
     const dto = tableProps.module.mapPersistenceToDto(tableRow);
@@ -37,11 +38,12 @@ export const processTable = async <TD extends {}, TF, TP extends IRecordRequirem
     enrichedDtoRows.push(enhancedDto);
   }
 
-  getLog().i('\tWriting base jsonFiles');
+  getLog().i(`\tWriting ${tableProps.module.segment}.json file`);
   generateJsonFile({
     items: enrichedDtoRows.map((edr) => stripPropertiesFromObject(edr as TD)),
     outputFile: tableProps.module.segment,
   });
+  getLog().i('');
 };
 
 const throwError = (errMsg: string) => {

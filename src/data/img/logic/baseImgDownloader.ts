@@ -8,7 +8,7 @@ import { Result } from '@contracts/resultWithValue';
 import { getBotPath } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
 import { IProcessedRecord } from 'data/contracts/processedRecord';
-import { IGetImageForRecord } from '../contracts/image';
+import { IGetImageForRecord } from '../../contracts/image';
 
 interface IFetchImagesProps<TP> {
   imageFolder: keyof IApiSegment;
@@ -50,12 +50,12 @@ export const fetchImagesForTable = async <T extends IRecordRequirements>(
     }
 
     if (mappedRecord.needsUpdating) {
-      getLog().i(`record ${mappedRecord.persistence.id} needs updating`);
-      const updatedRecordResult = await props.updateItemInDb(mappedRecord.persistence);
-      if (updatedRecordResult.isSuccess === false) {
-        const errMsg = `Error occurred while updating a processed record: ${updatedRecordResult.errorMessage}`;
-        getLog().e(errMsg);
-      }
+      getLog().i(`\t\tUpdating record ${mappedRecord.persistence.id}`);
+      // const updatedRecordResult = await props.updateItemInDb(mappedRecord.persistence);
+      // if (updatedRecordResult.isSuccess === false) {
+      //   const errMsg = `Error occurred while updating a processed record: ${updatedRecordResult.errorMessage}`;
+      //   getLog().e(errMsg);
+      // }
     }
 
     recordResult.push(mappedRecord.persistence);
