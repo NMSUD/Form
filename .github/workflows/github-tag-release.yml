@@ -33,7 +33,7 @@ jobs:
       - name: Build all projects
         run: npm run build
 
-      - name: Build all projects
+      - name: Generate release notes
         run: |
           version=${{ env.VERSION }}
           mode="ignore"

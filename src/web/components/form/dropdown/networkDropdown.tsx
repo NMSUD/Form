@@ -1,9 +1,3 @@
-import { Component, Match, Switch, createSignal } from 'solid-js';
-
-import { NetworkState } from '@constants/enum/networkState';
-import { IDropdownOption } from '@contracts/dropdownOption';
-import { ResultWithValue } from '@contracts/resultWithValue';
-import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import {
   FormControl,
   FormLabel,
@@ -13,6 +7,12 @@ import {
   SelectTrigger,
   Text,
 } from '@hope-ui/solid';
+import { Component, Match, Switch, createSignal } from 'solid-js';
+
+import { NetworkState } from '@constants/enum/networkState';
+import { IDropdownOption } from '@contracts/dropdownOption';
+import { ResultWithValue } from '@contracts/resultWithValue';
+import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { LoadingSpinner } from '@web/components/core/loading';
 import { FormInputProps } from '@web/contracts/formTypes';
 import { Dropdown } from '../../common/dropdown';

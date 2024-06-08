@@ -79,28 +79,28 @@ export const GalacticCoordsInput: Component<IFormGalacticCoordsInputProps> = (
               {
                 id: '1',
                 accessor: groupA,
-                settor: setGroupA,
+                setter: setGroupA,
                 setCurrentRef: (el: HTMLInputElement) => (groupARef = el),
                 nextRef: () => groupBRef,
               },
               {
                 id: '2',
                 accessor: groupB,
-                settor: setGroupB,
+                setter: setGroupB,
                 setCurrentRef: (el: HTMLInputElement) => (groupBRef = el),
                 nextRef: () => groupCRef,
               },
               {
                 id: '3',
                 accessor: groupC,
-                settor: setGroupC,
+                setter: setGroupC,
                 setCurrentRef: (el: HTMLInputElement) => (groupCRef = el),
                 nextRef: () => groupDRef,
               },
               {
                 id: '4',
                 accessor: groupD,
-                settor: setGroupD, //
+                setter: setGroupD, //
                 setCurrentRef: (el: HTMLInputElement) => (groupDRef = el),
               },
             ]}
@@ -123,7 +123,7 @@ export const GalacticCoordsInput: Component<IFormGalacticCoordsInputProps> = (
                   placeholder={`${data.id}${data.id}${data.id}${data.id}`}
                   value={data.accessor()}
                   size="lg"
-                  onInput={handleNavigateToNextInput(data.settor, data.nextRef?.())}
+                  onInput={handleNavigateToNextInput(data.setter, data.nextRef?.())}
                 />
               </>
             )}

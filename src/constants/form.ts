@@ -29,7 +29,7 @@ export const portalValidOptions = [
   'f',
 ] as const;
 
-export const galacticCoordValidOptions = [
+export const galacticCoordValidOptions: Array<string> = [
   '0',
   '1',
   '2',
