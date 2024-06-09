@@ -10,7 +10,7 @@ Docker makes it easy to run applications without having anything installed on th
 
 ## Developing
 
-- Ensure that you `.env` is correct
+- Ensure that your `.env` is correct
 - Run `docker compose watch`
   - This will run containers for the front-end and api
   - Any changes made will be synced to the container
@@ -19,7 +19,7 @@ Docker makes it easy to run applications without having anything installed on th
 
 Ensure that you have [Docker][docker] installed. Also check that you have created a `.env` file (based on the `.env.template file`) and that you have filled in the variables. 
 
-From the root directory of this project (where the `Dockerfile` is), run `sh ./scripts/buildDocker.sh`. This will get some info required from the `.env` that you should have created and start the process of building the image using [Docker][docker].
+From the root directory of this project (where the `Dockerfile` is), run `sh ./docker/buildAndDeploy.sh`. This will get some info required from the `.env` that you should have created and start the process of building the image using [Docker][docker].
 
 ## Configure
 

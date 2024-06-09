@@ -1,6 +1,9 @@
 #! /bin/sh
 
-ENV_FILE=./.env
+echo -n "Supply .env suffix e.g. '.prod'. If left empty, .env will be loaded: "
+read envSuffix
+
+ENV_FILE="./.env${envSuffix}"
 if [ -f "$ENV_FILE" ]; then
     export $(grep -v '^#' $ENV_FILE | xargs)
 else
@@ -24,7 +27,7 @@ docker build \
     --no-cache .
 
 # ----------------------- Tag and push to remote -----------------------
-echo -n "Tag and push to registry? [y/n] "
+echo -n "Tag and push to registry? [y/n]: "
 read shouldTagAndPush
 
 if [ $shouldTagAndPush != "y" ]; then
