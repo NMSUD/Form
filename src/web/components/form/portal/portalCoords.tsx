@@ -36,7 +36,7 @@ export const PortalCoordInput: Component<IFormPortalCoordInputProps> = (
   }, [props.showValidationMessages]);
 
   createEffect(() => {
-    const correctedValue = portalCode()
+    const correctedValue = (portalCode() ?? '')
       .split('')
       .filter((c) => portalValidOptions.includes(c.toLowerCase()))
       .join('')

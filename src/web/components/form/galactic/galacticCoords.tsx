@@ -109,7 +109,7 @@ export const GalacticCoordsInput: Component<IFormGalacticCoordsInputProps> = (
               <>
                 <Show when={index() !== 0}>
                   <Center>
-                    <Text size="xl" p="$2">
+                    <Text p="$2" fontWeight="bolder">
                       :
                     </Text>
                   </Center>
@@ -119,10 +119,9 @@ export const GalacticCoordsInput: Component<IFormGalacticCoordsInputProps> = (
                   id={`galactic-group-${data.id}`}
                   class="noselect"
                   textAlign="center"
-                  minWidth="200px"
+                  minWidth="100px"
                   placeholder={`${data.id}${data.id}${data.id}${data.id}`}
                   value={data.accessor()}
-                  size="lg"
                   onInput={handleNavigateToNextInput(data.setter, data.nextRef?.())}
                 />
               </>

@@ -20,6 +20,10 @@ import { FormSocialInput } from '@web/components/form/socialLink/social';
 import { FormLongInput } from '@web/components/form/text/input';
 import { FormTextArea } from '@web/components/form/text/textArea';
 import { PropertyOverrides } from '@web/contracts/formTypes';
+import { GalacticCoordsInput } from '@web/components/form/galactic/galacticCoords';
+import { galaxyDropdown } from '@constants/galaxy';
+import { PortalCoordInput } from '@web/components/form/portal/portalCoords';
+import { portalValidOptions } from '@constants/form';
 
 export const CommunityFormPage: Component = () => {
   const propertyOverrides: Array<PropertyOverrides<CommunityDto>> = [
@@ -66,8 +70,21 @@ export const CommunityFormPage: Component = () => {
             },
             bioMediaFiles: {
               component: FormSocialInput,
-              gridItemColumnSize: GridItemSize.small,
+              gridItemColumnSize: GridItemSize.long,
               placeholder: 'Upload your images',
+            },
+            homeGalaxy: {
+              component: FormDropdown,
+              gridItemColumnSize: GridItemSize.medium,
+              placeholder: 'Select your Galaxy',
+              additional: {
+                options: (_) => galaxyDropdown,
+              },
+            },
+            coordinates: {
+              component: PortalCoordInput,
+              gridItemColumnSize: GridItemSize.xxlong,
+              placeholder: portalValidOptions.map((p) => p.toUpperCase()).join(''),
             },
             bio: {
               component: FormTextArea,

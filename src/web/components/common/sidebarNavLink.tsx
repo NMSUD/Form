@@ -1,8 +1,8 @@
-import { hope } from '@hope-ui/solid';
+import { hope, Text } from '@hope-ui/solid';
 import { NavLink } from '@solidjs/router';
 import { ComponentProps, splitProps } from 'solid-js';
 
-const StyledNavLink = hope(NavLink, {
+const StyledNavLinkObj = {
   baseStyle: {
     display: 'inline-flex',
     alignItems: 'center',
@@ -27,7 +27,9 @@ const StyledNavLink = hope(NavLink, {
       fontWeight: '$medium',
     },
   },
-});
+};
+
+const StyledNavLink = hope(NavLink, StyledNavLinkObj);
 
 type SidebarNavLinkProps = ComponentProps<typeof StyledNavLink> & {
   //
@@ -42,3 +44,7 @@ export const SidebarNavLink = (props: SidebarNavLinkProps) => {
     </StyledNavLink>
   );
 };
+
+export const SidebarNavNonLink = hope(Text, {
+  baseStyle: { ...StyledNavLinkObj.baseStyle, opacity: 0.5 },
+});

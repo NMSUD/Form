@@ -24,17 +24,29 @@ export const maxLength =
   };
 
 export const shouldBeUrl = (value: string): ValidationResult => {
+  const validationFailures: Array<string> = [];
+
   const safeValue = `${value}`;
-  const isHttps = [safeValue.includes?.('http://'), safeValue.includes?.('https://')];
-  const hasHttp = isHttps.filter((h) => h === true).length > 0;
-  const numPeriods = safeValue.split('').filter((c) => c === '.').length;
-  const isLastCharPeriod = safeValue[safeValue.length - 1] === '.';
-  if (hasHttp && numPeriods > 0 && !isLastCharPeriod) {
-    return { isValid: true };
+  const shouldStartWith = ['http://', 'https://'];
+  const hasStartWith = shouldStartWith.filter((h) => safeValue.includes?.(h)).length > 0;
+  if (!hasStartWith) {
+    validationFailures.push(
+      `Should start with one of ${shouldStartWith.map((s) => `'${s}'`).join(' or ')}.`,
+    );
   }
 
-  return {
-    isValid: false,
-    errorMessage: `Should be a valid link/url. (${value}) does not meet the requirements.`,
-  };
+  const numPeriods = safeValue.split('').filter((c) => c === '.').length;
+  const isLastCharPeriod = safeValue[safeValue.length - 1] === '.';
+  if (numPeriods < 1 || isLastCharPeriod) {
+    validationFailures.push('Should have at least one period in a sensible location.');
+  }
+
+  if (validationFailures.length > 0) {
+    return {
+      isValid: false,
+      errorMessage: `Should be a valid link/url. (${value}) does not meet the requirements: ${validationFailures.join('. ')}.`,
+    };
+  }
+
+  return { isValid: true };
 };

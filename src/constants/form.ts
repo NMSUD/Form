@@ -10,7 +10,7 @@ export const keyboardKeyCode = {
   enter: 13,
 } as const;
 
-export const portalValidOptions = [
+export const portalValidOptions: Array<string> = [
   '0',
   '1',
   '2',

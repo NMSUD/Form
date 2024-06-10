@@ -1,9 +1,11 @@
 export interface IRouteOptions {
   path: string;
   title?: string;
+  emoji?: string;
   sidebarPath?: string;
   showInSidebar: boolean;
   addDividerAbove?: boolean;
+  comingSoon?: boolean;
 }
 
 export const routes = {
@@ -22,30 +24,36 @@ export const routes = {
   form: {
     path: '/form',
     showInSidebar: false,
-    builder: {
-      path: '/builder',
-      sidebarPath: '/form/builder',
-      title: '👤 Builder',
-      showInSidebar: true,
-    },
     community: {
       path: '/community',
       sidebarPath: '/form/community',
-      title: '🏘️ Community',
+      emoji: '🏘️',
+      title: 'Community',
       showInSidebar: true,
+    },
+    builder: {
+      path: '/builder',
+      sidebarPath: '/form/builder',
+      emoji: '👤',
+      title: 'Builder',
+      showInSidebar: true,
+      comingSoon: true,
     },
     planetBuild: {
       path: '/planetBuild',
       sidebarPath: '/form/planetBuild',
-      title: '🏡 Planetary Base',
+      emoji: '🏡',
+      title: 'Planetary Base',
       showInSidebar: true,
+      comingSoon: true,
     },
   },
   status: {
     path: '/status',
     pathWithParams: '/status/:segment/:id',
     sidebarPath: '/status',
-    title: '🔍 View submission status',
+    emoji: '🔍',
+    title: 'View submission status',
     addDividerAbove: true,
     showInSidebar: true,
     pathParam: {
@@ -67,7 +75,8 @@ export const routes = {
   },
   about: {
     path: '/about',
-    title: '❓ About us',
+    emoji: '❓',
+    title: 'About us',
     showInSidebar: true,
   },
 } as const;

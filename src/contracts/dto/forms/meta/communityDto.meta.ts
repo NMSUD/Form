@@ -24,13 +24,12 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     validator: noValidation,
   },
   profilePicFile: {
-    label: 'Profile picture',
+    label: 'Community Logo',
     defaultValue: null,
     swaggerSchema: {
       type: 'string',
       format: 'binary',
     },
-    saveToLocalStorage: true,
     validator: separateValidation({
       Api: noValidation,
       UI: multiValidation(
@@ -65,10 +64,9 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
       type: 'array',
       items: { type: 'string', format: 'binary' },
     },
-    saveToLocalStorage: true,
     validator: separateValidation({
       Api: noValidation,
-      UI: validateForEach(notNull('You need to upload an image')),
+      UI: noValidation,
     }),
   },
   homeGalaxy: {
@@ -83,6 +81,8 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
   coordinates: {
     label: 'Coordinates',
     defaultValue: '',
+    helpText:
+      'You can use the buttons below to input the glyphs or the numbers along with "abcde" on your keyboard.',
     validator: noValidation,
   },
   tags: {
@@ -105,7 +105,7 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     validator: multiValidation(
       minItems(1),
       maxItems(10),
-      validateForEach(multiValidation(minLength(2), shouldBeUrl)),
+      validateForEach(multiValidation(minLength(8), shouldBeUrl)),
     ),
   },
   contactDetails,

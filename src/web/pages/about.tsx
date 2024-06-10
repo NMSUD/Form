@@ -153,12 +153,12 @@ export const AboutPage: Component = () => {
             subtitle="Software Development"
             link={site.lenni.website}
           />
-          <AboutCreditCol
+          {/* <AboutCreditCol
             imageUrl={AppImage.t3553ract}
             heading="t3553ract"
             subtitle="Data management"
             link={site.nmsud.website}
-          />
+          /> */}
         </FormFieldGrid>
         <Text fontSize={headingSize} textAlign="center" mt="$8" mb="$2">
           Supported by

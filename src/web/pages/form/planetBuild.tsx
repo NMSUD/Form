@@ -1,7 +1,7 @@
 import { Component } from 'solid-js';
 
 import { portalValidOptions } from '@constants/form';
-import { galaxies } from '@constants/galaxy';
+import { galaxies, galaxyDropdown } from '@constants/galaxy';
 import { Labels } from '@constants/labels';
 import { contactDetailsMaxLength } from '@contracts/dto/forms/baseFormDto';
 import { PlanetBuildDtoMeta } from '@contracts/dto/forms/meta/planetBuildDto.meta';
@@ -62,12 +62,7 @@ export const PlanetBuildFormPage: Component = () => {
               gridItemColumnSize: GridItemSize.medium,
               placeholder: 'Select your Galaxy',
               additional: {
-                options: (_) =>
-                  galaxies.map((lbl, index) => ({
-                    title: lbl,
-                    listTitle: `${index + 1}: ${lbl}`,
-                    value: lbl,
-                  })),
+                options: (_) => galaxyDropdown,
               },
             },
             systemName: {
