@@ -85,6 +85,24 @@ export const formWithApprovalResponseComponent: Record<string, OpenAPIV3_1.Schem
     additionalProperties: false,
   },
 };
+export const mediaUploadComponent: Record<string, OpenAPIV3_1.SchemaObject> = {
+  IMediaUpload: {
+    type: 'object',
+    properties: {
+      type: {
+        type: 'string',
+      },
+      url: {
+        type: 'string',
+      },
+      file: {
+        type: 'string',
+        format: 'binary',
+      },
+    },
+    additionalProperties: false,
+  },
+};
 
 export const segmentToDtoName = (segment: string) => capitalizeFirstLetter(segment) + 'Dto';
 
@@ -92,6 +110,7 @@ export const registerSwaggerStaticComponents = (swaggerBuilder: SwaggerBuilder) 
   swaggerBuilder.addComponent(segmentComponent);
   swaggerBuilder.addComponent(approvalStatusComponent);
   swaggerBuilder.addComponent(formWithApprovalResponseComponent);
+  swaggerBuilder.addComponent(mediaUploadComponent);
 };
 
 export const componentsFromModule = (): Array<string> => {

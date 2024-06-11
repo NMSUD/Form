@@ -2,12 +2,14 @@ import { Component } from 'solid-js';
 
 import { ValidationResult } from '@contracts/validationResult';
 import { GridItemSize } from '@web/components/form/grid';
+import { IMediaUpload } from '@web/contracts/mediaUpload';
 
 export type ValidFormComponentTypes =
   | Component<FormInputProps<string>>
   | Component<FormInputProps<Array<string>>>
   | Component<FormInputProps<string | number>>
-  | Component<FormInputProps<File>>;
+  | Component<FormInputProps<File>>
+  | Component<FormInputProps<Array<IMediaUpload>>>;
 
 export type FormInputProps<T> = {
   id: string;

@@ -9,11 +9,11 @@ export const onTargetValue =
     funcOnEvent(value);
   };
 
-export const onTargetFile = (funcOnEvent: (file: File) => void) => (event: HtmlFilesEvent) => {
+export const onTargetFiles = (funcOnEvent: (file: FileList) => void) => (event: HtmlFilesEvent) => {
   const fileList = event.target.files;
   if (fileList == null || fileList.length < 1) return;
 
-  funcOnEvent(fileList[0]);
+  funcOnEvent(fileList);
 };
 
 export const preventDefault = (event: ClickEvent): ClickEvent => {

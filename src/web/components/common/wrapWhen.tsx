@@ -4,14 +4,14 @@ interface IHasChildrenProps {
   children: JSX.Element;
 }
 
-interface IProps {
+interface IProps<T> {
   condition: boolean;
   children: JSX.Element;
-  wrapProps: IHasChildrenProps;
+  wrapProps: T;
   wrapComp: Component<IHasChildrenProps>;
 }
 
-export const WrapWhen: Component<IProps> = (props: IProps) => {
+export const WrapWhen = <T,>(props: IProps<T>) => {
   const WrapChild = props.wrapComp;
   return (
     <Show when={props.condition} fallback={props.children}>

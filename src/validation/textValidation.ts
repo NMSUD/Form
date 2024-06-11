@@ -50,3 +50,16 @@ export const shouldBeUrl = (value: string): ValidationResult => {
 
   return { isValid: true };
 };
+
+export const shouldBeYoutubeUrl = (value: string): ValidationResult => {
+  const safeValue = `${value}`;
+  const youtubePartialUrl = 'https://www.youtube.com/watch?v=';
+  if (safeValue.includes(youtubePartialUrl)) {
+    return { isValid: true };
+  }
+
+  return {
+    isValid: false,
+    errorMessage: `Youtube url should start with ${youtubePartialUrl}`,
+  };
+};

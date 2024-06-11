@@ -1,5 +1,7 @@
 import { Component } from 'solid-js';
 
+import { portalValidOptions } from '@constants/form';
+import { galaxyDropdown } from '@constants/galaxy';
 import { Labels } from '@constants/labels';
 import { funnyPlayerNames } from '@constants/names';
 import { contactDetailsMaxLength } from '@contracts/dto/forms/baseFormDto';
@@ -16,14 +18,12 @@ import { FormDropdown } from '@web/components/form/dropdown/dropdown';
 import { FormBuilder } from '@web/components/form/formBuilder';
 import { GridItemSize } from '@web/components/form/grid';
 import { FormProfileImageInput } from '@web/components/form/image/profileImage';
+import { FormMediaUploadInput } from '@web/components/form/mediaUpload/mediaUpload';
+import { PortalCoordInput } from '@web/components/form/portal/portalCoords';
 import { FormSocialInput } from '@web/components/form/socialLink/social';
 import { FormLongInput } from '@web/components/form/text/input';
 import { FormTextArea } from '@web/components/form/text/textArea';
 import { PropertyOverrides } from '@web/contracts/formTypes';
-import { GalacticCoordsInput } from '@web/components/form/galactic/galacticCoords';
-import { galaxyDropdown } from '@constants/galaxy';
-import { PortalCoordInput } from '@web/components/form/portal/portalCoords';
-import { portalValidOptions } from '@constants/form';
 
 export const CommunityFormPage: Component = () => {
   const propertyOverrides: Array<PropertyOverrides<CommunityDto>> = [
@@ -69,7 +69,7 @@ export const CommunityFormPage: Component = () => {
               placeholder: 'https://youtube.com/...',
             },
             bioMediaFiles: {
-              component: FormSocialInput,
+              component: FormMediaUploadInput,
               gridItemColumnSize: GridItemSize.long,
               placeholder: 'Upload your images',
             },

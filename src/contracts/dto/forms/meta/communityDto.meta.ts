@@ -61,8 +61,7 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
   bioMediaFiles: {
     label: 'Media upload',
     swaggerSchema: {
-      type: 'array',
-      items: { type: 'string', format: 'binary' },
+      $ref: '#/components/schemas/IMediaUpload',
     },
     validator: separateValidation({
       Api: noValidation,

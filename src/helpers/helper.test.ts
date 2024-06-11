@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import { timeout } from './asyncHelper';
-import { onTargetFile, onTargetValue, preventDefault } from './eventHelper';
+import { onTargetFiles, onTargetValue, preventDefault } from './eventHelper';
 import { nameof } from './propHelper';
 import { randomIntFromRange, randomItemFromArray } from './randomHelper';
 import { addSpacesForEnum, capitalizeFirstLetter, lowercaseFirstLetter } from './stringHelper';
@@ -32,14 +32,14 @@ describe('Helper tests', () => {
       eventHandler(event);
       expect(value).toBe('test');
     });
-    test('onTargetFile', () => {
+    test('onTargetFiles', () => {
       const event = {
         target: {
           files: ['test'] as any,
         },
       };
       let value: any = 'no';
-      const eventHandler = onTargetFile((result) => {
+      const eventHandler = onTargetFiles((result) => {
         value = result;
       });
       eventHandler(event);
