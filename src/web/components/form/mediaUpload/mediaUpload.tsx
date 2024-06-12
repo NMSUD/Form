@@ -47,8 +47,11 @@ import { IMediaUpload, MediaUploadType } from '@web/contracts/mediaUpload';
 import { getLog } from '@services/internal/logService';
 import { WrapWhen } from '@web/components/common/wrapWhen';
 import { OpenInNewIcon } from '@web/components/common/icon/openInNewIcon';
+import { makeArrayOrDefault } from '@helpers/arrayHelper';
 
-interface IFormMediaUploadProps extends FormInputProps<Array<IMediaUpload>> {}
+interface IFormMediaUploadProps extends FormInputProps<Array<IMediaUpload>> {
+  maxUploads?: number;
+}
 
 export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
   props: IFormMediaUploadProps,
@@ -68,6 +71,12 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
       calcIsValid(uploads());
     }
   }, [props.showValidationMessages]);
+
+  createEffect(() => {
+    if (props.value == null || props.value.length === 0) {
+      setUploads([]);
+    }
+  }, [props.value]);
 
   createEffect(async () => {
     const localFilesToProcess = filesToProcess();
@@ -96,7 +105,7 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
     try {
       calcIsValid(newUploads);
       setUploads((prev) => {
-        const allMediaUploads = [...prev, ...newUploads];
+        const allMediaUploads = [...makeArrayOrDefault(prev), ...newUploads];
         props.onChange(allMediaUploads.filter((mu) => mu.type !== MediaUploadType.File));
         return allMediaUploads;
       });
@@ -128,7 +137,7 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
   const handleExternalUrl = async (type: MediaUploadType, url: string) => {
     setUploads((prev: Array<IMediaUpload>) => {
       const allMediaUploads = [
-        ...prev,
+        ...makeArrayOrDefault(prev),
         {
           type,
           url: url,
@@ -192,10 +201,16 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
     <>
       <FormControl invalid={!isValid().isValid}>
         <FormLabel textAlign="center" for={props.id}>
-          {props.label}
+          <span>{props.label}</span>
+          <span>
+            &nbsp;
+            <Show when={(props.maxUploads ?? 0) > 0}>
+              ({(uploads() ?? []).length}&nbsp;/&nbsp;{props.maxUploads ?? 0})
+            </Show>
+          </span>
           <HelpIconTooltip helpText={props.helpText} />
         </FormLabel>
-        <Flex gap="$2">
+        <Flex gap="$2" flexWrap="wrap">
           <Button colorScheme="warning" onClick={onOpen}>
             Upload
           </Button>
@@ -278,6 +293,7 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
                 id="file-upload"
                 type="file"
                 accept="image/*"
+                multiple
                 onChange={onTargetFiles(handleFilesUpload)}
               />
             </Box>

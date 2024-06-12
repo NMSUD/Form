@@ -16,6 +16,18 @@ export const PortalCoordInput: Component<IFormPortalCoordInputProps> = (
   const [isValid, calcIsValid] = useValidation(props.validation);
   const [portalCode, setPortalCode] = createSignal<string>(props.value);
 
+  createEffect(() => {
+    if (props.showValidationMessages === true) {
+      calcIsValid(props.value);
+    }
+  }, [props.showValidationMessages]);
+
+  createEffect(() => {
+    if (props.value == null || props.value.length === 0) {
+      setPortalCode('');
+    }
+  }, [props.value]);
+
   const onTextType = (newValue: string) => {
     setPortalCode(newValue);
     props.onChange(newValue);
@@ -28,12 +40,6 @@ export const PortalCoordInput: Component<IFormPortalCoordInputProps> = (
       return next;
     });
   };
-
-  createEffect(() => {
-    if (props.showValidationMessages === true) {
-      calcIsValid(props.value);
-    }
-  }, [props.showValidationMessages]);
 
   createEffect(() => {
     const correctedValue = (portalCode() ?? '')

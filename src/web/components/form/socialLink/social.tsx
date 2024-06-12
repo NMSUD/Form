@@ -8,6 +8,7 @@ import {
   HStack,
   Input,
   InputGroup,
+  InputLeftAddon,
   InputRightElement,
   VStack,
 } from '@hope-ui/solid';
@@ -19,7 +20,7 @@ import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 import { AvatarFromSocialLink } from './socialLinkAvatar';
 import { keyboardKeyCode } from '@constants/form';
 
-interface IFormSocialProps extends FormInputProps<Array<string>> { }
+interface IFormSocialProps extends FormInputProps<Array<string>> {}
 
 export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialProps) => {
   const [isValid, calcIsValid] = useValidation(props.validation);
@@ -31,6 +32,12 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
       calcIsValid(props.value);
     }
   }, [props.showValidationMessages]);
+
+  createEffect(() => {
+    if (props.value == null || props.value.length === 0) {
+      setItems([]);
+    }
+  }, [props.value]);
 
   const handleSpecialKeyPress = (event: HtmlKeyEvent) => {
     if (event.keyCode === keyboardKeyCode.enter) {
@@ -66,6 +73,7 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
         </FormLabel>
 
         <InputGroup>
+          <InputLeftAddon>https://</InputLeftAddon>
           <Input
             id={props.id}
             class="noselect"
