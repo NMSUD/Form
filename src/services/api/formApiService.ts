@@ -41,7 +41,7 @@ export class FormApiService extends BaseApiService {
   }
 
   private async createFormFromCommunity(data: CommunityDto): Promise<FormData> {
-    const { profilePicFile, bioMediaFiles, ...dataWithoutFiles } = data;
+    const { profilePicFile, bioMediaFiles, homeGalaxy, ...dataWithoutFiles } = data;
 
     const formData = new FormData();
     formData.append(FormDataKey.profilePicFile, profilePicFile);
@@ -59,7 +59,11 @@ export class FormApiService extends BaseApiService {
     }
     formData.append(
       FormDataKey.data,
-      JSON.stringify({ ...dataWithoutFiles, bioMediaUrls: actualBioMediaUrls }),
+      JSON.stringify({
+        ...dataWithoutFiles,
+        bioMediaUrls: actualBioMediaUrls,
+        homeGalaxy: homeGalaxy[0], // TODO make a better plan to handle things like this
+      }),
     );
 
     return formData;

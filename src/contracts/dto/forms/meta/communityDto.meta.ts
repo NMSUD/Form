@@ -89,11 +89,7 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
   },
   homeGalaxy: {
     label: 'Home Galaxy',
-    defaultValue: [],
-    swaggerSchema: {
-      type: 'array',
-      items: { type: 'string' },
-    },
+    defaultValue: '',
     discord: {
       display: (label: string, value: any) =>
         basicDiscordLine(label, makeArrayOrDefault(value).join('')),

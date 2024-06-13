@@ -15,6 +15,7 @@
         "codegen",
         "copyfiles",
         "cyrb",
+        "datetime",
         "descrip",
         "dockerhub",
         "docsearch",

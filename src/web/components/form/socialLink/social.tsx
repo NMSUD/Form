@@ -50,7 +50,7 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
 
     setItems((prev) => {
       const newValue = [...makeArrayOrDefault(prev), link];
-      props.onChange(newValue);
+      props.onChange(newValue.map((v) => `https://${v}`));
       return newValue;
     });
     setCurrentLink('');
@@ -59,7 +59,7 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
   const removeFromList = (link: string) => {
     setItems((prev) => {
       const newValue = makeArrayOrDefault(prev).filter((p) => p != link);
-      props.onChange(newValue);
+      props.onChange(newValue.map((v) => `https://${v}`));
       return newValue;
     });
   };

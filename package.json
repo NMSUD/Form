@@ -7,6 +7,7 @@
   "scripts": {
     "setup": "npm-run-all --sequential setup:*",
     "setup:hook": "git config core.hooksPath .githooks/",
+    "setup:db-tools": "npm install -g @xata.io/cli@latest",
     "start:api": "dotenv -- tsx watch --ignore src/**/*.spec.ts --tsconfig tsconfig.server.json src/api/api.ts",
     "start:public": "cd public && npx alive-server",
     "start:web": "vite --host",
@@ -15,7 +16,7 @@
     "build:server": "tsc -p ./tsconfig.server.json && resolve-tspaths -p ./tsconfig.server.json --out ./build/src",
     "data:downloader": "dotenv -- tsx --tsconfig tsconfig.server.json src/data/downloader.ts",
     "data:dev": "dotenv -- tsx --tsconfig tsconfig.server.json src/data/interactive.ts",
-    "db:generate": "xata codegen",
+    "db:generate": "npx xata codegen",
     "storybook:dev": "storybook dev -p 3003",
     "storybook:build": "storybook build --disable-telemetry",
     "docs:dev": "vitepress dev --port 3002",

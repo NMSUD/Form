@@ -14,7 +14,7 @@ export const communityPublicUrlHandler = (persistence: Community): Community => 
       if (bioMediaFile.url == null || bioMediaFile.url.length < minUrlLength) continue;
       bioFiles.push(bioMediaFile.url);
     }
-    localP.bioMediaUrls = bioFiles.join(',');
+    localP.bioMediaUrls = bioFiles.filter((b) => (b?.length ?? 0) > 0).join(',');
   }
 
   return localP;
