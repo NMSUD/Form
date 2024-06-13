@@ -22,6 +22,7 @@ import {
   IPropertyToFormMapping,
   PropertyOverrides,
 } from '@web/contracts/formTypes';
+import { getLog } from '@services/internal/logService';
 
 interface IProps<T> {
   id: string;
@@ -272,6 +273,15 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
         <Button variant="outline" colorScheme="warning" onClick={clearForm}>
           Clear
         </Button>
+        <Show when={!getConfig().isProd()}>
+          <Button
+            variant="outline"
+            colorScheme="danger"
+            onClick={() => getLog().i(itemBeingEdited())}
+          >
+            Log object to console
+          </Button>
+        </Show>
       </HStack>
     </>
   );

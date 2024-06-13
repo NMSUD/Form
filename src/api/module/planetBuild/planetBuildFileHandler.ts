@@ -18,18 +18,13 @@ export const planetBuildFileHandler = async (
   };
 
   const mediaFilesFromForm = formData[FormDataKey.mediaFiles];
+  if (result.mediaFiles == null) result.mediaFiles = [];
   for (const mediaFileFromForm of makeArrayOrDefault(mediaFilesFromForm)) {
     const mediaDbBufferResult = await processImageFromFormData(mediaFileFromForm);
     if (mediaDbBufferResult.isSuccess == false) {
       getLog().e('planetBuildFileHandler bioMediaFileFromForm', mediaDbBufferResult.errorMessage);
-      return {
-        isSuccess: false,
-        value: result,
-        errorMessage: mediaDbBufferResult.errorMessage,
-      };
     }
 
-    if (result.mediaFiles == null) result.mediaFiles = [];
     result.mediaFiles.push(mediaDbBufferResult.value);
   }
 

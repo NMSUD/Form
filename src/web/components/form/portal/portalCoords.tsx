@@ -46,8 +46,10 @@ export const PortalCoordInput: Component<IFormPortalCoordInputProps> = (
       .split('')
       .filter((c) => portalValidOptions.includes(c.toLowerCase()))
       .join('')
-      .toUpperCase();
-    setPortalCode(correctedValue.slice(0, 12));
+      .toUpperCase()
+      .slice(0, 12);
+    setPortalCode(correctedValue);
+    props.onChange(correctedValue);
   }, [portalCode]);
 
   return (

@@ -83,7 +83,7 @@ export const PlanetBuildFormPage: Component = () => {
             mediaFiles: {
               component: FormSocialInput,
               gridItemColumnSize: GridItemSize.long,
-              placeholder: 'Upload your images',
+              placeholder: 'youtube.com/watch?v=...',
             },
             contactDetails: {
               component: FormTextArea,

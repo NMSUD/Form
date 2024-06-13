@@ -35,6 +35,11 @@ describe('Array Validation', () => {
     test('maxItems 1 with 1 item', () => {
       const arr: Array<any> = [{ test: 'tester' }];
       const validator = maxItems(1);
+      expect(validator(arr).isValid).toBeTruthy();
+    });
+    test('maxItems 1 with 2 item', () => {
+      const arr: Array<any> = [{ test: 'tester' }, { test: 'tester2' }];
+      const validator = maxItems(1);
       expect(validator(arr).isValid).toBeFalsy();
     });
     test('maxItems 2 with 1 item', () => {

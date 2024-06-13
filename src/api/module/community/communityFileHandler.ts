@@ -34,6 +34,7 @@ export const communityFileHandler = async (
   result.profilePicFile = resizedProfilePicResult.value;
 
   const bioMediaFilesFromForm = formData[FormDataKey.bioMediaFiles];
+  if (result.bioMediaFiles == null) result.bioMediaFiles = [];
   for (const bioMediaFileFromForm of makeArrayOrDefault(bioMediaFilesFromForm)) {
     const bioMediaDbBufferResult = await processImageFromFormData(bioMediaFileFromForm);
     if (bioMediaDbBufferResult.isSuccess == false) {
@@ -41,14 +42,8 @@ export const communityFileHandler = async (
         'handleBuilderFormSubmission bioMediaFileFromForm',
         bioMediaDbBufferResult.errorMessage,
       );
-      return {
-        isSuccess: false,
-        value: result,
-        errorMessage: bioMediaDbBufferResult.errorMessage,
-      };
     }
 
-    if (result.bioMediaFiles == null) result.bioMediaFiles = [];
     result.bioMediaFiles.push(bioMediaDbBufferResult.value);
   }
 

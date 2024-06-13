@@ -1,7 +1,4 @@
 import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
   Anchor,
   Avatar,
   Badge,
@@ -10,44 +7,38 @@ import {
   Center,
   CircularProgress,
   CircularProgressIndicator,
-  Container,
-  Divider,
   Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
-  HStack,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  SimpleGrid,
-  Spacer,
   Text,
   Tooltip,
   createDisclosure,
   notificationService,
 } from '@hope-ui/solid';
-import { Component, For, Show, createEffect, createSignal, JSX } from 'solid-js';
+import { Component, For, JSX, Show, createEffect, createSignal } from 'solid-js';
 
 import { NetworkState } from '@constants/enum/networkState';
-import { AppImage } from '@constants/image';
-import { onTargetFiles, onTargetValue } from '@helpers/eventHelper';
-import { IImageParams, getImageParams } from '@helpers/imageHelper';
+import { minUrlLength } from '@constants/validation';
+import { makeArrayOrDefault } from '@helpers/arrayHelper';
+import { onTargetFiles } from '@helpers/eventHelper';
+import { getImageParams } from '@helpers/imageHelper';
+import { getLog } from '@services/internal/logService';
+import { multiValidation } from '@validation/baseValidation';
+import { minLength, shouldBeUrl, shouldBeYoutubeUrl } from '@validation/textValidation';
+import { OpenInNewIcon } from '@web/components/common/icon/openInNewIcon';
+import { WrapWhen } from '@web/components/common/wrapWhen';
 import { FormInputProps } from '@web/contracts/formTypes';
+import { IMediaUpload, MediaUploadType } from '@web/contracts/mediaUpload';
 import { useValidation } from '../../../hooks/useValidation';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 import { FormLongInput } from '../text/input';
-import { minLength, shouldBeUrl, shouldBeYoutubeUrl } from '@validation/textValidation';
-import { multiValidation } from '@validation/baseValidation';
-import { IMediaUpload, MediaUploadType } from '@web/contracts/mediaUpload';
-import { getLog } from '@services/internal/logService';
-import { WrapWhen } from '@web/components/common/wrapWhen';
-import { OpenInNewIcon } from '@web/components/common/icon/openInNewIcon';
-import { makeArrayOrDefault } from '@helpers/arrayHelper';
 
 interface IFormMediaUploadProps extends FormInputProps<Array<IMediaUpload>> {
   maxUploads?: number;
@@ -60,7 +51,9 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
   const { isOpen, onOpen, onClose } = createDisclosure();
   const [isValid, calcIsValid] = useValidation(props.validation);
 
-  const [uploads, setUploads] = createSignal<Array<IMediaUpload>>(props.value);
+  const [uploads, setUploads] = createSignal<Array<IMediaUpload>>(
+    makeArrayOrDefault(props.value).filter((mu) => mu.type != MediaUploadType.File),
+  );
   const [externalImageUrl, setExternalImageUrl] = createSignal<string>('');
   const [externalVideoUrl, setExternalVideoUrl] = createSignal<string>('');
   const [filesToProcess, setFilesToProcess] = createSignal<Array<File>>();
@@ -103,10 +96,10 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
     }
 
     try {
-      calcIsValid(newUploads);
       setUploads((prev) => {
         const allMediaUploads = [...makeArrayOrDefault(prev), ...newUploads];
-        props.onChange(allMediaUploads.filter((mu) => mu.type !== MediaUploadType.File));
+        props.onChange(allMediaUploads);
+        calcIsValid(allMediaUploads);
         return allMediaUploads;
       });
       setNetworkState(NetworkState.Success);
@@ -143,6 +136,7 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
           url: url,
         },
       ];
+      calcIsValid(allMediaUploads);
       props.onChange(allMediaUploads);
       return allMediaUploads;
     });
@@ -155,15 +149,25 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
     onClose();
   };
 
+  const removeItem = (index: number) => () => {
+    setUploads((prev) => {
+      const local = [...prev];
+      local.splice(index, 1);
+      props.onChange(local);
+      calcIsValid(local);
+      return local;
+    });
+  };
+
   const renderMediaUpload = (data: IMediaUpload): JSX.Element => {
     if (data.type === MediaUploadType.ImageUrl) {
       return (
-        <Avatar name={data.url} src={data.url} maxWidth="3em" maxHeight="3em" borderRadius="5px" />
+        <Avatar name={data.url} src={data.url} maxWidth="3em" maxHeight="3em" borderRadius="6px" />
       );
     }
     if (data.type === MediaUploadType.VideoUrl) {
       return (
-        <Center backgroundColor="$neutral6" borderRadius="5px">
+        <Center height="100%" backgroundColor="$neutral6" borderRadius="5px">
           <Anchor href={data.url} external px="1em">
             Video <OpenInNewIcon />
           </Anchor>
@@ -180,7 +184,7 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
             src={data.url}
             maxWidth="3em"
             maxHeight="3em"
-            borderRadius="5px"
+            borderRadius="6px"
           />
           <Center flex={4} maxWidth="10em" overflow="hidden">
             <WrapWhen
@@ -214,7 +218,25 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
           <Button colorScheme="warning" onClick={onOpen}>
             Upload
           </Button>
-          <For each={uploads()}>{(data) => renderMediaUpload(data)}</For>
+          <For each={uploads()}>
+            {(data, index) => (
+              <Box class="hover-reveal-child pos-rel display-inline-block noselect">
+                {renderMediaUpload(data)}
+                <Center
+                  class="reveal pos-abs"
+                  top="0"
+                  left="0"
+                  right="0"
+                  bottom="0"
+                  backgroundColor="$danger6"
+                  borderRadius="5px"
+                  onClick={removeItem(index())}
+                >
+                  <Text size="xl">❌</Text>
+                </Center>
+              </Box>
+            )}
+          </For>
           <Show when={networkState() === NetworkState.Loading}>
             <CircularProgress indeterminate>
               <CircularProgressIndicator />
@@ -248,7 +270,7 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
                 onChange={setExternalImageUrl}
                 showValidationMessages={false}
                 validation={(url) => {
-                  const validationFunc = multiValidation(shouldBeUrl, minLength(10));
+                  const validationFunc = multiValidation(shouldBeUrl, minLength(minUrlLength));
                   return validationFunc((url ?? '').toString());
                 }}
               />

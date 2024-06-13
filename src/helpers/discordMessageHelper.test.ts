@@ -15,7 +15,7 @@ import {
   shortLinkDiscordLine,
 } from './discordMessageHelper';
 import { promiseFromResult } from './typescriptHacks';
-import { IFormDtoMeta, IFormPersistenceMeta } from '@contracts/dto/forms/baseFormDto';
+import { IFormDtoMeta } from '@contracts/dto/forms/baseFormDto';
 
 describe('Discord message helper', () => {
   //
@@ -93,24 +93,27 @@ describe('Discord message helper', () => {
       notInDiscordMsg: 'hi',
     };
     const testObjMeta: IFormDtoMeta<typeof testObj> = {
-      title: { label: 'Title', validator: () => ({ isValid: true }) },
-      role: { label: '', validator: () => ({ isValid: true }) },
-      notInDiscordMsg: { label: '', validator: () => ({ isValid: true }) },
-    };
-    const testPersMeta: IFormPersistenceMeta<typeof testObj> = {
       title: {
-        label: 'DB Title',
-        displayInDiscordMessage: (lbl, data) => promiseFromResult([`${lbl}, ${data}`]),
+        label: 'Title',
+        discord: {
+          label: 'DB Title',
+          display: (lbl, data) => promiseFromResult([`${lbl}, ${data}`]),
+        },
+        validator: () => ({ isValid: true }),
       },
       role: {
-        displayInDiscordMessage: (lbl, data) => promiseFromResult([`${lbl}, ${data}`]),
+        label: '',
+        discord: {
+          display: (lbl, data) => promiseFromResult([`${lbl}, ${data}`]),
+        },
+        validator: () => ({ isValid: true }),
       },
+      notInDiscordMsg: { label: '', validator: () => ({ isValid: true }) },
     };
     test('should return 2 discord lines', async () => {
       const descripLines = await getDescriptionLines({
         data: testObj,
         dtoMeta: testObjMeta,
-        persistenceMeta: testPersMeta,
       });
       expect(descripLines.length).toBe(2);
     });
@@ -118,7 +121,6 @@ describe('Discord message helper', () => {
       const descripLines = await getDescriptionLines({
         data: testObj,
         dtoMeta: testObjMeta,
-        persistenceMeta: testPersMeta,
       });
       expect(descripLines[1]).toBe('Role, tester');
     });
@@ -146,16 +148,16 @@ describe('Discord message helper', () => {
       test('display items', async () => {
         const outFunc = arrayFromDatabaseDiscordLines({
           dbCall: (id) => promiseFromResult({ isSuccess: true, value: id, errorMessage: '' }),
-          mapValue: (db) => db,
+          mapValue: (db) => db as any,
         });
         const out = await outFunc('label', ['test', 'tester']);
         expect(out[0]).toBe('**label**: test, tester');
       });
-      test('some items faile to load', async () => {
+      test('some items failed to load', async () => {
         const outFunc = arrayFromDatabaseDiscordLines({
           dbCall: (id) =>
             promiseFromResult({ isSuccess: id != 'tester', value: id, errorMessage: '' }),
-          mapValue: (db) => db,
+          mapValue: (db) => db as any,
         });
         const out = await outFunc('label', ['test', 'tester', 'testers']);
         expect(out[0]).toBe('**label**: test, **error**, testers');

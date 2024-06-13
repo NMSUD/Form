@@ -10,6 +10,8 @@ import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { anyObject } from '@helpers/typescriptHacks';
 import { getConfig } from '../internal/configService';
 import { BaseApiService } from './baseApiService';
+import { IMediaUpload, MediaUploadType } from '@web/contracts/mediaUpload';
+import { PlanetBuildDto } from '@contracts/dto/forms/planetBuildDto';
 
 @Service()
 export class FormApiService extends BaseApiService {
@@ -26,37 +28,70 @@ export class FormApiService extends BaseApiService {
     data: unknown,
     captcha: string,
   ): Promise<ResultWithValue<IFormResponse>> {
-    let formData = new FormData();
-    switch (segment) {
-      case 'community':
-        formData = await this.createFormFromCommunity(data as CommunityDto, captcha);
-      case 'builder':
-        formData = await this.createFormFromBuilder(data as BuilderDto, captcha);
-    }
+    const functionMap: {
+      [prop in keyof IApiSegment]: Promise<FormData>;
+    } = {
+      community: this.createFormFromCommunity(data as CommunityDto),
+      builder: this.createFormFromBuilder(data as BuilderDto),
+      planetBuild: this.createFormFromPlanetBuild(data as PlanetBuildDto),
+    };
+    const formData = await functionMap[segment];
+    formData.append(FormDataKey.captcha, captcha);
     return this.submitForm(segment, formData);
   }
 
-  private async createFormFromCommunity(data: CommunityDto, captcha: string): Promise<FormData> {
+  private async createFormFromCommunity(data: CommunityDto): Promise<FormData> {
     const { profilePicFile, bioMediaFiles, ...dataWithoutFiles } = data;
 
-    let formData = new FormData();
-    formData.append(FormDataKey.captcha, captcha);
+    const formData = new FormData();
     formData.append(FormDataKey.profilePicFile, profilePicFile);
+
+    const actualBioMediaUrls: Array<string> = [];
     for (const bioMediaFile of makeArrayOrDefault(bioMediaFiles)) {
-      formData.append(FormDataKey.bioMediaFiles, bioMediaFile);
+      const actualBioMediaFile = bioMediaFile as unknown as IMediaUpload;
+      if (actualBioMediaFile.type != MediaUploadType.File) {
+        actualBioMediaUrls.push(actualBioMediaFile.url);
+        continue;
+      }
+      if (actualBioMediaFile.file != null) {
+        formData.append(FormDataKey.bioMediaFiles, actualBioMediaFile.file);
+      }
     }
+    formData.append(
+      FormDataKey.data,
+      JSON.stringify({ ...dataWithoutFiles, bioMediaUrls: actualBioMediaUrls }),
+    );
+
+    return formData;
+  }
+
+  private async createFormFromBuilder(data: BuilderDto): Promise<FormData> {
+    const { profilePicFile, ...dataWithoutFiles } = data;
+
+    const formData = new FormData();
+    formData.append(FormDataKey.profilePicFile, profilePicFile);
     formData.append(FormDataKey.data, JSON.stringify(dataWithoutFiles));
 
     return formData;
   }
 
-  private async createFormFromBuilder(data: BuilderDto, captcha: string): Promise<FormData> {
-    const { profilePicFile, ...dataWithoutFiles } = data;
+  private async createFormFromPlanetBuild(data: PlanetBuildDto): Promise<FormData> {
+    const { mediaFiles, ...dataWithoutFiles } = data;
 
-    let formData = new FormData();
-    formData.append(FormDataKey.captcha, captcha);
-    formData.append(FormDataKey.profilePicFile, profilePicFile);
-    formData.append(FormDataKey.data, JSON.stringify(dataWithoutFiles));
+    const formData = new FormData();
+    const actualMediaUrls: Array<string> = [];
+    for (const bioMediaFile of makeArrayOrDefault(mediaFiles)) {
+      const actualBioMediaFile = bioMediaFile as unknown as IMediaUpload;
+      if (actualBioMediaFile.type != MediaUploadType.File) {
+        actualMediaUrls.push(actualBioMediaFile.url);
+        continue;
+      }
+      formData.append(FormDataKey.bioMediaFiles, bioMediaFile);
+    }
+    formData.append(
+      FormDataKey.data,
+      JSON.stringify({ ...dataWithoutFiles, bioMediaUrls: actualMediaUrls }),
+    );
 
     return formData;
   }

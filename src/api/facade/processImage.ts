@@ -30,6 +30,7 @@ export const processImageFromFormData = async (
     value: {
       name: fileFromForm.newFilename,
       mediaType: fileFromForm.mimetype,
+      enablePublicUrl: true,
       base64Content: resizedBufferResult.value.toString('base64'),
     },
     errorMessage: '',

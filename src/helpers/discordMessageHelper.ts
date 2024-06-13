@@ -1,11 +1,6 @@
 import { api, apiParams } from '@constants/api';
 import { ApprovalStatus, approvalStatusToString } from '@constants/enum/approvalStatus';
-import {
-  IFormDtoMeta,
-  IFormDtoMetaDetails,
-  IFormPersistenceMeta,
-  IFormPersistenceMetaDetails,
-} from '@contracts/dto/forms/baseFormDto';
+import { IFormDtoMeta, IFormDtoMetaDetails } from '@contracts/dto/forms/baseFormDto';
 import {
   DiscordWebhook,
   DiscordWebhookAttachment,
@@ -83,6 +78,7 @@ export const baseSubmissionMessageBuilder = (props: {
   iconUrl?: string | null;
   descripLines: Array<string>;
   additionalEmbeds: Array<DiscordWebhookEmbed>;
+  attachments?: Array<DiscordWebhookAttachment>;
 }): DiscordWebhook => {
   const embeds: Array<DiscordWebhookEmbed> = [
     {
@@ -95,28 +91,23 @@ export const baseSubmissionMessageBuilder = (props: {
     },
     ...props.additionalEmbeds,
   ];
-  const attachments: Array<DiscordWebhookAttachment> = [];
 
   return {
     content: props.content,
     embeds,
-    attachments,
+    attachments: props.attachments ?? [],
   };
 };
 
-export const getDescriptionLines = async <T, TK>(props: {
-  data: T;
-  dtoMeta: IFormDtoMeta<T>;
-  persistenceMeta: IFormPersistenceMeta<TK>;
-}) => {
+export const getDescriptionLines = async <T>(props: { data: T; dtoMeta: IFormDtoMeta<T> }) => {
   const descripLines: Array<string> = [];
 
-  for (const dbMetaPropKey in props.persistenceMeta) {
-    if (Object.prototype.hasOwnProperty.call(props.persistenceMeta, dbMetaPropKey) == false) {
+  for (const dbMetaPropKey in props.dtoMeta) {
+    if (Object.prototype.hasOwnProperty.call(props.dtoMeta, dbMetaPropKey) == false) {
       continue;
     }
-    const persistenceMetaProp = props.persistenceMeta[dbMetaPropKey];
-    if (persistenceMetaProp?.displayInDiscordMessage == null) continue;
+    const dtoMetaProp = props.dtoMeta[dbMetaPropKey];
+    if (dtoMetaProp?.discord?.display == null) continue;
 
     const localData =
       (props.data as ObjectWithPropsOfValue<string | Array<string>>)[dbMetaPropKey] ?? anyObject;
@@ -124,15 +115,12 @@ export const getDescriptionLines = async <T, TK>(props: {
     const dtoMetaValue = (props.dtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>)[
       propKey
     ];
-    const persistenceMetaValue = (
-      props.persistenceMeta as ObjectWithPropsOfValue<IFormPersistenceMetaDetails<string>>
-    )[propKey];
-    let labelString = persistenceMetaValue.label ?? dtoMetaValue.label;
+    let labelString = dtoMetaValue.discord?.label ?? dtoMetaValue.label;
     if (labelString?.length < 1) {
       labelString = capitalizeFirstLetter(addSpacesForEnum(dbMetaPropKey));
     }
 
-    const lines = await persistenceMetaProp.displayInDiscordMessage(labelString, localData);
+    const lines = await dtoMetaProp?.discord?.display(labelString, localData);
     lines.map((line) => descripLines.push(line));
   }
 
@@ -147,6 +135,11 @@ export const shortLinkDiscordLine = (linkText: string) => async (label: string, 
 ];
 export const arrayDiscordLine = async (label: string, values: Array<string>) => [
   `**${label}**: ${makeArrayOrDefault(values).join(', ')}`,
+];
+export const arrayOfLinksDiscordLine = async (label: string, values: Array<string>) => [
+  `**${label}**: ${makeArrayOrDefault(values)
+    .map((v, i) => `[Image${i + 1}](${v})`)
+    .join(', ')}`,
 ];
 export const shortDateDiscordLine = async (label: string, value: string) => [
   `**${label}**: ${formatDate(value, 'DD MMM YY')}`, //

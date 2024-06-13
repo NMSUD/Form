@@ -43,7 +43,8 @@ describe('Helper tests', () => {
         value = result;
       });
       eventHandler(event);
-      expect(value).toBe('test');
+      expect(value.length).toBe(1);
+      expect(value[0]).toBe('test');
     });
     test('preventDefault', () => {
       let value = 'no';

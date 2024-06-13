@@ -27,13 +27,13 @@ export const shouldBeUrl = (value: string): ValidationResult => {
   const validationFailures: Array<string> = [];
 
   const safeValue = `${value}`;
-  const shouldStartWith = ['http://', 'https://'];
-  const hasStartWith = shouldStartWith.filter((h) => safeValue.includes?.(h)).length > 0;
-  if (!hasStartWith) {
-    validationFailures.push(
-      `Should start with one of ${shouldStartWith.map((s) => `'${s}'`).join(' or ')}.`,
-    );
-  }
+  // const shouldStartWith = ['http://', 'https://'];
+  // const hasStartWith = shouldStartWith.filter((h) => safeValue.includes?.(h)).length > 0;
+  // if (!hasStartWith) {
+  //   validationFailures.push(
+  //     `Should start with one of ${shouldStartWith.map((s) => `'${s}'`).join(' or ')}.`,
+  //   );
+  // }
 
   const numPeriods = safeValue.split('').filter((c) => c === '.').length;
   const isLastCharPeriod = safeValue[safeValue.length - 1] === '.';

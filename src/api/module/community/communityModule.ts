@@ -6,14 +6,12 @@ import { Community } from '@services/external/database/xata';
 import { IApiModule } from '../../types/baseModule';
 import { ICommunityImages, communityFileHandler } from './communityFileHandler';
 import { communityDtoWithImageToPersistence, communityPersistenceToDto } from './communityMapper';
-import { CommunityPersistenceMeta } from './communityPersistenceMeta';
 import { communityPublicUrlHandler } from './communityPublicUrlHandler';
 
 const getDbTable = () => getDatabaseService().community();
 export const communityModule: IApiModule<CommunityDto, ICommunityImages, Community> = {
   segment: 'community',
   dtoMeta: CommunityDtoMeta,
-  persistenceMeta: CommunityPersistenceMeta,
   sendDiscordMessageOnSubmission: true,
   getName: (persistence: Community) => persistence.name,
   getIcon: (persistence: Community) => persistence.profilePicUrl,

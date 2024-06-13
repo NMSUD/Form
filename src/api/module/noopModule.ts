@@ -20,7 +20,7 @@ const fakeArrayResult = {
 export const noopModule: IApiModule<string, string, IRecordRequirements> = {
   segment: 'planetBuild',
   dtoMeta: '',
-  persistenceMeta: {},
+  sendDiscordMessageOnSubmission: false,
   getName: (persistence: IRecordRequirements) => persistence.id,
   getIcon: (persistence: IRecordRequirements) => persistence.id,
 

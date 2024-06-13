@@ -103,7 +103,7 @@ export const BuilderFormPage: Component = () => {
             socials: {
               component: FormSocialInput,
               gridItemColumnSize: GridItemSize.long,
-              placeholder: 'https://youtube.com/...',
+              placeholder: 'youtube.com/watch?v=...',
             },
             bio: {
               component: FormTextArea,

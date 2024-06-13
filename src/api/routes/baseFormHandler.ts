@@ -151,7 +151,6 @@ export const baseFormHandler =
       descripLines: await getDescriptionLines({
         data: dtoForDiscord,
         dtoMeta: module.dtoMeta,
-        persistenceMeta: module.persistenceMeta,
       }),
       additionalEmbeds: [
         baseSubmissionMessageEmbed(

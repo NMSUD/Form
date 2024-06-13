@@ -17,6 +17,6 @@ describe('Swagger static components', () => {
       addComponent,
     };
     registerSwaggerStaticComponents(swaggerBuilder);
-    expect(addComponent).toBeCalledTimes(3);
+    expect(addComponent).toBeCalledTimes(4);
   });
 });

@@ -1,4 +1,5 @@
 import { ValidationResult } from '@contracts/validationResult';
+import { basicDiscordLine } from '@helpers/discordMessageHelper';
 import { maxLength } from '@validation/textValidation';
 
 export type SwaggerPropertySchemaForItem = {
@@ -14,12 +15,18 @@ export type SwaggerPropertySchema = {
   items?: SwaggerPropertySchemaForItem;
 };
 
+export type FormDiscordDetails<TV> = {
+  label?: string;
+  display?: (label: string, value: TV) => Promise<Array<string>>;
+};
+
 export type IFormDtoMetaDetails<TV> = {
   label: string;
   validationLabel?: string;
   helpText?: string;
   defaultValue?: TV;
   swaggerSchema?: SwaggerPropertySchema;
+  discord?: FormDiscordDetails<TV>;
   saveToLocalStorage?: boolean;
   validator: (val: TV) => ValidationResult;
 };
@@ -28,19 +35,14 @@ export type IFormDtoMeta<T> = {
   [prop in keyof T]: IFormDtoMetaDetails<any>;
 };
 
-export type IFormPersistenceMetaDetails<TV> = {
-  label?: string;
-  displayInDiscordMessage?: (label: string, value: TV) => Promise<Array<string>>;
-};
-
-export type IFormPersistenceMeta<T> = {
-  [prop in keyof T]?: IFormPersistenceMetaDetails<any>;
-};
-
 export const contactDetailsMaxLength = 500 as const;
-export const contactDetails = {
+export const contactDetails: IFormDtoMetaDetails<string> = {
   label: 'Contact Details (only visible to NMSUD organisers)',
   helpText: `This is so that we can get in contact with you if there are any issue with your submissions, etc.`,
   defaultValue: '',
+  discord: {
+    label: 'Contact Details',
+    display: basicDiscordLine,
+  },
   validator: maxLength(contactDetailsMaxLength),
 } as const;

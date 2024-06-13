@@ -9,6 +9,7 @@ import { CommunityDto } from '@contracts/dto/forms/communityDto';
 import {
   CommunityDtoMeta,
   communityBioMaxLength,
+  communityBioMaxUploads,
 } from '@contracts/dto/forms/meta/communityDto.meta';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { randomItemFromArray } from '@helpers/randomHelper';
@@ -66,12 +67,15 @@ export const CommunityFormPage: Component = () => {
             socials: {
               component: FormSocialInput,
               gridItemColumnSize: GridItemSize.medium,
-              placeholder: 'https://youtube.com/...',
+              placeholder: 'youtube.com/watch?v=...',
             },
             bioMediaFiles: {
               component: FormMediaUploadInput,
               gridItemColumnSize: GridItemSize.long,
               placeholder: 'Upload your images',
+              additional: {
+                maxUploads: (_) => communityBioMaxUploads,
+              },
             },
             homeGalaxy: {
               component: FormDropdown,
