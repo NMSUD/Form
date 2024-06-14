@@ -18,25 +18,19 @@ export const BuilderFormPage: Component = () => {
   ];
 
   return (
-    <>
-      <PageHeader text="Submit a builder profile"></PageHeader>
-
-      <Card class="form">
-        <FormBuilder
-          id="BuilderDto"
-          segment="builder"
-          getName={(dto: BuilderDto) => dto.name}
-          formDtoMeta={BuilderDtoMeta}
-          propertyOverrides={propertyOverrides}
-          mappings={
-            {
-              // Typescript should force you to declare an object 
-              // for each property in the dto.
-            }
-          }
-        />
-      </Card>
-    </>
+    <FormBuilder
+      id="BuilderDto"
+      segment="builder"
+      getName={(dto: BuilderDto) => dto.name}
+      formDtoMeta={BuilderDtoMeta}
+      propertyOverrides={propertyOverrides}
+      mappings={
+        {
+          // Typescript should force you to declare an object 
+          // for each property in the dto.
+        }
+      }
+    />
   );
 };
 

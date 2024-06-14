@@ -37,6 +37,7 @@ export class ApiFileService {
           name: formData.newFilename,
           mediaType: formData.mimetype,
           base64Content: contents,
+          enablePublicUrl: true,
         },
       };
     } catch (ex) {

@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.7] - 2024-06-----
+## [1.0.7] - 2024-06-14
 
 ### Added
 
@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactored API & Downloader logic to take advantage of how similar actions are performed on database tables
 - Storybook version and the addons we use
 - Improved the automation of release notes
+
+### WIP
+
+- Bug report form
+- Homepage
 
 ## [1.0.6] - 2024-03-21
 

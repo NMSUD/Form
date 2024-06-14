@@ -19,6 +19,8 @@ Docker makes it easy to run applications without having anything installed on th
 
 Ensure that you have [Docker][docker] installed. Also check that you have created a `.env` file (based on the `.env.template file`) and that you have filled in the variables. 
 
+> You can also create files like `.env.prod`, `.env.dev2`, etc. When running the `buildAndDeploy.sh` file you will be prompted for which file to load.
+
 From the root directory of this project (where the `Dockerfile` is), run `sh ./docker/buildAndDeploy.sh`. This will get some info required from the `.env` that you should have created and start the process of building the image using [Docker][docker].
 
 ## Configure
