@@ -104,3 +104,28 @@ html body {
 main.main {
   padding-inline: 3em;
 }
+
+.opacity-10 {
+  opacity: 10%;
+}
+
+.hope-accordion {
+  .hope-collapse {
+    animation-timing-function: linear;
+    animation-duration: 250ms;
+    animation-name: fade-in-anim;
+    animation-iteration-count: 1;
+    animation-play-state: running;
+  }
+}
+
+@keyframes fade-in-anim {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

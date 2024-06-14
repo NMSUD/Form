@@ -6,11 +6,13 @@ export const AppImage = {
   sidebarLogo: '/assets/img/logo.png',
   fallbackImg: '/assets/img/fallback.png',
   failedToLoadImg: '/assets/img/failedToLoad.png',
+  backgroundVideo: '/assets/vid/galaxyBackground',
 
   kurt: '/assets/img/about/kurt.jpg',
   lenni: '/assets/img/about/lenni.png',
   t3553ract: '/assets/img/about/t3553ract.jpg',
   eisvana: '/assets/img/social/eisvana.png',
+  exampleSubmissionError: '/assets/img/about/exampleError.png',
 } as const;
 
 export const DefaultImageRestrictions: { [prop: string]: IImageRestriction } = {
