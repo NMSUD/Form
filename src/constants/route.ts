@@ -27,14 +27,15 @@ export const routes = {
     community: {
       path: '/community',
       sidebarPath: '/form/community',
-      emoji: '🏘️',
+      emoji: '🏰',
       title: 'Community',
       showInSidebar: true,
+      comingSoon: false,
     },
     builder: {
       path: '/builder',
       sidebarPath: '/form/builder',
-      emoji: '👤',
+      emoji: '👷',
       title: 'Builder',
       showInSidebar: true,
       comingSoon: true,
@@ -42,7 +43,7 @@ export const routes = {
     planetBuild: {
       path: '/planetBuild',
       sidebarPath: '/form/planetBuild',
-      emoji: '🏡',
+      emoji: '🧱',
       title: 'Planetary Base',
       showInSidebar: true,
       comingSoon: true,

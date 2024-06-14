@@ -2,6 +2,7 @@ nav.hide-scrollbar {
   border-right: 5px solid rgba(0, 0, 0, 0.2);
   transition: all 500ms ease-in-out;
   background-color: rgba(0, 0, 0, 0.3);
+  border-right: 1px solid var(--hope-colors-neutral5);
 
   .content {
     transition: all 250ms ease-in-out;
@@ -23,7 +24,7 @@ nav.hide-scrollbar {
   .drawer-icon {
     position: absolute;
     top: 1em;
-    right: -1.5em;
+    right: -1.25em;
     transition: all 500ms ease-in-out;
     box-shadow: none;
 

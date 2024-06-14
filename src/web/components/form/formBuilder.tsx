@@ -1,4 +1,15 @@
-import { Button, Center, HStack, Tag, Text, notificationService } from '@hope-ui/solid';
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  Button,
+  Center,
+  Container,
+  HStack,
+  Tag,
+  Text,
+  notificationService,
+} from '@hope-ui/solid';
 import { For, JSXElement, Show, createSignal } from 'solid-js';
 
 import { IApiSegment } from '@constants/api';
@@ -12,6 +23,7 @@ import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
 import { getFormApiService } from '@services/api/formApiService';
 import { getCaptchaService } from '@services/external/captchaService';
 import { getConfig } from '@services/internal/configService';
+import { getLog } from '@services/internal/logService';
 import { getStateService } from '@services/internal/stateService';
 import { validateObj } from '@validation/baseValidation';
 import { BasicLink } from '@web/components/core/link';
@@ -22,10 +34,13 @@ import {
   IPropertyToFormMapping,
   PropertyOverrides,
 } from '@web/contracts/formTypes';
-import { getLog } from '@services/internal/logService';
+import { Card } from '../common/card';
+import classNames from 'classnames';
+import { PageHeader } from '../common/pageHeader';
 
 interface IProps<T> {
   id: string;
+  title: string;
   segment: keyof IApiSegment;
   mappings: ComponentMapping<T>;
   formDtoMeta: IFormDtoMeta<T>;
@@ -52,6 +67,8 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
   const [itemBeingEdited, setItemBeingEdited] = createSignal<T>(dataFromState as T);
   const [forceValidationMessages, setForceValidationMessages] = createSignal<boolean>(false);
   const [networkState, setNetworkState] = createSignal<NetworkState>(NetworkState.Loading);
+
+  const formIsDisabled = routes.form[props.segment]?.comingSoon ?? false;
 
   setTimeout(async () => {
     if (getConfig().getCaptchaEnabled() == true) {
@@ -218,71 +235,94 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
 
   return (
     <>
-      <FormFieldGrid>
-        <For each={Object.keys(props.mappings)}>
-          {(itemPropName) => {
-            const item: IPropertyToFormMapping<T> = (
-              props.mappings as ObjectWithPropsOfValue<IPropertyToFormMapping<T>>
-            )[itemPropName];
-            const Component = item.component;
+      <PageHeader text={props.title}></PageHeader>
 
-            const dtoMeta: IFormDtoMetaDetails<string> = (
-              props.formDtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>
-            )?.[itemPropName];
-            if (dtoMeta == null)
+      <Show when={formIsDisabled}>
+        <Alert
+          mt="2em"
+          status="warning"
+          variant="subtle"
+          borderBottomRadius="0"
+          justifyContent="center"
+          class="card-alert"
+        >
+          <AlertIcon mr="$2_5" />
+          <AlertDescription>
+            <Text>
+              This form is under construction. Submissions made before the page has been made
+              available are likely to be deleted.
+            </Text>
+          </AlertDescription>
+        </Alert>
+      </Show>
+
+      <Card class={classNames('form', { 'alert-visible': formIsDisabled })}>
+        <FormFieldGrid>
+          <For each={Object.keys(props.mappings)}>
+            {(itemPropName) => {
+              const item: IPropertyToFormMapping<T> = (
+                props.mappings as ObjectWithPropsOfValue<IPropertyToFormMapping<T>>
+              )[itemPropName];
+              const Component = item.component;
+
+              const dtoMeta: IFormDtoMetaDetails<string> = (
+                props.formDtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>
+              )?.[itemPropName];
+              if (dtoMeta == null)
+                return renderGridCell(
+                  item,
+                  <Center border="1px solid red" borderRadius="1em" height="100%">
+                    <Text color="red" textAlign="center" p="2em">
+                      Item mapping '{itemPropName}'' does not exist on '{props.id}'
+                    </Text>
+                  </Center>,
+                );
+
               return renderGridCell(
                 item,
-                <Center border="1px solid red" borderRadius="1em" height="100%">
-                  <Text color="red" textAlign="center" p="2em">
-                    Item mapping '{itemPropName}'' does not exist on '{props.id}'
-                  </Text>
-                </Center>,
+                <Component
+                  {...getExtraProps(item, itemBeingEdited())}
+                  id={`${props.id}-${itemPropName}`}
+                  label={dtoMeta.label}
+                  value={(itemBeingEdited() as unknown as ObjectWithPropsOfValue<T>)[itemPropName]}
+                  helpText={dtoMeta.helpText}
+                  placeholder={item.placeholder}
+                  validation={dtoMeta.validator}
+                  showValidationMessages={forceValidationMessages()}
+                  onChange={(newValue: string) => updateProperty(itemPropName, newValue)}
+                />,
               );
-
-            return renderGridCell(
-              item,
-              <Component
-                {...getExtraProps(item, itemBeingEdited())}
-                id={`${props.id}-${itemPropName}`}
-                label={dtoMeta.label}
-                value={(itemBeingEdited() as unknown as ObjectWithPropsOfValue<T>)[itemPropName]}
-                helpText={dtoMeta.helpText}
-                placeholder={item.placeholder}
-                validation={dtoMeta.validator}
-                showValidationMessages={forceValidationMessages()}
-                onChange={(newValue: string) => updateProperty(itemPropName, newValue)}
-              />,
-            );
-          }}
-        </For>
-      </FormFieldGrid>
-      <Show when={networkState() === NetworkState.Error}>
-        <HStack mt="1em" spacing="$4" justifyContent="center">
-          <Tag colorScheme="danger">Something went wrong when submitting your data</Tag>
-        </HStack>
-      </Show>
-      <HStack mt="1em" spacing="$4" justifyContent="center">
-        <div ref={(el) => (captchaRef = el)} class="h-captcha"></div>
-        <Button
-          variant="solid"
-          loading={networkState() === NetworkState.Loading}
-          onClick={submitForm}
-        >
-          Submit
-        </Button>
-        <Button variant="outline" colorScheme="warning" onClick={clearForm}>
-          Clear
-        </Button>
-        <Show when={!getConfig().isProd()}>
-          <Button
-            variant="outline"
-            colorScheme="danger"
-            onClick={() => getLog().i(itemBeingEdited())}
-          >
-            Log object to console
-          </Button>
+            }}
+          </For>
+        </FormFieldGrid>
+        <Show when={networkState() === NetworkState.Error}>
+          <HStack mt="1em" spacing="$4" justifyContent="center">
+            <Tag colorScheme="danger">Something went wrong when submitting your data</Tag>
+          </HStack>
         </Show>
-      </HStack>
+        <HStack mt="1em" spacing="$4" justifyContent="center">
+          <div ref={(el) => (captchaRef = el)} class="h-captcha"></div>
+          <Button
+            variant="solid"
+            loading={networkState() === NetworkState.Loading}
+            onClick={submitForm}
+          >
+            Submit
+          </Button>
+          <Button variant="outline" colorScheme="warning" onClick={clearForm}>
+            Clear
+          </Button>
+          <Show when={!getConfig().isProd()}>
+            <Button
+              variant="outline"
+              colorScheme="danger"
+              onClick={() => getLog().i(itemBeingEdited())}
+            >
+              Log object to console
+            </Button>
+          </Show>
+        </HStack>
+      </Card>
     </>
   );
 };

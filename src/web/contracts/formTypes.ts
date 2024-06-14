@@ -7,6 +7,7 @@ import { IMediaUpload } from '@web/contracts/mediaUpload';
 export type ValidFormComponentTypes =
   | Component<FormInputProps<string>>
   | Component<FormInputProps<Array<string>>>
+  | Component<FormInputProps<string | Array<string>>>
   | Component<FormInputProps<string | number>>
   | Component<FormInputProps<File>>
   | Component<FormInputProps<Array<IMediaUpload>>>;

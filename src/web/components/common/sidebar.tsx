@@ -14,6 +14,7 @@ import {
   hope,
 } from '@hope-ui/solid';
 import { Component, For, Show, createSignal } from 'solid-js';
+import { useLocation } from '@solidjs/router';
 import classNames from 'classnames';
 
 import { Link } from '@solidjs/router';
@@ -23,6 +24,7 @@ import { getConfig } from '@services/internal/configService';
 import { AppImage } from '@constants/image';
 
 export const Sidebar: Component = () => {
+  const location = useLocation();
   const [isOpen, setIsOpen] = createSignal(true);
 
   const SidebarTitle = <C extends ElementType = 'p'>(props: TextProps<C>) => {
@@ -43,7 +45,7 @@ export const Sidebar: Component = () => {
         title: routeData.title ?? '??',
         emoji: routeData.emoji ?? '',
         addDividerAbove: routeData.addDividerAbove,
-        comingSoon: routeData.comingSoon,
+        comingSoon: routeData.comingSoon ?? false,
       });
     }
   });
@@ -85,7 +87,7 @@ export const Sidebar: Component = () => {
           <Box m={20} />
           <SidebarTitle>Quick links</SidebarTitle>
           <VStack alignItems="flex-start" spacing="$1" mb="$6">
-            <SidebarNavLink href={routes.actualHome.path}>Home</SidebarNavLink>
+            <SidebarNavLink href={routes.actualHome.path}>🏠 Home</SidebarNavLink>
 
             <For each={menuItems}>
               {(menuItem) => (
@@ -94,7 +96,7 @@ export const Sidebar: Component = () => {
                     <Divider my="0.5em" mx="auto" opacity="50%" width="95%" />
                   </Show>
                   <Show
-                    when={!menuItem.comingSoon}
+                    when={!menuItem.comingSoon || location.pathname === `${menuItem.route}`}
                     fallback={
                       <SidebarNavNonLink>{menuItem.emoji}&nbsp;Coming soon</SidebarNavNonLink>
                     }

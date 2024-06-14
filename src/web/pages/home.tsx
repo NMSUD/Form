@@ -1,4 +1,4 @@
-import { Box, Heading } from '@hope-ui/solid';
+import { Box, Container, Divider, Text } from '@hope-ui/solid';
 import { useNavigate } from '@solidjs/router';
 import { Component } from 'solid-js';
 
@@ -7,16 +7,23 @@ import { PageHeader } from '@web/components/common/pageHeader';
 import { CenterLoading } from '@web/components/core/loading';
 
 export const HomePage: Component = () => {
+  const headingSize = 24;
+  const subHeadingSize = 18;
+
   return (
     <>
-      <PageHeader text="Home"></PageHeader>
+      <PageHeader text="Welcome to the NMSUD submission page!"></PageHeader>
       <Box m={50}></Box>
 
-      <Box m={50}></Box>
+      <Container maxWidth="1200px" px="2em">
+        <Text textAlign="center">Add quick explanation of the process</Text>
+        <br />
+        <Text textAlign="center">Explain what this site can do and what it is not meant for</Text>
+      </Container>
 
-      <Heading size="3xl" textAlign="center">
-        Welcome to the NMSUD <b>user submission page!</b>
-      </Heading>
+      <Container my="2em">
+        <Divider variant="dashed" />
+      </Container>
     </>
   );
 };

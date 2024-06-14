@@ -30,9 +30,15 @@ docker build \
 echo -n "Tag and push to registry? [y/n]: "
 read shouldTagAndPush
 
-if [ $shouldTagAndPush != "y" ]; then
+if [ $shouldTagAndPush != "n" ]; then
     echo "Nothing has been tagged or pushed"
     exit;
+fi
+
+echo -n "Log into registry with username and password? [y/n]: "
+read shouldLogIntoDocker
+if [ $shouldLogIntoDocker != "y" ]; then
+    docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 fi
 
 docker tag $DOCKER_TAG_NAME $DOCKER_REGISTRY/$DOCKER_TAG_NAME:$version

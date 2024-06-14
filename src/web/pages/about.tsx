@@ -1,5 +1,5 @@
 // prettier-ignore
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, Container, Divider, Grid, HStack, Text, } from '@hope-ui/solid';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, Container, Divider, Image, List, ListItem, Text, UnorderedList, } from '@hope-ui/solid';
 import { Component } from 'solid-js';
 
 import { AppImage, ExternalImages } from '@constants/image';
@@ -9,6 +9,7 @@ import { PageHeader } from '@web/components/common/pageHeader';
 import {
   AssistantAppsDiscordLink,
   AssistantNmsHomeLink,
+  NMSUDDiscordLink,
   NMSUDHomeLink,
   NMSUDRepoLink,
 } from '@web/components/core/link';
@@ -35,37 +36,34 @@ export const AboutPage: Component = () => {
           For this year, the <NMSUDHomeLink /> has developed a system that should make it easy for
           players to submit their builds easily, provide a way for more <NMSUDHomeLink /> organisers
           to participate in managing the submissions from players and automate a lot of processes
-          that were manual. abillities from <AssistantNmsHomeLink />
+          that were manual. abilities from <AssistantNmsHomeLink />
           &nbsp; we were able to build this tool.
         </Text>
       </Container>
 
-      <Container my="2em" class="hidden">
+      <Container my="3em">
         <Divider variant="dashed" />
       </Container>
 
-      <Container class="hidden">
+      <Container pb="2em" class="faq">
         <Center>
           <Text fontSize={headingSize} mb="$4">
-            Frequently Asked Questsions
+            Frequently Asked Questions
           </Text>
         </Center>
         <Accordion allowMultiple maxW="712px" mx="auto">
           <AccordionItem>
             <AccordionButton>
               <Box flex="1" textAlign="left">
-                <Text fontSize={subHeadingSize}>Where does the data come from?</Text>
+                <Text fontSize={subHeadingSize}>Why isn't my submission approved?</Text>
               </Box>
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel pb={4}>
-              <Text>
-                The pet data comes directly from the game files. Thanks to the we can extract
-                information from the game files.
-              </Text>
-              <Text mt={3}>
-                Specifically the <b>*.DESCRIPTOR.MBIN</b> files. These files contain the parts that
-                can be selected based on creature type and other selected parts.
+              <Text my="0.5em">
+                There are many things that go into approving submissions. This is a mostly manual
+                process and the NMSUD organisers need to ensure that we do not allow fraudulent or
+                offensive submissions.
               </Text>
             </AccordionPanel>
           </AccordionItem>
@@ -73,20 +71,17 @@ export const AboutPage: Component = () => {
           <AccordionItem>
             <AccordionButton>
               <Box flex="1" textAlign="left">
-                <Text fontSize={subHeadingSize}>How do I get access?</Text>
+                <Text fontSize={subHeadingSize}>How do I edit a submission?</Text>
               </Box>
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel pb={4}>
-              <s>
-                <Text>
-                  You will need to get in contact with or <AssistantNmsHomeLink /> to get a licence
-                  key.
-                </Text>
-              </s>
               <Text>
-                <br />
-                This tool is now completely free! 🥳
+                Unfortunately there is no way to edit a submission yet. We are working on a
+                solution, as a temporary work-around, you may resubmit your submission but please
+                make sure that you mention in the contact details section that you wish to update a
+                previous submission. Please also leave valid contact details so that we can verify
+                that you are the author of a submission.
               </Text>
             </AccordionPanel>
           </AccordionItem>
@@ -94,19 +89,21 @@ export const AboutPage: Component = () => {
           <AccordionItem>
             <AccordionButton>
               <Box flex="1" textAlign="left">
-                <Text fontSize={subHeadingSize}>Why was access limited to select individuals?</Text>
+                <Text fontSize={subHeadingSize}>My submission failed... What should I do?</Text>
               </Box>
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel pb={4}>
+              <Text>If you received an error message such as this:</Text>
+              <Center>
+                <Image
+                  src={AppImage.exampleSubmissionError}
+                  position="relative"
+                  alt="example of a message you would receive if a submission failed to submit"
+                />
+              </Center>
               <Text>
-                This was because the tool was still under construction and required a lot of
-                testing. Invalid pet JSON can easily break NMS saves. We did our best to ensure that
-                the tool will be safe for everyone to use.
-              </Text>
-              <Text mt={3}>
-                We also did not (and still do not) want people abusing the tool and using it to sell
-                creatures to the community.
+                Then please reach out to us on the <NMSUDDiscordLink />
               </Text>
             </AccordionPanel>
           </AccordionItem>
@@ -125,7 +122,14 @@ export const AboutPage: Component = () => {
               <br />
               <Text>Otherwise, you can reach out to:</Text>
               <Text>
-                - <b>KhaozTopsy</b> on the <AssistantAppsDiscordLink />
+                <UnorderedList>
+                  <ListItem>
+                    <b>{site.kurt.discordName}</b> on the <NMSUDDiscordLink />
+                  </ListItem>
+                  <ListItem>
+                    <b>{site.lenni.discordName}</b> on the <NMSUDDiscordLink />
+                  </ListItem>
+                </UnorderedList>
               </Text>
             </AccordionPanel>
           </AccordionItem>
@@ -153,12 +157,6 @@ export const AboutPage: Component = () => {
             subtitle="Software Development"
             link={site.lenni.website}
           />
-          {/* <AboutCreditCol
-            imageUrl={AppImage.t3553ract}
-            heading="t3553ract"
-            subtitle="Data management"
-            link={site.nmsud.website}
-          /> */}
         </FormFieldGrid>
         <Text fontSize={headingSize} textAlign="center" mt="$8" mb="$2">
           Supported by

@@ -13,8 +13,6 @@ import {
 } from '@contracts/dto/forms/meta/communityDto.meta';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { randomItemFromArray } from '@helpers/randomHelper';
-import { Card } from '@web/components/common/card';
-import { PageHeader } from '@web/components/common/pageHeader';
 import { FormDropdown } from '@web/components/form/dropdown/dropdown';
 import { FormBuilder } from '@web/components/form/formBuilder';
 import { GridItemSize } from '@web/components/form/grid';
@@ -34,84 +32,79 @@ export const CommunityFormPage: Component = () => {
   ];
 
   return (
-    <>
-      <PageHeader text="Submit a community"></PageHeader>
-
-      <Card class="form">
-        <FormBuilder
-          id="CommunityDto"
-          segment="community"
-          getName={(dto: CommunityDto) => dto.name}
-          formDtoMeta={CommunityDtoMeta}
-          propertyOverrides={propertyOverrides}
-          mappings={{
-            profilePicFile: {
-              component: FormProfileImageInput,
-              gridItemColumnSize: GridItemSize.smol,
-              gridItemRowSize: GridItemSize.smol,
-            },
-            name: {
-              component: FormLongInput,
-              gridItemColumnSize: GridItemSize.medium,
-              placeholder: randomItemFromArray(funnyPlayerNames),
-            },
-            tags: {
-              component: FormDropdown,
-              gridItemColumnSize: GridItemSize.long,
-              placeholder: 'Select your tags',
-              additional: {
-                options: (_) => Labels.Community.map((lbl) => ({ title: lbl, value: lbl })),
-                multiple: (_) => true,
-              },
-            },
-            socials: {
-              component: FormSocialInput,
-              gridItemColumnSize: GridItemSize.medium,
-              placeholder: 'youtube.com/watch?v=...',
-            },
-            bioMediaFiles: {
-              component: FormMediaUploadInput,
-              gridItemColumnSize: GridItemSize.long,
-              placeholder: 'Upload your images',
-              additional: {
-                maxUploads: (_) => communityBioMaxUploads,
-              },
-            },
-            homeGalaxy: {
-              component: FormDropdown,
-              gridItemColumnSize: GridItemSize.medium,
-              placeholder: 'Select your Galaxy',
-              additional: {
-                options: (_) => galaxyDropdown,
-              },
-            },
-            coordinates: {
-              component: PortalCoordInput,
-              gridItemColumnSize: GridItemSize.xxlong,
-              placeholder: portalValidOptions.map((p) => p.toUpperCase()).join(''),
-            },
-            bio: {
-              component: FormTextArea,
-              gridItemColumnSize: GridItemSize.full,
-              placeholder: 'We are a community that focusses on ...',
-              additional: {
-                displayTextLength: (_) => true,
-                maxTextLength: (_) => communityBioMaxLength,
-              },
-            },
-            contactDetails: {
-              component: FormTextArea,
-              gridItemColumnSize: GridItemSize.full,
-              placeholder: 'Email, Discord, etc',
-              additional: {
-                displayTextLength: (_) => true,
-                maxTextLength: (_) => contactDetailsMaxLength,
-              },
-            },
-          }}
-        />
-      </Card>
-    </>
+    <FormBuilder
+      id="CommunityDto"
+      segment="community"
+      title="Submit a community"
+      getName={(dto: CommunityDto) => dto.name}
+      formDtoMeta={CommunityDtoMeta}
+      propertyOverrides={propertyOverrides}
+      mappings={{
+        profilePicFile: {
+          component: FormProfileImageInput,
+          gridItemColumnSize: GridItemSize.smol,
+          gridItemRowSize: GridItemSize.smol,
+        },
+        name: {
+          component: FormLongInput,
+          gridItemColumnSize: GridItemSize.medium,
+          placeholder: randomItemFromArray(funnyPlayerNames),
+        },
+        tags: {
+          component: FormDropdown,
+          gridItemColumnSize: GridItemSize.long,
+          placeholder: 'Select your tags',
+          additional: {
+            options: (_) => Labels.Community.map((lbl) => ({ title: lbl, value: lbl })),
+            multiple: (_) => true,
+          },
+        },
+        socials: {
+          component: FormSocialInput,
+          gridItemColumnSize: GridItemSize.medium,
+          placeholder: 'youtube.com/watch?v=...',
+        },
+        bioMediaFiles: {
+          component: FormMediaUploadInput,
+          gridItemColumnSize: GridItemSize.long,
+          placeholder: 'Upload your images',
+          additional: {
+            maxUploads: (_) => communityBioMaxUploads,
+          },
+        },
+        homeGalaxy: {
+          component: FormDropdown,
+          gridItemColumnSize: GridItemSize.medium,
+          placeholder: 'Select your Galaxy',
+          additional: {
+            options: (_) => galaxyDropdown,
+          },
+        },
+        coordinates: {
+          component: PortalCoordInput,
+          gridItemColumnSize: GridItemSize.xxlong,
+          placeholder: portalValidOptions.map((p) => p.toUpperCase()).join(''),
+        },
+        bio: {
+          component: FormTextArea,
+          gridItemColumnSize: GridItemSize.full,
+          placeholder: 'We are a community that focusses on ...',
+          additional: {
+            displayTextLength: (_) => true,
+            maxTextLength: (_) => communityBioMaxLength,
+          },
+        },
+        contactDetails: {
+          component: FormTextArea,
+          gridItemColumnSize: GridItemSize.full,
+          placeholder: 'Email, Discord, etc',
+          additional: {
+            displayTextLength: (_) => true,
+            maxTextLength: (_) => contactDetailsMaxLength,
+          },
+        },
+      }}
+    />
   );
 };
 

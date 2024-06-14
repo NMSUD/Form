@@ -56,7 +56,7 @@ export const FormNetworkDropdown: Component<IProps> = (props: IProps) => {
           multiple={props.multiple}
           placeholder={props.placeholder}
           showValidationMessages={props.showValidationMessages}
-          onSelect={props.onChange}
+          onChange={props.onChange}
           validation={props.validation}
           options={makeArrayOrDefault(options())}
         />

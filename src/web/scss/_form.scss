@@ -1,6 +1,68 @@
 .form.card {
   position: relative;
   padding: 2em;
-  background-color: rgba(0, 0, 0, 0.5);
-  background-color: var(--hope-colors-background);
+  // background-color: rgba(0, 0, 0, 0.5);
+  // background-color: var(--hope-colors-background);
+  background-color: #0f1011;
+  // z-index: 2;
+
+  &.alert-visible {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: 0px;
+  }
+}
+
+.card-alert {
+  border-top: 1px solid var(--hope-colors-neutral5);
+  border-left: 1px solid var(--hope-colors-neutral5);
+  border-right: 1px solid var(--hope-colors-neutral5);
+}
+
+.hope-button:focus,
+.hope-accordion__button:focus {
+  box-shadow: none !important;
+}
+
+.hope-switch {
+  .hope-switch__control {
+    background-color: var(--hope-colors-neutral4);
+
+    &::before {
+      background-color: var(--hope-colors-primary9);
+    }
+  }
+
+  .hope-switch__control[data-focus] {
+    box-shadow: none;
+  }
+
+  .hope-switch__control[data-checked] {
+    background-color: var(--hope-colors-primary9);
+    border-color: var(--hope-colors-primary9);
+
+    &::before {
+      background-color: var(--hope-colors-neutral4);
+    }
+  }
+}
+
+.bug-report {
+  .msg {
+    padding-inline-start: var(--hope-space-4);
+  }
+  .hope-accordion__item {
+    border-width: 0;
+    .hope-accordion__button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+    }
+  }
+}
+
+.floating-button {
+  position: fixed;
+  bottom: 2em;
+  right: 3em;
+  z-index: 100;
 }
