@@ -1,15 +1,6 @@
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  Button,
-  Center,
-  Container,
-  HStack,
-  Tag,
-  Text,
-  notificationService,
-} from '@hope-ui/solid';
+// prettier-ignore
+import { Alert, AlertDescription, AlertIcon, Button, Center, HStack, Tag, Text, notificationService } from '@hope-ui/solid';
+import classNames from 'classnames';
 import { For, JSXElement, Show, createSignal } from 'solid-js';
 
 import { IApiSegment } from '@constants/api';
@@ -35,7 +26,6 @@ import {
   PropertyOverrides,
 } from '@web/contracts/formTypes';
 import { Card } from '../common/card';
-import classNames from 'classnames';
 import { PageHeader } from '../common/pageHeader';
 
 interface IProps<T> {
@@ -316,13 +306,17 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
             <Button
               variant="outline"
               colorScheme="danger"
-              onClick={() => getLog().i(itemBeingEdited())}
+              onClick={() => {
+                getLog().i(`${props.segment} form - details so far`, itemBeingEdited());
+              }}
             >
               Log object to console
             </Button>
           </Show>
         </HStack>
       </Card>
+      {/* TODO add BugReportFAB when ready */}
+      {/* <BugReportFAB /> */}
     </>
   );
 };

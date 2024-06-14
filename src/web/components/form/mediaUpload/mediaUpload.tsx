@@ -1,27 +1,5 @@
-import {
-  Anchor,
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Center,
-  CircularProgress,
-  CircularProgressIndicator,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-  Tooltip,
-  createDisclosure,
-  notificationService,
-} from '@hope-ui/solid';
+// prettier-ignore
+import { Anchor, Avatar, Box, Button, Center, CircularProgress, CircularProgressIndicator, Flex, FormControl, FormErrorMessage, FormLabel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, Tooltip, createDisclosure, notificationService } from '@hope-ui/solid';
 import { Component, For, JSX, Show, createEffect, createSignal } from 'solid-js';
 
 import { NetworkState } from '@constants/enum/networkState';
@@ -105,7 +83,7 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
       setNetworkState(NetworkState.Success);
     } catch (ex) {
       setNetworkState(NetworkState.Error);
-      getLog().e(ex);
+      getLog().e('Media upload exception', ex);
       notificationService.show({
         status: 'danger',
         title: 'Error processing uploads!',

@@ -74,6 +74,12 @@ export const routes = {
     path: '/login',
     showInSidebar: false,
   },
+  bugReport: {
+    path: '/bug',
+    emoji: '🐛',
+    title: 'Bug Report',
+    showInSidebar: false,
+  },
   about: {
     path: '/about',
     emoji: '❓',
