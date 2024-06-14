@@ -50,6 +50,7 @@ export const sidebar: DefaultTheme.SidebarItem[] = [
     items: [
       vitePressRoutes.deploying.githubActions, //
       vitePressRoutes.deploying.docker,
+      vitePressRoutes.deploying.newRelease,
     ],
   },
   {

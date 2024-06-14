@@ -1,9 +1,17 @@
-import { Box, Center, Flex, FormControl, FormErrorMessage, FormLabel } from '@hope-ui/solid';
+import {
+  Box,
+  Center,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  notificationService,
+} from '@hope-ui/solid';
 import { Component, createEffect, createSignal } from 'solid-js';
 
 import { NetworkState } from '@constants/enum/networkState';
 import { AppImage } from '@constants/image';
-import { onTargetFile } from '@helpers/eventHelper';
+import { onTargetFiles } from '@helpers/eventHelper';
 import { IImageParams, getImageParams } from '@helpers/imageHelper';
 import { FormInputProps } from '@web/contracts/formTypes';
 import { useValidation } from '../../../hooks/useValidation';
@@ -73,9 +81,26 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
     }
   }, [props.value]);
 
-  const handleFileChange = async (uploadedFile: File) => {
+  const handleFileChange = async (uploadedFile: FileList) => {
+    let errMsg: string | null = null;
+    if (uploadedFile[0] == null) {
+      errMsg = 'No files were supplied.';
+      return;
+    }
+    if (uploadedFile.length > 1) {
+      errMsg = 'Too many files were supplied.';
+      return;
+    }
+
+    if (errMsg != null) {
+      notificationService.show({
+        status: 'danger',
+        title: 'File upload error!',
+        description: errMsg,
+      });
+    }
     setNetworkState(NetworkState.Loading);
-    setFileToProcess(uploadedFile);
+    setFileToProcess(uploadedFile[0]);
   };
 
   return (
@@ -98,7 +123,7 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
             id="file-upload"
             type="file"
             accept="image/*"
-            onChange={onTargetFile(handleFileChange)}
+            onChange={onTargetFiles(handleFileChange)}
           />
         </Box>
         <Box mt="$3" textAlign="center">

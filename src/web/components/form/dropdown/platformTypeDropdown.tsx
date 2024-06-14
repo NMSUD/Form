@@ -8,8 +8,8 @@ import {
 } from '@contracts/dto/enum/platformType';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { getArrFromEnum } from '@helpers/enumHelper';
+import { Dropdown } from '@web/components/common/dropdown';
 import { FormInputProps } from '@web/contracts/formTypes';
-import { Dropdown } from '../../common/dropdown';
 
 interface IProps extends FormInputProps<Array<string>> {
   multiple?: boolean;
@@ -23,7 +23,7 @@ export const PlatformTypeDropdown: Component<IProps> = (props: IProps) => {
       multiple={props.multiple}
       helpText={props.helpText}
       placeholder={props.placeholder}
-      onSelect={props.onChange}
+      onChange={props.onChange}
       validation={props.validation}
       showValidationMessages={props.showValidationMessages}
       options={getArrFromEnum(PlatformType).map((pType) => ({

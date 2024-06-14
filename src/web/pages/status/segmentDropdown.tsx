@@ -18,7 +18,7 @@ export const segmentValidation = multiValidation<Array<string>>(
 interface IProps {
   value: Array<string>;
   showValidationMessages: boolean;
-  onChange: (newValue: Array<string>) => void;
+  onChange: (newValue: string | Array<string>) => void;
 }
 
 export const SegmentDropdown: Component<IProps> = (props: IProps) => {
@@ -30,7 +30,7 @@ export const SegmentDropdown: Component<IProps> = (props: IProps) => {
       value={props.value}
       options={segmentOptions}
       showValidationMessages={props.showValidationMessages}
-      validation={segmentValidation}
+      validation={(val) => segmentValidation(val as Array<string>)}
       onChange={props.onChange}
     />
   );

@@ -6,7 +6,6 @@ import { Builder } from '@services/external/database/xata';
 import { IApiModule } from '../../types/baseModule';
 import { IBuilderImages, builderFileHandler } from './builderFileHandler';
 import { builderDtoWithImageToPersistence, builderPersistenceToDto } from './builderMapper';
-import { BuilderPersistenceMeta } from './builderPersistenceMeta';
 import { builderPublicUrlHandler } from './builderPublicUrlHandler';
 import {
   builderAdditionalPropertiesToDto,
@@ -17,7 +16,7 @@ const getDbTable = () => getDatabaseService().builder();
 export const builderModule: IApiModule<BuilderDto, IBuilderImages, Builder> = {
   segment: 'builder',
   dtoMeta: BuilderDtoMeta,
-  persistenceMeta: BuilderPersistenceMeta,
+  sendDiscordMessageOnSubmission: true,
   getName: (persistence: Builder) => persistence.name,
   getIcon: (persistence: Builder) => persistence.profilePicUrl,
 

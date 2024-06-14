@@ -15,6 +15,7 @@ I will admit, there are a lot of scripts and dependencies. It would take far too
 - `npm run storybook` - _Storybook tasks_
 - `npm run docs` - Documentation generation
 - `npm run test` - Unit tests and coverage reports
+- `npm run db:generate` - Generate contracts from the database provider (Xata.io)
 
 <!-- Links used in the page -->
 

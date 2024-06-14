@@ -53,3 +53,31 @@ export const getPlanetBuildByPlanetBuildId =
       };
     }
   };
+
+export const getNumberOfBuildsByBuilderId =
+  (xata: XataClient) =>
+  async (builderId: string): Promise<ResultWithValue<number>> => {
+    try {
+      const records = await xata.db.planetBuildBuilder.summarize({
+        summaries: {
+          numBuilds: { count: '*' },
+        },
+        filter: {
+          'builder.id': builderId,
+        },
+      });
+      return {
+        isSuccess: true,
+        value: records.summaries[0].numBuilds,
+        errorMessage: '',
+      };
+    } catch (ex) {
+      const errMsg = `getNumberOfBuildsByBuilderId: ${ex?.toString?.()}`;
+      getLog().e(errMsg);
+      return {
+        isSuccess: false,
+        value: -1,
+        errorMessage: errMsg,
+      };
+    }
+  };

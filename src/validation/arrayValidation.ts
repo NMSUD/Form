@@ -19,7 +19,7 @@ export const maxItems =
   (maxLength: number) =>
   <T>(values: Array<T>): ValidationResult => {
     const safeArr = makeArrayOrDefault(values);
-    if (safeArr.length < maxLength) {
+    if (safeArr.length <= maxLength) {
       return { isValid: true };
     }
 

@@ -8,6 +8,7 @@ import {
   HStack,
   Input,
   InputGroup,
+  InputLeftAddon,
   InputRightElement,
   VStack,
 } from '@hope-ui/solid';
@@ -19,7 +20,7 @@ import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 import { AvatarFromSocialLink } from './socialLinkAvatar';
 import { keyboardKeyCode } from '@constants/form';
 
-interface IFormSocialProps extends FormInputProps<Array<string>> { }
+interface IFormSocialProps extends FormInputProps<Array<string>> {}
 
 export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialProps) => {
   const [isValid, calcIsValid] = useValidation(props.validation);
@@ -32,6 +33,12 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
     }
   }, [props.showValidationMessages]);
 
+  createEffect(() => {
+    if (props.value == null || props.value.length === 0) {
+      setItems([]);
+    }
+  }, [props.value]);
+
   const handleSpecialKeyPress = (event: HtmlKeyEvent) => {
     if (event.keyCode === keyboardKeyCode.enter) {
       addToList(currentLink());
@@ -43,7 +50,7 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
 
     setItems((prev) => {
       const newValue = [...makeArrayOrDefault(prev), link];
-      props.onChange(newValue);
+      props.onChange(newValue.map((v) => `https://${v}`));
       return newValue;
     });
     setCurrentLink('');
@@ -52,7 +59,7 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
   const removeFromList = (link: string) => {
     setItems((prev) => {
       const newValue = makeArrayOrDefault(prev).filter((p) => p != link);
-      props.onChange(newValue);
+      props.onChange(newValue.map((v) => `https://${v}`));
       return newValue;
     });
   };
@@ -66,6 +73,7 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
         </FormLabel>
 
         <InputGroup>
+          <InputLeftAddon>https://</InputLeftAddon>
           <Input
             id={props.id}
             class="noselect"

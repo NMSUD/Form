@@ -21,7 +21,7 @@ describe('Form handler', () => {
       get: () => null,
       set: () => null,
       request: {
-        [FormDataKey.captcha]: 'badcaptcha',
+        [FormDataKey.captcha]: 'bad captcha',
         [FormDataKey.data]: '',
       },
       response: {
@@ -126,11 +126,11 @@ describe('Form handler', () => {
     const next = vi.fn().mockResolvedValue(fakePromise());
     const formHandler = baseFormHandler({
       ...fakeModule,
-      createRecord: (pers) => {
+      createRecord: (persistence) => {
         return promiseFromResult({
           isSuccess: false,
           value: {
-            ...pers,
+            ...persistence,
             id: 'createdId',
             approvalStatus: ApprovalStatus.pending,
           },
@@ -213,7 +213,7 @@ describe('Form handler', () => {
     await formHandler(ctx, next);
     expect(fakeMapRecordRelationshipsToDto).toBeCalledTimes(1);
   });
-  test('discord message sent, update mesgId in db', async () => {
+  test('discord message sent, update messageId in db', async () => {
     class MockConfigService {
       getCaptchaEnabled = () => false;
       getNmsUdApiUrl = () => 'https://nmsud.com';
@@ -245,6 +245,7 @@ describe('Form handler', () => {
     );
     const formHandler = baseFormHandler({
       ...fakeModule,
+      sendDiscordMessageOnSubmission: true,
       updateRecord: fakeUpdateRecord,
     });
     await formHandler(ctx, next);

@@ -4,7 +4,13 @@ import { getCrudOperations } from './table/baseTableOperations';
 import {
   getCommunityBuilderRecordByBuilderId,
   getCommunityBuilderRecordByCommunityId,
+  getNumberOfBuildersByCommunityId,
 } from './table/communityBuilderTableOperations';
+import {
+  getNumberOfBuildsByBuilderId,
+  getPlanetBuildByBuilderId,
+  getPlanetBuildByPlanetBuildId,
+} from './table/planetBuildBuilderTableOperations';
 import {
   Builder,
   BuilderRecord,
@@ -18,10 +24,6 @@ import {
   PlanetBuildRecord,
   XataClient,
 } from './xata';
-import {
-  getPlanetBuildByBuilderId,
-  getPlanetBuildByPlanetBuildId,
-} from './table/planetBuildBuilderTableOperations';
 
 @Service()
 export class DatabaseService {
@@ -58,6 +60,7 @@ export class DatabaseService {
     }),
     getByBuilderId: getCommunityBuilderRecordByBuilderId(this._xata),
     getByCommunityId: getCommunityBuilderRecordByCommunityId(this._xata),
+    getNumberOfBuilders: getNumberOfBuildersByCommunityId(this._xata),
   });
 
   planetBuild = () =>
@@ -75,6 +78,7 @@ export class DatabaseService {
     }),
     getByBuilderId: getPlanetBuildByBuilderId(this._xata),
     getByPlanetBuildId: getPlanetBuildByPlanetBuildId(this._xata),
+    getNumberOfBuilds: getNumberOfBuildsByBuilderId(this._xata),
   });
 }
 

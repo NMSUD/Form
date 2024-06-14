@@ -5,14 +5,16 @@ import Container from 'typedi';
 
 import { AppType } from '@constants/enum/appType';
 import { routes } from '@constants/route';
-import { HomePage, RedirectToHome } from '@web/pages/home';
-import { NotFoundPage } from '@web/pages/notFound';
+import { addVideoBackground } from '@helpers/documentHelper';
 import { APP_TYPE } from '@services/internal/configService';
 import { Sidebar } from '@web/components/common/sidebar';
 import { LoadingSpinner } from '@web/components/core/loading';
+import { HomePage, RedirectToHome } from '@web/pages/home';
+import { NotFoundPage } from '@web/pages/notFound';
 
 export const AppShell: Component = () => {
   Container.set(APP_TYPE, AppType.UI);
+  addVideoBackground();
 
   const Routes = useRoutes([
     {
@@ -41,6 +43,7 @@ export const AppShell: Component = () => {
       component: lazy(() => import('@web/pages/status/status')),
     },
     { path: routes.verify.path, component: HomePage },
+    { path: routes.bugReport.path, component: lazy(() => import('@web/pages/bug/bugReport')) },
     { path: routes.about.path, component: lazy(() => import('@web/pages/about')) },
     { path: routes.actualHome.path, component: HomePage },
     { path: routes.home.path, component: RedirectToHome },

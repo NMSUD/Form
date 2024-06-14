@@ -79,28 +79,28 @@ export const GalacticCoordsInput: Component<IFormGalacticCoordsInputProps> = (
               {
                 id: '1',
                 accessor: groupA,
-                settor: setGroupA,
+                setter: setGroupA,
                 setCurrentRef: (el: HTMLInputElement) => (groupARef = el),
                 nextRef: () => groupBRef,
               },
               {
                 id: '2',
                 accessor: groupB,
-                settor: setGroupB,
+                setter: setGroupB,
                 setCurrentRef: (el: HTMLInputElement) => (groupBRef = el),
                 nextRef: () => groupCRef,
               },
               {
                 id: '3',
                 accessor: groupC,
-                settor: setGroupC,
+                setter: setGroupC,
                 setCurrentRef: (el: HTMLInputElement) => (groupCRef = el),
                 nextRef: () => groupDRef,
               },
               {
                 id: '4',
                 accessor: groupD,
-                settor: setGroupD, //
+                setter: setGroupD, //
                 setCurrentRef: (el: HTMLInputElement) => (groupDRef = el),
               },
             ]}
@@ -109,7 +109,7 @@ export const GalacticCoordsInput: Component<IFormGalacticCoordsInputProps> = (
               <>
                 <Show when={index() !== 0}>
                   <Center>
-                    <Text size="xl" p="$2">
+                    <Text p="$2" fontWeight="bolder">
                       :
                     </Text>
                   </Center>
@@ -119,11 +119,10 @@ export const GalacticCoordsInput: Component<IFormGalacticCoordsInputProps> = (
                   id={`galactic-group-${data.id}`}
                   class="noselect"
                   textAlign="center"
-                  minWidth="200px"
+                  minWidth="100px"
                   placeholder={`${data.id}${data.id}${data.id}${data.id}`}
                   value={data.accessor()}
-                  size="lg"
-                  onInput={handleNavigateToNextInput(data.settor, data.nextRef?.())}
+                  onInput={handleNavigateToNextInput(data.setter, data.nextRef?.())}
                 />
               </>
             )}

@@ -9,6 +9,14 @@ import {
 } from '@validation/baseValidation';
 import { maxLength, minLength } from '@validation/textValidation';
 import { PlanetBuildDto } from '../planetBuildDto';
+import {
+  arrayDiscordLine,
+  arrayFromDatabaseDiscordLines,
+  basicDiscordLine,
+} from '@helpers/discordMessageHelper';
+import { getDatabaseService } from '@services/external/database/databaseService';
+import { Builder } from '@services/external/database/xata';
+import { IRecordRequirements } from '@api/types/baseModule';
 
 export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
   id: {
@@ -18,6 +26,9 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
   name: {
     label: 'Name',
     defaultValue: '',
+    discord: {
+      display: basicDiscordLine,
+    },
     helpText: 'The IN-GAME name of the build',
     validator: multiValidation(minLength(2), maxLength(100)),
   },
@@ -29,6 +40,9 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
       items: {
         type: 'string',
       },
+    },
+    discord: {
+      display: basicDiscordLine,
     },
     saveToLocalStorage: true,
     validator: noValidation,
@@ -51,16 +65,25 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
   galaxy: {
     label: 'Galaxy',
     defaultValue: '',
+    discord: {
+      display: basicDiscordLine,
+    },
     validator: notNull('You need to select a galaxy'),
   },
   systemName: {
     label: 'System Name',
     defaultValue: '',
+    discord: {
+      display: basicDiscordLine,
+    },
     validator: minLength(2),
   },
   planetName: {
     label: 'Planet Name',
     defaultValue: '',
+    discord: {
+      display: basicDiscordLine,
+    },
     validator: minLength(2),
   },
   coordinates: {
@@ -70,6 +93,9 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
       type: 'array',
       items: { type: 'string' },
     },
+    discord: {
+      display: basicDiscordLine,
+    },
     validator: minLength(2),
   },
   buildTechniquesUsed: {
@@ -78,6 +104,9 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
     swaggerSchema: {
       type: 'array',
       items: { type: 'string' },
+    },
+    discord: {
+      display: arrayDiscordLine,
     },
     helpText: `Please let us know if there is a missing build technique and we will likely add your suggestion`,
     validator: minItems(1),
@@ -89,8 +118,14 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
       type: 'array',
       items: { type: 'string' },
     },
+    discord: {
+      display: arrayFromDatabaseDiscordLines<Builder & IRecordRequirements>({
+        dbCall: (id) => getDatabaseService().builder().read(id),
+        mapValue: (builder) => builder.name ?? '??',
+      }),
+    },
     helpText: `Are you unable to find a Builder? Ask the Builder to add their profile on this site, or add it yourself on the builder form.`,
     validator: minItems(1),
   },
   contactDetails,
-};
+} as const;

@@ -17,7 +17,9 @@ export const communityDtoWithImageToPersistence: DtoAndImageMapperToNewPersisten
     profilePicFile: images.profilePicFile as XataFile,
     bio: dto.bio,
     bioMediaFiles: makeArrayOrDefault(images.bioMediaFiles) as Array<XataArrayFile>,
-    bioMediaUrls: '',
+    bioMediaUrls: dto.bioMediaUrls.join(','), // this is not a generated field like the other mediaUrl fields
+    homeGalaxy: dto.homeGalaxy,
+    coordinates: dto.coordinates,
     tags: dto.tags.filter((t) => t.length > 0).join(','),
     socials: dto.socials.filter((s) => s.length > 0).join(','),
     contactDetails: dto.contactDetails,
@@ -26,7 +28,6 @@ export const communityDtoWithImageToPersistence: DtoAndImageMapperToNewPersisten
   return persistence;
 };
 
-// TODO update properties
 export const communityPersistenceToDto: Mapper<Community, CommunityDto> = (
   persistence: Community,
 ) => {
@@ -36,10 +37,10 @@ export const communityPersistenceToDto: Mapper<Community, CommunityDto> = (
     profilePicFile: anyObject,
     profilePicUrl: persistence.profilePicUrl ?? '',
     bio: persistence.bio,
-    bioMediaUrls: persistence.bioMediaUrls.split(',').filter((u) => u.length > 0),
+    bioMediaUrls: persistence.bioMediaUrls.split(',').filter((u) => (u?.length ?? 0) > 0),
     bioMediaFiles: anyObject,
-    homeGalaxy: '', //persistence.homeGalaxies,
-    coordinates: '',
+    homeGalaxy: persistence.homeGalaxy,
+    coordinates: persistence.coordinates,
     tags: persistence.tags.split(',').filter((t) => t.length > 0),
     socials: persistence.socials.split(',').filter((s) => s.length > 0),
     contactDetails: persistence.contactDetails,

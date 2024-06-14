@@ -128,7 +128,6 @@ export const baseVerifyHandler =
       const descripLines = await getDescriptionLines({
         data: dtoForDiscord,
         dtoMeta: module.dtoMeta,
-        persistenceMeta: module.persistenceMeta,
       });
       const webhookPayload = baseSubmissionMessageBuilder({
         content: '',

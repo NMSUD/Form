@@ -1,62 +1,46 @@
-import { ApprovalStatus } from '@constants/enum/approvalStatus';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
-import { getDatabaseService } from '@services/external/database/databaseService';
 import { Community } from '@services/external/database/xata';
-import { getLog } from '@services/internal/logService';
+import { IProcessedRecord } from 'data/contracts/processedRecord';
 import { IGetImageForRecord } from '../contracts/image';
-import { IImageDownloadRequest, imageListDownloader } from './imageListDownloader';
+import {
+  getMediaImagesToDownload,
+  getProfilePicToDownload,
+  imageListDownloader,
+} from './logic/imageListDownloader';
 
 export const communityImgDownloader = async (
   props: IGetImageForRecord<Community>,
-): Promise<Community> => {
-  const listOfImagesToDownload: Array<IImageDownloadRequest> = [];
+): Promise<IProcessedRecord<Community>> => {
   const persistence = { ...props.persistence };
 
-  let profilePicFileUrl: string | null | undefined = props.persistence.profilePicFile?.url;
-  if (persistence.approvalStatus === ApprovalStatus.approvedAndProcessed) {
-    profilePicFileUrl = persistence.profilePicUrl;
-  }
-  listOfImagesToDownload.push({
-    fileName: `${persistence.id}_profile_pic.png`,
-    folder: props.imagePath,
-    url: profilePicFileUrl,
-    onSuccess: (newFileName: string) => {
-      getLog().i(`\t\tDownloaded ${newFileName}`);
+  const profileImageToDownloadObj = getProfilePicToDownload(
+    props,
+    props.persistence.profilePicFile,
+    (mediaUrlString) => {
       persistence.profilePicFile = null;
-      persistence.profilePicUrl = `${props.imgBaseUrl}/${props.imageFolder}/${newFileName}`;
+      persistence.profilePicUrl = mediaUrlString;
     },
-  });
+  );
 
-  const bioMediaUrls: Array<string> = [];
   const bioMediaFiles = makeArrayOrDefault(props.persistence.bioMediaFiles);
-  for (let bioMediaIndex = 0; bioMediaIndex < bioMediaFiles.length; bioMediaIndex++) {
-    const bioMedia = bioMediaFiles[bioMediaIndex];
-    if (bioMedia == null) continue;
+  const bioMediaImagesToDownloadObj = getMediaImagesToDownload(
+    props,
+    bioMediaFiles,
+    (mediaUrlString) => {
+      persistence.bioMediaFiles = null;
+      persistence.bioMediaUrls = mediaUrlString;
+    },
+  );
 
-    listOfImagesToDownload.push({
-      fileName: `${persistence.id}_bio_media_${bioMediaIndex + 1}.png`,
-      folder: props.imagePath,
-      url: profilePicFileUrl,
-      onSuccess: (newFileName: string) => {
-        getLog().i(`\t\tDownloaded ${newFileName}`);
-        bioMediaUrls.push(`${props.imgBaseUrl}/${props.imageFolder}/${newFileName}`);
-        persistence.bioMediaFiles = null;
-        persistence.bioMediaUrls = bioMediaUrls.join(',');
-      },
-    });
-  }
+  await imageListDownloader([
+    ...profileImageToDownloadObj.persistence,
+    ...bioMediaImagesToDownloadObj.persistence,
+  ]);
 
-  await imageListDownloader(listOfImagesToDownload);
-
-  if (persistence.approvalStatus === ApprovalStatus.approvedAndProcessed) {
-    return persistence;
-  }
-
-  persistence.approvalStatus = ApprovalStatus.approvedAndProcessed;
-  const updatedRecordResult = await getDatabaseService()
-    .community()
-    .update(persistence.id, persistence);
-  if (updatedRecordResult.isSuccess == false) return props.persistence;
-
-  return persistence;
+  return {
+    persistence,
+    needsUpdating:
+      profileImageToDownloadObj.needsUpdating || //
+      bioMediaImagesToDownloadObj.needsUpdating,
+  };
 };

@@ -33,6 +33,27 @@ jobs:
       - name: Build all projects
         run: npm run build
 
+      - name: Generate release notes
+        run: |
+          version=${{ env.VERSION }}
+          mode="ignore"
+          filename="CHANGELOG.md"
+          while IFS="" read -r p || [ -n "$p" ]
+          do
+              if [[ $p == "## ["* ]]; then
+                  mode="skip"
+              fi
+              if [[ $p == *"[$version]"* ]]; then
+                  mode="add"
+              fi
+              if [[ $p == *"<!-- Links used in the page -->"* ]]; then
+                  mode="add"
+              fi
+              if [[ $mode == "add" ]]; then
+                  echo "$p" >> release.txt
+              fi
+          done < $filename
+
       - name: Zip web files
         uses: montudor/action-zip@v1
         with:
@@ -54,7 +75,7 @@ jobs:
         with:
           name: '${{ env.VERSION }}'
           tag_name: ${{ env.VERSION }}
-          body_path: ${{ github.workspace }}/CHANGELOG.md
+          body_path: ${{ github.workspace }}/release.txt
           files: |
             web.zip
             server.zip

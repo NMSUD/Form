@@ -1,3 +1,20 @@
 .credit-col {
   color: var(--text-color);
+
+  .cell {
+    // background-color: rgba(0, 0, 0, 0.75);
+    border: 1px solid var(--hope-colors-neutral6);
+    background-color: rgba(100, 100, 100, 0.25);
+  }
+}
+
+.faq {
+  .hope-accordion__button[aria-expanded='true'] {
+    border-bottom-width: 1px;
+    border-color: var(--hope-colors-neutral7);
+
+    + .hope-collapse .hope-accordion__panel {
+      margin-bottom: 1em;
+    }
+  }
 }

@@ -1,5 +1,6 @@
 export const site = {
   ref: 'nmsud',
+  title: 'NMSUD Form',
   assistantApps: {
     appGuid: '82e3ee0e-ad76-40b3-cfc7-08dc33b02b7f',
     name: 'AssistantApps',
@@ -35,19 +36,21 @@ export const site = {
   },
   kurt: {
     name: 'Kurt',
+    discordName: 'KhaozTopsy',
     website: 'https://kurtlourens.com',
   },
   lenni: {
     name: 'Lenni',
+    discordName: 'Lenni',
     website: 'https://lenni009.github.io',
   },
   eisvana: {
     name: 'Eisvana',
     website: 'https://eisvana.github.io',
   },
-};
+} as const;
 
 export const LocalStorageKey = {
   main: 'nmsud-form',
   submissions: 'nmsud-submissions',
-};
+} as const;

@@ -2,6 +2,7 @@ import Koa from 'koa';
 
 import { hasCaptcha } from '@api/guard/hasCaptcha';
 import { errorResponse } from '@api/misc/httpResponse/errorResponse';
+import { successResponse } from '@api/misc/httpResponse/successResponse';
 import { IApiModule, IRecordRequirements } from '@api/types/baseModule';
 import { ApiStatusErrorCode } from '@constants/api';
 import { ApprovalStatus, colourFromApprovalStatus } from '@constants/enum/approvalStatus';
@@ -136,6 +137,11 @@ export const baseFormHandler =
       dtoForDiscord = dtoResult.value;
     }
 
+    if (module.sendDiscordMessageOnSubmission != true) {
+      await successResponse({ ctx, body: createdRecordResult.value, next });
+      return;
+    }
+
     const discordUrl = getConfig().getDiscordWebhookUrl();
     const webhookPayload = baseSubmissionMessageBuilder({
       content: '',
@@ -145,7 +151,6 @@ export const baseFormHandler =
       descripLines: await getDescriptionLines({
         data: dtoForDiscord,
         dtoMeta: module.dtoMeta,
-        persistenceMeta: module.persistenceMeta,
       }),
       additionalEmbeds: [
         baseSubmissionMessageEmbed(
@@ -167,9 +172,5 @@ export const baseFormHandler =
       } as TP & IRecordRequirements);
     }
 
-    ctx.response.status = 200;
-    ctx.set('Content-Type', 'application/json');
-    ctx.body = createdRecordResult.value;
-
-    await next();
+    await successResponse({ ctx, body: createdRecordResult.value, next });
   };

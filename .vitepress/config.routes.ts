@@ -80,6 +80,10 @@ export const vitePressRoutes = {
       text: 'Docker',
       link: '/docs/deploy/docker',
     },
+    newRelease: {
+      text: 'New Release',
+      link: '/docs/deploy/newRelease',
+    },
   },
   githubDocs: {
     contributing: {

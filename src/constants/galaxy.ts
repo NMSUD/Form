@@ -255,4 +255,10 @@ export const galaxies = [
   'Tuhgrespod',
   'Iousongola',
   'Odyalutai',
-];
+] as const;
+
+export const galaxyDropdown = galaxies.map((lbl, index) => ({
+  title: lbl,
+  listTitle: `${index + 1}: ${lbl}`,
+  value: lbl,
+}));

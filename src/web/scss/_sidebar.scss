@@ -1,32 +1,35 @@
 nav.hide-scrollbar {
-    border-right: 5px solid rgba(0, 0, 0, 0.2);
+  border-right: 5px solid rgba(0, 0, 0, 0.2);
+  transition: all 500ms ease-in-out;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-right: 1px solid var(--hope-colors-neutral5);
+
+  .content {
+    transition: all 250ms ease-in-out;
+    transition-delay: 0ms;
+
+    .version {
+      position: absolute;
+      bottom: 0.5em;
+      left: 0;
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  &.close .content {
+    transition-delay: 250ms;
+  }
+
+  .drawer-icon {
+    position: absolute;
+    top: 1em;
+    right: -1.25em;
     transition: all 500ms ease-in-out;
-    background-color: var(--hope-colors-background);
+    box-shadow: none;
 
-    .content {
-        transition: all 250ms ease-in-out;
-        transition-delay: 0;
-
-        .version {
-            position: absolute;
-            bottom: 1em;
-            right: 0;
-        }
+    &.close {
+      transform: rotate(180deg);
     }
-
-    &.close .content {
-        transition-delay: 250ms;
-    }
-
-    .drawer-icon {
-        position: absolute;
-        top: 1em;
-        right: -1.5em;
-        transition: all 500ms ease-in-out;
-        box-shadow: none;
-
-        &.close {
-            transform: rotate(180deg);
-        }
-    }
+  }
 }

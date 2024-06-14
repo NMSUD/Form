@@ -5,12 +5,19 @@ import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { FormInputProps } from '@web/contracts/formTypes';
 import { Dropdown } from '../../common/dropdown';
 
-interface IProps extends FormInputProps<Array<string>> {
+interface IProps extends FormInputProps<string | Array<string>> {
   options?: Array<IDropdownOption>;
   multiple?: boolean;
 }
 
 export const FormDropdown: Component<IProps> = (props: IProps) => {
+  const localOnChange = (value: Array<string>) => {
+    if (props.multiple === false && (value?.length ?? 0) === 1) {
+      props.onChange?.(value[0]);
+    }
+    props.onChange?.(value);
+  };
+
   return (
     <Dropdown
       title={props.label}
@@ -19,7 +26,7 @@ export const FormDropdown: Component<IProps> = (props: IProps) => {
       multiple={props.multiple}
       placeholder={props.placeholder}
       showValidationMessages={props.showValidationMessages}
-      onSelect={props.onChange}
+      onChange={localOnChange}
       validation={props.validation}
       options={makeArrayOrDefault(props.options)}
     />

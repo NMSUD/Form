@@ -9,7 +9,6 @@ import {
   planetBuildDtoWithImageToPersistence,
   planetBuildPersistenceToDto,
 } from './planetBuildMapper';
-import { PlanetBuildPersistenceMeta } from './planetBuildPersistenceMeta';
 import { planetBuildPublicUrlHandler } from './planetBuildPublicUrlHandler';
 import {
   planetBuildAdditionalPropertiesToDto,
@@ -20,7 +19,7 @@ const getDbTable = () => getDatabaseService().planetBuild();
 export const planetBuildModule: IApiModule<PlanetBuildDto, IPlanetBuildImages, PlanetBuild> = {
   segment: 'planetBuild',
   dtoMeta: PlanetBuildDtoMeta,
-  persistenceMeta: PlanetBuildPersistenceMeta,
+  sendDiscordMessageOnSubmission: true,
   getName: (persistence: PlanetBuild) => persistence.name,
   getIcon: (persistence: PlanetBuild) => persistence.mediaUrls?.[0] ?? '',
 

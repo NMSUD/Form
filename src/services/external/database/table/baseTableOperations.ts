@@ -29,7 +29,7 @@ export const getCrudOperations = <T, TR extends XataRecord<XataRecord<any>>>(
         errorMessage: '',
       };
     } catch (ex) {
-      const errMsg = `error occurred while creating record in database. ex: ${ex?.toString?.()}`;
+      const errMsg = `error occurred while reading record from database. ex: ${ex?.toString?.()}`;
       getLog().e(errMsg);
       return {
         isSuccess: false,

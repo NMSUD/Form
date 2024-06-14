@@ -1,4 +1,5 @@
 import { site } from '@constants/site';
+import { setDocumentTitle } from '@helpers/documentHelper';
 import { Flex, Heading } from '@hope-ui/solid';
 import { Component } from 'solid-js';
 
@@ -7,6 +8,7 @@ interface IProps {
 }
 
 export const PageHeader: Component<IProps> = (props: IProps) => {
+  setDocumentTitle(props.text);
   return (
     <>
       <Flex

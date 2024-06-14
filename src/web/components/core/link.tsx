@@ -52,7 +52,7 @@ export const NMSUDHomeLink = (props: any) => (
 );
 export const NMSUDDiscordLink = (props: any) => (
   <BasicLink href={site.nmsud.discord} title="NMSUD discord">
-    {props.children ?? 'NMSUD'}
+    {props.children ?? 'NMSUD Discord'}
   </BasicLink>
 );
 export const NMSUDRepoLink = () => (

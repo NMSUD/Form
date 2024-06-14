@@ -101,7 +101,7 @@ export const StatusPage: Component = () => {
           <AlertIcon mr="$2_5" />
           <AlertDescription>
             <Text>
-              All submission needs to be approved and then processed by our automated systems before
+              All submissions need to be approved and then processed by our automated systems before
               they become visible for everyone else.
             </Text>
           </AlertDescription>
