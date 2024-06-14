@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>175/175</span>
+                <span class='fraction'>176/176</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>175/175</span>
+                <span class='fraction'>176/176</span>
             </div>
         
             
@@ -238,7 +238,9 @@
 <a name='L173'></a><a href='#L173'>173</a>
 <a name='L174'></a><a href='#L174'>174</a>
 <a name='L175'></a><a href='#L175'>175</a>
-<a name='L176'></a><a href='#L176'>176</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -376,29 +378,20 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -406,17 +399,27 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Koa from 'koa';
 &nbsp;
 import { hasCaptcha } from '@api/guard/hasCaptcha';
 import { errorResponse } from '@api/misc/httpResponse/errorResponse';
+import { successResponse } from '@api/misc/httpResponse/successResponse';
 import { IApiModule, IRecordRequirements } from '@api/types/baseModule';
 import { ApiStatusErrorCode } from '@constants/api';
 import { ApprovalStatus, colourFromApprovalStatus } from '@constants/enum/approvalStatus';
@@ -551,6 +554,11 @@ export const baseFormHandler =
       dtoForDiscord = dtoResult.value;
     }
 &nbsp;
+    if (module.sendDiscordMessageOnSubmission != true) {
+      await successResponse({ ctx, body: createdRecordResult.value, next });
+      return;
+    }
+&nbsp;
     const discordUrl = getConfig().getDiscordWebhookUrl();
     const webhookPayload = baseSubmissionMessageBuilder({
       content: '',
@@ -560,7 +568,6 @@ export const baseFormHandler =
       descripLines: await getDescriptionLines({
         data: dtoForDiscord,
         dtoMeta: module.dtoMeta,
-        persistenceMeta: module.persistenceMeta,
       }),
       additionalEmbeds: [
         baseSubmissionMessageEmbed(
@@ -582,11 +589,7 @@ export const baseFormHandler =
       } as TP &amp; IRecordRequirements);
     }
 &nbsp;
-    ctx.response.status = 200;
-    ctx.set('Content-Type', 'application/json');
-    ctx.body = createdRecordResult.value;
-&nbsp;
-    await next();
+    await successResponse({ ctx, body: createdRecordResult.value, next });
   };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -595,7 +598,7 @@ export const baseFormHandler =
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-21T15:02:03.142Z
+                at 2024-06-14T18:03:53.969Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

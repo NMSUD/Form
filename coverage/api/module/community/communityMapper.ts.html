@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">35.41% </span>
+                <span class="strong">32.65% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>17/48</span>
+                <span class='fraction'>16/49</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">35.41% </span>
+                <span class="strong">32.65% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>17/48</span>
+                <span class='fraction'>16/49</span>
             </div>
         
             
@@ -111,7 +111,8 @@
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
 <a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -138,7 +139,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -178,7 +180,9 @@ export const communityDtoWithImageToPersistence: DtoAndImageMapperToNewPersisten
 <span class="cstat-no" title="statement not covered" >    profilePicFile: images.profilePicFile as XataFile,</span>
 <span class="cstat-no" title="statement not covered" >    bio: dto.bio,</span>
 <span class="cstat-no" title="statement not covered" >    bioMediaFiles: makeArrayOrDefault(images.bioMediaFiles) as Array&lt;XataArrayFile&gt;,</span>
-<span class="cstat-no" title="statement not covered" >    bioMediaUrls: '',</span>
+<span class="cstat-no" title="statement not covered" >    bioMediaUrls: dto.bioMediaUrls.join(','), // this is not a generated field like the other mediaUrl fields</span>
+<span class="cstat-no" title="statement not covered" >    homeGalaxy: dto.homeGalaxy,</span>
+<span class="cstat-no" title="statement not covered" >    coordinates: dto.coordinates,</span>
 <span class="cstat-no" title="statement not covered" >    tags: dto.tags.filter((t) =&gt; t.length &gt; 0).join(','),</span>
 <span class="cstat-no" title="statement not covered" >    socials: dto.socials.filter((s) =&gt; s.length &gt; 0).join(','),</span>
 <span class="cstat-no" title="statement not covered" >    contactDetails: dto.contactDetails,</span>
@@ -187,7 +191,6 @@ export const communityDtoWithImageToPersistence: DtoAndImageMapperToNewPersisten
 <span class="cstat-no" title="statement not covered" >  return persistence;</span>
 <span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;
-// TODO update properties
 export const communityPersistenceToDto: Mapper&lt;Community, CommunityDto&gt; = <span class="fstat-no" title="function not covered" >(</span>
 <span class="cstat-no" title="statement not covered" >  persistence: Community,</span>
 <span class="cstat-no" title="statement not covered" >) =&gt; {</span>
@@ -197,10 +200,10 @@ export const communityPersistenceToDto: Mapper&lt;Community, CommunityDto&gt; = 
 <span class="cstat-no" title="statement not covered" >    profilePicFile: anyObject,</span>
 <span class="cstat-no" title="statement not covered" >    profilePicUrl: persistence.profilePicUrl ?? '',</span>
 <span class="cstat-no" title="statement not covered" >    bio: persistence.bio,</span>
-<span class="cstat-no" title="statement not covered" >    bioMediaUrls: persistence.bioMediaUrls.split(',').filter((u) =&gt; u.length &gt; 0),</span>
+<span class="cstat-no" title="statement not covered" >    bioMediaUrls: persistence.bioMediaUrls.split(',').filter((u) =&gt; (u?.length ?? 0) &gt; 0),</span>
 <span class="cstat-no" title="statement not covered" >    bioMediaFiles: anyObject,</span>
-<span class="cstat-no" title="statement not covered" >    homeGalaxy: '', //persistence.homeGalaxies,</span>
-<span class="cstat-no" title="statement not covered" >    coordinates: '',</span>
+<span class="cstat-no" title="statement not covered" >    homeGalaxy: persistence.homeGalaxy,</span>
+<span class="cstat-no" title="statement not covered" >    coordinates: persistence.coordinates,</span>
 <span class="cstat-no" title="statement not covered" >    tags: persistence.tags.split(',').filter((t) =&gt; t.length &gt; 0),</span>
 <span class="cstat-no" title="statement not covered" >    socials: persistence.socials.split(',').filter((s) =&gt; s.length &gt; 0),</span>
 <span class="cstat-no" title="statement not covered" >    contactDetails: persistence.contactDetails,</span>
@@ -214,7 +217,7 @@ export const communityPersistenceToDto: Mapper&lt;Community, CommunityDto&gt; = 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-21T15:02:03.142Z
+                at 2024-06-14T18:03:53.969Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
