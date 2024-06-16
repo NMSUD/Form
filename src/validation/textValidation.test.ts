@@ -47,6 +47,11 @@ describe('Text Validation', () => {
       const validator = maxLength(5);
       expect(validator(text).isValid).toBeTruthy();
     });
+    test('maxLength with exactly max number of characters', () => {
+      const text = 'abcde';
+      const validator = maxLength(5);
+      expect(validator(text).isValid).toBeTruthy();
+    });
   });
 
   describe('should be url', () => {

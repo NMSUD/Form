@@ -111,11 +111,8 @@ export const getDescriptionLines = async <T>(props: { data: T; dtoMeta: IFormDto
 
     const localData =
       (props.data as ObjectWithPropsOfValue<string | Array<string>>)[dbMetaPropKey] ?? anyObject;
-    const propKey = dbMetaPropKey.toString();
-    const dtoMetaValue = (props.dtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>)[
-      propKey
-    ];
-    let labelString = dtoMetaValue.discord?.label ?? dtoMetaValue.label;
+
+    let labelString = dtoMetaProp.discord?.label ?? dtoMetaProp.label;
     if (labelString?.length < 1) {
       labelString = capitalizeFirstLetter(addSpacesForEnum(dbMetaPropKey));
     }

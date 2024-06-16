@@ -50,6 +50,7 @@ const main = async () => {
   router.get(`/${api.routes.verify}`, handleRouteLookup({ handlerFunc: baseVerifyHandler }));
   router.get(`/${api.routes.status}`, handleRouteLookup({ handlerFunc: baseStatusHandler }));
   router.get(`/${api.routes.version}`, versionEndpoint(getConfig().getApiSecret()));
+  router.get('/favicon.ico', versionEndpoint(getConfig().getApiSecret()));
 
   // Swagger
   registerSwaggerStaticComponents(swaggerBuilder);
@@ -80,12 +81,12 @@ const main = async () => {
   // middleware
   koa.use(bodyParser());
   koa.use(router.routes());
-  koa.use(serve(path.join(getBotPath(), '../public')));
+  koa.use(serve(path.join(getBotPath(), '../../public')));
   koa.use(cors());
   koa.use(
     koaSwagger({
       title: 'NMSUD Form API',
-      favicon: '/assets/favicon/favicon.ico',
+      favicon: '/favicon.ico',
       routePrefix: '/swagger',
       swaggerOptions: { spec: swaggerBuilder.toSpec() },
       customCSS: swaggerBuilder.getCustomCss(),

@@ -61,7 +61,7 @@ html body {
 }
 
 .no-drag,
-.no-drag > .hope-avatar__image {
+.no-drag>.hope-avatar__image {
   -webkit-user-drag: none;
   user-select: none;
   -moz-user-select: none;

@@ -3,6 +3,7 @@ import { Button, FormControl, FormErrorMessage, FormLabel, Input, SimpleGrid, Te
 import { Component, For, Show, createEffect, createSignal } from 'solid-js';
 
 import { portalValidOptions } from '@constants/form';
+import { portalGlyphLength } from '@constants/validation';
 import { onTargetValue } from '@helpers/eventHelper';
 import { FormInputProps } from '@web/contracts/formTypes';
 import { useValidation } from '@web/hooks/useValidation';
@@ -34,7 +35,7 @@ export const PortalCoordInput: Component<IFormPortalCoordInputProps> = (
   };
   const onTextButtonClick = (char: string) => () => {
     setPortalCode((prev) => {
-      if (prev.length >= 12) return prev;
+      if (prev.length >= portalGlyphLength) return prev;
       const next = prev + char;
       onTextType(next);
       return next;
@@ -47,7 +48,7 @@ export const PortalCoordInput: Component<IFormPortalCoordInputProps> = (
       .filter((c) => portalValidOptions.includes(c.toLowerCase()))
       .join('')
       .toUpperCase()
-      .slice(0, 12);
+      .slice(0, portalGlyphLength);
     setPortalCode(correctedValue);
     props.onChange(correctedValue);
   }, [portalCode]);
@@ -65,7 +66,7 @@ export const PortalCoordInput: Component<IFormPortalCoordInputProps> = (
           placeholder={props.placeholder}
           value={portalCode()}
           size="lg"
-          maxlength={12}
+          maxlength={portalGlyphLength}
           onInput={onTargetValue(onTextType)}
         />
         <SimpleGrid

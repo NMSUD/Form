@@ -10,6 +10,7 @@ import { routes } from '@constants/route';
 import { IDropdownOption } from '@contracts/dropdownOption';
 import { IFormDtoMeta, IFormDtoMetaDetails } from '@contracts/dto/forms/baseFormDto';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
+import { capitalizeFirstLetter } from '@helpers/stringHelper';
 import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
 import { getFormApiService } from '@services/api/formApiService';
 import { getCaptchaService } from '@services/external/captchaService';
@@ -180,7 +181,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
               disableRef={true}
               additionalClassNames="noselect"
             >
-              View Status of {props.segment} '{name}'
+              {capitalizeFirstLetter(props.segment)}: '{name}'
             </BasicLink>
           }
         />

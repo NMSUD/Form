@@ -28,6 +28,7 @@ export type IFormDtoMetaDetails<TV> = {
   swaggerSchema?: SwaggerPropertySchema;
   discord?: FormDiscordDetails<TV>;
   saveToLocalStorage?: boolean;
+  onSubmitMapping?: (val: TV) => unknown;
   validator: (val: TV) => ValidationResult;
 };
 

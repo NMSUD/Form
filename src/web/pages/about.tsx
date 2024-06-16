@@ -189,7 +189,7 @@ export const AboutPage: Component = () => {
         </FormFieldGrid>
       </Container>
 
-      <Box m={100}></Box>
+      <Box m={200}></Box>
     </>
   );
 };

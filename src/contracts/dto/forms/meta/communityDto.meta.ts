@@ -1,5 +1,5 @@
 import { DefaultImageRestrictions } from '@constants/image';
-import { minUrlLength } from '@constants/validation';
+import { minUrlLength, portalGlyphLength } from '@constants/validation';
 import {
   arrayDiscordLine,
   arrayOfLinksDiscordLine,
@@ -94,7 +94,8 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
       display: (label: string, value: any) =>
         basicDiscordLine(label, makeArrayOrDefault(value).join('')),
     },
-    validator: noValidation,
+    onSubmitMapping: (val) => val[0],
+    validator: minItems(1),
   },
   coordinates: {
     label: 'Coordinates',
@@ -104,7 +105,7 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     },
     helpText:
       'You can use the buttons below to input the glyphs or the numbers along with "abcde" on your keyboard.',
-    validator: noValidation,
+    validator: multiValidation(minLength(portalGlyphLength), maxLength(portalGlyphLength)),
   },
   tags: {
     label: 'Tags',
