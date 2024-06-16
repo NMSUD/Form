@@ -5,7 +5,7 @@
   
   <br />  
   
-  ![header](https://github.com/NMSUD/.github/blob/main/img/banner.png?raw=true) 
+  ![header](https://github.com/NMSUD/.github/blob/main/img/banner2.png?raw=true) 
   
   <br />
   

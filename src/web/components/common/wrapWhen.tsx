@@ -8,7 +8,7 @@ interface IProps<T> {
   condition: boolean;
   children: JSX.Element;
   wrapProps: T;
-  wrapComp: Component<IHasChildrenProps>;
+  wrapComp: Component<T & IHasChildrenProps>;
 }
 
 export const WrapWhen = <T,>(props: IProps<T>) => {

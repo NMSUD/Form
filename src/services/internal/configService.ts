@@ -31,7 +31,9 @@ export class ConfigService {
   getHCaptchaSiteKey = () => this.get('VITE_HCAPTCHA_SITE_KEY');
 
   /* Special case, available on UI & API */
-  isProd = () => this.get('NODE_ENV') === 'production';
+  isProd = () =>
+    this.get('NODE_ENV').toLocaleLowerCase() === 'production' ||
+    this.get('MODE').toLocaleLowerCase() === 'production';
   packageVersion = () => this.get('PACKAGE_VERSION');
   buildVersion = () => this.get('BUILD_VERSION');
 

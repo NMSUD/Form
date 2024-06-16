@@ -44,7 +44,8 @@ export class CaptchaService {
         errorMessage: '',
       };
     } catch (ex) {
-      getLog().e(ex);
+      const errMsg = `Failed to prompt for captcha: ${ex?.toString?.()}`;
+      getLog().e(errMsg);
       return {
         isSuccess: false,
         value: '',
@@ -57,6 +58,7 @@ export class CaptchaService {
     let formData = new FormData();
     formData.append('response', token);
     formData.append('secret', this._config.getHCaptchaSecret());
+    getLog().i('verify captcha token');
 
     try {
       const apiResult = await fetch('https://api.hcaptcha.com/siteverify', {

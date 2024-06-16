@@ -1,6 +1,6 @@
 {
   "name": "nmsud.form",
-  "version": "1.0.10",
+  "version": "1.0.12",
   "author": "Kurt Lourens",
   "type": "module",
   "description": "A custom solution for capturing data for the yearly Unification Days event",
@@ -12,7 +12,7 @@
     "start:public": "cd public && npx alive-server",
     "start:web": "vite --host",
     "build": "npm-run-all --sequential build:*",
-    "build:web": "vite build",
+    "build:web": "dotenv -- vite build",
     "build:server": "tsc -p ./tsconfig.server.json && resolve-tspaths -p ./tsconfig.server.json --out ./build/src",
     "data:downloader": "dotenv -- tsx --tsconfig tsconfig.server.json src/data/downloader.ts",
     "data:dev": "dotenv -- tsx --tsconfig tsconfig.server.json src/data/interactive.ts",

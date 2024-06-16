@@ -123,7 +123,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
 
     setNetworkState(NetworkState.Loading);
 
-    let captchaResp = 'test1000080001tset';
+    let captchaResp = 'test1000080001test';
     if (getConfig().getCaptchaEnabled() == true) {
       const captchaResult = await getCaptchaService().promptUser();
       if (captchaResult.isSuccess == false) {

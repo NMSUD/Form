@@ -14,6 +14,7 @@ fi
 
 version=$(cat package.json | grep \"version\" | cut -d'"' -f 4)
 
+echo "env: $ENV_FILE"
 echo "version: $version"
 echo "api port: $API_PORT"
 echo "registry: $DOCKER_REGISTRY"
@@ -25,6 +26,7 @@ docker build \
     -t $DOCKER_TAG_NAME -f ./docker/api.Dockerfile \
     --build-arg BUILD_VERSION=$version \
     --build-arg API_PORT=$API_PORT \
+    --build-arg ENV_FILE=$ENV_FILE \
     --no-cache .
 
 # ----------------------- Tag and push to remote -----------------------
