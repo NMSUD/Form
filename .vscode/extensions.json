@@ -4,6 +4,7 @@
         "esbenp.prettier-vscode",
         "seatonjiang.gitmoji-vscode",
         "streetsidesoftware.code-spell-checker",
-        "davidanson.vscode-markdownlint"
+        "davidanson.vscode-markdownlint",
+        "humao.rest-client"
     ]
 }

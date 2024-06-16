@@ -50,7 +50,6 @@ const main = async () => {
   router.get(`/${api.routes.verify}`, handleRouteLookup({ handlerFunc: baseVerifyHandler }));
   router.get(`/${api.routes.status}`, handleRouteLookup({ handlerFunc: baseStatusHandler }));
   router.get(`/${api.routes.version}`, versionEndpoint(getConfig().getApiSecret()));
-  router.get('/favicon.ico', versionEndpoint(getConfig().getApiSecret()));
 
   // Swagger
   registerSwaggerStaticComponents(swaggerBuilder);

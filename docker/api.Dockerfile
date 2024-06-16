@@ -16,7 +16,7 @@ COPY src ./src
 COPY public ./public
 RUN npm ci
 RUN npm run build
-RUN npm prune --production
+# RUN npm prune --production
 
 FROM gcr.io/distroless/nodejs20-debian12
 

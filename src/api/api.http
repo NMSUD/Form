@@ -1,0 +1,3 @@
+GET {{apiUrl}}/version
+Accept: application/json
+Authorization: {{apiSecret}}

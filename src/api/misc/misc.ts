@@ -1,9 +1,9 @@
 import Koa from 'koa';
 
-import { version } from '../../../package.json';
+import { getVersionNumFromPackageJson } from '@helpers/fileHelper';
+import { anyObject } from '@helpers/typescriptHacks';
 import { getConfig } from '@services/internal/configService';
 import { isRequestAuthed } from '../guard/hasAuth';
-import { anyObject } from '@helpers/typescriptHacks';
 
 export const defaultEndpoint = async (
   ctx: Koa.DefaultContext,
@@ -24,7 +24,7 @@ export const versionEndpoint =
     );
 
     let output = `DOCKER_BUILD_VERSION: ${getConfig().buildVersion() ?? '???'}\n`;
-    output += `packageVersion: ${version ?? '???'}\n`;
+    output += `packageVersion: ${getVersionNumFromPackageJson()}\n`;
 
     if (isAdmin) {
       output += '\nAuthenticate properties:\n\n';

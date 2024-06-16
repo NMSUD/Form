@@ -8,12 +8,12 @@ export const isRequestAuthed = async (
   next: () => Promise<Koa.BaseResponse>, //
 ): Promise<boolean> => {
   const currentAuthHeader = ctx.get('Authorization') ?? '';
-  if (currentAuthHeader.localeCompare(authToken) != 0) {
-    getLog().i('Auth Guard - not authenticated');
-    ctx.body = '<h1>Unauthorized</h1>';
-    await next();
-    return false;
+  if (currentAuthHeader.localeCompare(authToken) == 0) {
+    return true;
   }
 
-  return true;
+  getLog().i('Auth Guard - not authenticated');
+  ctx.body = '<h1>Unauthorized</h1>';
+  await next();
+  return false;
 };
