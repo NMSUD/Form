@@ -157,6 +157,11 @@ export const AboutPage: Component = () => {
             subtitle="Software Development"
             link={site.lenni.website}
           />
+          <AboutCreditCol
+            imageUrl={AppImage.sphynxcolt}
+            heading={site.sphynxcolt.name}
+            subtitle="Logo design"
+          />
         </FormFieldGrid>
         <Text fontSize={headingSize} textAlign="center" mt="$8" mb="$2">
           Supported by

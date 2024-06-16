@@ -44,6 +44,10 @@ export const site = {
     discordName: 'Lenni',
     website: 'https://lenni009.github.io',
   },
+  sphynxcolt: {
+    name: 'Sphynxcolt',
+    discordName: 'Sphynxcolt',
+  },
   eisvana: {
     name: 'Eisvana',
     website: 'https://eisvana.github.io',
