@@ -12,6 +12,13 @@ import { LoadingSpinner } from '@web/components/core/loading';
 import { HomePage, RedirectToHome } from '@web/pages/home';
 import { NotFoundPage } from '@web/pages/notFound';
 
+const lazyBuilder = lazy(() => import('@web/pages/form/builder'));
+const lazyCommunity = lazy(() => import('@web/pages/form/community'));
+const lazyPlanetBuild = lazy(() => import('@web/pages/form/planetBuild'));
+const lazyStatus = lazy(() => import('@web/pages/status/status'));
+const lazyBugReport = lazy(() => import('@web/pages/bug/bugReport'));
+const lazyAbout = lazy(() => import('@web/pages/about'));
+
 export const AppShell: Component = () => {
   Container.set(APP_TYPE, AppType.UI);
   addVideoBackground();
@@ -20,31 +27,16 @@ export const AppShell: Component = () => {
     {
       path: routes.form.path,
       children: [
-        {
-          path: routes.form.builder.path,
-          component: lazy(() => import('@web/pages/form/builder')),
-        },
-        {
-          path: routes.form.community.path,
-          component: lazy(() => import('@web/pages/form/community')),
-        },
-        {
-          path: routes.form.planetBuild.path,
-          component: lazy(() => import('@web/pages/form/planetBuild')),
-        },
+        { path: routes.form.builder.path, component: lazyBuilder },
+        { path: routes.form.community.path, component: lazyCommunity },
+        { path: routes.form.planetBuild.path, component: lazyPlanetBuild },
       ],
     },
-    {
-      path: routes.status.path,
-      component: lazy(() => import('@web/pages/status/status')),
-    },
-    {
-      path: routes.status.pathWithParams,
-      component: lazy(() => import('@web/pages/status/status')),
-    },
+    { path: routes.status.path, component: lazyStatus },
+    { path: routes.status.pathWithParams, component: lazyStatus },
     { path: routes.verify.path, component: HomePage },
-    { path: routes.bugReport.path, component: lazy(() => import('@web/pages/bug/bugReport')) },
-    { path: routes.about.path, component: lazy(() => import('@web/pages/about')) },
+    { path: routes.bugReport.path, component: lazyBugReport },
+    { path: routes.about.path, component: lazyAbout },
     { path: routes.actualHome.path, component: HomePage },
     { path: routes.home.path, component: RedirectToHome },
     { path: '*', component: NotFoundPage },

@@ -1,6 +1,8 @@
 import { HtmlImageReadEvent } from '@contracts/event';
 
 export interface IImageParams {
+  readonly name: string;
+  readonly type: string;
   width: number;
   height: number;
   fileSize: number;
@@ -22,6 +24,8 @@ export const getImageParams = (file: File): Promise<IImageParams> => {
       await image.decode();
 
       resolve({
+        name: file.name,
+        type: file.type,
         width: image.width,
         height: image.height,
         fileSize: file.size,

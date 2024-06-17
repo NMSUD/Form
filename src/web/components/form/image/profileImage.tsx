@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Center,
   Flex,
   FormControl,
@@ -7,7 +8,7 @@ import {
   FormLabel,
   notificationService,
 } from '@hope-ui/solid';
-import { Component, createEffect, createSignal } from 'solid-js';
+import { Component, Show, createEffect, createSignal } from 'solid-js';
 
 import { NetworkState } from '@constants/enum/networkState';
 import { AppImage } from '@constants/image';
@@ -17,6 +18,8 @@ import { FormInputProps } from '@web/contracts/formTypes';
 import { useValidation } from '../../../hooks/useValidation';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 import { FormProfileImageLoading } from './profileImageLoading';
+import { InfoIcon } from '@web/components/common/icon/infoIcon';
+import { ImageParamsPopover } from './imageParamsPopover';
 
 interface IFormProfileImageUrlProps extends FormInputProps<File> {
   imageValue?: string;
@@ -77,7 +80,9 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
 
   createEffect(() => {
     if (props.value == null) {
+      // handle clear
       setCurrentImage(getImageOrFallback(props.value, props.imageValue));
+      setImageDetails(undefined);
     }
   }, [props.value]);
 
@@ -104,7 +109,7 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
   };
 
   return (
-    <Center>
+    <Center flexDirection="column">
       <Flex
         direction="column"
         class="img-profile-hover pointer"
@@ -126,12 +131,15 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
             onChange={onTargetFiles(handleFileChange)}
           />
         </Box>
-        <Box mt="$3" textAlign="center">
+        <Box my="$1" textAlign="center">
           <FormControl invalid={!isValid().isValid}>
             <FormErrorMessage textAlign="center">{isValid().errorMessage}</FormErrorMessage>
           </FormControl>
         </Box>
       </Flex>
+      <Show when={imageDetails() != null}>
+        <ImageParamsPopover imageDetails={imageDetails()} />
+      </Show>
     </Center>
   );
 };

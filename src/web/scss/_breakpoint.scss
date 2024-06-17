@@ -31,16 +31,13 @@ body {
       z-index: 10;
 
       &.expand {
-        width: 0;
-
         .drawer-icon {
           right: -3em;
         }
       }
-
-      &.close + main.main {
-        opacity: 0.2;
-      }
+    }
+    .sidebar-bg {
+      display: inline-block;
     }
   }
 
@@ -51,6 +48,24 @@ body {
       .hope-grid {
         .hope-grid-item {
           grid-area: span 1 / span 2 / span 1 / span 2;
+        }
+      }
+    }
+
+    nav.hide-scrollbar {
+      background-color: var(--hope-colors-background);
+
+      .drawer-icon {
+        right: -3em;
+      }
+
+      &:not(.expand) {
+        width: 0px;
+      }
+
+      &.expand {
+        .drawer-icon {
+          right: 0.5em;
         }
       }
     }

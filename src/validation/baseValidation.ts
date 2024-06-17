@@ -36,8 +36,12 @@ export const separateValidation =
     [key in keyof typeof AppType]?: (validationVal: T) => ValidationResult;
   }) =>
   (value: T): ValidationResult => {
-    let validatorForAppType = validators[getAppType()];
-    if (validatorForAppType == null) return { isValid: true };
+    const appType = getAppType()?.toString?.() as keyof typeof AppType;
+    const validatorForAppType = validators[AppType[appType]];
+    if (validatorForAppType == null) {
+      getLog().w(`separateValidation - ${appType} validator not found`);
+      return { isValid: true };
+    }
 
     return validatorForAppType(value);
   };

@@ -3,6 +3,7 @@ nav.hide-scrollbar {
   transition: all 500ms ease-in-out;
   background-color: rgba(0, 0, 0, 0.3);
   border-right: 1px solid var(--hope-colors-neutral5);
+  z-index: 3;
 
   .content {
     transition: all 250ms ease-in-out;
@@ -31,5 +32,22 @@ nav.hide-scrollbar {
     &.close {
       transform: rotate(180deg);
     }
+  }
+}
+
+.sidebar-bg {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--hope-colors-background);
+  transition: opacity 250ms ease-in-out;
+  opacity: 0;
+  z-index: 3;
+
+  &.isOpen {
+    opacity: 0.8;
   }
 }

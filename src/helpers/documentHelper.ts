@@ -33,12 +33,18 @@ export const addScriptToHead = (props: IAddScriptToHead) => {
     scriptNode.src = props.url;
     document.head?.appendChild?.(scriptNode);
   } catch (err) {
-    getLog().e(err);
+    getLog().e('addScriptToHead ex', err);
   }
 };
 
 export const addVideoBackground = () => {
   const videoBgId = 'bg-vid';
+
+  if (document.body.clientWidth < 700) {
+    getLog().i('screen too small form video bg');
+    return;
+  }
+
   const existingScript = document.getElementById(videoBgId);
   if (existingScript != null) {
     existingScript.remove();
@@ -63,6 +69,6 @@ export const addVideoBackground = () => {
 
     document.body.prepend(videoElem);
   } catch (err) {
-    getLog().e(err);
+    getLog().e('addVideoBackground ex', err);
   }
 };

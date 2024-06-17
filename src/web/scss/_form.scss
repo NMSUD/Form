@@ -19,7 +19,7 @@
   border-right: 1px solid var(--hope-colors-neutral5);
 }
 
-.hope-button:focus,
+.hope-button.no-focus:focus,
 .hope-accordion__button:focus {
   box-shadow: none !important;
 }

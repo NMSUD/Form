@@ -294,17 +294,19 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
         <HStack mt="1em" spacing="$4" justifyContent="center">
           <div ref={(el) => (captchaRef = el)} class="h-captcha"></div>
           <Button
+            class="no-focus"
             variant="solid"
             loading={networkState() === NetworkState.Loading}
             onClick={submitForm}
           >
             Submit
           </Button>
-          <Button variant="outline" colorScheme="warning" onClick={clearForm}>
+          <Button class="no-focus" variant="outline" colorScheme="warning" onClick={clearForm}>
             Clear
           </Button>
           <Show when={!getConfig().isProd()}>
             <Button
+              class="no-focus"
               variant="outline"
               colorScheme="danger"
               onClick={() => {

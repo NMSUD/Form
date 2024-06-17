@@ -24,6 +24,13 @@ export const DefaultImageRestrictions: { [prop: string]: IImageRestriction } = {
     minWidth: 256,
     maxSizeMb: 1,
   },
+  bioMediaPic: {
+    maxHeight: 1920,
+    maxWidth: 1080,
+    minHeight: 256,
+    minWidth: 256,
+    maxSizeMb: 2,
+  },
 } as const;
 
 export const DefaultImageSize = {

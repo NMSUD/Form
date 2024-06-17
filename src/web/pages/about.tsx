@@ -154,13 +154,14 @@ export const AboutPage: Component = () => {
           <AboutCreditCol
             imageUrl={AppImage.lenni}
             heading={site.lenni.name}
-            subtitle="Software Development"
+            subtitle="Testing & Software Development"
             link={site.lenni.website}
           />
           <AboutCreditCol
             imageUrl={AppImage.sphynxcolt}
             heading={site.sphynxcolt.name}
             subtitle="Logo design"
+            link={site.sphynxcolt.website}
           />
         </FormFieldGrid>
         <Text fontSize={headingSize} textAlign="center" mt="$8" mb="$2">

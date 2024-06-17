@@ -8,6 +8,7 @@ import { getLocalStorage } from './localStorageService';
 import { anyObject } from '@helpers/typescriptHacks';
 
 interface IState {
+  isSideBarOpen: boolean;
   submissions: {
     [prop in keyof IApiSegment]: Array<IDropdownOption>;
   };
@@ -19,6 +20,7 @@ interface IState {
 @Service()
 export class StateService {
   private _internalState: IState = {
+    isSideBarOpen: true,
     submissions: {
       community: [],
       builder: [],
@@ -41,6 +43,18 @@ export class StateService {
   saveToLocalStorage = debounceLeading((newState: IState) => {
     getLocalStorage().set(LocalStorageKey.main, newState);
   }, 250);
+
+  setIsSidebarOpen(isOpen: boolean): void {
+    this._internalState = {
+      ...this._internalState,
+      isSideBarOpen: isOpen,
+    };
+    this.saveToLocalStorage(this._internalState);
+  }
+
+  getIsSidebarOpen(): boolean {
+    return this._internalState?.isSideBarOpen ?? true;
+  }
 
   addSubmission(segment: keyof IApiSegment, ddOption: IDropdownOption): void {
     this._internalState = {

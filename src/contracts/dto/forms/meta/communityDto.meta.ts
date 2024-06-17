@@ -77,7 +77,11 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
       display: arrayOfLinksDiscordLine,
     },
     saveToLocalStorage: true,
-    validator: noValidation,
+    validator: multiValidation(
+      validateForEach(
+        webImageRestrictions(DefaultImageRestrictions.bioMediaPic), //
+      ),
+    ),
   },
   bioMediaFiles: {
     label: 'Media upload',

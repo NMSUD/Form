@@ -32,7 +32,7 @@ const StyledNavLinkObj = {
 const StyledNavLink = hope(NavLink, StyledNavLinkObj);
 
 type SidebarNavLinkProps = ComponentProps<typeof StyledNavLink> & {
-  //
+  onClick?: () => void;
 };
 
 export const SidebarNavLink = (props: SidebarNavLinkProps) => {

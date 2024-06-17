@@ -47,6 +47,7 @@ export const site = {
   sphynxcolt: {
     name: 'Sphynxcolt',
     discordName: 'Sphynxcolt',
+    website: 'https://www.artstation.com/sphynxcolt',
   },
   eisvana: {
     name: 'Eisvana',
