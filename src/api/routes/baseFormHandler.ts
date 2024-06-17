@@ -7,6 +7,7 @@ import { IApiModule, IRecordRequirements } from '@api/types/baseModule';
 import { ApiStatusErrorCode } from '@constants/api';
 import { ApprovalStatus, colourFromApprovalStatus } from '@constants/enum/approvalStatus';
 import { FormDataKey } from '@constants/form';
+import { IFormResponse } from '@contracts/response/formResponse';
 import {
   baseSubmissionMessageBuilder,
   baseSubmissionMessageEmbed,
@@ -127,6 +128,12 @@ export const baseFormHandler =
     const iconUrl = module.getIcon?.(persistenceWithImgUrls);
     const msgColour = colourFromApprovalStatus(ApprovalStatus.pending);
 
+    const formResult: IFormResponse = {
+      id: createdRecordResult.value.id,
+      name: authorName,
+      iconUrl: iconUrl ?? undefined,
+    };
+
     const tempDto = module.mapPersistenceToDto(persistenceWithImgUrls);
     let dtoForDiscord = { ...tempDto };
     if (module.mapRecordRelationshipsToDto != null) {
@@ -138,7 +145,7 @@ export const baseFormHandler =
     }
 
     if (module.sendDiscordMessageOnSubmission != true) {
-      await successResponse({ ctx, body: createdRecordResult.value, next });
+      await successResponse({ ctx, body: formResult, next });
       return;
     }
 
@@ -172,5 +179,5 @@ export const baseFormHandler =
       } as TP & IRecordRequirements);
     }
 
-    await successResponse({ ctx, body: createdRecordResult.value, next });
+    await successResponse({ ctx, body: formResult, next });
   };

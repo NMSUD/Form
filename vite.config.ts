@@ -5,8 +5,6 @@ import loadVersion from 'vite-plugin-package-version';
 import solidPlugin from 'vite-plugin-solid';
 import { configDefaults } from 'vitest/config';
 
-const currentDir = path.dirname(fileURLToPath(import.meta.url));
-
 const testDef = {
   test: {
     exclude: [...configDefaults.exclude, './build/**', './dist/**'],
@@ -40,20 +38,29 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
-    rollupOptions: {
-      external: [new RegExp('/api/.*')],
-    },
+    // rollupOptions: {
+    //   external: [new RegExp('/api/.*')],
+    // },
   },
   resolve: {
-    alias: {
-      '@api': path.resolve(currentDir, './src/api'),
-      '@web': path.resolve(currentDir, './src/web'),
-      '@constants': path.resolve(currentDir, './src/constants'),
-      '@contracts': path.resolve(currentDir, './src/contracts'),
-      '@helpers': path.resolve(currentDir, './src/helpers'),
-      '@services': path.resolve(currentDir, './src/services'),
-      '@validation': path.resolve(currentDir, './src/validation'),
-    },
+    alias: [
+      { find: '@api', replacement: fileURLToPath(new URL('./src/api', import.meta.url)) },
+      { find: '@web', replacement: fileURLToPath(new URL('./src/web', import.meta.url)) },
+      {
+        find: '@constants',
+        replacement: fileURLToPath(new URL('./src/constants', import.meta.url)),
+      },
+      {
+        find: '@contracts',
+        replacement: fileURLToPath(new URL('./src/contracts', import.meta.url)),
+      },
+      { find: '@helpers', replacement: fileURLToPath(new URL('./src/helpers', import.meta.url)) },
+      { find: '@services', replacement: fileURLToPath(new URL('./src/services', import.meta.url)) },
+      {
+        find: '@validation',
+        replacement: fileURLToPath(new URL('./src/validation', import.meta.url)),
+      },
+    ],
   },
   ...testDef,
 });

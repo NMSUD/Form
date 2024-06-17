@@ -13,7 +13,7 @@ export const minLength =
 export const maxLength =
   (maxLength: number) =>
   (value: string): ValidationResult => {
-    if ((value?.length ?? 0) < maxLength) {
+    if ((value?.length ?? 0) <= maxLength) {
       return { isValid: true };
     }
 

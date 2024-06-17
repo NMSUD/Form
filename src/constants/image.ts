@@ -10,6 +10,7 @@ export const AppImage = {
 
   kurt: '/assets/img/about/kurt.jpg',
   lenni: '/assets/img/about/lenni.png',
+  sphynxcolt: '/assets/img/about/sphynxcolt.webp',
   t3553ract: '/assets/img/about/t3553ract.jpg',
   eisvana: '/assets/img/social/eisvana.png',
   exampleSubmissionError: '/assets/img/about/exampleError.png',

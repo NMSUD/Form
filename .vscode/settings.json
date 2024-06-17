@@ -5,6 +5,14 @@
     "prettier.semi": true,
     "prettier.singleQuote": true,
     "prettier.printWidth": 100,
+    "rest-client.previewOption": "body",
+    "rest-client.environmentVariables": {
+        "$shared": {},
+        "local": {
+            "apiUrl": "http://localhost:3001",
+            "apiSecret": "test"
+        }
+    },
     "cSpell.language": "en-GB,en-US",
     "cSpell.words": [
         "APIV",
@@ -56,6 +64,7 @@
         "smol",
         "softprops",
         "solidjs",
+        "sphynxcolt",
         "stdlog",
         "sweetalert",
         "tada",

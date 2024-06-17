@@ -2,16 +2,20 @@ import { Container, Service } from 'typedi';
 
 import { IApiSegment, api, apiParams } from '@constants/api';
 import { FormDataKey } from '@constants/form';
+import { IFormDtoMeta } from '@contracts/dto/forms/baseFormDto';
 import { BuilderDto } from '@contracts/dto/forms/builderDto';
 import { CommunityDto } from '@contracts/dto/forms/communityDto';
+import { BuilderDtoMeta } from '@contracts/dto/forms/meta/builderDto.meta';
+import { CommunityDtoMeta } from '@contracts/dto/forms/meta/communityDto.meta';
+import { PlanetBuildDtoMeta } from '@contracts/dto/forms/meta/planetBuildDto.meta';
+import { PlanetBuildDto } from '@contracts/dto/forms/planetBuildDto';
 import { IFormResponse } from '@contracts/response/formResponse';
 import { ResultWithValue } from '@contracts/resultWithValue';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
-import { anyObject } from '@helpers/typescriptHacks';
+import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
+import { IMediaUpload, MediaUploadType } from '@web/contracts/mediaUpload';
 import { getConfig } from '../internal/configService';
 import { BaseApiService } from './baseApiService';
-import { IMediaUpload, MediaUploadType } from '@web/contracts/mediaUpload';
-import { PlanetBuildDto } from '@contracts/dto/forms/planetBuildDto';
 
 @Service()
 export class FormApiService extends BaseApiService {
@@ -41,28 +45,22 @@ export class FormApiService extends BaseApiService {
   }
 
   private async createFormFromCommunity(data: CommunityDto): Promise<FormData> {
-    const { profilePicFile, bioMediaFiles, homeGalaxy, ...dataWithoutFiles } = data;
-
+    const { profilePicFile, bioMediaFiles, ...dataWithoutFiles } = data;
     const formData = new FormData();
+
     formData.append(FormDataKey.profilePicFile, profilePicFile);
 
-    const actualBioMediaUrls: Array<string> = [];
-    for (const bioMediaFile of makeArrayOrDefault(bioMediaFiles)) {
-      const actualBioMediaFile = bioMediaFile as unknown as IMediaUpload;
-      if (actualBioMediaFile.type != MediaUploadType.File) {
-        actualBioMediaUrls.push(actualBioMediaFile.url);
-        continue;
-      }
-      if (actualBioMediaFile.file != null) {
-        formData.append(FormDataKey.bioMediaFiles, actualBioMediaFile.file);
-      }
-    }
+    const actualBioMediaUrls = this.addMultiFilesToFormData(
+      bioMediaFiles,
+      (key: string, file: File) => formData.append(key, file),
+    );
+
+    const mappedFromDtoMeta = this.mapFieldsFromMeta(dataWithoutFiles, CommunityDtoMeta);
     formData.append(
       FormDataKey.data,
       JSON.stringify({
-        ...dataWithoutFiles,
+        ...mappedFromDtoMeta,
         bioMediaUrls: actualBioMediaUrls,
-        homeGalaxy: homeGalaxy[0], // TODO make a better plan to handle things like this
       }),
     );
 
@@ -76,28 +74,68 @@ export class FormApiService extends BaseApiService {
     formData.append(FormDataKey.profilePicFile, profilePicFile);
     formData.append(FormDataKey.data, JSON.stringify(dataWithoutFiles));
 
+    const mappedFromDtoMeta = this.mapFieldsFromMeta(dataWithoutFiles, BuilderDtoMeta);
+    formData.append(FormDataKey.data, JSON.stringify(mappedFromDtoMeta));
+
     return formData;
   }
 
   private async createFormFromPlanetBuild(data: PlanetBuildDto): Promise<FormData> {
     const { mediaFiles, ...dataWithoutFiles } = data;
-
     const formData = new FormData();
-    const actualMediaUrls: Array<string> = [];
-    for (const bioMediaFile of makeArrayOrDefault(mediaFiles)) {
-      const actualBioMediaFile = bioMediaFile as unknown as IMediaUpload;
-      if (actualBioMediaFile.type != MediaUploadType.File) {
-        actualMediaUrls.push(actualBioMediaFile.url);
-        continue;
-      }
-      formData.append(FormDataKey.bioMediaFiles, bioMediaFile);
-    }
+
+    const actualMediaUrls = this.addMultiFilesToFormData(
+      mediaFiles, //
+      (key: string, file: File) => formData.append(key, file),
+    );
+
+    const mappedFromDtoMeta = this.mapFieldsFromMeta(dataWithoutFiles, PlanetBuildDtoMeta);
     formData.append(
       FormDataKey.data,
-      JSON.stringify({ ...dataWithoutFiles, bioMediaUrls: actualMediaUrls }),
+      JSON.stringify({
+        ...mappedFromDtoMeta,
+        bioMediaUrls: actualMediaUrls,
+      }),
     );
 
     return formData;
+  }
+
+  private addMultiFilesToFormData(
+    files: Array<File>,
+    formDataAppend: (key: string, file: File) => void,
+  ): Array<string> {
+    const mediaUrls: Array<string> = [];
+    for (const mediaFile of makeArrayOrDefault(files)) {
+      const actualMediaFile = mediaFile as unknown as IMediaUpload;
+      if (actualMediaFile.type != MediaUploadType.File) {
+        mediaUrls.push(actualMediaFile.url);
+        continue;
+      }
+      if (actualMediaFile.file != null) {
+        formDataAppend(FormDataKey.bioMediaFiles, actualMediaFile.file);
+      }
+    }
+    return mediaUrls;
+  }
+
+  private mapFieldsFromMeta<T>(data: T, dtoMeta: IFormDtoMeta<T>): T {
+    const modifiedData = { ...data };
+    for (const dbMetaPropKey in dtoMeta) {
+      if (Object.prototype.hasOwnProperty.call(dtoMeta, dbMetaPropKey) == false) {
+        continue;
+      }
+      const dtoMetaProp = dtoMeta[dbMetaPropKey];
+
+      if (dtoMetaProp.onSubmitMapping != null) {
+        const valueOnDto =
+          (modifiedData as unknown as ObjectWithPropsOfValue<unknown>)[dbMetaPropKey] ?? anyObject;
+        (modifiedData as ObjectWithPropsOfValue<unknown>)[dbMetaPropKey] =
+          dtoMetaProp.onSubmitMapping(valueOnDto);
+      }
+    }
+
+    return modifiedData;
   }
 
   private async submitForm(

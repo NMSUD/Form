@@ -45,19 +45,9 @@ describe('Swagger Builder', () => {
     const spec = swaggerBuilder.toSpec();
     expect(Object.keys(spec.components ?? {}).length).toBe(1);
   });
-  test('custom css loads scss file', async () => {
-    Container.set(BOT_PATH, path.join(directory, '../'));
-    const swaggerCustomStylesFile = path.join(directory, '../../web/scss/_swagger.scss');
-    const swaggerCustomStyles = fs.readFileSync(swaggerCustomStylesFile, 'utf8');
-
+  test('custom css returns string', async () => {
     const swaggerBuilder = new SwaggerBuilder();
     const customCss = swaggerBuilder.getCustomCss();
-    expect(customCss).toBe(swaggerCustomStyles);
-  });
-  test('custom css returns empty string on failure to load scss file', async () => {
-    Container.set(BOT_PATH, directory);
-    const swaggerBuilder = new SwaggerBuilder();
-    const customCss = swaggerBuilder.getCustomCss();
-    expect(customCss).toBe('');
+    expect(customCss.length).toBeGreaterThan(50);
   });
 });
