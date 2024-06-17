@@ -94,6 +94,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- Links used in the page -->
 
-[1.0.12]: https://github.com/NMSUD/Form/compare/1.0.11...1.0.7
+[1.0.12]: https://github.com/NMSUD/Form/compare/1.0.12...1.0.7
 [1.0.7]: https://github.com/NMSUD/Form/compare/1.0.7...1.0.6
 [1.0.6]: https://github.com/NMSUD/Form/releases/tag/1.0.6
