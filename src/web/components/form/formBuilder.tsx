@@ -190,17 +190,13 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
       render: (notificationProps) => (
         <StatusNotificationTile
           {...notificationProps}
+          href={urlSegments.join('')}
           imgUrl={submitTask.value.iconUrl ?? AppImage.sidebarLogo}
           title="View the status of your submission here:"
           descrip={
-            <BasicLink
-              href={urlSegments.join('')}
-              title="View status"
-              disableRef={true}
-              additionalClassNames="noselect"
-            >
+            <Text>
               {capitalizeFirstLetter(props.segment)}: '{name}'
-            </BasicLink>
+            </Text>
           }
         />
       ),

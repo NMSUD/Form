@@ -1,5 +1,5 @@
 // prettier-ignore
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, Container, Divider, Image, List, ListItem, Text, UnorderedList, } from '@hope-ui/solid';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, Container, Divider, Image, ListItem, Text, UnorderedList } from '@hope-ui/solid';
 import { Component } from 'solid-js';
 
 import { AppImage, ExternalImages } from '@constants/image';
@@ -7,7 +7,6 @@ import { site } from '@constants/site';
 import { AboutCreditCol } from '@web/components/aboutCreditCol';
 import { PageHeader } from '@web/components/common/pageHeader';
 import {
-  AssistantAppsDiscordLink,
   AssistantNmsHomeLink,
   NMSUDDiscordLink,
   NMSUDHomeLink,

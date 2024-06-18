@@ -6,6 +6,8 @@ export const FormDataKey = {
   data: 'data',
 } as const;
 
+export const lineBreak = '<br />';
+
 export const keyboardKeyCode = {
   enter: 13,
 } as const;

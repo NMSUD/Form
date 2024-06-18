@@ -9,6 +9,7 @@ export interface IRecordRequirements {
   id: string;
   discordWebhookId?: string | null;
   approvalStatus: ApprovalStatus;
+  anonymousUserGuid: string;
 }
 
 export interface IApiModule<TD, TF, TP> {

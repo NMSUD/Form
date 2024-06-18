@@ -12,5 +12,6 @@ export interface BuilderDto {
   communityAffiliations: Array<string>;
   labels: Array<string>;
   socials: Array<string>;
+  anonymousUserGuid: string;
   contactDetails: string;
 }

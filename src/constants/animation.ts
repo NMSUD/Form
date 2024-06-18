@@ -1,4 +1,4 @@
 export const AppAnimation = {
   userDefault: 250,
-  backgroundDelay: 500,
+  backgroundDelay: 1000,
 } as const;

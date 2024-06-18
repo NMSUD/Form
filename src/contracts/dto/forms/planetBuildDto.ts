@@ -9,5 +9,6 @@ export interface PlanetBuildDto {
   coordinates: string;
   buildTechniquesUsed: Array<string>;
   builders: Array<string>;
+  anonymousUserGuid: string;
   contactDetails: string;
 }

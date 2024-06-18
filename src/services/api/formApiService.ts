@@ -13,10 +13,11 @@ import { IFormResponse } from '@contracts/response/formResponse';
 import { ResultWithValue } from '@contracts/resultWithValue';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
+import { getLog } from '@services/internal/logService';
+import { getStateService } from '@services/internal/stateService';
 import { IMediaUpload, MediaUploadType } from '@web/contracts/mediaUpload';
 import { getConfig } from '../internal/configService';
 import { BaseApiService } from './baseApiService';
-import { getLog } from '@services/internal/logService';
 
 @Service()
 export class FormApiService extends BaseApiService {
@@ -58,14 +59,9 @@ export class FormApiService extends BaseApiService {
       (key: string, file: File) => formData.append(key, file),
     );
 
-    const mappedFromDtoMeta = this.mapFieldsFromMeta(dataWithoutFiles, CommunityDtoMeta);
-    formData.append(
-      FormDataKey.data,
-      JSON.stringify({
-        ...mappedFromDtoMeta,
-        bioMediaUrls: actualBioMediaUrls,
-      }),
-    );
+    const extraDtoData = { ...dataWithoutFiles, bioMediaUrls: actualBioMediaUrls };
+    const mappedFromDtoMeta = this.mapFieldsFromMeta(extraDtoData, CommunityDtoMeta);
+    formData.append(FormDataKey.data, this.getFormData(mappedFromDtoMeta));
 
     return formData;
   }
@@ -79,7 +75,7 @@ export class FormApiService extends BaseApiService {
     );
 
     const mappedFromDtoMeta = this.mapFieldsFromMeta(dataWithoutFiles, BuilderDtoMeta);
-    formData.append(FormDataKey.data, JSON.stringify(mappedFromDtoMeta));
+    formData.append(FormDataKey.data, this.getFormData(mappedFromDtoMeta));
 
     return formData;
   }
@@ -93,16 +89,18 @@ export class FormApiService extends BaseApiService {
       (key: string, file: File) => formData.append(key, file),
     );
 
-    const mappedFromDtoMeta = this.mapFieldsFromMeta(dataWithoutFiles, PlanetBuildDtoMeta);
-    formData.append(
-      FormDataKey.data,
-      JSON.stringify({
-        ...mappedFromDtoMeta,
-        bioMediaUrls: actualMediaUrls,
-      }),
-    );
+    const extraDtoData = { ...dataWithoutFiles, mediaUrls: actualMediaUrls };
+    const mappedFromDtoMeta = this.mapFieldsFromMeta(extraDtoData, PlanetBuildDtoMeta);
+    formData.append(FormDataKey.data, this.getFormData(mappedFromDtoMeta));
 
     return formData;
+  }
+
+  private getFormData<T>(data: T): string {
+    return JSON.stringify({
+      ...data,
+      anonymousUserGuid: getStateService().getAnonymousUserGuid(),
+    });
   }
 
   private addMultiFilesToFormData(
