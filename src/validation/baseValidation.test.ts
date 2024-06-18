@@ -66,10 +66,10 @@ describe('Base Validation', () => {
       [AppType.Api],
       [AppType.UI], //
     ])('only run validators base on platform %s', (appType) => {
-      Container.set(APP_TYPE, AppType[appType]);
-      let count = 0;
+      Container.set(APP_TYPE, appType);
+      let appTypeThatWasRun = 0;
       const fakeValidator = () => {
-        count = appType;
+        appTypeThatWasRun = appType;
         return { isValid: true };
       };
       const validator = separateValidation({
@@ -77,7 +77,7 @@ describe('Base Validation', () => {
         UI: fakeValidator,
       });
       validator(anyObject);
-      expect(count).toBe(appType);
+      expect(appTypeThatWasRun).toBe(appType);
     });
     test('return success if platform not accounted for', () => {
       Container.set(APP_TYPE, AppType.Interactive);

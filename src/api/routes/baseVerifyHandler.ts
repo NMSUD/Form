@@ -75,6 +75,7 @@ export const baseVerifyHandler =
         ),
       ];
       ctx.response.status = 303;
+      ctx.response.body = ApiStatusErrorCode.recordNotFound.code;
       ctx.redirect([...urlSegments, ...additionalUrlSegments].join(''));
       await next();
       return;
@@ -103,6 +104,7 @@ export const baseVerifyHandler =
         ),
       ];
       ctx.response.status = 303;
+      ctx.response.body = 200;
       ctx.redirect([...urlSegments, ...additionalUrlSegments].join(''));
       await next();
       return;
@@ -131,6 +133,7 @@ export const baseVerifyHandler =
         encodeURI(errMsg),
       ];
       ctx.response.status = 303;
+      ctx.response.body = ApiStatusErrorCode.calculatedCheckFailed.code;
       ctx.redirect([...urlSegments, ...additionalUrlSegments].join(''));
       await next();
       return;
@@ -161,6 +164,7 @@ export const baseVerifyHandler =
         encodeURI(errMsg),
       ];
       ctx.response.status = 303;
+      ctx.response.body = ApiStatusErrorCode.couldNotPersistData.code;
       ctx.redirect([...urlSegments, ...additionalUrlSegments].join(''));
       await next();
       return;
@@ -239,6 +243,7 @@ export const baseVerifyHandler =
         : '',
     ];
     ctx.response.status = 303;
+    ctx.response.body = 200;
     ctx.redirect([...urlSegments, ...additionalUrlSegments].join(''));
     await next();
     return;

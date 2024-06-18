@@ -3,14 +3,19 @@ import Container from 'typedi';
 
 import { StateService } from './stateService';
 import { LocalStorageService } from './localStorageService';
+import { ConfigService } from './configService';
 
 describe('LocalStorage service', () => {
+  class MockConfigService {
+    isProd = () => true;
+  }
   describe('submission', () => {
-    test('add submission', () => {
+    test('get submission', () => {
       class MockLocalStorageService {
         get = () => ({ submissions: { builder: 'tester' } });
       }
       Container.set(LocalStorageService, new MockLocalStorageService());
+      Container.set(ConfigService, new MockConfigService());
 
       const stateService = new StateService();
       expect(stateService.getSubmissions('builder')).toBe('tester');
@@ -22,6 +27,7 @@ describe('LocalStorage service', () => {
         get = () => {};
       }
       Container.set(LocalStorageService, new MockLocalStorageService());
+      Container.set(ConfigService, new MockConfigService());
 
       const newBuilder = {
         title: 'test',
@@ -31,6 +37,8 @@ describe('LocalStorage service', () => {
       stateService.saveToLocalStorage = vi.fn();
       stateService.addSubmission('builder', newBuilder);
       expect(stateService.saveToLocalStorage).toBeCalledWith({
+        anonymousUserGuid: '',
+        isSideBarOpen: true,
         submissions: {
           community: [],
           builder: [newBuilder],

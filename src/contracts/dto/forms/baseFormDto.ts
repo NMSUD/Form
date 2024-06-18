@@ -1,5 +1,6 @@
 import { ValidationResult } from '@contracts/validationResult';
 import { basicDiscordLine } from '@helpers/discordMessageHelper';
+import { noValidation } from '@validation/baseValidation';
 import { maxLength } from '@validation/textValidation';
 
 export type SwaggerPropertySchemaForItem = {
@@ -48,4 +49,9 @@ export const contactDetails: IFormDtoMetaDetails<string> = {
     display: basicDiscordLine,
   },
   validator: maxLength(contactDetailsMaxLength),
+} as const;
+export const anonymousUserGuid: IFormDtoMetaDetails<string> = {
+  label: 'anonymousUserGuid',
+  defaultValue: '',
+  validator: noValidation,
 } as const;

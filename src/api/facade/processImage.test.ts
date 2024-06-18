@@ -21,9 +21,11 @@ describe('Process images from formData', () => {
 
     const testImg = unitTestImages[0];
     await processImageFromFormData({
-      filepath: testImg.input,
-      newFilename: testImg.input,
-      mimetype: 'png',
+      fileFromForm: {
+        filepath: testImg.input,
+        newFilename: testImg.input,
+        mimetype: 'png',
+      },
     });
     expect(formDataToBuffer).toHaveBeenCalled();
   });
@@ -51,9 +53,11 @@ describe('Process images from formData', () => {
 
     const testImg = unitTestImages[0];
     await processImageFromFormData({
-      filepath: testImg.input,
-      newFilename: testImg.input,
-      mimetype: 'png',
+      fileFromForm: {
+        filepath: testImg.input,
+        newFilename: testImg.input,
+        mimetype: 'png',
+      },
     });
     expect(resize).toHaveBeenCalled();
   });

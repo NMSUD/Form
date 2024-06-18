@@ -15,13 +15,9 @@ import {
   separateValidation,
   validateForEach,
 } from '@validation/baseValidation';
-import {
-  isValidWebImage,
-  mediaUploadRestriction,
-  webImageRestrictions,
-} from '@validation/imageValidation';
+import { mediaUploadRestriction } from '@validation/imageValidation';
 import { maxLength, minLength, shouldBeUrl } from '@validation/textValidation';
-import { IFormDtoMeta, contactDetails } from '../baseFormDto';
+import { IFormDtoMeta, anonymousUserGuid, contactDetails } from '../baseFormDto';
 import { CommunityDto } from '../communityDto';
 
 export const communityBioMaxLength = 500;
@@ -160,4 +156,5 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     ),
   },
   contactDetails,
+  anonymousUserGuid,
 } as const;
