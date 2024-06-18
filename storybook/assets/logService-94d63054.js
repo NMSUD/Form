@@ -1,0 +1,4 @@
+import{S as g,g as n,C as c}from"./debugNode-95c00bf2.js";var _=Object.defineProperty,p=Object.getOwnPropertyDescriptor,m=(e,s,t,o)=>{for(var r=o>1?void 0:o?p(s,t):s,a=e.length-1,l;a>=0;a--)(l=e[a])&&(r=(o?l(s,t,r):l(r))||r);return o&&r&&_(s,t,r),r};let i=class{_logs=[];_logStyle=e=>{switch(e){case"log":return"color: green; font-size: medium";case"warn":return"color: orange; font-size: medium";case"error":return"color: red; font-size: large"}};_track=e=>(s,...t)=>{const o={type:e,message:s,optionalParams:t.map(a=>JSON.stringify(a,null,2))};this._logs.push(o);const r=this._logStyle(o.type);console.log((o.optionalParams??[]).length>0?`%c${o.message}
+additional params:
+${(o.optionalParams??[]).join(`
+\r`)}`:`%c${o.message}`,r)};i=n().isProd()?this._track("log"):console.log;w=n().isProd()?this._track("warn"):console.warn;e=n().isProd()?this._track("error"):console.error;getLogs=()=>this._logs};i=m([g()],i);const h=()=>c.get(i);export{h as g};

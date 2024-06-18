@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32.14% </span>
+                <span class="strong">36% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>18/56</span>
+                <span class='fraction'>18/50</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32.14% </span>
+                <span class="strong">36% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/56</span>
+                <span class='fraction'>18/50</span>
             </div>
         
             
@@ -113,13 +113,7 @@
 <a name='L48'></a><a href='#L48'>48</a>
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L51'></a><a href='#L51'>51</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -152,14 +146,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -179,12 +167,12 @@
 import { platformTypeFromString, platformTypeToString } from '@contracts/dto/enum/platformType';
 import { BuilderDto } from '@contracts/dto/forms/builderDto';
 import { DtoAndImageMapperToNewPersistence, Mapper } from '@contracts/mapper';
+import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { formatDateForDatabase } from '@helpers/dateHelper';
 import { anyObject } from '@helpers/typescriptHacks';
 import { Builder } from '@services/external/database/xata';
 import { XataFile } from '@xata.io/client';
 import { IBuilderImages } from './builderFileHandler';
-import { makeArrayOrDefault } from '@helpers/arrayHelper';
 &nbsp;
 export const builderDtoWithImageToPersistence: DtoAndImageMapperToNewPersistence&lt;
   BuilderDto,
@@ -192,9 +180,8 @@ export const builderDtoWithImageToPersistence: DtoAndImageMapperToNewPersistence
   Builder
 &gt; = <span class="fstat-no" title="function not covered" >(dto: BuilderDto, images: IBuilderImages) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  const persistence: Omit&lt;Builder, 'id'&gt; = {</span>
-<span class="cstat-no" title="statement not covered" >    name: dto.name,</span>
+<span class="cstat-no" title="statement not covered" >    ...dto,</span>
 <span class="cstat-no" title="statement not covered" >    profilePicFile: images.profilePicFile as XataFile,</span>
-<span class="cstat-no" title="statement not covered" >    bio: dto.bio,</span>
 <span class="cstat-no" title="statement not covered" >    platforms: dto.platforms.map(platformTypeToString).join(','),</span>
 <span class="cstat-no" title="statement not covered" >    startedPlaying: formatDateForDatabase(dto.startedPlaying),</span>
 <span class="cstat-no" title="statement not covered" >    buildTechniquesUsed: makeArrayOrDefault(dto.buildTechniquesUsed)</span>
@@ -204,7 +191,6 @@ export const builderDtoWithImageToPersistence: DtoAndImageMapperToNewPersistence
 <span class="cstat-no" title="statement not covered" >      .filter((l) =&gt; l.length &gt; 0)</span>
 <span class="cstat-no" title="statement not covered" >      .join(','),</span>
 <span class="cstat-no" title="statement not covered" >    socials: dto.socials.filter((s) =&gt; s.length &gt; 0).join(','),</span>
-<span class="cstat-no" title="statement not covered" >    contactDetails: dto.contactDetails,</span>
 <span class="cstat-no" title="statement not covered" >    approvalStatus: ApprovalStatus.pending,</span>
 <span class="cstat-no" title="statement not covered" >    discordWebhookId: '',</span>
 <span class="cstat-no" title="statement not covered" >  };</span>
@@ -213,21 +199,17 @@ export const builderDtoWithImageToPersistence: DtoAndImageMapperToNewPersistence
 &nbsp;
 export const builderPersistenceToDto: Mapper&lt;Builder, BuilderDto&gt; = <span class="fstat-no" title="function not covered" >(persistence: Builder) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  const dto: BuilderDto = {</span>
-<span class="cstat-no" title="statement not covered" >    id: persistence.id,</span>
-<span class="cstat-no" title="statement not covered" >    name: persistence.name,</span>
+<span class="cstat-no" title="statement not covered" >    ...persistence,</span>
 <span class="cstat-no" title="statement not covered" >    profilePicFile: anyObject,</span>
 <span class="cstat-no" title="statement not covered" >    profilePicUrl: persistence.profilePicUrl ?? '',</span>
-<span class="cstat-no" title="statement not covered" >    bio: persistence.bio,</span>
 <span class="cstat-no" title="statement not covered" >    platforms: persistence.platforms</span>
 <span class="cstat-no" title="statement not covered" >      .split(',')</span>
 <span class="cstat-no" title="statement not covered" >      .filter((p) =&gt; p.length &gt; 0)</span>
 <span class="cstat-no" title="statement not covered" >      .map(platformTypeFromString),</span>
-<span class="cstat-no" title="statement not covered" >    startedPlaying: persistence.startedPlaying,</span>
 <span class="cstat-no" title="statement not covered" >    buildTechniquesUsed: persistence.buildTechniquesUsed.split(',').filter((bt) =&gt; bt.length &gt; 0),</span>
 <span class="cstat-no" title="statement not covered" >    communityAffiliations: [],</span>
 <span class="cstat-no" title="statement not covered" >    labels: persistence.labels.split(',').filter((l) =&gt; l.length &gt; 0),</span>
 <span class="cstat-no" title="statement not covered" >    socials: persistence.socials.split(',').filter((s) =&gt; s.length &gt; 0),</span>
-<span class="cstat-no" title="statement not covered" >    contactDetails: persistence.contactDetails,</span>
 <span class="cstat-no" title="statement not covered" >  };</span>
 <span class="cstat-no" title="statement not covered" >  return dto;</span>
 <span class="cstat-no" title="statement not covered" >};</span>
@@ -238,7 +220,7 @@ export const builderPersistenceToDto: Mapper&lt;Builder, BuilderDto&gt; = <span 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-06-17T08:50:56.320Z
+                at 2024-06-18T22:25:25.077Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.75% </span>
+                <span class="strong">91.83% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>45/48</span>
+                <span class='fraction'>45/49</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.92% </span>
+                <span class="strong">81.25% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/13</span>
+                <span class='fraction'>13/16</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.75% </span>
+                <span class="strong">91.83% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>45/48</span>
+                <span class='fraction'>45/49</span>
             </div>
         
             
@@ -111,7 +111,9 @@
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
 <a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -120,34 +122,34 @@
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">30x</span>
-<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">30x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">45x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">47x</span>
-<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
@@ -162,6 +164,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { LogType } from '@constants/enum/logType';
 import { ILogMessage } from '@web/contracts/logMessage';
 import { Container, Service } from 'typedi';
+import { getConfig } from './configService';
 &nbsp;
 @Service()
 export class LogService {
@@ -174,7 +177,7 @@ export class LogService {
 <span class="branch-0 cbranch-no" title="branch not covered" >      case 'warn':</span>
 <span class="cstat-no" title="statement not covered" >        return 'color: orange; font-size: medium';</span>
       case 'error':
-        return 'color: red; font-size: x-large';
+        return 'color: red; font-size: large';
     }
   };
 &nbsp;
@@ -190,16 +193,16 @@ export class LogService {
 &nbsp;
       const logStyle = this._logStyle(log.type);
       console.log(
-        (log.<span class="branch-0 cbranch-no" title="branch not covered" >optionalParams ?? []).l</span>ength &gt; 0
-          ? `%c${log.message}\nadditional params:\n${(log.<span class="branch-0 cbranch-no" title="branch not covered" >optionalParams ?? []).j</span>oin('\n\r')}`
+        (log.<span class="branch-0 cbranch-no" title="branch not covered" >optionalParams ?? []).l</span>ength &gt; <span class="branch-0 cbranch-no" title="branch not covered" >0</span>
+<span class="cstat-no" title="statement not covered" >          ? `%c${log.message}\nadditional params:\n${(log.optionalParams ?? []).join('\n\r')}`</span>
           : `%c${log.message}`,
         logStyle,
       );
     };
 &nbsp;
-  i = this._track('log');
-  w = this._track('warn');
-  e = this._track('error');
+  i = getConfig().isProd() ? this._track('log') : console.log;
+  w = getConfig().isProd() ? this._track('warn') : console.warn;
+  e = getConfig().isProd() ? this._track('error') : console.error;
 &nbsp;
   getLogs = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return this._logs;</span>
@@ -214,7 +217,7 @@ export const getLog = () =&gt; Container.get(LogService);
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-06-17T08:50:56.320Z
+                at 2024-06-18T22:25:25.077Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

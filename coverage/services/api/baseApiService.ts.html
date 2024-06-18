@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.99% </span>
+                <span class="strong">23.4% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>43/187</span>
+                <span class='fraction'>44/188</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.99% </span>
+                <span class="strong">23.4% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>43/187</span>
+                <span class='fraction'>44/188</span>
             </div>
         
             
@@ -250,7 +250,9 @@
 <a name='L185'></a><a href='#L185'>185</a>
 <a name='L186'></a><a href='#L186'>186</a>
 <a name='L187'></a><a href='#L187'>187</a>
-<a name='L188'></a><a href='#L188'>188</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L188'></a><a href='#L188'>188</a>
+<a name='L189'></a><a href='#L189'>189</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -439,6 +441,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Result, ResultWithValue } from '@contracts/resultWithValue';
 import { anyObject } from '@helpers/typescriptHacks';
+import { getLog } from '@services/internal/logService';
 &nbsp;
 export class BaseApiService {
   private _baseUrl: string = 'https://api.assistantapps.com';
@@ -465,7 +468,7 @@ export class BaseApiService {
 <span class="cstat-no" title="statement not covered" >        return manipulateResponse(result);</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
 <span class="branch-0 cbranch-no" title="branch not covered" >    } catch (ex) {</span>
-<span class="cstat-no" title="statement not covered" >      console.log('data', ex?.toString?.());</span>
+<span class="cstat-no" title="statement not covered" >      getLog().i('BaseApiService get', ex?.toString?.());</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
 <span class="cstat-no" title="statement not covered" >        isSuccess: false,</span>
 <span class="cstat-no" title="statement not covered" >        value: anyObject,</span>
@@ -520,7 +523,7 @@ export class BaseApiService {
 <span class="cstat-no" title="statement not covered" >        return customMapper(result);</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
 <span class="cstat-no" title="statement not covered" >    } catch (ex) {</span>
-<span class="cstat-no" title="statement not covered" >      console.log('data', ex?.toString?.());</span>
+<span class="cstat-no" title="statement not covered" >      getLog().i('BaseApiService post', ex?.toString?.());</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
 <span class="cstat-no" title="statement not covered" >        isSuccess: false,</span>
 <span class="cstat-no" title="statement not covered" >        value: anyObject,</span>
@@ -569,7 +572,7 @@ export class BaseApiService {
 <span class="cstat-no" title="statement not covered" >        return customMapper(result);</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
 <span class="cstat-no" title="statement not covered" >    } catch (ex) {</span>
-<span class="cstat-no" title="statement not covered" >      console.log('data', ex?.toString?.());</span>
+<span class="cstat-no" title="statement not covered" >      getLog().i('BaseApiService put', ex?.toString?.());</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
 <span class="cstat-no" title="statement not covered" >        isSuccess: false,</span>
 <span class="cstat-no" title="statement not covered" >        value: anyObject,</span>
@@ -606,7 +609,7 @@ export class BaseApiService {
 <span class="cstat-no" title="statement not covered" >        method: 'DELETE',</span>
 <span class="cstat-no" title="statement not covered" >      });</span>
 <span class="cstat-no" title="statement not covered" >    } catch (ex) {</span>
-<span class="cstat-no" title="statement not covered" >      console.log('data', ex?.toString?.());</span>
+<span class="cstat-no" title="statement not covered" >      getLog().i('BaseApiService delete', ex?.toString?.());</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
 <span class="cstat-no" title="statement not covered" >        isSuccess: false,</span>
 <span class="cstat-no" title="statement not covered" >        errorMessage: ex?.toString?.() ?? '',</span>
@@ -631,7 +634,7 @@ export class BaseApiService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-06-17T08:50:56.320Z
+                at 2024-06-18T22:25:25.077Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

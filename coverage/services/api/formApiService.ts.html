@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/169</span>
+                <span class='fraction'>0/181</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/169</span>
+                <span class='fraction'>0/181</span>
             </div>
         
             
@@ -232,7 +232,31 @@
 <a name='L167'></a><a href='#L167'>167</a>
 <a name='L168'></a><a href='#L168'>168</a>
 <a name='L169'></a><a href='#L169'>169</a>
-<a name='L170'></a><a href='#L170'>170</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a>
+<a name='L178'></a><a href='#L178'>178</a>
+<a name='L179'></a><a href='#L179'>179</a>
+<a name='L180'></a><a href='#L180'>180</a>
+<a name='L181'></a><a href='#L181'>181</a>
+<a name='L182'></a><a href='#L182'>182</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -416,6 +440,8 @@
 <span class="cstat-no" title="statement not covered" >import { ResultWithValue } from '@contracts/resultWithValue';</span>
 <span class="cstat-no" title="statement not covered" >import { makeArrayOrDefault } from '@helpers/arrayHelper';</span>
 <span class="cstat-no" title="statement not covered" >import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';</span>
+<span class="cstat-no" title="statement not covered" >import { getLog } from '@services/internal/logService';</span>
+<span class="cstat-no" title="statement not covered" >import { getStateService } from '@services/internal/stateService';</span>
 <span class="cstat-no" title="statement not covered" >import { IMediaUpload, MediaUploadType } from '@web/contracts/mediaUpload';</span>
 <span class="cstat-no" title="statement not covered" >import { getConfig } from '../internal/configService';</span>
 <span class="cstat-no" title="statement not covered" >import { BaseApiService } from './baseApiService';</span>
@@ -451,34 +477,32 @@
 <span class="cstat-no" title="statement not covered" >    const { profilePicFile, bioMediaFiles, ...dataWithoutFiles } = data;</span>
 <span class="cstat-no" title="statement not covered" >    const formData = new FormData();</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    formData.append(FormDataKey.profilePicFile, profilePicFile);</span>
+<span class="cstat-no" title="statement not covered" >    this.addMultiFilesToFormData([profilePicFile], (_, file: File) =&gt;</span>
+<span class="cstat-no" title="statement not covered" >      formData.append(FormDataKey.profilePicFile, file),</span>
+<span class="cstat-no" title="statement not covered" >    );</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    const actualBioMediaUrls = this.addMultiFilesToFormData(</span>
 <span class="cstat-no" title="statement not covered" >      bioMediaFiles,</span>
 <span class="cstat-no" title="statement not covered" >      (key: string, file: File) =&gt; formData.append(key, file),</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    const mappedFromDtoMeta = this.mapFieldsFromMeta(dataWithoutFiles, CommunityDtoMeta);</span>
-<span class="cstat-no" title="statement not covered" >    formData.append(</span>
-<span class="cstat-no" title="statement not covered" >      FormDataKey.data,</span>
-<span class="cstat-no" title="statement not covered" >      JSON.stringify({</span>
-<span class="cstat-no" title="statement not covered" >        ...mappedFromDtoMeta,</span>
-<span class="cstat-no" title="statement not covered" >        bioMediaUrls: actualBioMediaUrls,</span>
-<span class="cstat-no" title="statement not covered" >      }),</span>
-<span class="cstat-no" title="statement not covered" >    );</span>
+<span class="cstat-no" title="statement not covered" >    const extraDtoData = { ...dataWithoutFiles, bioMediaUrls: actualBioMediaUrls };</span>
+<span class="cstat-no" title="statement not covered" >    const mappedFromDtoMeta = this.mapFieldsFromMeta(extraDtoData, CommunityDtoMeta);</span>
+<span class="cstat-no" title="statement not covered" >    formData.append(FormDataKey.data, this.getFormData(mappedFromDtoMeta));</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    return formData;</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  private async createFormFromBuilder(data: BuilderDto): Promise&lt;FormData&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    const { profilePicFile, ...dataWithoutFiles } = data;</span>
-<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    const formData = new FormData();</span>
-<span class="cstat-no" title="statement not covered" >    formData.append(FormDataKey.profilePicFile, profilePicFile);</span>
-<span class="cstat-no" title="statement not covered" >    formData.append(FormDataKey.data, JSON.stringify(dataWithoutFiles));</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    this.addMultiFilesToFormData([profilePicFile], (_, file: File) =&gt;</span>
+<span class="cstat-no" title="statement not covered" >      formData.append(FormDataKey.profilePicFile, file),</span>
+<span class="cstat-no" title="statement not covered" >    );</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    const mappedFromDtoMeta = this.mapFieldsFromMeta(dataWithoutFiles, BuilderDtoMeta);</span>
-<span class="cstat-no" title="statement not covered" >    formData.append(FormDataKey.data, JSON.stringify(mappedFromDtoMeta));</span>
+<span class="cstat-no" title="statement not covered" >    formData.append(FormDataKey.data, this.getFormData(mappedFromDtoMeta));</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    return formData;</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
@@ -492,16 +516,18 @@
 <span class="cstat-no" title="statement not covered" >      (key: string, file: File) =&gt; formData.append(key, file),</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    const mappedFromDtoMeta = this.mapFieldsFromMeta(dataWithoutFiles, PlanetBuildDtoMeta);</span>
-<span class="cstat-no" title="statement not covered" >    formData.append(</span>
-<span class="cstat-no" title="statement not covered" >      FormDataKey.data,</span>
-<span class="cstat-no" title="statement not covered" >      JSON.stringify({</span>
-<span class="cstat-no" title="statement not covered" >        ...mappedFromDtoMeta,</span>
-<span class="cstat-no" title="statement not covered" >        bioMediaUrls: actualMediaUrls,</span>
-<span class="cstat-no" title="statement not covered" >      }),</span>
-<span class="cstat-no" title="statement not covered" >    );</span>
+<span class="cstat-no" title="statement not covered" >    const extraDtoData = { ...dataWithoutFiles, mediaUrls: actualMediaUrls };</span>
+<span class="cstat-no" title="statement not covered" >    const mappedFromDtoMeta = this.mapFieldsFromMeta(extraDtoData, PlanetBuildDtoMeta);</span>
+<span class="cstat-no" title="statement not covered" >    formData.append(FormDataKey.data, this.getFormData(mappedFromDtoMeta));</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    return formData;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  private getFormData&lt;T&gt;(data: T): string {</span>
+<span class="cstat-no" title="statement not covered" >    return JSON.stringify({</span>
+<span class="cstat-no" title="statement not covered" >      ...data,</span>
+<span class="cstat-no" title="statement not covered" >      anonymousUserGuid: getStateService().getAnonymousUserGuid(),</span>
+<span class="cstat-no" title="statement not covered" >    });</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  private addMultiFilesToFormData(</span>
@@ -509,14 +535,13 @@
 <span class="cstat-no" title="statement not covered" >    formDataAppend: (key: string, file: File) =&gt; void,</span>
 <span class="cstat-no" title="statement not covered" >  ): Array&lt;string&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    const mediaUrls: Array&lt;string&gt; = [];</span>
-<span class="cstat-no" title="statement not covered" >    for (const mediaFile of makeArrayOrDefault(files)) {</span>
-<span class="cstat-no" title="statement not covered" >      const actualMediaFile = mediaFile as unknown as IMediaUpload;</span>
-<span class="cstat-no" title="statement not covered" >      if (actualMediaFile.type != MediaUploadType.File) {</span>
-<span class="cstat-no" title="statement not covered" >        mediaUrls.push(actualMediaFile.url);</span>
+<span class="cstat-no" title="statement not covered" >    for (const mediaFile of makeArrayOrDefault(files as unknown as Array&lt;IMediaUpload&gt;)) {</span>
+<span class="cstat-no" title="statement not covered" >      if (mediaFile.type != MediaUploadType.File) {</span>
+<span class="cstat-no" title="statement not covered" >        mediaUrls.push(mediaFile.url);</span>
 <span class="cstat-no" title="statement not covered" >        continue;</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
-<span class="cstat-no" title="statement not covered" >      if (actualMediaFile.file != null) {</span>
-<span class="cstat-no" title="statement not covered" >        formDataAppend(FormDataKey.bioMediaFiles, actualMediaFile.file);</span>
+<span class="cstat-no" title="statement not covered" >      if (mediaFile.file != null) {</span>
+<span class="cstat-no" title="statement not covered" >        formDataAppend(FormDataKey.bioMediaFiles, mediaFile.file);</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" >    return mediaUrls;</span>
@@ -552,18 +577,29 @@
 <span class="cstat-no" title="statement not covered" >        method: 'POST',</span>
 <span class="cstat-no" title="statement not covered" >        body: formData,</span>
 <span class="cstat-no" title="statement not covered" >      });</span>
-<span class="cstat-no" title="statement not covered" >      const resultValue: IFormResponse = await apiResult.json();</span>
+<span class="cstat-no" title="statement not covered" >      if (apiResult.status != 200) {</span>
+<span class="cstat-no" title="statement not covered" >        const errorMessage = await apiResult.text();</span>
+<span class="cstat-no" title="statement not covered" >        getLog().e('FormApiService submitForm', errorMessage);</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+<span class="cstat-no" title="statement not covered" >          isSuccess: false,</span>
+<span class="cstat-no" title="statement not covered" >          value: anyObject,</span>
+<span class="cstat-no" title="statement not covered" >          errorMessage: errorMessage,</span>
+<span class="cstat-no" title="statement not covered" >        };</span>
+<span class="cstat-no" title="statement not covered" >      }</span>
 <span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >      const resultValue: IFormResponse = await apiResult.json();</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
 <span class="cstat-no" title="statement not covered" >        isSuccess: true,</span>
 <span class="cstat-no" title="statement not covered" >        value: resultValue,</span>
 <span class="cstat-no" title="statement not covered" >        errorMessage: '',</span>
 <span class="cstat-no" title="statement not covered" >      };</span>
 <span class="cstat-no" title="statement not covered" >    } catch (ex) {</span>
+<span class="cstat-no" title="statement not covered" >      const errMsg = ex?.toString?.() ?? '';</span>
+<span class="cstat-no" title="statement not covered" >      getLog().e('FormApiService submitForm', errMsg);</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
 <span class="cstat-no" title="statement not covered" >        isSuccess: false,</span>
 <span class="cstat-no" title="statement not covered" >        value: anyObject,</span>
-<span class="cstat-no" title="statement not covered" >        errorMessage: ex?.toString?.() ?? '',</span>
+<span class="cstat-no" title="statement not covered" >        errorMessage: errMsg,</span>
 <span class="cstat-no" title="statement not covered" >      };</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
@@ -577,7 +613,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-06-17T08:50:56.320Z
+                at 2024-06-18T22:25:25.077Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
