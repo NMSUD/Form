@@ -2,7 +2,7 @@ import { IRecordRequirements } from '@api/types/baseModule';
 import { DefaultImageRestrictions } from '@constants/image';
 import { minUrlLength } from '@constants/validation';
 import { friendlyPlatformName } from '@contracts/dto/enum/platformType';
-import { IFormDtoMeta, contactDetails } from '@contracts/dto/forms/baseFormDto';
+import { IFormDtoMeta, anonymousUserGuid, contactDetails } from '@contracts/dto/forms/baseFormDto';
 import { formatForDateDropdown } from '@helpers/dateHelper';
 import {
   arrayDiscordLine,
@@ -164,4 +164,5 @@ export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
     validator: validateForEach(multiValidation(minLength(minUrlLength), shouldBeUrl)),
   },
   contactDetails,
+  anonymousUserGuid,
 } as const;

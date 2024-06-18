@@ -1,5 +1,6 @@
 import { Result, ResultWithValue } from '@contracts/resultWithValue';
 import { anyObject } from '@helpers/typescriptHacks';
+import { getLog } from '@services/internal/logService';
 
 export class BaseApiService {
   private _baseUrl: string = 'https://api.assistantapps.com';
@@ -26,7 +27,7 @@ export class BaseApiService {
         return manipulateResponse(result);
       }
     } catch (ex) {
-      console.log('data', ex?.toString?.());
+      getLog().i('BaseApiService get', ex?.toString?.());
       return {
         isSuccess: false,
         value: anyObject,
@@ -81,7 +82,7 @@ export class BaseApiService {
         return customMapper(result);
       }
     } catch (ex) {
-      console.log('data', ex?.toString?.());
+      getLog().i('BaseApiService post', ex?.toString?.());
       return {
         isSuccess: false,
         value: anyObject,
@@ -130,7 +131,7 @@ export class BaseApiService {
         return customMapper(result);
       }
     } catch (ex) {
-      console.log('data', ex?.toString?.());
+      getLog().i('BaseApiService put', ex?.toString?.());
       return {
         isSuccess: false,
         value: anyObject,
@@ -167,7 +168,7 @@ export class BaseApiService {
         method: 'DELETE',
       });
     } catch (ex) {
-      console.log('data', ex?.toString?.());
+      getLog().i('BaseApiService delete', ex?.toString?.());
       return {
         isSuccess: false,
         errorMessage: ex?.toString?.() ?? '',

@@ -2,6 +2,7 @@ import { FormControl, FormErrorMessage, FormLabel, Textarea } from '@hope-ui/sol
 import { Component, Show, createEffect, createSignal } from 'solid-js';
 
 import { onTargetValue } from '@helpers/eventHelper';
+import { DebugNode } from '@web/components/core/debugNode';
 import { FormInputProps } from '@web/contracts/formTypes';
 import { useValidation } from '@web/hooks/useValidation';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
@@ -25,9 +26,9 @@ export const FormTextArea: Component<IFormTextAreaProps> = (props: IFormTextArea
 
   return (
     <FormControl invalid={!isValid().isValid}>
+      <DebugNode name="FormTextArea" />
       <FormLabel for={props.id} width="100%">
-        {props.label}
-        <HelpIconTooltip helpText={props.helpText} />
+        <HelpIconTooltip label={props.label} helpText={props.helpText} />
 
         <Show when={props.displayTextLength}>
           <span style={{ float: 'right', 'margin-right': '0.5em' }}>

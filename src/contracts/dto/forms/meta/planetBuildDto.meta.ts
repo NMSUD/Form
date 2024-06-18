@@ -1,4 +1,13 @@
-import { IFormDtoMeta, contactDetails } from '@contracts/dto/forms/baseFormDto';
+import { IRecordRequirements } from '@api/types/baseModule';
+import { BioMediaImageSize } from '@constants/image';
+import { IFormDtoMeta, anonymousUserGuid, contactDetails } from '@contracts/dto/forms/baseFormDto';
+import {
+  arrayDiscordLine,
+  arrayFromDatabaseDiscordLines,
+  basicDiscordLine,
+} from '@helpers/discordMessageHelper';
+import { getDatabaseService } from '@services/external/database/databaseService';
+import { Builder } from '@services/external/database/xata';
 import { minItems } from '@validation/arrayValidation';
 import {
   multiValidation,
@@ -9,14 +18,6 @@ import {
 } from '@validation/baseValidation';
 import { maxLength, minLength } from '@validation/textValidation';
 import { PlanetBuildDto } from '../planetBuildDto';
-import {
-  arrayDiscordLine,
-  arrayFromDatabaseDiscordLines,
-  basicDiscordLine,
-} from '@helpers/discordMessageHelper';
-import { getDatabaseService } from '@services/external/database/databaseService';
-import { Builder } from '@services/external/database/xata';
-import { IRecordRequirements } from '@api/types/baseModule';
 
 export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
   id: {
@@ -57,6 +58,7 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
         format: 'binary',
       },
     },
+    helpText: `Recommended size (width: ${BioMediaImageSize.width}, height: ${BioMediaImageSize.height})`,
     validator: separateValidation({
       Api: noValidation,
       UI: validateForEach(notNull('You need to upload an image')),
@@ -128,4 +130,5 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
     validator: minItems(1),
   },
   contactDetails,
+  anonymousUserGuid,
 } as const;

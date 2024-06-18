@@ -10,5 +10,6 @@ export interface CommunityDto {
   coordinates: string;
   tags: Array<string>;
   socials: Array<string>;
+  anonymousUserGuid: string;
   contactDetails: string;
 }

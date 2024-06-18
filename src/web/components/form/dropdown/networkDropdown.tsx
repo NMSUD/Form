@@ -65,8 +65,7 @@ export const FormNetworkDropdown: Component<IProps> = (props: IProps) => {
       <Match when={networkState() === NetworkState.Loading}>
         <FormControl>
           <FormLabel>
-            {props.label}
-            <HelpIconTooltip helpText={props.helpText} />
+            <HelpIconTooltip label={props.label} helpText={props.helpText} />
           </FormLabel>
           <Select disabled>
             <SelectTrigger>

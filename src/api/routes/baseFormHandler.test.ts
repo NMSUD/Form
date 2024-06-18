@@ -14,6 +14,7 @@ import { baseFormHandler } from './baseFormHandler';
 describe('Form handler', () => {
   test('invalid captcha', async () => {
     class MockConfigService {
+      isProd = () => true;
       getCaptchaEnabled = () => true;
     }
     Container.set(ConfigService, new MockConfigService());

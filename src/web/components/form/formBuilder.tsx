@@ -28,6 +28,8 @@ import {
 } from '@web/contracts/formTypes';
 import { Card } from '../common/card';
 import { PageHeader } from '../common/pageHeader';
+import { DebugNode } from '../core/debugNode';
+import { timeout } from '@helpers/asyncHelper';
 
 interface IProps<T> {
   id: string;
@@ -103,6 +105,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
   };
 
   const submitForm = async () => {
+    getLog().i('submitForm');
     const failedValidationMsgs = validateObj({
       data: itemBeingEdited(),
       validationObj: props.formDtoMeta,
@@ -110,17 +113,27 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     }).filter((v) => v.isValid === false);
 
     if (failedValidationMsgs.length > 0) {
-      for (const failedValidationMsg of failedValidationMsgs) {
-        notificationService.show({
-          status: 'danger',
-          title: 'There are some problems that need fixing!',
-          description: `${failedValidationMsg.errorMessage}`,
-        });
-      }
+      notificationService.show({
+        status: 'danger',
+        title: 'Validation errors',
+        description: 'There are some problems that need fixing!',
+      });
+      failedValidationMsgs
+        .filter((m) => m.errorMessage != null)
+        .map((m) => getLog().e(m.errorMessage!));
       setForceValidationMessages(true);
       return;
     }
 
+    const loadingNotificationId = 'loading-notification-id';
+    notificationService.show({
+      id: loadingNotificationId,
+      title: `Submitting ${capitalizeFirstLetter(props.segment)}`,
+      description: 'Uploading details and verifying the data',
+      persistent: true,
+      closable: false,
+      loading: true,
+    });
     setNetworkState(NetworkState.Loading);
 
     let captchaResp = 'test1000080001test';
@@ -138,16 +151,19 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
       captchaResp = captchaResult.value;
     }
 
-    const submitTask = await getFormApiService().submit(
-      props.segment,
-      itemBeingEdited(),
-      captchaResp,
-    );
+    const [_, submitTask] = await Promise.all([
+      timeout(getConfig().isProd() ? 0 : 2000), // min 2 sec delay in dev. No delay in prod
+      getFormApiService().submit(props.segment, itemBeingEdited(), captchaResp),
+    ]);
+
     if (submitTask.isSuccess === false) {
-      notificationService.show({
+      notificationService.update({
+        id: loadingNotificationId,
         status: 'danger',
         title: 'Something went wrong!',
         description: `Unable to confirm that your data was submitted correctly. Please either try submitting again or reach out to one of the NMSUD organisers`,
+        closable: true,
+        duration: 10_000,
       });
       setNetworkState(NetworkState.Success);
       return;
@@ -161,10 +177,12 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     };
     getStateService().addSubmission(props.segment, dropDownOpt);
 
-    notificationService.show({
+    notificationService.update({
+      id: loadingNotificationId,
       status: 'success',
       title: 'Form submitted successfully',
       description: `Thank you for your submission! We will verify your submission as soon as possible`,
+      duration: 10_000,
     });
 
     const urlSegments = [getConfig().getNmsUdFormWebUrl(), '/#', routes.status.path];
@@ -172,17 +190,13 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
       render: (notificationProps) => (
         <StatusNotificationTile
           {...notificationProps}
+          href={urlSegments.join('')}
           imgUrl={submitTask.value.iconUrl ?? AppImage.sidebarLogo}
           title="View the status of your submission here:"
           descrip={
-            <BasicLink
-              href={urlSegments.join('')}
-              title="View status"
-              disableRef={true}
-              additionalClassNames="noselect"
-            >
+            <Text>
               {capitalizeFirstLetter(props.segment)}: '{name}'
-            </BasicLink>
+            </Text>
           }
         />
       ),
@@ -248,6 +262,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
       </Show>
 
       <Card class={classNames('form', { 'alert-visible': formIsDisabled })}>
+        <DebugNode name="FormBuilder" />
         <FormFieldGrid>
           <For each={Object.keys(props.mappings)}>
             {(itemPropName) => {
@@ -294,17 +309,19 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
         <HStack mt="1em" spacing="$4" justifyContent="center">
           <div ref={(el) => (captchaRef = el)} class="h-captcha"></div>
           <Button
+            class="no-focus"
             variant="solid"
             loading={networkState() === NetworkState.Loading}
             onClick={submitForm}
           >
             Submit
           </Button>
-          <Button variant="outline" colorScheme="warning" onClick={clearForm}>
+          <Button class="no-focus" variant="outline" colorScheme="warning" onClick={clearForm}>
             Clear
           </Button>
           <Show when={!getConfig().isProd()}>
             <Button
+              class="no-focus"
               variant="outline"
               colorScheme="danger"
               onClick={() => {

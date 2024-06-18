@@ -19,7 +19,7 @@
   border-right: 1px solid var(--hope-colors-neutral5);
 }
 
-.hope-button:focus,
+.hope-button.no-focus:focus,
 .hope-accordion__button:focus {
   box-shadow: none !important;
 }
@@ -51,8 +51,10 @@
   .msg {
     padding-inline-start: var(--hope-space-4);
   }
+
   .hope-accordion__item {
     border-width: 0;
+
     .hope-accordion__button:hover {
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 5px;

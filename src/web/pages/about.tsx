@@ -1,5 +1,5 @@
 // prettier-ignore
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, Container, Divider, Image, List, ListItem, Text, UnorderedList, } from '@hope-ui/solid';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, Container, Divider, Image, ListItem, Text, UnorderedList } from '@hope-ui/solid';
 import { Component } from 'solid-js';
 
 import { AppImage, ExternalImages } from '@constants/image';
@@ -7,7 +7,6 @@ import { site } from '@constants/site';
 import { AboutCreditCol } from '@web/components/aboutCreditCol';
 import { PageHeader } from '@web/components/common/pageHeader';
 import {
-  AssistantAppsDiscordLink,
   AssistantNmsHomeLink,
   NMSUDDiscordLink,
   NMSUDHomeLink,
@@ -37,7 +36,7 @@ export const AboutPage: Component = () => {
           players to submit their builds easily, provide a way for more <NMSUDHomeLink /> organisers
           to participate in managing the submissions from players and automate a lot of processes
           that were manual. abilities from <AssistantNmsHomeLink />
-          &nbsp; we were able to build this tool.
+          &nbsp;we were able to build this tool.
         </Text>
       </Container>
 
@@ -154,13 +153,14 @@ export const AboutPage: Component = () => {
           <AboutCreditCol
             imageUrl={AppImage.lenni}
             heading={site.lenni.name}
-            subtitle="Software Development"
+            subtitle="Testing & Software Development"
             link={site.lenni.website}
           />
           <AboutCreditCol
             imageUrl={AppImage.sphynxcolt}
             heading={site.sphynxcolt.name}
             subtitle="Logo design"
+            link={site.sphynxcolt.website}
           />
         </FormFieldGrid>
         <Text fontSize={headingSize} textAlign="center" mt="$8" mb="$2">

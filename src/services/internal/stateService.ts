@@ -6,8 +6,12 @@ import { IDropdownOption } from '@contracts/dropdownOption';
 import { debounceLeading } from '@helpers/debounceHelper';
 import { getLocalStorage } from './localStorageService';
 import { anyObject } from '@helpers/typescriptHacks';
+import { uuidv4 } from '@helpers/guidHelper';
+import { getConfig } from './configService';
 
 interface IState {
+  isSideBarOpen: boolean;
+  anonymousUserGuid: string;
   submissions: {
     [prop in keyof IApiSegment]: Array<IDropdownOption>;
   };
@@ -19,6 +23,8 @@ interface IState {
 @Service()
 export class StateService {
   private _internalState: IState = {
+    isSideBarOpen: true,
+    anonymousUserGuid: '',
     submissions: {
       community: [],
       builder: [],
@@ -34,13 +40,45 @@ export class StateService {
   constructor() {
     const localInitialState = getLocalStorage().get<IState>(LocalStorageKey.main);
     if (localInitialState != null) {
-      this._internalState = localInitialState;
+      let anonymousUserGuid =
+        (localInitialState.anonymousUserGuid?.length ?? 0) > 10
+          ? localInitialState.anonymousUserGuid
+          : uuidv4();
+
+      if (!getConfig().isProd()) {
+        anonymousUserGuid = 'DEV';
+      }
+
+      this._internalState = {
+        ...localInitialState,
+        anonymousUserGuid,
+      };
     }
   }
 
   saveToLocalStorage = debounceLeading((newState: IState) => {
     getLocalStorage().set(LocalStorageKey.main, newState);
   }, 250);
+
+  setIsSidebarOpen(isOpen: boolean): void {
+    this._internalState = {
+      ...this._internalState,
+      isSideBarOpen: isOpen,
+    };
+    this.saveToLocalStorage(this._internalState);
+  }
+
+  getIsSidebarOpen(): boolean {
+    return this._internalState?.isSideBarOpen ?? true;
+  }
+
+  getAnonymousUserGuid = (): string => {
+    if (this._internalState?.anonymousUserGuid == null) {
+      this._internalState.anonymousUserGuid = uuidv4();
+      this.saveToLocalStorage(this._internalState);
+    }
+    return this._internalState.anonymousUserGuid;
+  };
 
   addSubmission(segment: keyof IApiSegment, ddOption: IDropdownOption): void {
     this._internalState = {

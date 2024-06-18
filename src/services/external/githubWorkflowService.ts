@@ -34,7 +34,7 @@ export class GithubWorkflowService {
       return {
         isSuccess: true,
         value: responseBody,
-        errorMessage: '',
+        errorMessage: 'Successfully triggered the Github Action',
       };
     } catch (ex) {
       const errMsg = `GithubWorkflowService - createGithubRequest: ${ex?.toString?.()}`;
@@ -84,21 +84,28 @@ export class GithubWorkflowService {
     const shouldTrigger = getConfig().getGithubActionTriggerOnDecision();
     if (shouldTrigger == false) {
       getLog().w('Github Action trigger disabled, not going to trigger a run');
-      return { isSuccess: true, errorMessage: '' };
+      return { isSuccess: true, errorMessage: 'Github Action trigger disabled' };
     }
 
     const minBetweenRuns = getConfig().getGithubActionMinBetweenRuns();
 
     const runsResult = await this.getWorkflowRuns();
-    if (runsResult.isSuccess == false) return runsResult;
+    if (runsResult.isSuccess == false) {
+      return {
+        isSuccess: false,
+        errorMessage: 'Unable to fetch Github workflow runs',
+      };
+    }
 
     const latestDateAllowed = addMinutes(new Date(), -minBetweenRuns);
     const runsAfterDate = runsResult.value.workflow_runs.filter(
       (rs) => rs.run_started_at > latestDateAllowed,
     );
     if (runsAfterDate.length > 0) {
-      getLog().w('There was a previous GithubWorkflow run that is too recent, skipping this run');
-      return { isSuccess: true, errorMessage: '' };
+      const message =
+        'There was a previous GithubWorkflow run that is too recent, skipping this run';
+      getLog().w(message);
+      return { isSuccess: true, errorMessage: message };
     }
 
     return this.createDispatchEvent();

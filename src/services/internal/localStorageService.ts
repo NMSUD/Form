@@ -1,5 +1,6 @@
 import { Container, Service } from 'typedi';
 import { LocalStorageKey } from '@constants/site';
+import { getLog } from './logService';
 
 @Service()
 export class LocalStorageService {
@@ -10,7 +11,7 @@ export class LocalStorageService {
       const obj = JSON.parse(dataStr || '{}');
       return obj;
     } catch (err) {
-      console.error('LocalStorageService get', err);
+      getLog().e('LocalStorageService get', err);
       return null;
     }
   };
@@ -20,7 +21,7 @@ export class LocalStorageService {
       const valueStr = JSON.stringify(value);
       localStorage.setItem(key, valueStr);
     } catch (err) {
-      console.error('LocalStorageService set', err);
+      getLog().e('LocalStorageService set', err);
     }
   };
 

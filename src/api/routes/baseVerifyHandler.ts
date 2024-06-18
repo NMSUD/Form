@@ -10,11 +10,15 @@ import {
   getFriendlyApprovalStatus,
 } from '@constants/enum/approvalStatus';
 import { routes } from '@constants/route';
+import { DiscordWebhookResponse } from '@contracts/generated/discordWebhookResponse';
 import { baseSubmissionMessageBuilder, getDescriptionLines } from '@helpers/discordMessageHelper';
+import { anyObject } from '@helpers/typescriptHacks';
 import { getDiscordService } from '@services/external/discord/discordService';
+import { getGithubWorkflowService } from '@services/external/githubWorkflowService';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
-import { getGithubWorkflowService } from '@services/external/githubWorkflowService';
+import { ResultWithValue } from '@contracts/resultWithValue';
+import { lineBreak } from '@constants/form';
 
 export const baseVerifyHandler =
   <TD, TF, TP>(module: IApiModule<TD, TF, TP>) =>
@@ -40,32 +44,68 @@ export const baseVerifyHandler =
       return;
     }
 
-    const readRecordResult = await module.readRecord(params.id);
-    if (readRecordResult.isSuccess == false) {
-      const errMsg = `${handlerName}: An error occurred while getting a db record with id: ${params.id}`;
-      getLog().e(errMsg);
-      await errorResponse({
-        ctx,
-        next,
-        statusCode: ApiStatusErrorCode.recordNotFound.code,
-        message: errMsg,
-      });
-      return;
-    }
-
     const urlSegments = [
       getConfig().getNmsUdFormWebUrl(),
       '/#/',
       routes.verify.path,
       '?',
-      routes.verify.queryParam.decision,
+      routes.verify.queryParam.id,
       '=',
-      params.decision,
+      params.id,
     ];
-    if (readRecordResult.value.approvalStatus == approvalStatus) {
-      getLog().i(`${handlerName}: Approval status recieved matches what is in the database`);
+
+    const readRecordResult = await module.readRecord(params.id);
+    if (readRecordResult.isSuccess == false) {
+      const errMsg = `${handlerName}: An error occurred while getting a db record with id: ${params.id}`;
+      getLog().e(errMsg);
+      const additionalUrlSegments = [
+        '&',
+        routes.verify.queryParam.code,
+        '=',
+        ApiStatusErrorCode.recordNotFound.code,
+        '&',
+        routes.verify.queryParam.message,
+        '=',
+        encodeURI('Could not find submission!'),
+        '&',
+        routes.verify.queryParam.detail,
+        '=',
+        encodeURI(
+          'The link you clicked is no longer valid! The submission may have been deleted...',
+        ),
+      ];
       ctx.response.status = 303;
-      ctx.redirect(urlSegments.join(''));
+      ctx.response.body = ApiStatusErrorCode.recordNotFound.code;
+      ctx.redirect([...urlSegments, ...additionalUrlSegments].join(''));
+      await next();
+      return;
+    }
+    const discordWebhookId = readRecordResult.value.discordWebhookId;
+
+    if (readRecordResult.value.approvalStatus == approvalStatus) {
+      getLog().i(`${handlerName}: Approval status received matches what is in the database`);
+      const additionalUrlSegments = [
+        '&',
+        routes.verify.queryParam.code,
+        '=',
+        '200',
+        '&',
+        routes.verify.queryParam.message,
+        '=',
+        encodeURI('No changes made'),
+        '&',
+        routes.verify.queryParam.detail,
+        '=',
+        encodeURI('The selected decision was already made, so no changes required. '),
+        encodeURI(
+          discordWebhookId == null
+            ? 'Unable to update Discord message'
+            : 'Attempting to update discord message...',
+        ),
+      ];
+      ctx.response.status = 303;
+      ctx.response.body = 200;
+      ctx.redirect([...urlSegments, ...additionalUrlSegments].join(''));
       await next();
       return;
     }
@@ -78,12 +118,24 @@ export const baseVerifyHandler =
     } catch (ex) {
       const errMsg = `${handlerName}: The calculated check value does not match the supplied check value. Maybe the data changed?`;
       getLog().e(errMsg);
-      await errorResponse({
-        ctx,
-        next,
-        statusCode: ApiStatusErrorCode.calculatedCheckFailed.code,
-        message: errMsg,
-      });
+      const additionalUrlSegments = [
+        '&',
+        routes.verify.queryParam.code,
+        '=',
+        ApiStatusErrorCode.calculatedCheckFailed.code,
+        '&',
+        routes.verify.queryParam.message,
+        '=',
+        encodeURI('Invalid check value'),
+        '&',
+        routes.verify.queryParam.detail,
+        '=',
+        encodeURI(errMsg),
+      ];
+      ctx.response.status = 303;
+      ctx.response.body = ApiStatusErrorCode.calculatedCheckFailed.code;
+      ctx.redirect([...urlSegments, ...additionalUrlSegments].join(''));
+      await next();
       return;
     }
 
@@ -97,17 +149,30 @@ export const baseVerifyHandler =
     if (updateRecordResult.isSuccess == false) {
       const errMsg = `${handlerName}: An error occurred while updating the approval status of record: ${params.id}`;
       getLog().e(errMsg);
-      await errorResponse({
-        ctx,
-        next,
-        statusCode: ApiStatusErrorCode.couldNotPersistData.code,
-        message: errMsg,
-      });
+      const additionalUrlSegments = [
+        '&',
+        routes.verify.queryParam.code,
+        '=',
+        ApiStatusErrorCode.couldNotPersistData.code,
+        '&',
+        routes.verify.queryParam.message,
+        '=',
+        encodeURI('Could not update the database'),
+        '&',
+        routes.verify.queryParam.detail,
+        '=',
+        encodeURI(errMsg),
+      ];
+      ctx.response.status = 303;
+      ctx.response.body = ApiStatusErrorCode.couldNotPersistData.code;
+      ctx.redirect([...urlSegments, ...additionalUrlSegments].join(''));
+      await next();
       return;
     }
 
     const githubWorkflowTriggerTask = getGithubWorkflowService().triggerWorkflowIfNotRunRecently();
-    let discordMessageTask: Promise<unknown> = Promise.resolve();
+    let discordMessageTask: Promise<ResultWithValue<DiscordWebhookResponse>> =
+      Promise.resolve(anyObject);
 
     const tempDto = module.mapPersistenceToDto(readRecordResult.value);
     let dtoForDiscord = { ...tempDto };
@@ -119,7 +184,6 @@ export const baseVerifyHandler =
       dtoForDiscord = dtoResult.value;
     }
 
-    const discordWebhookId = readRecordResult.value.discordWebhookId;
     if (discordWebhookId != null) {
       getLog().i(`${handlerName}: Updating Discord message`);
       const msgColour = colourFromApprovalStatus(approvalStatus);
@@ -145,14 +209,42 @@ export const baseVerifyHandler =
         discordWebhookId,
         webhookPayload,
       );
+    } else {
+      discordMessageTask = Promise.resolve({
+        isSuccess: false,
+        value: anyObject,
+        errorMessage: 'Discord WebhookId was null in the database',
+      });
     }
 
-    await Promise.all([
+    const [githubWorkflowResult, discordMessageResult] = await Promise.all([
       githubWorkflowTriggerTask,
       discordMessageTask, //
     ]);
 
+    const additionalUrlSegments = [
+      '&',
+      routes.verify.queryParam.code,
+      '=',
+      '200',
+      '&',
+      routes.verify.queryParam.message,
+      '=',
+      encodeURI(`Your action was successfully handled.`),
+      '&',
+      routes.verify.queryParam.detail,
+      '=',
+      encodeURI(`Github Action response: ${githubWorkflowResult.errorMessage}${lineBreak}`),
+      encodeURI(
+        `Discord webhook message update was ${discordMessageResult.isSuccess ? 'successful' : 'unsuccessful'}.${lineBreak}`,
+      ),
+      !discordMessageResult.isSuccess
+        ? encodeURI(`Discord error message: "${discordMessageResult.errorMessage}".`)
+        : '',
+    ];
     ctx.response.status = 303;
-    ctx.redirect(urlSegments.join(''));
+    ctx.response.body = 200;
+    ctx.redirect([...urlSegments, ...additionalUrlSegments].join(''));
     await next();
+    return;
   };

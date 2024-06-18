@@ -1,6 +1,7 @@
 import { LogType } from '@constants/enum/logType';
 import { ILogMessage } from '@web/contracts/logMessage';
 import { Container, Service } from 'typedi';
+import { getConfig } from './configService';
 
 @Service()
 export class LogService {
@@ -13,7 +14,7 @@ export class LogService {
       case 'warn':
         return 'color: orange; font-size: medium';
       case 'error':
-        return 'color: red; font-size: x-large';
+        return 'color: red; font-size: large';
     }
   };
 
@@ -36,9 +37,9 @@ export class LogService {
       );
     };
 
-  i = this._track('log');
-  w = this._track('warn');
-  e = this._track('error');
+  i = getConfig().isProd() ? this._track('log') : console.log;
+  w = getConfig().isProd() ? this._track('warn') : console.warn;
+  e = getConfig().isProd() ? this._track('error') : console.error;
 
   getLogs = () => {
     return this._logs;

@@ -8,6 +8,11 @@ export const AppImage = {
   failedToLoadImg: '/assets/img/failedToLoad.png',
   backgroundVideo: '/assets/vid/galaxyBackground',
 
+  homeForm: '/assets/img/home/form.svg',
+  homePendingApproval: '/assets/img/home/pendingApproval.svg',
+  homeGeneratedWebsite: '/assets/img/home/generatedWebsite.svg',
+  homeFavourite: '/assets/img/home/favourite.svg',
+
   kurt: '/assets/img/about/kurt.jpg',
   lenni: '/assets/img/about/lenni.png',
   sphynxcolt: '/assets/img/about/sphynxcolt.webp',
@@ -24,11 +29,23 @@ export const DefaultImageRestrictions: { [prop: string]: IImageRestriction } = {
     minWidth: 256,
     maxSizeMb: 1,
   },
+  bioMediaPic: {
+    maxHeight: 1920,
+    maxWidth: 1080,
+    minHeight: 256,
+    minWidth: 256,
+    maxSizeMb: 2,
+  },
 } as const;
 
 export const DefaultImageSize = {
   height: 512,
   width: 512,
+} as const;
+
+export const BioMediaImageSize = {
+  height: 720,
+  width: 1280,
 } as const;
 
 export const ExternalImages = {

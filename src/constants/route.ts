@@ -66,7 +66,10 @@ export const routes = {
     path: 'verify',
     showInSidebar: false,
     queryParam: {
-      decision: 'decision',
+      id: 'id',
+      code: 'code',
+      message: 'message',
+      detail: 'detail',
     },
   },
 

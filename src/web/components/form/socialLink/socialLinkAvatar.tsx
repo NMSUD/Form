@@ -1,8 +1,9 @@
-import { Avatar, Badge, Center, Text } from '@hope-ui/solid';
-import { Component } from 'solid-js';
 import { AppImage } from '@constants/image';
 import { site } from '@constants/site';
 import { socialIcons } from '@constants/socialIcons';
+import { Avatar, Badge, Center, Text } from '@hope-ui/solid';
+import { DebugNode } from '@web/components/core/debugNode';
+import { Component } from 'solid-js';
 import { BasicLink } from '../../core/link';
 
 interface IFormSocialProps {
@@ -31,6 +32,7 @@ export const AvatarFromSocialLink: Component<IFormSocialProps> = (props: IFormSo
       additionalClassNames="hover-reveal-child pos-rel display-inline-block noselect"
       onClick={props.onChange}
     >
+      <DebugNode name="AvatarFromSocialLink" />
       <Avatar
         size={props.size}
         backgroundColor="transparent"

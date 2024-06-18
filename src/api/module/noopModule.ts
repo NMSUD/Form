@@ -10,11 +10,11 @@ const fakeStringResult = {
 };
 const fakeSingleResult = {
   ...fakeStringResult,
-  value: { id: '', approvalStatus: ApprovalStatus.approved },
+  value: { id: '', approvalStatus: ApprovalStatus.approved, anonymousUserGuid: '' },
 };
 const fakeArrayResult = {
   ...fakeSingleResult,
-  value: [{ id: '', approvalStatus: ApprovalStatus.approved }],
+  value: [{ id: '', approvalStatus: ApprovalStatus.approved, anonymousUserGuid: '' }],
 };
 
 export const noopModule: IApiModule<string, string, IRecordRequirements> = {

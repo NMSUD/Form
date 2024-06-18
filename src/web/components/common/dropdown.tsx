@@ -55,8 +55,7 @@ export const Dropdown: Component<IProps> = (props: IProps) => {
     <FormControl invalid={!isValid().isValid}>
       <Show when={props.hideTitle != true}>
         <FormLabel>
-          {props.title}
-          <HelpIconTooltip helpText={props.helpText} />
+          <HelpIconTooltip label={props.title} helpText={props.helpText} />
         </FormLabel>
       </Show>
       <Select multiple={props.multiple} value={selectedOptions()} onChange={onSelectOption}>

@@ -1,6 +1,6 @@
 // prettier-ignore
 import { Alert, AlertDescription, AlertIcon, Box, Button, Center, Container, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, createDisclosure } from "@hope-ui/solid";
-import { Component, For, Match, Show, Switch, createSignal } from 'solid-js';
+import { Component, For, Match, Show, Switch, createSignal, onMount } from 'solid-js';
 
 import { IApiSegment, segmentLabels } from '@constants/api';
 import { ApprovalStatus, getFriendlyApprovalStatus } from '@constants/enum/approvalStatus';
@@ -11,7 +11,7 @@ import { IFormWithApprovalResponse } from '@contracts/response/formResponse';
 import { getFormStatusApiService } from '@services/api/formStatusApiService';
 import { getStateService } from '@services/internal/stateService';
 import { PageHeader } from '@web/components/common/pageHeader';
-import { CenterLoading } from '@web/components/core/loading';
+import { CenterLoading, LoadingSpinner } from '@web/components/core/loading';
 import { StatusTile } from '@web/components/tile/statusTile';
 import { SingleStatusCard } from './singleStatusCard';
 
@@ -29,6 +29,10 @@ export const StatusPage: Component = () => {
   const { isOpen, onOpen, onClose } = createDisclosure();
   const [rows, setRows] = createSignal<Array<IRows>>([]);
   const [networkState, setNetworkState] = createSignal<NetworkState>(NetworkState.Loading);
+
+  onMount(() => {
+    loadStatusForAllItems();
+  });
 
   const loadStatusForAllItems = async () => {
     const rows: Array<IRows> = [];
@@ -77,7 +81,6 @@ export const StatusPage: Component = () => {
     setRows(rows);
     setNetworkState(NetworkState.Success);
   };
-  loadStatusForAllItems();
 
   const onFindItem = (segment: string, newItem: IFormWithApprovalResponse) => {
     const dropDown: IDropdownOption = {
@@ -128,7 +131,7 @@ export const StatusPage: Component = () => {
                     <Text size="2xl" textAlign="center">
                       {row.title}
                     </Text>
-                    <HStack mt="$2" flexWrap="wrap" justifyContent="center">
+                    <HStack class="status-list" mt="$2" flexWrap="wrap" justifyContent="center">
                       <For each={row.items}>
                         {(option) => (
                           <StatusTile
@@ -154,7 +157,9 @@ export const StatusPage: Component = () => {
         }
       >
         <Match when={networkState() === NetworkState.Loading}>
-          <CenterLoading />
+          <Center height="25vh">
+            <LoadingSpinner />
+          </Center>
         </Match>
         <Match when={networkState() === NetworkState.Error}>
           <Container maxW="50em" mb="2em">

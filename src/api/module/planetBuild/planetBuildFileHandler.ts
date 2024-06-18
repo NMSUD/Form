@@ -1,5 +1,6 @@
 import { processImageFromFormData } from '@api/facade/processImage';
 import { FormDataKey } from '@constants/form';
+import { BioMediaImageSize } from '@constants/image';
 import { IDatabaseFile } from '@contracts/databaseFile';
 import { IFormWithFiles } from '@contracts/file';
 import { ResultWithValue } from '@contracts/resultWithValue';
@@ -20,7 +21,10 @@ export const planetBuildFileHandler = async (
   const mediaFilesFromForm = formData[FormDataKey.mediaFiles];
   if (result.mediaFiles == null) result.mediaFiles = [];
   for (const mediaFileFromForm of makeArrayOrDefault(mediaFilesFromForm)) {
-    const mediaDbBufferResult = await processImageFromFormData(mediaFileFromForm);
+    const mediaDbBufferResult = await processImageFromFormData({
+      fileFromForm: mediaFileFromForm,
+      ...BioMediaImageSize,
+    });
     if (mediaDbBufferResult.isSuccess == false) {
       getLog().e('planetBuildFileHandler bioMediaFileFromForm', mediaDbBufferResult.errorMessage);
     }

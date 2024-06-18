@@ -3,6 +3,7 @@ import { Component, Show, createEffect } from 'solid-js';
 import { formatForDateLocal } from '@helpers/dateHelper';
 import { onTargetValue } from '@helpers/eventHelper';
 import { FormControl, FormErrorMessage, FormLabel, Input } from '@hope-ui/solid';
+import { DebugNode } from '@web/components/core/debugNode';
 import { FormInputProps } from '@web/contracts/formTypes';
 import { useValidation } from '@web/hooks/useValidation';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
@@ -33,9 +34,9 @@ export const FormLongInput: Component<IFormLongInputProps> = (props: IFormLongIn
 
   return (
     <FormControl invalid={!isValid().isValid}>
+      <DebugNode name="FormLongInput" />
       <FormLabel textAlign="center" for={props.id}>
-        {props.label}
-        <HelpIconTooltip helpText={props.helpText} />
+        <HelpIconTooltip label={props.label} helpText={props.helpText} />
       </FormLabel>
       <Input
         id={props.id}

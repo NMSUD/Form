@@ -1,6 +1,6 @@
 // prettier-ignore
-import { Anchor, Avatar, Box, Button, Center, CircularProgress, CircularProgressIndicator, Flex, FormControl, FormErrorMessage, FormLabel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, Tooltip, createDisclosure, notificationService } from '@hope-ui/solid';
-import { Component, For, JSX, Show, createEffect, createSignal } from 'solid-js';
+import { Anchor, Avatar, Box, Button, Center, CircularProgress, CircularProgressIndicator, Flex, FormControl, FormErrorMessage, FormLabel, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, SimpleGrid, Text, Tooltip, createDisclosure, notificationService } from '@hope-ui/solid';
+import { Component, For, JSX, Match, Show, Switch, createEffect, createSignal } from 'solid-js';
 
 import { NetworkState } from '@constants/enum/networkState';
 import { minUrlLength } from '@constants/validation';
@@ -12,11 +12,19 @@ import { multiValidation } from '@validation/baseValidation';
 import { minLength, shouldBeUrl, shouldBeYoutubeUrl } from '@validation/textValidation';
 import { OpenInNewIcon } from '@web/components/common/icon/openInNewIcon';
 import { WrapWhen } from '@web/components/common/wrapWhen';
+import { DebugNode } from '@web/components/core/debugNode';
 import { FormInputProps } from '@web/contracts/formTypes';
 import { IMediaUpload, MediaUploadType } from '@web/contracts/mediaUpload';
 import { useValidation } from '../../../hooks/useValidation';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 import { FormLongInput } from '../text/input';
+import { FormMediaUploadItem } from './mediaUploadItem';
+import { Card } from '@web/components/common/card';
+import { UploadIcon } from '@web/components/common/icon/uploadIcon';
+import { VideoIcon } from '@web/components/common/icon/videoIcon';
+import { ImageIcon } from '@web/components/common/icon/imageIcon';
+import { LoadingSpinner } from '@web/components/core/loading';
+import { AppAnimation } from '@constants/animation';
 
 interface IFormMediaUploadProps extends FormInputProps<Array<IMediaUpload>> {
   maxUploads?: number;
@@ -32,6 +40,7 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
   const [uploads, setUploads] = createSignal<Array<IMediaUpload>>(
     makeArrayOrDefault(props.value).filter((mu) => mu.type != MediaUploadType.File),
   );
+  const [selectedCard, setSelectedCard] = createSignal<string>('');
   const [externalImageUrl, setExternalImageUrl] = createSignal<string>('');
   const [externalVideoUrl, setExternalVideoUrl] = createSignal<string>('');
   const [filesToProcess, setFilesToProcess] = createSignal<Array<File>>();
@@ -96,7 +105,6 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
   }, [filesToProcess]);
 
   const handleFilesUpload = async (uploadedFiles: FileList) => {
-    setNetworkState(NetworkState.Loading);
     const files: Array<File> = [];
     for (let fileIndex = 0; fileIndex < uploadedFiles.length; fileIndex++) {
       const uploadedFile = uploadedFiles[fileIndex];
@@ -124,6 +132,7 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
   const closeModalAndClearInputs = () => {
     setExternalImageUrl('');
     setExternalVideoUrl('');
+    setNetworkState(NetworkState.Pending);
     onClose();
   };
 
@@ -137,60 +146,20 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
     });
   };
 
-  const renderMediaUpload = (data: IMediaUpload): JSX.Element => {
-    if (data.type === MediaUploadType.ImageUrl) {
-      return (
-        <Avatar name={data.url} src={data.url} maxWidth="3em" maxHeight="3em" borderRadius="6px" />
-      );
+  const getLabel = (localProps: IFormMediaUploadProps) => {
+    if ((props.maxUploads ?? 0) < 0) {
+      return localProps.label;
     }
-    if (data.type === MediaUploadType.VideoUrl) {
-      return (
-        <Center height="100%" backgroundColor="$neutral6" borderRadius="5px">
-          <Anchor href={data.url} external px="1em">
-            Video <OpenInNewIcon />
-          </Anchor>
-        </Center>
-      );
-    }
-    if (data.type === MediaUploadType.File) {
-      return (
-        <Flex flexDirection="row" backgroundColor="$neutral6" borderRadius="5px">
-          <Avatar
-            flex={1}
-            mr="$2"
-            name={data.url}
-            src={data.url}
-            maxWidth="3em"
-            maxHeight="3em"
-            borderRadius="6px"
-          />
-          <Center flex={4} maxWidth="10em" overflow="hidden">
-            <WrapWhen
-              condition={data.file?.name != null}
-              wrapComp={Tooltip}
-              wrapProps={{ label: data.file?.name }}
-            >
-              <Text class="max-lines-1">{data.file?.name ?? 'unknown name'}</Text>
-            </WrapWhen>
-          </Center>
-        </Flex>
-      );
-    }
-    return <Text>unknown upload type</Text>;
+
+    return `${localProps.label} (${(uploads() ?? []).length} / ${props.maxUploads ?? 0})`;
   };
 
   return (
     <>
       <FormControl invalid={!isValid().isValid}>
+        <DebugNode name="FormMediaUploadInput" />
         <FormLabel textAlign="center" for={props.id}>
-          <span>{props.label}</span>
-          <span>
-            &nbsp;
-            <Show when={(props.maxUploads ?? 0) > 0}>
-              ({(uploads() ?? []).length}&nbsp;/&nbsp;{props.maxUploads ?? 0})
-            </Show>
-          </span>
-          <HelpIconTooltip helpText={props.helpText} />
+          <HelpIconTooltip label={getLabel(props)} helpText={props.helpText} />
         </FormLabel>
         <Flex gap="$2" flexWrap="wrap">
           <Button colorScheme="warning" onClick={onOpen}>
@@ -198,105 +167,128 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
           </Button>
           <For each={uploads()}>
             {(data, index) => (
-              <Box class="hover-reveal-child pos-rel display-inline-block noselect">
-                {renderMediaUpload(data)}
-                <Center
-                  class="reveal pos-abs"
-                  top="0"
-                  left="0"
-                  right="0"
-                  bottom="0"
-                  backgroundColor="$danger6"
-                  borderRadius="5px"
-                  onClick={removeItem(index())}
-                >
-                  <Text size="xl">❌</Text>
-                </Center>
-              </Box>
+              <FormMediaUploadItem upload={data} removeItem={removeItem(index())} />
             )}
           </For>
-          <Show when={networkState() === NetworkState.Loading}>
-            <CircularProgress indeterminate>
-              <CircularProgressIndicator />
-            </CircularProgress>
-          </Show>
         </Flex>
         <Show when={!isValid().isValid}>
           <FormErrorMessage>{isValid().errorMessage}</FormErrorMessage>
         </Show>
       </FormControl>
-      <Modal size="5xl" opened={isOpen()} onClose={onClose}>
+      <Modal size="5xl" opened={isOpen()} onClose={closeModalAndClearInputs}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent
+          onClick={() => {
+            if (filesToProcess() == null) {
+              setNetworkState(NetworkState.Pending);
+            }
+          }}
+        >
           <ModalCloseButton />
           <ModalHeader>Upload media</ModalHeader>
-          <ModalBody pt="1em" pb="5em">
-            <Center>
-              <Button onClick={() => inputRef?.click?.()}>Upload image</Button>
-            </Center>
+          <ModalBody pt="1em" pb="2em">
+            <SimpleGrid columns={3} gap="10px">
+              <Card class="pointer">
+                <Center
+                  flexDirection="column"
+                  justifyContent="center"
+                  height="100%"
+                  onClick={() => {
+                    inputRef?.click?.();
+                    setTimeout(
+                      () => setNetworkState(NetworkState.Loading),
+                      AppAnimation.backgroundDelay,
+                    );
+                  }}
+                >
+                  <Switch>
+                    <Match when={networkState() !== NetworkState.Loading}>
+                      <UploadIcon font-size="7em" opacity="0.7" />
+                      <Text>Upload image</Text>
+                    </Match>
+                    <Match when={networkState() === NetworkState.Loading}>
+                      <LoadingSpinner />
+                    </Match>
+                  </Switch>
+                </Center>
+              </Card>
+              <Card class="pointer">
+                <Center flexDirection="column" onClick={() => setSelectedCard('imageUrl')}>
+                  <ImageIcon font-size="7em" opacity="0.7" />
+                  <Text>Enter image url</Text>
+                </Center>
+              </Card>
+              <Card class="pointer">
+                <Center flexDirection="column" onClick={() => setSelectedCard('videoUrl')}>
+                  <VideoIcon font-size="7em" opacity="0.7" />
+                  <Text>Enter video url</Text>
+                </Center>
+              </Card>
+            </SimpleGrid>
 
-            <Text textAlign="center" mt="2em" mb="1em">
-              Or
-            </Text>
+            <Show when={selectedCard() === 'imageUrl'}>
+              <Flex direction="row" gap="1em" mt="2em">
+                <FormLongInput
+                  id="hostedImage"
+                  label="Image url"
+                  value={externalImageUrl()}
+                  placeholder="https://i.imgur.com/aKaOqIh.gif"
+                  onChange={setExternalImageUrl}
+                  showValidationMessages={false}
+                  validation={(url) => {
+                    const validationFunc = multiValidation(shouldBeUrl, minLength(minUrlLength));
+                    return validationFunc((url ?? '').toString());
+                  }}
+                />
+                <Button
+                  variant="solid"
+                  mt="1.5em"
+                  onClick={() => handleExternalUrl(MediaUploadType.ImageUrl, externalImageUrl())}
+                >
+                  Add
+                </Button>
+              </Flex>
+            </Show>
 
-            <Flex direction="row" gap="1em">
-              <FormLongInput
-                id="hostedImage"
-                label="Image url"
-                value={externalImageUrl()}
-                placeholder="https://i.imgur.com/aKaOqIh.gif"
-                onChange={setExternalImageUrl}
-                showValidationMessages={false}
-                validation={(url) => {
-                  const validationFunc = multiValidation(shouldBeUrl, minLength(minUrlLength));
-                  return validationFunc((url ?? '').toString());
-                }}
-              />
-              <Button
-                variant="solid"
-                mt="1.5em"
-                onClick={() => handleExternalUrl(MediaUploadType.ImageUrl, externalImageUrl())}
-              >
-                Add
+            <Show when={selectedCard() === 'videoUrl'}>
+              <Flex direction="row" gap="1em" mt="2em">
+                <FormLongInput
+                  id="youtubeUrl"
+                  label="Youtube video url"
+                  value={externalVideoUrl()}
+                  placeholder="https://www.youtube.com/watch?v=XXX"
+                  onChange={setExternalVideoUrl}
+                  showValidationMessages={false}
+                  validation={(url) => {
+                    const validationFunc = multiValidation(shouldBeUrl, shouldBeYoutubeUrl);
+                    return validationFunc((url ?? '').toString());
+                  }}
+                />
+                <Button
+                  variant="solid"
+                  mt="1.5em"
+                  onClick={() => handleExternalUrl(MediaUploadType.VideoUrl, externalVideoUrl())}
+                >
+                  Add
+                </Button>
+              </Flex>
+            </Show>
+
+            <input
+              ref={(el) => (inputRef = el)}
+              id="file-upload"
+              type="file"
+              accept="image/*"
+              class="hidden"
+              multiple
+              onChange={onTargetFiles(handleFilesUpload)}
+            />
+
+            <HStack mt="2em" justifyContent="center">
+              <Button variant="outline" colorScheme="warning" onClick={closeModalAndClearInputs}>
+                Cancel
               </Button>
-            </Flex>
-
-            <Text textAlign="center" mt="2em" mb="1em">
-              Or
-            </Text>
-
-            <Flex direction="row" gap="1em">
-              <FormLongInput
-                id="youtubeUrl"
-                label="Youtube video url"
-                value={externalVideoUrl()}
-                placeholder="https://www.youtube.com/watch?v=XXX"
-                onChange={setExternalVideoUrl}
-                showValidationMessages={false}
-                validation={(url) => {
-                  const validationFunc = multiValidation(shouldBeUrl, shouldBeYoutubeUrl);
-                  return validationFunc((url ?? '').toString());
-                }}
-              />
-              <Button
-                variant="solid"
-                mt="1.5em"
-                onClick={() => handleExternalUrl(MediaUploadType.VideoUrl, externalVideoUrl())}
-              >
-                Add
-              </Button>
-            </Flex>
-
-            <Box display="none">
-              <input
-                ref={(el) => (inputRef = el)}
-                id="file-upload"
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={onTargetFiles(handleFilesUpload)}
-              />
-            </Box>
+            </HStack>
           </ModalBody>
         </ModalContent>
       </Modal>

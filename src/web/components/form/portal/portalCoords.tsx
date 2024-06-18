@@ -5,6 +5,7 @@ import { Component, For, Show, createEffect, createSignal } from 'solid-js';
 import { portalValidOptions } from '@constants/form';
 import { portalGlyphLength } from '@constants/validation';
 import { onTargetValue } from '@helpers/eventHelper';
+import { DebugNode } from '@web/components/core/debugNode';
 import { FormInputProps } from '@web/contracts/formTypes';
 import { useValidation } from '@web/hooks/useValidation';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
@@ -56,9 +57,9 @@ export const PortalCoordInput: Component<IFormPortalCoordInputProps> = (
   return (
     <>
       <FormControl invalid={!isValid().isValid}>
+        <DebugNode name="PortalCoordInput" />
         <FormLabel textAlign="center" for={props.id}>
-          {props.label}
-          <HelpIconTooltip helpText={props.helpText} />
+          <HelpIconTooltip label={props.label} helpText={props.helpText} />
         </FormLabel>
         <Input
           id={props.id}

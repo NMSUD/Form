@@ -1,0 +1,32 @@
+.step {
+
+    .image {
+        padding-left: 2em;
+        padding-right: 2em;
+    }
+
+    .text {
+        p {
+            margin-left: 0;
+            margin-right: auto;
+        }
+    }
+
+    &.flipped {
+        .image {
+            order: 3;
+        }
+
+        .text {
+            text-align: right;
+            align-items: flex-end;
+            order: 2;
+
+            p {
+                margin-right: 0;
+                margin-left: auto;
+                text-align: right;
+            }
+        }
+    }
+}

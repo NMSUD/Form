@@ -16,14 +16,17 @@ export const communityModule: IApiModule<CommunityDto, ICommunityImages, Communi
   getName: (persistence: Community) => persistence.name,
   getIcon: (persistence: Community) => persistence.profilePicUrl,
 
+  // Mappers
   mapDtoWithImageToPersistence: communityDtoWithImageToPersistence,
   mapPersistenceToDto: communityPersistenceToDto,
 
+  // Database
   createRecord: (persistence) => getDbTable().create(persistence),
   readRecord: (id: string) => getDbTable().read(id),
   readAllRecords: () => getDbTable().readAll(),
   updateRecord: (id, persistence) => getDbTable().update(id, persistence),
 
+  // Files
   handleFilesInFormData: communityFileHandler,
   getPublicUrlsOfUploads: communityPublicUrlHandler,
 

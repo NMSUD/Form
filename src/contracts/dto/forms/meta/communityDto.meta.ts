@@ -1,5 +1,6 @@
-import { DefaultImageRestrictions } from '@constants/image';
+import { BioMediaImageSize, DefaultImageRestrictions } from '@constants/image';
 import { minUrlLength, portalGlyphLength } from '@constants/validation';
+import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import {
   arrayDiscordLine,
   arrayOfLinksDiscordLine,
@@ -14,11 +15,10 @@ import {
   separateValidation,
   validateForEach,
 } from '@validation/baseValidation';
-import { webImageRestrictions } from '@validation/imageValidation';
+import { mediaUploadRestriction } from '@validation/imageValidation';
 import { maxLength, minLength, shouldBeUrl } from '@validation/textValidation';
-import { IFormDtoMeta, contactDetails } from '../baseFormDto';
+import { IFormDtoMeta, anonymousUserGuid, contactDetails } from '../baseFormDto';
 import { CommunityDto } from '../communityDto';
-import { makeArrayOrDefault } from '@helpers/arrayHelper';
 
 export const communityBioMaxLength = 500;
 export const communityBioMaxUploads = 5;
@@ -42,11 +42,15 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
       type: 'string',
       format: 'binary',
     },
+    saveToLocalStorage: false,
     validator: separateValidation({
       Api: noValidation,
       UI: multiValidation(
         notNull('You need to upload an image'),
-        webImageRestrictions(DefaultImageRestrictions.profilePic),
+        mediaUploadRestriction(
+          DefaultImageRestrictions.profilePic,
+          'You need to upload a valid image',
+        ),
       ),
     }),
   },
@@ -84,7 +88,17 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     swaggerSchema: {
       $ref: '#/components/schemas/IMediaUpload',
     },
-    validator: maxItems(communityBioMaxUploads),
+    saveToLocalStorage: false,
+    helpText: `Recommended size (width: ${BioMediaImageSize.width}, height: ${BioMediaImageSize.height})`,
+    validator: multiValidation(
+      maxItems(communityBioMaxUploads),
+      validateForEach(
+        mediaUploadRestriction(
+          DefaultImageRestrictions.bioMediaPic,
+          'You need to upload a valid image',
+        ),
+      ),
+    ),
     // TODO Add server validation of max file size
   },
   homeGalaxy: {
@@ -142,4 +156,5 @@ export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
     ),
   },
   contactDetails,
+  anonymousUserGuid,
 } as const;
