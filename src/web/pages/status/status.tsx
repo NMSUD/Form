@@ -131,7 +131,7 @@ export const StatusPage: Component = () => {
                     <Text size="2xl" textAlign="center">
                       {row.title}
                     </Text>
-                    <HStack mt="$2" flexWrap="wrap" justifyContent="center">
+                    <HStack class="status-list" mt="$2" flexWrap="wrap" justifyContent="center">
                       <For each={row.items}>
                         {(option) => (
                           <StatusTile

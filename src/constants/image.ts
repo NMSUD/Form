@@ -8,6 +8,11 @@ export const AppImage = {
   failedToLoadImg: '/assets/img/failedToLoad.png',
   backgroundVideo: '/assets/vid/galaxyBackground',
 
+  homeForm: '/assets/img/home/form.svg',
+  homePendingApproval: '/assets/img/home/pendingApproval.svg',
+  homeGeneratedWebsite: '/assets/img/home/generatedWebsite.svg',
+  homeFavourite: '/assets/img/home/favourite.svg',
+
   kurt: '/assets/img/about/kurt.jpg',
   lenni: '/assets/img/about/lenni.png',
   sphynxcolt: '/assets/img/about/sphynxcolt.webp',

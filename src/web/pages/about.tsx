@@ -36,7 +36,7 @@ export const AboutPage: Component = () => {
           players to submit their builds easily, provide a way for more <NMSUDHomeLink /> organisers
           to participate in managing the submissions from players and automate a lot of processes
           that were manual. abilities from <AssistantNmsHomeLink />
-          &nbsp; we were able to build this tool.
+          &nbsp;we were able to build this tool.
         </Text>
       </Container>
 

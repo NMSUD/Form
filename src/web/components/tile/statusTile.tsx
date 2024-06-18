@@ -13,7 +13,7 @@ interface IProps {
 
 export const StatusTile: Component<IProps> = (props: IProps) => {
   return (
-    <Box w="25%">
+    <Box class="status-tile" maxW="350px" flex={1}>
       <DebugNode name="StatusTile" />
       <HStack
         bg="$loContrast"

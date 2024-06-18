@@ -36,8 +36,13 @@ body {
         }
       }
     }
-    .sidebar-bg {
+
+    .sidebar-bg.isOpen {
       display: inline-block;
+    }
+
+    .form.card {
+      margin-bottom: 7em;
     }
   }
 
@@ -67,6 +72,27 @@ body {
         .drawer-icon {
           right: 0.5em;
         }
+      }
+    }
+
+    .status-list {
+      .status-tile {
+        min-width: 80%;
+      }
+    }
+
+    .step {
+      border-bottom: 1px dashed rgb(100, 100, 100);
+      padding-bottom: 2em;
+      margin-bottom: 2em;
+
+      .image {
+        padding-left: 1em;
+        padding-right: 1em;
+      }
+
+      &:last-child {
+        border: none
       }
     }
   }
