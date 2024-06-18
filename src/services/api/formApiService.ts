@@ -16,6 +16,7 @@ import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
 import { IMediaUpload, MediaUploadType } from '@web/contracts/mediaUpload';
 import { getConfig } from '../internal/configService';
 import { BaseApiService } from './baseApiService';
+import { getLog } from '@services/internal/logService';
 
 @Service()
 export class FormApiService extends BaseApiService {
@@ -48,7 +49,9 @@ export class FormApiService extends BaseApiService {
     const { profilePicFile, bioMediaFiles, ...dataWithoutFiles } = data;
     const formData = new FormData();
 
-    formData.append(FormDataKey.profilePicFile, profilePicFile);
+    this.addMultiFilesToFormData([profilePicFile], (_, file: File) =>
+      formData.append(FormDataKey.profilePicFile, file),
+    );
 
     const actualBioMediaUrls = this.addMultiFilesToFormData(
       bioMediaFiles,
@@ -69,10 +72,11 @@ export class FormApiService extends BaseApiService {
 
   private async createFormFromBuilder(data: BuilderDto): Promise<FormData> {
     const { profilePicFile, ...dataWithoutFiles } = data;
-
     const formData = new FormData();
-    formData.append(FormDataKey.profilePicFile, profilePicFile);
-    formData.append(FormDataKey.data, JSON.stringify(dataWithoutFiles));
+
+    this.addMultiFilesToFormData([profilePicFile], (_, file: File) =>
+      formData.append(FormDataKey.profilePicFile, file),
+    );
 
     const mappedFromDtoMeta = this.mapFieldsFromMeta(dataWithoutFiles, BuilderDtoMeta);
     formData.append(FormDataKey.data, JSON.stringify(mappedFromDtoMeta));
@@ -106,14 +110,13 @@ export class FormApiService extends BaseApiService {
     formDataAppend: (key: string, file: File) => void,
   ): Array<string> {
     const mediaUrls: Array<string> = [];
-    for (const mediaFile of makeArrayOrDefault(files)) {
-      const actualMediaFile = mediaFile as unknown as IMediaUpload;
-      if (actualMediaFile.type != MediaUploadType.File) {
-        mediaUrls.push(actualMediaFile.url);
+    for (const mediaFile of makeArrayOrDefault(files as unknown as Array<IMediaUpload>)) {
+      if (mediaFile.type != MediaUploadType.File) {
+        mediaUrls.push(mediaFile.url);
         continue;
       }
-      if (actualMediaFile.file != null) {
-        formDataAppend(FormDataKey.bioMediaFiles, actualMediaFile.file);
+      if (mediaFile.file != null) {
+        formDataAppend(FormDataKey.bioMediaFiles, mediaFile.file);
       }
     }
     return mediaUrls;
@@ -149,18 +152,29 @@ export class FormApiService extends BaseApiService {
         method: 'POST',
         body: formData,
       });
-      const resultValue: IFormResponse = await apiResult.json();
+      if (apiResult.status != 200) {
+        const errorMessage = await apiResult.text();
+        getLog().e('FormApiService submitForm', errorMessage);
+        return {
+          isSuccess: false,
+          value: anyObject,
+          errorMessage: errorMessage,
+        };
+      }
 
+      const resultValue: IFormResponse = await apiResult.json();
       return {
         isSuccess: true,
         value: resultValue,
         errorMessage: '',
       };
     } catch (ex) {
+      const errMsg = ex?.toString?.() ?? '';
+      getLog().e('FormApiService submitForm', errMsg);
       return {
         isSuccess: false,
         value: anyObject,
-        errorMessage: ex?.toString?.() ?? '',
+        errorMessage: errMsg,
       };
     }
   }

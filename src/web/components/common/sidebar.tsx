@@ -1,15 +1,15 @@
 // prettier-ignore
 import { Box, Center, Divider, ElementType, Flex, Heading, IconButton, Image, Spacer, Text, TextProps, VStack, } from '@hope-ui/solid';
-import { Component, For, Show, createEffect, createSignal } from 'solid-js';
 import { useLocation } from '@solidjs/router';
 import classNames from 'classnames';
+import { Component, For, Show, createEffect, createSignal } from 'solid-js';
 
-import { Link } from '@solidjs/router';
-import { IRouteOptions, routes, traverseRoutes } from '@constants/route';
-import { SidebarNavLink, SidebarNavNonLink } from './sidebarNavLink';
-import { getConfig } from '@services/internal/configService';
 import { AppImage } from '@constants/image';
+import { IRouteOptions, routes, traverseRoutes } from '@constants/route';
+import { getConfig } from '@services/internal/configService';
 import { getStateService } from '@services/internal/stateService';
+import { Link } from '@solidjs/router';
+import { SidebarNavLink, SidebarNavNonLink } from './sidebarNavLink';
 
 export const Sidebar: Component = () => {
   const location = useLocation();
@@ -106,7 +106,9 @@ export const Sidebar: Component = () => {
                     <Show
                       when={!menuItem.comingSoon || location.pathname === `${menuItem.route}`}
                       fallback={
-                        <SidebarNavNonLink>{menuItem.emoji}&nbsp;Coming soon</SidebarNavNonLink>
+                        <SidebarNavNonLink class="disabled">
+                          {menuItem.emoji}&nbsp;Coming soon
+                        </SidebarNavNonLink>
                       }
                     >
                       <SidebarNavLink href={menuItem.route} onClick={onLinkClick}>

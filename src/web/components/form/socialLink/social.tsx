@@ -1,3 +1,4 @@
+import { keyboardKeyCode } from '@constants/form';
 import { HtmlKeyEvent } from '@contracts/event';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { onTargetValue } from '@helpers/eventHelper';
@@ -12,13 +13,13 @@ import {
   InputRightElement,
   VStack,
 } from '@hope-ui/solid';
+import { DebugNode } from '@web/components/core/debugNode';
 import { FormInputProps } from '@web/contracts/formTypes';
 import { Component, For, Show, createEffect, createSignal } from 'solid-js';
 import { useValidation } from '../../../hooks/useValidation';
 import { RightArrowIcon } from '../../common/icon/rightArrowIcon';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 import { AvatarFromSocialLink } from './socialLinkAvatar';
-import { keyboardKeyCode } from '@constants/form';
 
 interface IFormSocialProps extends FormInputProps<Array<string>> {}
 
@@ -66,10 +67,10 @@ export const FormSocialInput: Component<IFormSocialProps> = (props: IFormSocialP
 
   return (
     <VStack>
+      <DebugNode name="FormSocialInput" />
       <FormControl invalid={!isValid().isValid}>
         <FormLabel textAlign="center" for={props.id}>
-          {props.label}
-          <HelpIconTooltip helpText={props.helpText} />
+          <HelpIconTooltip label={props.label} helpText={props.helpText} />
         </FormLabel>
 
         <InputGroup>

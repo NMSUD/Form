@@ -47,56 +47,6 @@ html body {
   }
 }
 
-.pointer {
-  cursor: pointer;
-}
-
-.noselect {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.no-drag,
-.no-drag > .hope-avatar__image {
-  -webkit-user-drag: none;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-}
-
-.max-lines-1 {
-  white-space: nowrap;
-  overflow: hidden;
-  display: block;
-  text-overflow: ellipsis;
-}
-
-.hover-reveal-child {
-  &:hover {
-    .reveal {
-      opacity: 1;
-    }
-  }
-
-  .reveal {
-    opacity: 0;
-    transition: opacity 250ms ease-in-out;
-  }
-}
-
-.pos-rel {
-  position: relative;
-}
-
-.pos-abs {
-  position: absolute;
-}
-
 .display-inline-block {
   display: inline-block;
 }

@@ -3,6 +3,7 @@ import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOve
 
 import { BugReportForm } from '@web/pages/bug/bugReportForm';
 import { FloatingActionButton } from './common/floatingActionButton';
+import { DebugNode } from './core/debugNode';
 
 interface IProps {}
 
@@ -17,6 +18,7 @@ export const BugReportFAB = (props: IProps) => {
         icon="🐛 Report"
         onClick={onOpen}
       />
+      <DebugNode name="BugReportFAB" />
       <Modal size="5xl" opened={isOpen()} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

@@ -21,6 +21,43 @@
   background-color: rgba(0, 0, 0, 0.2);
 }
 
+.pointer {
+  cursor: pointer;
+}
+
+.disabled {
+  cursor: not-allowed;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.no-drag,
+.no-drag > .hope-avatar__image {
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+debug {
+  display: none;
+}
+
+.max-lines-1 {
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  text-overflow: ellipsis;
+}
+
 .clamp-to-1-lines {
   overflow: hidden;
   display: -webkit-box;
@@ -37,6 +74,27 @@
   -webkit-box-orient: vertical;
 }
 
+.hover-reveal-child {
+  &:hover {
+    .reveal {
+      opacity: 1;
+    }
+  }
+
+  .reveal {
+    opacity: 0;
+    transition: opacity 250ms ease-in-out;
+  }
+}
+
+.pos-rel {
+  position: relative;
+}
+
+.pos-abs {
+  position: absolute;
+}
+
 .top-right-cross {
   position: absolute;
   background: red;
@@ -50,4 +108,8 @@
 
 .hidden {
   display: none;
+}
+
+.aspect-ratio-square {
+  aspect-ratio: 1;
 }

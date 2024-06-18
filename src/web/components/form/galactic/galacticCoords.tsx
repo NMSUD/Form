@@ -4,9 +4,11 @@ import { Component, For, Setter, Show, createEffect, createSignal } from 'solid-
 
 import { galacticCoordValidOptions } from '@constants/form';
 import { onTargetValue } from '@helpers/eventHelper';
+import { DebugNode } from '@web/components/core/debugNode';
 import { FormInputProps } from '@web/contracts/formTypes';
 import { useValidation } from '@web/hooks/useValidation';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
+import { getLog } from '@services/internal/logService';
 
 interface IFormGalacticCoordsInputProps extends FormInputProps<string> {}
 
@@ -47,14 +49,13 @@ export const GalacticCoordsInput: Component<IFormGalacticCoordsInputProps> = (
     });
 
   createEffect(() => {
-    console.log([groupA(), groupB(), groupC(), groupD()].join(':'));
     const coordValue = [groupA(), groupB(), groupC(), groupD()]
       .join(':')
       .split('')
       .filter((c) => galacticCoordValidOptions.includes(c.toLowerCase()))
       .join('')
       .toUpperCase();
-    console.log(coordValue);
+    getLog().i(coordValue);
 
     const groups = coordValue.split(':');
     setGroupA(groups[0]);
@@ -69,9 +70,9 @@ export const GalacticCoordsInput: Component<IFormGalacticCoordsInputProps> = (
   return (
     <>
       <FormControl invalid={!isValid().isValid}>
+        <DebugNode name="GalacticCoordsInput" />
         <FormLabel textAlign="center" for={props.id}>
-          {props.label}
-          <HelpIconTooltip helpText={props.helpText} />
+          <HelpIconTooltip label={props.label} helpText={props.helpText} />
         </FormLabel>
         <Flex>
           <For

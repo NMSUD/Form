@@ -1,4 +1,3 @@
-import { DefaultImageSize } from '@constants/image';
 import { IDatabaseFile } from '@contracts/databaseFile';
 import { IFile } from '@contracts/file';
 import { ResultWithValue } from '@contracts/resultWithValue';
@@ -7,10 +6,12 @@ import { getApiFileService } from '@services/internal/apiFileService';
 import { getImageProcessingService } from '@services/internal/imageProcessingService';
 import { getLog } from '@services/internal/logService';
 
-export const processImageFromFormData = async (
-  fileFromForm: IFile,
-): Promise<ResultWithValue<IDatabaseFile>> => {
-  const bufferResult = await getApiFileService().formDataToBuffer(fileFromForm);
+export const processImageFromFormData = async (props: {
+  fileFromForm: IFile;
+  width?: number;
+  height?: number;
+}): Promise<ResultWithValue<IDatabaseFile>> => {
+  const bufferResult = await getApiFileService().formDataToBuffer(props.fileFromForm);
   if (bufferResult.isSuccess == false) {
     getLog().e('processImageFromFormData: ', bufferResult.value);
     return {
@@ -22,14 +23,18 @@ export const processImageFromFormData = async (
 
   const resizedBufferResult = await getImageProcessingService().resize({
     input: bufferResult.value,
-    resize: { ...DefaultImageSize },
+    resize: {
+      width: props.width,
+      height: props.height,
+      fit: 'contain',
+    },
   });
 
   return {
     isSuccess: true,
     value: {
-      name: fileFromForm.newFilename,
-      mediaType: fileFromForm.mimetype,
+      name: props.fileFromForm.newFilename,
+      mediaType: props.fileFromForm.mimetype,
       enablePublicUrl: true,
       base64Content: resizedBufferResult.value.toString('base64'),
     },

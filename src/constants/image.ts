@@ -38,6 +38,11 @@ export const DefaultImageSize = {
   width: 512,
 } as const;
 
+export const BioMediaImageSize = {
+  height: 720,
+  width: 1280,
+} as const;
+
 export const ExternalImages = {
   assistantNMS: 'https://cdn.assistantapps.com/v2/nms/assistantNMSx100.webp',
   nmsud: 'https://avatars.githubusercontent.com/u/157403484?s=200&v=4',

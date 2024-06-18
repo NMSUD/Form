@@ -1,5 +1,6 @@
 import { processImageFromFormData } from '@api/facade/processImage';
 import { FormDataKey } from '@constants/form';
+import { BioMediaImageSize, DefaultImageSize } from '@constants/image';
 import { IDatabaseFile } from '@contracts/databaseFile';
 import { IFormWithFiles } from '@contracts/file';
 import { ResultWithValue } from '@contracts/resultWithValue';
@@ -19,7 +20,10 @@ export const communityFileHandler = async (
   };
 
   const profilePicFileFromForm = formData[FormDataKey.profilePicFile];
-  const resizedProfilePicResult = await processImageFromFormData(profilePicFileFromForm);
+  const resizedProfilePicResult = await processImageFromFormData({
+    fileFromForm: profilePicFileFromForm,
+    ...DefaultImageSize,
+  });
   if (resizedProfilePicResult.isSuccess == false) {
     getLog().e(
       'handleCommunityFormSubmission profilePicFileFromForm',
@@ -36,7 +40,10 @@ export const communityFileHandler = async (
   const bioMediaFilesFromForm = formData[FormDataKey.bioMediaFiles];
   if (result.bioMediaFiles == null) result.bioMediaFiles = [];
   for (const bioMediaFileFromForm of makeArrayOrDefault(bioMediaFilesFromForm)) {
-    const bioMediaDbBufferResult = await processImageFromFormData(bioMediaFileFromForm);
+    const bioMediaDbBufferResult = await processImageFromFormData({
+      fileFromForm: bioMediaFileFromForm,
+      ...BioMediaImageSize,
+    });
     if (bioMediaDbBufferResult.isSuccess == false) {
       getLog().e(
         'handleBuilderFormSubmission bioMediaFileFromForm',

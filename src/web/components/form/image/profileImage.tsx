@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Center,
   Flex,
   FormControl,
@@ -14,25 +13,27 @@ import { NetworkState } from '@constants/enum/networkState';
 import { AppImage } from '@constants/image';
 import { onTargetFiles } from '@helpers/eventHelper';
 import { IImageParams, getImageParams } from '@helpers/imageHelper';
+import { DebugNode } from '@web/components/core/debugNode';
 import { FormInputProps } from '@web/contracts/formTypes';
 import { useValidation } from '../../../hooks/useValidation';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
-import { FormProfileImageLoading } from './profileImageLoading';
-import { InfoIcon } from '@web/components/common/icon/infoIcon';
 import { ImageParamsPopover } from './imageParamsPopover';
+import { FormProfileImageLoading } from './profileImageLoading';
+import { AppAnimation } from '@constants/animation';
+import { IMediaUpload, MediaUploadType } from '@web/contracts/mediaUpload';
 
-interface IFormProfileImageUrlProps extends FormInputProps<File> {
+interface IFormProfileImageUrlProps extends FormInputProps<IMediaUpload> {
   imageValue?: string;
 }
 
-const getImageOrFallback = (textUrl: File, imageUrl?: string): string => {
+const getImageOrFallback = (upload: IMediaUpload, imageUrl?: string): string => {
   if (imageUrl != null) {
     return imageUrl;
   }
 
-  if (textUrl == null) return AppImage.fallbackImg;
-  // if (textUrl.length < 3) return AppImage.fallbackImg;
-  return textUrl?.toString?.();
+  const imgUrl = upload?.file?.toString?.() ?? upload?.url;
+  if (imgUrl == null) return AppImage.fallbackImg;
+  return imgUrl;
 };
 
 export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
@@ -51,8 +52,10 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
   createEffect(() => {
     if (props.showValidationMessages === true) {
       calcIsValid({
-        ...new File([], ''),
-        ...imageDetails(),
+        type: MediaUploadType.File,
+        url: '',
+        file: new File([], ''),
+        imageDetails: imageDetails(),
       });
     }
   }, [props.showValidationMessages]);
@@ -62,14 +65,17 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
     if (localFileToProcess == null) return;
 
     try {
-      setCurrentImage(URL.createObjectURL(localFileToProcess));
       const imgWithExtraDetails = await getImageParams(localFileToProcess);
+      const mediaUpload = {
+        type: MediaUploadType.File,
+        url: URL.createObjectURL(localFileToProcess),
+        file: localFileToProcess,
+        imageDetails: imgWithExtraDetails,
+      };
+      setCurrentImage(mediaUpload.url);
       setImageDetails(imgWithExtraDetails);
-      calcIsValid({
-        ...localFileToProcess,
-        ...imgWithExtraDetails,
-      });
-      props.onChange(localFileToProcess);
+      calcIsValid(mediaUpload);
+      props.onChange(mediaUpload);
       setNetworkState(NetworkState.Success);
     } catch (ex) {
       setNetworkState(NetworkState.Error);
@@ -103,21 +109,29 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
         title: 'File upload error!',
         description: errMsg,
       });
+      setNetworkState(NetworkState.Error);
+      return;
     }
-    setNetworkState(NetworkState.Loading);
+
     setFileToProcess(uploadedFile[0]);
   };
 
   return (
     <Center flexDirection="column">
+      <DebugNode name="FormProfileImageInput" />
       <Flex
         direction="column"
         class="img-profile-hover pointer"
-        onClick={() => inputRef?.click?.()}
+        onClick={() => {
+          inputRef?.click?.();
+          setTimeout(
+            () => setNetworkState(NetworkState.Loading), //
+            AppAnimation.backgroundDelay,
+          );
+        }}
       >
         <FormLabel textAlign="center" for={props.id}>
-          {props.label}
-          <HelpIconTooltip helpText={props.helpText} />
+          <HelpIconTooltip label={props.label} helpText={props.helpText} />
         </FormLabel>
         <Center h="100%">
           <FormProfileImageLoading imageUrl={currentImage()} networkState={networkState()} />

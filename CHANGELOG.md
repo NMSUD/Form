@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.12] - 2024-06-16
 
+### Changed
+
+- File uploading logic to be more reliable and easier to validate
+
+### Added
+
+- Better debug info
+
+## [1.0.12] - 2024-06-16
+
 ### 🚨 MAJOR 🚨
 
 - Setup prod deploys

@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { render } from 'solid-js/web';
+import { ComponentProps } from 'solid-js';
 import { Router, hashIntegration } from '@solidjs/router';
 
 import { AppShell } from '@web/components/appShell';
@@ -11,6 +12,7 @@ import './scss/custom.scss';
 declare module 'solid-js' {
   namespace JSX {
     interface IntrinsicElements {
+      ['debug']: ComponentProps<'div'>;
       ['assistant-apps-app-notice-list']: AssistantAppsAppNoticeList;
     }
   }

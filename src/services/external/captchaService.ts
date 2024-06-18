@@ -3,7 +3,7 @@ import { Container, Service } from 'typedi';
 
 import { ICaptchaResponse } from '@api/contracts/hcaptcha';
 import { Result, ResultWithValue } from '@contracts/resultWithValue';
-import { addScriptToHead } from '@helpers/documentHelper';
+import { getDocumentServ } from '@services/internal/documentService';
 import { ConfigService, getConfig } from '../internal/configService';
 import { getLog } from '../internal/logService';
 
@@ -16,7 +16,7 @@ export class CaptchaService {
   }
 
   async loadUI(elem: HTMLElement) {
-    addScriptToHead({
+    getDocumentServ().addScriptToHead({
       id: 'hcaptcha',
       url: 'https://js.hcaptcha.com/1/api.js',
       async: true,

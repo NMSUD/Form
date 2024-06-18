@@ -10,6 +10,5 @@ export const searchFile = (dir: string) => {
     if (fileStat.isDirectory()) {
       searchFile(filePath);
     }
-    console.log(filePath);
   }
 };

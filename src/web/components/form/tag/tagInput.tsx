@@ -19,9 +19,10 @@ import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { HtmlKeyEvent } from '@contracts/event';
 import { keyboardKeyCode } from '@constants/form';
+import { DebugNode } from '@web/components/core/debugNode';
 
 interface IProps extends FormInputProps<Array<string>> {
-  seperator?: string;
+  separator?: string;
 }
 
 export const FormTagInput: Component<IProps> = (props: IProps) => {
@@ -72,9 +73,9 @@ export const FormTagInput: Component<IProps> = (props: IProps) => {
 
   return (
     <FormControl invalid={!isValid().isValid}>
+      <DebugNode name="FormTagInput" />
       <FormLabel textAlign="center" for={props.id}>
-        {props.label}
-        <HelpIconTooltip helpText={props.helpText} />
+        <HelpIconTooltip label={props.label} helpText={props.helpText} />
       </FormLabel>
       <InputGroup mb="$3">
         <Input

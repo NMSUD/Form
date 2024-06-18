@@ -22,6 +22,7 @@
         "autodocs",
         "bodyparser",
         "codegen",
+        "colspan",
         "copyfiles",
         "cyrb",
         "datetime",

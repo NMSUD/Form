@@ -1,5 +1,6 @@
 import { Avatar, Box, Button, HStack, Text, VStack } from '@hope-ui/solid';
 import { Component, Show } from 'solid-js';
+import { DebugNode } from '../core/debugNode';
 
 interface IProps {
   imgUrl: string;
@@ -13,6 +14,7 @@ interface IProps {
 export const StatusTile: Component<IProps> = (props: IProps) => {
   return (
     <Box w="25%">
+      <DebugNode name="StatusTile" />
       <HStack
         bg="$loContrast"
         class="status-tile"

@@ -1,5 +1,5 @@
 import { Button } from '@hope-ui/solid';
-import { Component, JSX, Show } from 'solid-js';
+import { JSX } from 'solid-js';
 
 interface IProps {
   ariaLabel?: string;

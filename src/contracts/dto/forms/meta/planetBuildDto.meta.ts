@@ -17,6 +17,7 @@ import {
 import { getDatabaseService } from '@services/external/database/databaseService';
 import { Builder } from '@services/external/database/xata';
 import { IRecordRequirements } from '@api/types/baseModule';
+import { BioMediaImageSize } from '@constants/image';
 
 export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
   id: {
@@ -57,6 +58,7 @@ export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
         format: 'binary',
       },
     },
+    helpText: `Recommended size (width: ${BioMediaImageSize.width}, height: ${BioMediaImageSize.height})`,
     validator: separateValidation({
       Api: noValidation,
       UI: validateForEach(notNull('You need to upload an image')),

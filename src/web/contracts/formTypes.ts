@@ -10,6 +10,7 @@ export type ValidFormComponentTypes =
   | Component<FormInputProps<string | Array<string>>>
   | Component<FormInputProps<string | number>>
   | Component<FormInputProps<File>>
+  | Component<FormInputProps<IMediaUpload>>
   | Component<FormInputProps<Array<IMediaUpload>>>;
 
 export type FormInputProps<T> = {

@@ -12,8 +12,8 @@ import { extendedFormDropdownOptions } from '@web/components/form/dropdown/exten
 import { FormNetworkDropdown } from '@web/components/form/dropdown/networkDropdown';
 import { FormBuilder } from '@web/components/form/formBuilder';
 import { GridItemSize } from '@web/components/form/grid';
+import { FormMediaUploadInput } from '@web/components/form/mediaUpload/mediaUpload';
 import { PortalCoordInput } from '@web/components/form/portal/portalCoords';
-import { FormSocialInput } from '@web/components/form/socialLink/social';
 import { FormLongInput } from '@web/components/form/text/input';
 import { FormTextArea } from '@web/components/form/text/textArea';
 import { PropertyOverrides } from '@web/contracts/formTypes';
@@ -84,7 +84,7 @@ export const PlanetBuildFormPage: Component = () => {
           placeholder: portalValidOptions.map((p) => p.toUpperCase()).join(''),
         },
         mediaFiles: {
-          component: FormSocialInput,
+          component: FormMediaUploadInput,
           gridItemColumnSize: GridItemSize.long,
           placeholder: 'youtube.com/watch?v=...',
         },
