@@ -27,11 +27,14 @@ jobs:
         run: npm ci
 
       - name: Setup variables
-        env:
-          WEB_UI_CONFIG: ${{ secrets.WEB_UI_CONFIG }}
         run: |
           touch .env
-          echo ${WEB_UI_CONFIG} >> .env
+          echo "${{ secrets.VITE_NMSUD_FORM_WEB_URL }}" >> .env
+          echo "${{ secrets.VITE_NMSUD_API_URL }}" >> .env
+          echo "${{ secrets.VITE_NMSUD_FORM_DATA_URL }}" >> .env
+          echo "${{ secrets.VITE_NMSUD_FORM_DOCS_URL }}" >> .env
+          echo "${{ secrets.VITE_ENABLE_CAPTCHA }}" >> .env
+          echo "${{ secrets.VITE_HCAPTCHA_SITE_KEY }}" >> .env
 
       - name: Build web UI
         run: |

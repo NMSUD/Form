@@ -167,3 +167,7 @@ main.main img {
   border-radius: 8px;
   background-color: var(--vp-c-brand-soft);
 }
+
+body {
+ scrollbar-gutter: stable;
+}

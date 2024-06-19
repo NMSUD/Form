@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.19](https://github.com/NMSUD/Form/compare/1.0.19...1.0.18) - 2024-06-19
+
+### Fixed
+
+- Production only bugs & styling
+
 ## [1.0.18](https://github.com/NMSUD/Form/compare/1.0.18...1.0.16) - 2024-06-19
 
 ### Changed

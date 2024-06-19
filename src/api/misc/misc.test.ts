@@ -1,18 +1,18 @@
 import 'reflect-metadata';
-import { test, describe, expect, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
-import { defaultEndpoint, versionEndpoint } from './misc';
-import { apiParams, ApiStatusErrorCode } from '@constants/api';
 import { fakePromise } from '@helpers/typescriptHacks';
+import { defaultEndpoint, versionEndpoint } from './misc';
 
 describe('Misc endpoints', () => {
   test('default endpoint returns 200 OK', async () => {
     const ctx: any = {
       response: {},
+      redirect: () => {},
     };
     const next = vi.fn().mockResolvedValue(fakePromise());
     await defaultEndpoint(ctx, next);
-    expect(ctx.response.status).toBe(200);
+    expect(ctx.response.status).toBe(303);
   });
   test('version endpoint with correct authToken', async () => {
     const authToken = 'testertest';

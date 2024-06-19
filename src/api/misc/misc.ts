@@ -9,8 +9,8 @@ export const defaultEndpoint = async (
   ctx: Koa.DefaultContext,
   next: () => Promise<Koa.BaseResponse>,
 ) => {
-  ctx.body = '<p>You should <b>not</b> be here... Well done I guess 🤔</p>';
-  ctx.response.status = 200;
+  ctx.response.status = 303;
+  ctx.redirect(getConfig().getNmsUdFormWebUrl());
 
   await next();
 };
