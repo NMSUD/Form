@@ -152,7 +152,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     }
 
     const [_, submitTask] = await Promise.all([
-      timeout(getConfig().isProd() ? 0 : 2000), // min 2 sec delay in dev. No delay in prod
+      timeout(getConfig().isProd() ? 0 : 2000), // min 2 sec delay in dev. There is no delay in prod
       getFormApiService().submit(props.segment, itemBeingEdited(), captchaResp),
     ]);
 

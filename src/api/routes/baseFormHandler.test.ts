@@ -3,11 +3,12 @@ import { describe, expect, test, vi } from 'vitest';
 
 import { fakeModule } from '@api/types/baseModule.test';
 import { ApiStatusErrorCode } from '@constants/api';
+import { AppType } from '@constants/enum/appType';
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
 import { FormDataKey } from '@constants/form';
 import { fakePromise, promiseFromResult } from '@helpers/typescriptHacks';
 import { DiscordService } from '@services/external/discord/discordService';
-import { ConfigService } from '@services/internal/configService';
+import { APP_TYPE, ConfigService } from '@services/internal/configService';
 import Container from 'typedi';
 import { baseFormHandler } from './baseFormHandler';
 
@@ -18,6 +19,7 @@ describe('Form handler', () => {
       getCaptchaEnabled = () => true;
     }
     Container.set(ConfigService, new MockConfigService());
+    Container.set(APP_TYPE, AppType.Api);
     const ctx: any = {
       get: () => null,
       set: () => null,

@@ -10,7 +10,8 @@ export const baseStatusHandler =
   <TD, TF, TP>(module: IApiModule<TD, TF, TP>) =>
   async (ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>) => {
     const id = ctx.params[apiParams.status.id];
-    const handlerName = `statusHandler ${module.segment} ${id}`;
+    const handlerName = `statusHandler-${module.segment}-${id}`;
+    getLog().i(handlerName);
 
     const recordResult = await module.readRecord(id);
     if (recordResult.isSuccess == false) {

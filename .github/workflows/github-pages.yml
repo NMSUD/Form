@@ -41,12 +41,14 @@ jobs:
         run: |
           echo "[coverage report](https://${{ env.DOCUMENTATION_URL }}/coverage/index.html)" > ./docs/generated.md
           echo "[view the hosted Storybook page](https://${{ env.DOCUMENTATION_URL }}/storybook)" >> ./docs/generated.md
+          echo "![codeCoverageBadge](https://img.shields.io/endpoint?url=https://img.shields.io/endpoint?url=https%3A%2F%2F${{ env.DOCUMENTATION_URL }}%2Fcoverage%2FcoverageBadge.json)" >> ./docs/generated.md
           npm run docs:build
           cp -r ./.vitepress/dist/. ./pages
 
       - name: Create code coverage report
         run: |
           npm run test:coverage
+          npm run test:coverage-badge
           cp -r ./coverage ./pages/coverage
 
       - name: Create Storybook export

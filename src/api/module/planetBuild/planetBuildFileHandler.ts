@@ -1,11 +1,10 @@
-import { processImageFromFormData } from '@api/facade/processImage';
+import { handleImageFromFormData } from '@api/facade/handleImageFromFormData';
 import { FormDataKey } from '@constants/form';
-import { BioMediaImageSize } from '@constants/image';
+import { BioMediaImageSize, DefaultImageRestrictions } from '@constants/image';
 import { IDatabaseFile } from '@contracts/databaseFile';
 import { IFormWithFiles } from '@contracts/file';
 import { ResultWithValue } from '@contracts/resultWithValue';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
-import { getLog } from '@services/internal/logService';
 
 export interface IPlanetBuildImages {
   mediaFiles?: Array<IDatabaseFile>;
@@ -21,15 +20,17 @@ export const planetBuildFileHandler = async (
   const mediaFilesFromForm = formData[FormDataKey.mediaFiles];
   if (result.mediaFiles == null) result.mediaFiles = [];
   for (const mediaFileFromForm of makeArrayOrDefault(mediaFilesFromForm)) {
-    const mediaDbBufferResult = await processImageFromFormData({
+    const mediaFileResult = await handleImageFromFormData({
       fileFromForm: mediaFileFromForm,
+      restrictions: DefaultImageRestrictions.bioMediaPic,
+      fileName: 'mediaPic',
+      handlerName: 'planetBuildFileHandler',
       ...BioMediaImageSize,
     });
-    if (mediaDbBufferResult.isSuccess == false) {
-      getLog().e('planetBuildFileHandler bioMediaFileFromForm', mediaDbBufferResult.errorMessage);
+    if (mediaFileResult.isSuccess == false) {
+      continue;
     }
-
-    result.mediaFiles.push(mediaDbBufferResult.value);
+    result.mediaFiles.push(mediaFileResult.value);
   }
 
   return {

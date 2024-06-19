@@ -1,10 +1,9 @@
-import { processImageFromFormData } from '@api/facade/processImage';
+import { handleImageFromFormData } from '@api/facade/handleImageFromFormData';
 import { FormDataKey } from '@constants/form';
-import { DefaultImageSize } from '@constants/image';
+import { DefaultImageRestrictions, DefaultImageSize } from '@constants/image';
 import { IDatabaseFile } from '@contracts/databaseFile';
 import { IFormWithFiles } from '@contracts/file';
 import { ResultWithValue } from '@contracts/resultWithValue';
-import { getLog } from '@services/internal/logService';
 
 export interface IBuilderImages {
   profilePicFile?: IDatabaseFile;
@@ -15,20 +14,17 @@ export const builderFileHandler = async (
 ): Promise<ResultWithValue<IBuilderImages>> => {
   const result: IBuilderImages = {};
 
-  const profilePicFileFromForm = formData[FormDataKey.profilePicFile];
-  const resizedProfilePicResult = await processImageFromFormData({
-    fileFromForm: profilePicFileFromForm,
+  const profilePicResult = await handleImageFromFormData({
+    fileFromForm: formData[FormDataKey.profilePicFile],
+    restrictions: DefaultImageRestrictions.profilePic,
+    fileName: 'profilePic',
+    handlerName: 'builderFileHandler',
     ...DefaultImageSize,
   });
-  if (resizedProfilePicResult.isSuccess == false) {
-    getLog().e('handleBuilderFormSubmission profilePicFileFromForm', resizedProfilePicResult.value);
-    return {
-      isSuccess: false,
-      value: result,
-      errorMessage: resizedProfilePicResult.errorMessage,
-    };
+  if (profilePicResult.isSuccess == false) {
+    return { ...profilePicResult, value: result };
   }
-  result.profilePicFile = resizedProfilePicResult.value;
+  result.profilePicFile = profilePicResult.value;
 
   return {
     isSuccess: true,

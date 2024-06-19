@@ -5,7 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.14] - 2024-06-16
+## [1.0.15](https://github.com/NMSUD/Form/compare/1.0.15...1.0.14) - 2024-06---
+
+### Changed
+
+- Scripts location
+- Error handling on the API side
+
+### Added
+
+- Server-side image validation
+- Generate code coverage badge
+
+## [1.0.14](https://github.com/NMSUD/Form/compare/1.0.14...1.0.12) - 2024-06-16
 
 ### Changed
 
@@ -23,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Bug report form
 
-## [1.0.12] - 2024-06-16
+## [1.0.12](https://github.com/NMSUD/Form/compare/1.0.12...1.0.7) - 2024-06-16
 
 ### 🚨 MAJOR 🚨
 
@@ -34,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed Logo
 - Refactored Form submission API, to better centralize logic
 
-## [1.0.7] - 2024-06-14
+## [1.0.7](https://github.com/NMSUD/Form/compare/1.0.7...1.0.6) - 2024-06-14
 
 ### Added
 
@@ -52,7 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bug report form
 - Homepage
 
-## [1.0.6] - 2024-03-21
+## [1.0.6](https://github.com/NMSUD/Form/releases/tag/1.0.6) - 2024-03-21
 
 ### Added
 
@@ -109,9 +121,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Data downloader
-
-<!-- Links used in the page -->
-
-[1.0.12]: https://github.com/NMSUD/Form/compare/1.0.12...1.0.7
-[1.0.7]: https://github.com/NMSUD/Form/compare/1.0.7...1.0.6
-[1.0.6]: https://github.com/NMSUD/Form/releases/tag/1.0.6

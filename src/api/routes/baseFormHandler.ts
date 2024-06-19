@@ -13,6 +13,7 @@ import {
   baseSubmissionMessageEmbed,
   getDescriptionLines,
 } from '@helpers/discordMessageHelper';
+import { uuidv4 } from '@helpers/guidHelper';
 import { anyObject } from '@helpers/typescriptHacks';
 import { getDiscordService } from '@services/external/discord/discordService';
 import { getConfig } from '@services/internal/configService';
@@ -22,7 +23,7 @@ import { validateObj } from '@validation/baseValidation';
 export const baseFormHandler =
   <TD, TF, TP>(module: IApiModule<TD, TF, TP>) =>
   async (ctx: Koa.DefaultContext, next: () => Promise<Koa.BaseResponse>) => {
-    const handlerName = `formHandler-${module.segment}`;
+    const handlerName = `formHandler-${module.segment}-${uuidv4()}`;
     getLog().i(handlerName);
 
     const formDataFiles = ctx.request?.files ?? anyObject;
@@ -34,7 +35,7 @@ export const baseFormHandler =
       const captchaTest = hasCaptcha(captchaString);
       const captchaIsValid = await captchaTest(ctx, next);
       if (captchaIsValid === false) {
-        const errMsg = `Captcha test: could not verify result`;
+        const errMsg = `${handlerName} - Captcha test: could not verify result`;
         getLog().i(errMsg);
         await errorResponse({
           ctx,
@@ -48,7 +49,7 @@ export const baseFormHandler =
 
     const fileObjResult = await module.handleFilesInFormData(formDataFiles);
     if (fileObjResult.isSuccess === false) {
-      const errMsg = `${handlerName} handle files: ${fileObjResult.errorMessage}`;
+      const errMsg = `${handlerName} - handle files: ${fileObjResult.errorMessage}`;
       getLog().e(errMsg);
       await errorResponse({
         ctx,
@@ -64,7 +65,7 @@ export const baseFormHandler =
       const dataString = formDataBody[FormDataKey.data];
       data = JSON.parse(dataString);
     } catch (ex) {
-      const errMsg = `${handlerName} formData mapping: ${ex?.toString?.()}`;
+      const errMsg = `${handlerName} - formData mapping: ${ex?.toString?.()}`;
       getLog().e(errMsg);
       await errorResponse({
         ctx,
@@ -81,7 +82,7 @@ export const baseFormHandler =
     }).filter((v) => v.isValid === false);
 
     if (failedValidationMsgs.length > 0) {
-      getLog().e(`Validation failed. Num errors ${failedValidationMsgs.length}`);
+      getLog().e(`${handlerName} - Validation failed. Num errors ${failedValidationMsgs.length}`);
       await errorResponse({
         ctx,
         next,
