@@ -31,7 +31,7 @@ jobs:
           WEB_UI_CONFIG: ${{ secrets.WEB_UI_CONFIG }}
         run: |
           touch .env
-          echo WEB_UI_CONFIG >> .env
+          echo ${WEB_UI_CONFIG} >> .env
 
       - name: Build web UI
         run: |
