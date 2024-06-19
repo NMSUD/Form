@@ -1,6 +1,6 @@
 import { IRecordRequirements } from '@api/types/baseModule';
 import { BioMediaImageSize } from '@constants/image';
-import { IFormDtoMeta, anonymousUserGuid, contactDetails } from '@contracts/dto/forms/baseFormDto';
+import { FormDtoMeta, anonymousUserGuid, contactDetails } from '@contracts/dto/forms/baseFormDto';
 import {
   arrayDiscordLine,
   arrayFromDatabaseDiscordLines,
@@ -19,7 +19,7 @@ import {
 import { maxLength, minLength } from '@validation/textValidation';
 import { PlanetBuildDto } from '../planetBuildDto';
 
-export const PlanetBuildDtoMeta: IFormDtoMeta<PlanetBuildDto> = {
+export const PlanetBuildDtoMeta: FormDtoMeta<PlanetBuildDto> = {
   id: {
     label: 'Id',
     validator: noValidation,

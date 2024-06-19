@@ -2,7 +2,7 @@ import { Container, Service } from 'typedi';
 
 import { IApiSegment, api, apiParams } from '@constants/api';
 import { FormDataKey } from '@constants/form';
-import { IFormDtoMeta } from '@contracts/dto/forms/baseFormDto';
+import { FormDtoMeta } from '@contracts/dto/forms/baseFormDto';
 import { BuilderDto } from '@contracts/dto/forms/builderDto';
 import { CommunityDto } from '@contracts/dto/forms/communityDto';
 import { BuilderDtoMeta } from '@contracts/dto/forms/meta/builderDto.meta';
@@ -120,7 +120,7 @@ export class FormApiService extends BaseApiService {
     return mediaUrls;
   }
 
-  private mapFieldsFromMeta<T>(data: T, dtoMeta: IFormDtoMeta<T>): T {
+  private mapFieldsFromMeta<T>(data: T, dtoMeta: FormDtoMeta<T>): T {
     const modifiedData = { ...data };
     for (const dbMetaPropKey in dtoMeta) {
       if (Object.prototype.hasOwnProperty.call(dtoMeta, dbMetaPropKey) == false) {

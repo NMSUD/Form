@@ -8,17 +8,19 @@ import { NetworkState } from '@constants/enum/networkState';
 import { AppImage } from '@constants/image';
 import { routes } from '@constants/route';
 import { IDropdownOption } from '@contracts/dropdownOption';
-import { IFormDtoMeta, IFormDtoMetaDetails } from '@contracts/dto/forms/baseFormDto';
+import { FormDtoMeta, FormDtoMetaDetails } from '@contracts/dto/forms/baseFormDto';
+import { BugReportDto } from '@contracts/dto/forms/bugReportDto';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
+import { timeout } from '@helpers/asyncHelper';
 import { capitalizeFirstLetter } from '@helpers/stringHelper';
 import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
 import { getFormApiService } from '@services/api/formApiService';
+import { getFormBugApiService } from '@services/api/formBugApiService';
 import { getCaptchaService } from '@services/external/captchaService';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
 import { getStateService } from '@services/internal/stateService';
 import { validateObj } from '@validation/baseValidation';
-import { BasicLink } from '@web/components/core/link';
 import { FormFieldGrid, FormFieldGridCell, GridItemSize } from '@web/components/form/grid';
 import { StatusNotificationTile } from '@web/components/form/statusNotificationTile';
 import {
@@ -26,17 +28,17 @@ import {
   IPropertyToFormMapping,
   PropertyOverrides,
 } from '@web/contracts/formTypes';
+import { BugReportFAB } from '../bugReportFAB';
 import { Card } from '../common/card';
 import { PageHeader } from '../common/pageHeader';
 import { DebugNode } from '../core/debugNode';
-import { timeout } from '@helpers/asyncHelper';
 
 interface IProps<T> {
   id: string;
   title: string;
   segment: keyof IApiSegment;
   mappings: ComponentMapping<T>;
-  formDtoMeta: IFormDtoMeta<T>;
+  formDtoMeta: FormDtoMeta<T>;
   propertyOverrides?: Array<PropertyOverrides<T>>;
   getName: (item: T) => string;
 }
@@ -72,8 +74,8 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
   }, 500);
 
   const updateProperty = (prop: string, value: unknown) => {
-    const dtoMeta: IFormDtoMetaDetails<string> = (
-      props.formDtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>
+    const dtoMeta: FormDtoMetaDetails<string> = (
+      props.formDtoMeta as ObjectWithPropsOfValue<FormDtoMetaDetails<string>>
     )?.[prop];
     const saveToLocalStorage = dtoMeta?.saveToLocalStorage !== false;
 
@@ -125,7 +127,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
       return;
     }
 
-    const loadingNotificationId = 'loading-notification-id';
+    const loadingNotificationId = 'submit-notification-id';
     notificationService.show({
       id: loadingNotificationId,
       title: `Submitting ${capitalizeFirstLetter(props.segment)}`,
@@ -227,6 +229,64 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     });
   };
 
+  const submitBugReport = async (bugReport: BugReportDto) => {
+    getLog().i('submitBugReport');
+
+    const notificationId = 'bug-notification-id';
+    notificationService.show({
+      id: notificationId,
+      title: 'Submitting Bug report',
+      description: 'Uploading details and verifying the data',
+      persistent: true,
+      closable: false,
+      loading: true,
+    });
+    setNetworkState(NetworkState.Loading);
+
+    if (getConfig().getCaptchaEnabled() == true) {
+      const captchaResult = await getCaptchaService().promptUser();
+      if (captchaResult.isSuccess == false) {
+        notificationService.show({
+          status: 'danger',
+          title: 'Captcha failed!',
+          description: 'The captcha was cancelled or failed to load, please try again.',
+        });
+        setNetworkState(NetworkState.Success);
+        return;
+      }
+      bugReport.captcha = captchaResult.value;
+    }
+
+    const [_, submitTask] = await Promise.all([
+      timeout(getConfig().isProd() ? 0 : 2000), // min 2 sec delay in dev. There is no delay in prod
+      getFormBugApiService().submitBugReport(bugReport),
+    ]);
+
+    debugger;
+    if (submitTask.isSuccess === false) {
+      notificationService.update({
+        id: notificationId,
+        status: 'danger',
+        title: 'Something went wrong!',
+        description: `Unable to confirm that your data was submitted correctly. Please either try submitting again or reach out to one of the NMSUD organisers`,
+        closable: true,
+        duration: 10_000,
+      });
+      setNetworkState(NetworkState.Success);
+      return;
+    }
+
+    notificationService.update({
+      id: notificationId,
+      status: 'success',
+      title: 'Report submitted successfully',
+      description: `Thank you for your bug report!`,
+      duration: 10_000,
+    });
+
+    setNetworkState(NetworkState.Success);
+  };
+
   const renderGridCell = (item: IPropertyToFormMapping<T>, children: JSXElement) => {
     return (
       <FormFieldGridCell
@@ -271,8 +331,8 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
               )[itemPropName];
               const Component = item.component;
 
-              const dtoMeta: IFormDtoMetaDetails<string> = (
-                props.formDtoMeta as ObjectWithPropsOfValue<IFormDtoMetaDetails<string>>
+              const dtoMeta: FormDtoMetaDetails<string> = (
+                props.formDtoMeta as ObjectWithPropsOfValue<FormDtoMetaDetails<string>>
               )?.[itemPropName];
               if (dtoMeta == null)
                 return renderGridCell(
@@ -333,8 +393,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
           </Show>
         </HStack>
       </Card>
-      {/* TODO add BugReportFAB when ready */}
-      {/* <BugReportFAB /> */}
+      <BugReportFAB submitBugReport={submitBugReport} />
     </>
   );
 };

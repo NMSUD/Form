@@ -246,5 +246,4 @@ export const baseVerifyHandler =
     ctx.response.body = 200;
     ctx.redirect([...urlSegments, ...additionalUrlSegments].join(''));
     await next();
-    return;
   };

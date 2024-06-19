@@ -17,12 +17,12 @@ import {
 } from '@validation/baseValidation';
 import { mediaUploadRestriction } from '@validation/imageValidation';
 import { maxLength, minLength, shouldBeUrl } from '@validation/textValidation';
-import { IFormDtoMeta, anonymousUserGuid, contactDetails } from '../baseFormDto';
+import { FormDtoMeta, anonymousUserGuid, contactDetails } from '../baseFormDto';
 import { CommunityDto } from '../communityDto';
 
 export const communityBioMaxLength = 500;
 export const communityBioMaxUploads = 5;
-export const CommunityDtoMeta: IFormDtoMeta<CommunityDto> = {
+export const CommunityDtoMeta: FormDtoMeta<CommunityDto> = {
   id: {
     label: 'Id',
     validator: noValidation,

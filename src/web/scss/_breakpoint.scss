@@ -75,6 +75,19 @@ body {
       }
     }
 
+    .form.card + .floating-button {
+      display: block;
+      position: relative;
+      bottom: 4em;
+      right: unset;
+      margin: 0 auto;
+      border-radius: 4px;
+      padding: 0 var(--hope-space-4);
+      &::after {
+        content: ' Report a bug';
+      }
+    }
+
     .status-list {
       .status-tile {
         min-width: 80%;
@@ -92,7 +105,7 @@ body {
       }
 
       &:last-child {
-        border: none
+        border: none;
       }
     }
   }

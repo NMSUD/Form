@@ -27,6 +27,7 @@ import { registerSwaggerStaticComponents } from './swagger/commonSwaggerOptions'
 import { registerSwaggerModuleComponents } from './swagger/registerSwaggerModuleComponents';
 import { SwaggerBuilder } from './swagger/swaggerBuilder';
 import { versionSwagger } from './swagger/versionSwagger';
+import { bugReportEndpoint } from './routes/bugReportEndpoint';
 
 const currentFileName = url.fileURLToPath(import.meta.url);
 const directory = path.dirname(currentFileName);
@@ -47,6 +48,7 @@ const main = async () => {
     bodyOptions,
     handleRouteLookup({ handlerFunc: baseFormHandler }),
   );
+  router.post(`/${api.routes.bugReport}`, bugReportEndpoint);
   router.get(`/${api.routes.verify}`, handleRouteLookup({ handlerFunc: baseVerifyHandler }));
   router.get(`/${api.routes.status}`, handleRouteLookup({ handlerFunc: baseStatusHandler }));
   router.get(`/${api.routes.version}`, versionEndpoint(getConfig().getApiSecret()));

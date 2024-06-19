@@ -2,7 +2,7 @@ import { AppType } from '@constants/enum/appType';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { getAppType } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
-import { IFormDtoMeta } from '@contracts/dto/forms/baseFormDto';
+import { FormDtoMeta } from '@contracts/dto/forms/baseFormDto';
 import { ValidationResult } from '@contracts/validationResult';
 
 export const noValidation = <T>(_: T): ValidationResult => ({ isValid: true });
@@ -60,7 +60,7 @@ export const validateForEach =
 
 export const validateObj = <T>(props: {
   data: T;
-  validationObj: IFormDtoMeta<T>;
+  validationObj: FormDtoMeta<T>;
   includeLabelInErrMsgs?: boolean;
 }): Array<ValidationResult> => {
   const validationMessages: Array<ValidationResult> = [];

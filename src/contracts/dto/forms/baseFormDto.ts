@@ -22,7 +22,7 @@ export type FormDiscordDetails<TV> = {
 };
 
 // TODO: rename
-export type IFormDtoMetaDetails<TV> = {
+export type FormDtoMetaDetails<TV> = {
   label: string;
   validationLabel?: string;
   helpText?: string;
@@ -35,12 +35,12 @@ export type IFormDtoMetaDetails<TV> = {
 };
 
 // TODO: rename
-export type IFormDtoMeta<T> = {
-  [prop in keyof T]: IFormDtoMetaDetails<any>;
+export type FormDtoMeta<T> = {
+  [prop in keyof T]: FormDtoMetaDetails<any>;
 };
 
 export const contactDetailsMaxLength = 500 as const;
-export const contactDetails: IFormDtoMetaDetails<string> = {
+export const contactDetails: FormDtoMetaDetails<string> = {
   label: 'Contact Details (only visible to NMSUD organisers)',
   helpText: `This is so that we can get in contact with you if there are any issue with your submissions, etc.`,
   defaultValue: '',
@@ -50,8 +50,11 @@ export const contactDetails: IFormDtoMetaDetails<string> = {
   },
   validator: maxLength(contactDetailsMaxLength),
 } as const;
-export const anonymousUserGuid: IFormDtoMetaDetails<string> = {
+export const anonymousUserGuid: FormDtoMetaDetails<string> = {
   label: 'anonymousUserGuid',
   defaultValue: '',
+  discord: {
+    display: basicDiscordLine,
+  },
   validator: noValidation,
 } as const;
