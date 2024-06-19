@@ -1,3 +1,5 @@
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable -->
 <div align="center">
   
   # NMSUD Form
@@ -5,7 +7,7 @@
   
   <br />  
   
-  ![header](https://github.com/NMSUD/.github/blob/main/img/banner2.png?raw=true) 
+  ![header](https://github.com/NMSUD/.github/blob/main/img/banner.png?raw=true) 
   
   <br />
   
@@ -35,6 +37,7 @@
 <br />
 
 </div>
+<!-- markdownlint-restore -->
 
 ## 📦 Projects in this repo
 
@@ -62,7 +65,7 @@ This script is able to pull all the uploaded images and the records out of the d
 - Terminal for running `npm` scripts.
 - [VSCode](https://code.visualstudio.com/) is recommended.
 
-### Steps:
+### Steps
 
 1. Clone this repository.
 2. Copy and rename the `env.dart.template` file to `env.dart`.
@@ -81,7 +84,7 @@ This project uses [vitest](https://vitest.dev) for unit tests. The tests in this
 
 To run the tests, use the command `npm run test`.
 
-[![codeCoverage](https://img.shields.io/endpoint?url=https://img.shields.io/endpoint?url=https%3A%2F%2Fnmsud-form-docs.nmsassistant.com%2Fcoverage%2FcoverageBadge.json)][coverageReport]
+[![codeCoverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fform-docs.nmsud.com%2Fcoverage%2FcoverageBadge.json)][coverageReport]
 
 <br />
 
@@ -117,8 +120,6 @@ We have a [documentation][documentation] website, here you can find information 
 
 [nmsudWebsite]: https://nmsud.com
 [nmscd]: https://github.com/NMSCD?ref=nmsudForm
-[docker]: https://www.docker.com
-[dockerHub]: https://hub.docker.com
-[documentation]: https://nmsud-form-docs.nmsassistant.com
-[coverageReport]: https://nmsud-form-docs.nmsassistant.com/coverage/index.html
+[documentation]: https://form-docs.nmsud.com
+[coverageReport]: https://form-docs.nmsud.com/coverage/index.html
 [discord]: https://discord.gg/jQrNeWeTwR

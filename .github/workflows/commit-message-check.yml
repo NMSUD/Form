@@ -30,11 +30,6 @@ jobs:
         with:
           token: ${{ secrets.CHECK_COMMIT_GITHUB_TOKEN }}
 
-      - name: Setup variables
-        run: |
-          documentationUrl=$(cat ./public/CNAME)
-          echo "DOCUMENTATION_URL=${documentationUrl}" >> $GITHUB_ENV
-
       # - name: Check PR commits
       #   run: |
       #     echo ${{ steps.get-pr-commits.outputs.commits }} > ./commits.json
@@ -50,6 +45,6 @@ jobs:
         if: failure()
         uses: mshick/add-pr-comment@v2
         with:
-          message: Please check the commit messages in this PR! It seems that you have not used emojis, this is a requirement for this project as per our documentation ${{ env.DOCUMENTATION_URL }}
+          message: Please check the commit messages in this PR! It seems that you have not used emojis, this is a requirement for this project as per our documentation https://form-docs.nmsud.com
           refresh-message-position: true
           allow-repeats: true

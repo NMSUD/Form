@@ -1,0 +1,37 @@
+version: '3'
+services:
+  nmsud-form:
+    image: <registry>/<tag>:latest
+    container_name: NMSUDForm
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - traefik-proxy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TIMEZONE}
+      - NODE_ENV=Production
+    env_file:
+      - ../../.env.prod
+    labels:
+      - "io.portainer.accesscontrol.teams=Distraction Squad"
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_SERVICE}.entrypoints=http"
+      - "traefik.http.routers.${TRAEFIK_SERVICE}.rule=Host(`${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.${TRAEFIK_SERVICE}.middlewares=${TRAEFIK_SERVICE}-https-redirect"
+      - "traefik.http.middlewares.${TRAEFIK_SERVICE}-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+
+      - "traefik.http.routers.${TRAEFIK_SERVICE}-secure.entrypoints=https"
+      - "traefik.http.routers.${TRAEFIK_SERVICE}-secure.rule=Host(`${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.${TRAEFIK_SERVICE}-secure.tls=true"
+      - "traefik.http.routers.${TRAEFIK_SERVICE}-secure.service=${TRAEFIK_SERVICE}"
+      - "traefik.http.services.${TRAEFIK_SERVICE}.loadbalancer.server.port=${TRAEFIK_SERVICE_PORT}"
+      - "traefik.docker.network=traefik-proxy"
+
+networks:
+  traefik-proxy:
+    external: true
