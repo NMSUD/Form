@@ -1,8 +1,9 @@
-import { Container, Service, Token } from 'typedi';
+import { Container, Service } from 'typedi';
 
 import { AppImage } from '@constants/image';
 import { site } from '@constants/site';
 import { getLog } from '@services/internal/logService';
+import { getConfig } from './configService';
 
 interface IAddScriptToHead {
   id: string;
@@ -14,6 +15,10 @@ interface IAddScriptToHead {
 
 @Service()
 export class DocumentService {
+  initDebug = () => {
+    (window as unknown as { debug: boolean }).debug = !getConfig().isProd();
+  };
+
   setDocumentTitle = (pageTitle: string) => {
     document.title = `${site.title} - ${pageTitle}`;
   };

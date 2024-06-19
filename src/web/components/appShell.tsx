@@ -23,6 +23,7 @@ const lazyVerify = lazy(() => import('@web/pages/verify'));
 
 export const AppShell: Component = () => {
   Container.set(APP_TYPE, AppType.UI);
+  getDocumentServ().initDebug();
   getDocumentServ().addVideoBackground();
 
   const Routes = useRoutes([
