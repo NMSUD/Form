@@ -16,7 +16,7 @@ import { AppType } from '@constants/enum/appType';
 import { APP_TYPE, BOT_PATH, getBotPath, getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
 import { handleRouteLookup } from './handleRouteLookup';
-import { versionEndpoint } from './misc/misc';
+import { defaultEndpoint, versionEndpoint } from './misc/misc';
 import { baseFormHandler } from './routes/baseFormHandler';
 import { baseStatusHandler } from './routes/baseStatusHandler';
 import { baseVerifyHandler } from './routes/baseVerifyHandler';
@@ -43,6 +43,7 @@ const main = async () => {
   const swaggerBuilder = new SwaggerBuilder();
   const router = new Router();
 
+  router.get('/', defaultEndpoint);
   router.post(
     `/${api.routes.form}`,
     bodyOptions,
