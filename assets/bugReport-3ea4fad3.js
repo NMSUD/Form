@@ -1,1 +1,0 @@
-import{c as r,ar as e,H as t,aj as a}from"./index-13243669.js";import{B as o}from"./bugReportForm-771a8fc3.js";import"./input-9599b55f.js";const g=()=>[r(e,{text:"Bug Report"}),r(t,{m:25}),r(a,{class:"form",get children(){return r(o,{})}})];export{g as BugReportPage,g as default};
