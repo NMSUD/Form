@@ -1,0 +1,30 @@
+name: Github Trigger Documentation Build
+run-name: GithubTriggerDocumentationBuild
+
+on:
+  push:
+    branches: ['main']
+
+concurrency:
+  group: 'githubdocs'
+  cancel-in-progress: true
+
+jobs:
+  github:
+    name: Github Trigger Documentation Build
+    environment: github-pages
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Trigger documentation repo
+        run: |
+          curl -XPOST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.TRIGGER_GITHUB_ACTION_TOKEN }}" \
+            https://api.github.com/repos/NMSUD/FormDocs/actions/workflows/githubActions.yml/dispatches \
+            --data '{"ref": "main"}'

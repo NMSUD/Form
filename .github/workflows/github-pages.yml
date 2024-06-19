@@ -12,6 +12,7 @@ concurrency:
 jobs:
   githubpages:
     name: Github Pages
+    environment: github-pages
     runs-on: ubuntu-latest
 
     permissions:
@@ -26,37 +27,18 @@ jobs:
         run: npm ci
 
       - name: Setup variables
+        env:
+          WEB_UI_CONFIG: ${{ secrets.WEB_UI_CONFIG }}
         run: |
-          documentationUrl=$(cat ./public/CNAME)
-          echo "DOCUMENTATION_URL=${documentationUrl}" >> $GITHUB_ENV
+          touch .env
+          echo WEB_UI_CONFIG >> .env
 
-      - name: Create output folder
+      - name: Build web UI
         run: |
-          mkdir pages
-          cp -r ./public/assets ./pages
-          cp ./public/CNAME ./pages/CNAME
-          touch ./pages/.nojekyll
-
-      - name: Set up documentation pages
-        run: |
-          echo "[coverage report](https://${{ env.DOCUMENTATION_URL }}/coverage/index.html)" > ./docs/generated.md
-          echo "[view the hosted Storybook page](https://${{ env.DOCUMENTATION_URL }}/storybook)" >> ./docs/generated.md
-          echo "![codeCoverageBadge](https://img.shields.io/endpoint?url=https://img.shields.io/endpoint?url=https%3A%2F%2F${{ env.DOCUMENTATION_URL }}%2Fcoverage%2FcoverageBadge.json)" >> ./docs/generated.md
-          npm run docs:build
-          cp -r ./.vitepress/dist/. ./pages
-
-      - name: Create code coverage report
-        run: |
-          npm run test:coverage
-          npm run test:coverage-badge
-          cp -r ./coverage ./pages/coverage
-
-      - name: Create Storybook export
-        run: |
-          npm run storybook:build
-          cp -r ./storybook-static ./pages/storybook
+          npm run build:web
+          touch ./dist/.nojekyll
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: pages
+          folder: dist
