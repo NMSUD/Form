@@ -3,7 +3,7 @@ run-name: GithubPages
 
 on:
   push:
-    branches: ['main']
+    branches: ['main', 'develop']
 
 concurrency:
   group: 'githubpages'
@@ -27,11 +27,9 @@ jobs:
         run: npm ci
 
       - name: Setup variables
-        env:
-          WEB_UI_CONFIG: ${{ secrets.WEB_UI_CONFIG }}
         run: |
           touch .env
-          echo ${WEB_UI_CONFIG} >> .env
+          echo ${{ secrets.WEB_UI_CONFIG }} >> .env
 
       - name: Build web UI
         run: |
