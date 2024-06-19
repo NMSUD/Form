@@ -1,1 +1,0 @@
-import{c as i}from"./store-b630eac4.js";const n=e=>{const[t,a]=i({isValid:!0});return[t,s=>{if(e==null)return{isValid:!0,errorMessage:"no validator"};try{const r=e(s);return a(r),r}catch(r){return{isValid:!0,errorMessage:`exception occurred in validator, ${r}`}}}]};export{n as u};

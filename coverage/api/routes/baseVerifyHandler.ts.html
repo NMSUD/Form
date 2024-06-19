@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">99.2% </span>
+                <span class="strong">99.19% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>248/250</span>
+                <span class='fraction'>247/249</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">99.2% </span>
+                <span class="strong">99.19% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>248/250</span>
+                <span class='fraction'>247/249</span>
             </div>
         
             
@@ -312,8 +312,7 @@
 <a name='L247'></a><a href='#L247'>247</a>
 <a name='L248'></a><a href='#L248'>248</a>
 <a name='L249'></a><a href='#L249'>249</a>
-<a name='L250'></a><a href='#L250'>250</a>
-<a name='L251'></a><a href='#L251'>251</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L250'></a><a href='#L250'>250</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -561,7 +560,6 @@
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Koa from 'koa';
 &nbsp;
@@ -574,16 +572,16 @@ import {
   colourFromApprovalStatus,
   getFriendlyApprovalStatus,
 } from '@constants/enum/approvalStatus';
+import { lineBreak } from '@constants/form';
 import { routes } from '@constants/route';
 import { DiscordWebhookResponse } from '@contracts/generated/discordWebhookResponse';
+import { ResultWithValue } from '@contracts/resultWithValue';
 import { baseSubmissionMessageBuilder, getDescriptionLines } from '@helpers/discordMessageHelper';
 import { anyObject } from '@helpers/typescriptHacks';
 import { getDiscordService } from '@services/external/discord/discordService';
 import { getGithubWorkflowService } from '@services/external/githubWorkflowService';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
-import { ResultWithValue } from '@contracts/resultWithValue';
-import { lineBreak } from '@constants/form';
 &nbsp;
 export const baseVerifyHandler =
   &lt;TD, TF, TP&gt;(module: IApiModule&lt;TD, TF, TP&gt;) =&gt;
@@ -593,12 +591,12 @@ export const baseVerifyHandler =
       decision: ctx.params[apiParams.verify.decision],
       check: ctx.params[apiParams.verify.check],
     };
-    const handlerName = `verifyHandler ${module.segment} ${params.id}`;
+    const handlerName = `verifyHandler-${module.segment}-${params.id}`;
     getLog().i(handlerName);
 &nbsp;
     const approvalStatus = approvalStatusFromString(params.decision);
     if (approvalStatus == null) {
-      const errMsg = `${handlerName}: Approval status not understood: ${params.decision}`;
+      const errMsg = `${handlerName} - Approval status not understood: ${params.decision}`;
       getLog().e(errMsg);
       await errorResponse({
         ctx,
@@ -621,7 +619,7 @@ export const baseVerifyHandler =
 &nbsp;
     const readRecordResult = await module.readRecord(params.id);
     if (readRecordResult.isSuccess == false) {
-      const errMsg = `${handlerName}: An error occurred while getting a db record with id: ${params.id}`;
+      const errMsg = `${handlerName} - An error occurred while getting a db record with id: ${params.id}`;
       getLog().e(errMsg);
       const additionalUrlSegments = [
         '&amp;',
@@ -648,7 +646,7 @@ export const baseVerifyHandler =
     const discordWebhookId = readRecordResult.value.discordWebhookId;
 &nbsp;
     if (readRecordResult.value.approvalStatus == approvalStatus) {
-      getLog().i(`${handlerName}: Approval status received matches what is in the database`);
+      getLog().i(`${handlerName} - Approval status received matches what is in the database`);
       const additionalUrlSegments = [
         '&amp;',
         routes.verify.queryParam.code,
@@ -681,7 +679,7 @@ export const baseVerifyHandler =
         throw 'calculated check value does not match the supplied check';
       }
     } catch (ex) {
-      const errMsg = `${handlerName}: The calculated check value does not match the supplied check value. Maybe the data changed?`;
+      const errMsg = `${handlerName} - The calculated check value does not match the supplied check value. Maybe the data changed?`;
       getLog().e(errMsg);
       const additionalUrlSegments = [
         '&amp;',
@@ -709,10 +707,10 @@ export const baseVerifyHandler =
       approvalStatus,
     };
 &nbsp;
-    getLog().i(`${handlerName}: Updating database record`);
+    getLog().i(`${handlerName} - Updating database record`);
     const updateRecordResult = await module.updateRecord(updatedPersistence.id, updatedPersistence);
     if (updateRecordResult.isSuccess == false) {
-      const errMsg = `${handlerName}: An error occurred while updating the approval status of record: ${params.id}`;
+      const errMsg = `${handlerName} - An error occurred while updating the approval status of record: ${params.id}`;
       getLog().e(errMsg);
       const additionalUrlSegments = [
         '&amp;',
@@ -750,7 +748,7 @@ export const baseVerifyHandler =
     }
 &nbsp;
     if (discordWebhookId != null) {
-      getLog().i(`${handlerName}: Updating Discord message`);
+      getLog().i(`${handlerName} - Updating Discord message`);
       const msgColour = colourFromApprovalStatus(approvalStatus);
       const authorName = module.getName(readRecordResult.value);
       const iconUrl = module.<span class="branch-0 cbranch-no" title="branch not covered" >getIcon?.(readRecordResult.value);</span>
@@ -811,7 +809,6 @@ export const baseVerifyHandler =
     ctx.response.body = 200;
     ctx.redirect([...urlSegments, ...additionalUrlSegments].join(''));
     await next();
-    return;
   };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -820,7 +817,7 @@ export const baseVerifyHandler =
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-06-18T22:25:25.077Z
+                at 2024-06-19T15:38:26.908Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

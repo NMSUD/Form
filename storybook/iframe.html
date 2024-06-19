@@ -1,36 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <!--suppress HtmlUnknownTarget -->
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Storybook</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-  <meta charset="utf-8" />
-  <title>Storybook</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      @font-face {
+        font-family: 'Nunito Sans';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('./sb-common-assets/nunito-sans-regular.woff2') format('woff2');
+      }
 
-  <link rel="prefetch" href="./sb-common-assets/nunito-sans-regular.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="prefetch" href="./sb-common-assets/nunito-sans-italic.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="prefetch" href="./sb-common-assets/nunito-sans-bold.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="prefetch" href="./sb-common-assets/nunito-sans-bold-italic.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="./sb-common-assets/fonts.css" />
+      @font-face {
+        font-family: 'Nunito Sans';
+        font-style: italic;
+        font-weight: 400;
+        font-display: swap;
+        src: url('./sb-common-assets/nunito-sans-italic.woff2') format('woff2');
+      }
 
-  <script>
-    window.CONFIG_TYPE = 'PRODUCTION';
-    window.LOGLEVEL = 'info';
-    window.FRAMEWORK_OPTIONS = {};
-    window.CHANNEL_OPTIONS = {};
-    window.FEATURES = {"argTypeTargetsV7":true,"legacyDecoratorFileOrder":false,"disallowImplicitActionsInRenderV8":true};
-    window.STORIES = [{"titlePrefix":"","directory":"./src","files":"**/*.mdx","importPathMatcher":"^\\.[\\\\/](?:src(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)\\/|\\/|$)(?!\\.)(?=.)[^/]*?\\.mdx)$"},{"titlePrefix":"","directory":"./src","files":"**/*.stories.@(js|jsx|mjs|ts|tsx)","importPathMatcher":"^\\.[\\\\/](?:src(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)\\/|\\/|$)(?!\\.)(?=.)[^/]*?\\.stories\\.(js|jsx|mjs|ts|tsx))$"}];
-    window.DOCS_OPTIONS = {"defaultName":"Docs","autodocs":"tag"};
-    window.TAGS_OPTIONS = {"dev-only":{"excludeFromDocsStories":true},"docs-only":{"excludeFromSidebar":true},"test-only":{"excludeFromSidebar":true,"excludeFromDocsStories":true}};
+      @font-face {
+        font-family: 'Nunito Sans';
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url('./sb-common-assets/nunito-sans-bold.woff2') format('woff2');
+      }
 
-    
+      @font-face {
+        font-family: 'Nunito Sans';
+        font-style: italic;
+        font-weight: 700;
+        font-display: swap;
+        src: url('./sb-common-assets/nunito-sans-bold-italic.woff2') format('woff2');
+      }
+    </style>
 
-    // We do this so that "module && module.hot" etc. in Storybook source code
-    // doesn't fail (it will simply be disabled)
-    window.module = undefined;
-    window.global = window;
-  </script>
-  <base target="_parent" />
+    <script>
+      window.CONFIG_TYPE = 'PRODUCTION';
+      window.LOGLEVEL = 'info';
+      window.FRAMEWORK_OPTIONS = {};
+      window.CHANNEL_OPTIONS = {};
+      window.FEATURES = {"argTypeTargetsV7":true,"legacyDecoratorFileOrder":false,"disallowImplicitActionsInRenderV8":true};
+      window.STORIES = [{"titlePrefix":"","directory":"./src","files":"**/*.mdx","importPathMatcher":"^\\.[\\\\/](?:src(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)\\/|\\/|$)(?!\\.)(?=.)[^/]*?\\.mdx)$"},{"titlePrefix":"","directory":"./src","files":"**/*.stories.@(js|jsx|mjs|ts|tsx)","importPathMatcher":"^\\.[\\\\/](?:src(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)\\/|\\/|$)(?!\\.)(?=.)[^/]*?\\.stories\\.(js|jsx|mjs|ts|tsx))$"}];
+      window.DOCS_OPTIONS = {"defaultName":"Docs","autodocs":"tag"};
+      window.TAGS_OPTIONS = {"dev-only":{"excludeFromDocsStories":true},"docs-only":{"excludeFromSidebar":true},"test-only":{"excludeFromSidebar":true,"excludeFromDocsStories":true}};
+
+      
+
+      // We do this so that "module && module.hot" etc. in Storybook source code
+      // doesn't fail (it will simply be disabled)
+      window.module = undefined;
+      window.global = window;
+    </script>
+    <base target="_parent" />
 
 <style>
   /* While we aren't showing the main block yet, but still preparing, we want everything the user
@@ -482,11 +509,11 @@
   }
 </script>
 
-  <script type="module" crossorigin src="./assets/iframe-7b8f667e.js"></script>
-</head>
+    <script type="module" crossorigin src="./assets/iframe-d00c6174.js"></script>
+  </head>
 
-<body>
-  <div class="sb-preparing-story sb-wrapper">
+  <body>
+    <div class="sb-preparing-story sb-wrapper">
   <div class="sb-loader"></div>
 </div>
 
@@ -606,10 +633,9 @@
   </div>
 </div>
 
-  <div id="storybook-root"></div>
-  <div id="storybook-docs"></div>
-  
-  
-</body>
-
+    <div id="storybook-root"></div>
+    <div id="storybook-docs"></div>
+    
+    
+  </body>
 </html>
