@@ -1,6 +1,6 @@
 {
   "name": "nmsud.form",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "author": "Kurt Lourens",
   "type": "module",
   "description": "A custom solution for capturing data for the yearly Unification Days event",
