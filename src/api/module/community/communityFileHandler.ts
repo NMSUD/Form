@@ -1,11 +1,10 @@
-import { processImageFromFormData } from '@api/facade/processImage';
+import { handleImageFromFormData } from '@api/facade/handleImageFromFormData';
 import { FormDataKey } from '@constants/form';
-import { BioMediaImageSize, DefaultImageSize } from '@constants/image';
+import { BioMediaImageSize, DefaultImageRestrictions, DefaultImageSize } from '@constants/image';
 import { IDatabaseFile } from '@contracts/databaseFile';
 import { IFormWithFiles } from '@contracts/file';
 import { ResultWithValue } from '@contracts/resultWithValue';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
-import { getLog } from '@services/internal/logService';
 
 export interface ICommunityImages {
   profilePicFile?: IDatabaseFile;
@@ -19,39 +18,34 @@ export const communityFileHandler = async (
     bioMediaFiles: [],
   };
 
-  const profilePicFileFromForm = formData[FormDataKey.profilePicFile];
-  const resizedProfilePicResult = await processImageFromFormData({
-    fileFromForm: profilePicFileFromForm,
+  const profilePicResult = await handleImageFromFormData({
+    fileFromForm: formData[FormDataKey.profilePicFile],
+    restrictions: DefaultImageRestrictions.profilePic,
+    fileName: 'profilePic',
+    handlerName: 'communityFileHandler',
     ...DefaultImageSize,
   });
-  if (resizedProfilePicResult.isSuccess == false) {
-    getLog().e(
-      'handleCommunityFormSubmission profilePicFileFromForm',
-      resizedProfilePicResult.value,
-    );
-    return {
-      isSuccess: false,
-      value: result,
-      errorMessage: resizedProfilePicResult.errorMessage,
-    };
+  if (profilePicResult.isSuccess == false) {
+    return { ...profilePicResult, value: result };
   }
-  result.profilePicFile = resizedProfilePicResult.value;
+  result.profilePicFile = profilePicResult.value;
+
+  // ---
 
   const bioMediaFilesFromForm = formData[FormDataKey.bioMediaFiles];
   if (result.bioMediaFiles == null) result.bioMediaFiles = [];
   for (const bioMediaFileFromForm of makeArrayOrDefault(bioMediaFilesFromForm)) {
-    const bioMediaDbBufferResult = await processImageFromFormData({
+    const bioMediaFileResult = await handleImageFromFormData({
       fileFromForm: bioMediaFileFromForm,
+      restrictions: DefaultImageRestrictions.bioMediaPic,
+      fileName: 'bioMediaPic',
+      handlerName: 'communityFileHandler',
       ...BioMediaImageSize,
     });
-    if (bioMediaDbBufferResult.isSuccess == false) {
-      getLog().e(
-        'handleBuilderFormSubmission bioMediaFileFromForm',
-        bioMediaDbBufferResult.errorMessage,
-      );
+    if (bioMediaFileResult.isSuccess == false) {
+      continue;
     }
-
-    result.bioMediaFiles.push(bioMediaDbBufferResult.value);
+    result.bioMediaFiles.push(bioMediaFileResult.value);
   }
 
   return {

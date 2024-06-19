@@ -8,12 +8,13 @@ import { getLog } from '@services/internal/logService';
 
 export const processImageFromFormData = async (props: {
   fileFromForm: IFile;
+  handlerName: string;
   width?: number;
   height?: number;
 }): Promise<ResultWithValue<IDatabaseFile>> => {
   const bufferResult = await getApiFileService().formDataToBuffer(props.fileFromForm);
   if (bufferResult.isSuccess == false) {
-    getLog().e('processImageFromFormData: ', bufferResult.value);
+    getLog().e(`${props.handlerName} processImageFromFormData: `, bufferResult.value);
     return {
       isSuccess: false,
       value: anyObject,

@@ -9,16 +9,16 @@ import {
   colourFromApprovalStatus,
   getFriendlyApprovalStatus,
 } from '@constants/enum/approvalStatus';
+import { lineBreak } from '@constants/form';
 import { routes } from '@constants/route';
 import { DiscordWebhookResponse } from '@contracts/generated/discordWebhookResponse';
+import { ResultWithValue } from '@contracts/resultWithValue';
 import { baseSubmissionMessageBuilder, getDescriptionLines } from '@helpers/discordMessageHelper';
 import { anyObject } from '@helpers/typescriptHacks';
 import { getDiscordService } from '@services/external/discord/discordService';
 import { getGithubWorkflowService } from '@services/external/githubWorkflowService';
 import { getConfig } from '@services/internal/configService';
 import { getLog } from '@services/internal/logService';
-import { ResultWithValue } from '@contracts/resultWithValue';
-import { lineBreak } from '@constants/form';
 
 export const baseVerifyHandler =
   <TD, TF, TP>(module: IApiModule<TD, TF, TP>) =>
@@ -28,12 +28,12 @@ export const baseVerifyHandler =
       decision: ctx.params[apiParams.verify.decision],
       check: ctx.params[apiParams.verify.check],
     };
-    const handlerName = `verifyHandler ${module.segment} ${params.id}`;
+    const handlerName = `verifyHandler-${module.segment}-${params.id}`;
     getLog().i(handlerName);
 
     const approvalStatus = approvalStatusFromString(params.decision);
     if (approvalStatus == null) {
-      const errMsg = `${handlerName}: Approval status not understood: ${params.decision}`;
+      const errMsg = `${handlerName} - Approval status not understood: ${params.decision}`;
       getLog().e(errMsg);
       await errorResponse({
         ctx,
@@ -56,7 +56,7 @@ export const baseVerifyHandler =
 
     const readRecordResult = await module.readRecord(params.id);
     if (readRecordResult.isSuccess == false) {
-      const errMsg = `${handlerName}: An error occurred while getting a db record with id: ${params.id}`;
+      const errMsg = `${handlerName} - An error occurred while getting a db record with id: ${params.id}`;
       getLog().e(errMsg);
       const additionalUrlSegments = [
         '&',
@@ -83,7 +83,7 @@ export const baseVerifyHandler =
     const discordWebhookId = readRecordResult.value.discordWebhookId;
 
     if (readRecordResult.value.approvalStatus == approvalStatus) {
-      getLog().i(`${handlerName}: Approval status received matches what is in the database`);
+      getLog().i(`${handlerName} - Approval status received matches what is in the database`);
       const additionalUrlSegments = [
         '&',
         routes.verify.queryParam.code,
@@ -116,7 +116,7 @@ export const baseVerifyHandler =
         throw 'calculated check value does not match the supplied check';
       }
     } catch (ex) {
-      const errMsg = `${handlerName}: The calculated check value does not match the supplied check value. Maybe the data changed?`;
+      const errMsg = `${handlerName} - The calculated check value does not match the supplied check value. Maybe the data changed?`;
       getLog().e(errMsg);
       const additionalUrlSegments = [
         '&',
@@ -144,10 +144,10 @@ export const baseVerifyHandler =
       approvalStatus,
     };
 
-    getLog().i(`${handlerName}: Updating database record`);
+    getLog().i(`${handlerName} - Updating database record`);
     const updateRecordResult = await module.updateRecord(updatedPersistence.id, updatedPersistence);
     if (updateRecordResult.isSuccess == false) {
-      const errMsg = `${handlerName}: An error occurred while updating the approval status of record: ${params.id}`;
+      const errMsg = `${handlerName} - An error occurred while updating the approval status of record: ${params.id}`;
       getLog().e(errMsg);
       const additionalUrlSegments = [
         '&',
@@ -185,7 +185,7 @@ export const baseVerifyHandler =
     }
 
     if (discordWebhookId != null) {
-      getLog().i(`${handlerName}: Updating Discord message`);
+      getLog().i(`${handlerName} - Updating Discord message`);
       const msgColour = colourFromApprovalStatus(approvalStatus);
       const authorName = module.getName(readRecordResult.value);
       const iconUrl = module.getIcon?.(readRecordResult.value);
@@ -246,5 +246,4 @@ export const baseVerifyHandler =
     ctx.response.body = 200;
     ctx.redirect([...urlSegments, ...additionalUrlSegments].join(''));
     await next();
-    return;
   };

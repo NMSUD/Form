@@ -1,6 +1,6 @@
 import { IApiSegment } from '@constants/api';
 import { ApprovalStatus } from '@constants/enum/approvalStatus';
-import { IFormDtoMeta } from '@contracts/dto/forms/baseFormDto';
+import { FormDtoMeta } from '@contracts/dto/forms/baseFormDto';
 import { IFormWithFiles } from '@contracts/file';
 import { DtoAndImageMapperToNewPersistence, Mapper } from '@contracts/mapper';
 import { Result, ResultWithValue } from '@contracts/resultWithValue';
@@ -14,7 +14,7 @@ export interface IRecordRequirements {
 
 export interface IApiModule<TD, TF, TP> {
   segment: keyof IApiSegment;
-  dtoMeta: IFormDtoMeta<TD>;
+  dtoMeta: FormDtoMeta<TD>;
   sendDiscordMessageOnSubmission: boolean;
   getName: (persistence: TP) => string;
   getIcon?: (persistence: TP) => string | null | undefined;

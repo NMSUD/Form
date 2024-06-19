@@ -1,4 +1,3 @@
-import path from 'path';
 import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 import loadVersion from 'vite-plugin-package-version';
@@ -31,6 +30,7 @@ const testDef = {
 };
 
 export default defineConfig({
+  ...testDef,
   plugins: [loadVersion(), solidPlugin()],
   server: {
     port: 3000,
@@ -62,5 +62,4 @@ export default defineConfig({
       },
     ],
   },
-  ...testDef,
 });

@@ -1,10 +1,11 @@
 import { api, apiParams } from '@constants/api';
 import { ApprovalStatus, approvalStatusToString } from '@constants/enum/approvalStatus';
-import { IFormDtoMeta, IFormDtoMetaDetails } from '@contracts/dto/forms/baseFormDto';
+import { FormDtoMeta, FormDtoMetaDetails } from '@contracts/dto/forms/baseFormDto';
 import {
   DiscordWebhook,
   DiscordWebhookAttachment,
   DiscordWebhookEmbed,
+  DiscordWebhookField,
 } from '@contracts/generated/discordWebhook';
 import { ResultWithValue } from '@contracts/resultWithValue';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
@@ -18,7 +19,7 @@ export interface IMessageBuilderProps<T, TP> {
   persistence: TP;
   segment: string;
   calculateCheck: number;
-  dtoMeta: IFormDtoMeta<T>;
+  dtoMeta: FormDtoMeta<T>;
   includeActionsEmbed: boolean;
   approvalStatus: ApprovalStatus;
 }
@@ -77,6 +78,7 @@ export const baseSubmissionMessageBuilder = (props: {
   authorName?: string;
   iconUrl?: string | null;
   descripLines: Array<string>;
+  fields?: Array<DiscordWebhookField>;
   additionalEmbeds: Array<DiscordWebhookEmbed>;
   attachments?: Array<DiscordWebhookAttachment>;
 }): DiscordWebhook => {
@@ -84,6 +86,7 @@ export const baseSubmissionMessageBuilder = (props: {
     {
       description: props.descripLines.join('\n'),
       color: props.colour,
+      fields: props.fields,
       author: {
         name: props.authorName ?? discordActionLink.defaultAuthorName,
         icon_url: props.iconUrl ?? undefined,
@@ -99,7 +102,7 @@ export const baseSubmissionMessageBuilder = (props: {
   };
 };
 
-export const getDescriptionLines = async <T>(props: { data: T; dtoMeta: IFormDtoMeta<T> }) => {
+export const getDescriptionLines = async <T>(props: { data: T; dtoMeta: FormDtoMeta<T> }) => {
   const descripLines: Array<string> = [];
 
   for (const dbMetaPropKey in props.dtoMeta) {

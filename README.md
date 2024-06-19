@@ -30,9 +30,10 @@
 <br />
 
 [![Supported by the No Man's Sky Community Developers & Designers](https://raw.githubusercontent.com/NMSCD/About/master/badge/green-ftb.svg)][nmscd]<br />
-![Profile views](https://komarev.com/ghpvc/?username=NMSUD&color=green&style=for-the-badge)
 
-  <br /> 
+![Profile views](https://komarev.com/ghpvc/?username=NMSUD&color=green&style=for-the-badge)
+<br />
+
 </div>
 
 ## 📦 Projects in this repo
@@ -80,6 +81,8 @@ This project uses [vitest](https://vitest.dev) for unit tests. The tests in this
 
 To run the tests, use the command `npm run test`.
 
+[![codeCoverage](https://img.shields.io/endpoint?url=https://img.shields.io/endpoint?url=https%3A%2F%2Fnmsud-form-docs.nmsassistant.com%2Fcoverage%2FcoverageBadge.json)][coverageReport]
+
 <br />
 
 ## 🎨 Storybook
@@ -117,4 +120,5 @@ We have a [documentation][documentation] website, here you can find information 
 [docker]: https://www.docker.com
 [dockerHub]: https://hub.docker.com
 [documentation]: https://nmsud-form-docs.nmsassistant.com
+[coverageReport]: https://nmsud-form-docs.nmsassistant.com/coverage/index.html
 [discord]: https://discord.gg/jQrNeWeTwR

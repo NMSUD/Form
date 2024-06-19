@@ -3,7 +3,7 @@ services:
     container_name: NMSUD-Form-Web
     build:
       context: .
-      dockerfile: ./docker/dev.web.Dockerfile
+      dockerfile: ./scripts/docker/dev.web.Dockerfile
     develop:
       watch:
         - action: sync
@@ -25,7 +25,7 @@ services:
     container_name: NMSUD-Form-Api
     build:
       context: .
-      dockerfile: ./docker/dev.api.Dockerfile
+      dockerfile: ./scripts/docker/dev.api.Dockerfile
     develop:
       watch:
         - action: sync

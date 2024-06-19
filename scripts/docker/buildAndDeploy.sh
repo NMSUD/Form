@@ -23,7 +23,7 @@ echo "tag name: $DOCKER_TAG_NAME"
 # ----------------------------------------------------------------------
 
 docker build \
-    -t $DOCKER_TAG_NAME -f ./docker/api.Dockerfile \
+    -t $DOCKER_TAG_NAME -f ./scripts/docker/api.Dockerfile \
     --build-arg BUILD_VERSION=$version \
     --build-arg API_PORT=$API_PORT \
     --build-arg ENV_FILE=$ENV_FILE \

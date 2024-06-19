@@ -2,7 +2,7 @@ import { IRecordRequirements } from '@api/types/baseModule';
 import { DefaultImageRestrictions } from '@constants/image';
 import { minUrlLength } from '@constants/validation';
 import { friendlyPlatformName } from '@contracts/dto/enum/platformType';
-import { IFormDtoMeta, anonymousUserGuid, contactDetails } from '@contracts/dto/forms/baseFormDto';
+import { FormDtoMeta, anonymousUserGuid, contactDetails } from '@contracts/dto/forms/baseFormDto';
 import { formatForDateDropdown } from '@helpers/dateHelper';
 import {
   arrayDiscordLine,
@@ -30,7 +30,7 @@ export const builderBioMaxLength = 500;
 export const builderStartedPlayingMinDate = new Date('2016-08-09');
 export const builderStartedPlayingMaxDate = new Date();
 
-export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {
+export const BuilderDtoMeta: FormDtoMeta<BuilderDto> = {
   id: {
     label: 'Id',
     validator: noValidation,

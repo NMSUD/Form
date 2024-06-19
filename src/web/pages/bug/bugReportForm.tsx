@@ -1,13 +1,16 @@
 // prettier-ignore
-import { Alert, AlertDescription, AlertIcon, Button, Textarea, Container, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Tag, Text, createDisclosure, notificationService, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Spacer, FormControl, FormLabel, Box, Flex, } from '@hope-ui/solid';
-import { Component, For, JSX, Match, Show, Switch, createSignal } from 'solid-js';
-import { getLog } from '@services/internal/logService';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Alert, AlertDescription, AlertIcon, Box, Button, Flex, HStack, Spacer, Text, Textarea } from '@hope-ui/solid';
+import { For, Show, createSignal } from 'solid-js';
+
 import { LogType } from '@constants/enum/logType';
+import { BugReportDto } from '@contracts/dto/forms/bugReportDto';
+import { getLog } from '@services/internal/logService';
 import { FormLongInput } from '@web/components/form/text/input';
 import { FormTextArea } from '@web/components/form/text/textArea';
 
 interface IProps<T> {
   formBuilderModel?: T;
+  submitBugReport: (bugReport: BugReportDto) => Promise<void>;
 }
 
 export const BugReportForm = <T,>(props: IProps<T>) => {
@@ -15,6 +18,14 @@ export const BugReportForm = <T,>(props: IProps<T>) => {
   const [description, setDescription] = createSignal<string>('');
 
   const trackedLogs = getLog().getLogs();
+
+  const submitReport = () => {
+    props.submitBugReport({
+      contactDetails: contactDetails(),
+      description: description(),
+      logs: trackedLogs,
+    });
+  };
 
   const logTypeToAlertStyle = (type: LogType): 'success' | 'info' | 'warning' | 'danger' => {
     switch (type) {
@@ -57,7 +68,7 @@ export const BugReportForm = <T,>(props: IProps<T>) => {
           {/* TODO Include option to include current item being edited */}
         </Show>
         <HStack justifyContent="end">
-          <Button>Submit</Button>
+          <Button onClick={submitReport}>Submit</Button>
         </HStack>
       </Flex>
       <Show when={trackedLogs.length > 0}>

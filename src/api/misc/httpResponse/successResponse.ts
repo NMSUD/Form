@@ -1,9 +1,8 @@
-import { IFormResponse } from '@contracts/response/formResponse';
 import Koa from 'koa';
 
 export interface ISuccessResponse<T> {
   ctx: Koa.DefaultContext;
-  body: IFormResponse;
+  body: T;
   next: () => Promise<unknown>;
 }
 

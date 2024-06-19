@@ -3,6 +3,7 @@ import { IImageParams } from '@helpers/imageHelper';
 import { IMediaUpload, MediaUploadType } from '@web/contracts/mediaUpload';
 import { shouldBeUrl } from './textValidation';
 import { multiValidation } from './baseValidation';
+import { IImageMetaDataProps } from '@contracts/image';
 
 export interface IImageRestriction {
   maxWidth?: number;
@@ -29,7 +30,7 @@ export const isValidWebImage =
 
 export const webImageRestrictions =
   (restrictions: IImageRestriction) =>
-  (value: IImageWithParams): ValidationResult => {
+  (value: IImageParams): ValidationResult => {
     const imgName = value.name ?? 'unknown name';
     if (restrictions.maxHeight != null) {
       if (restrictions.maxHeight < value.height) {
@@ -103,4 +104,18 @@ export const mediaUploadRestriction =
       case MediaUploadType.VideoUrl:
         return shouldBeUrl(value.url);
     }
+  };
+
+export const apiFileUploadRestriction =
+  (restrictions: IImageRestriction, name: string) =>
+  (value: IImageMetaDataProps): ValidationResult => {
+    const restrictionFunc = webImageRestrictions(restrictions);
+    return restrictionFunc({
+      width: value.width ?? 0,
+      height: value.height ?? 0,
+      fileExtension: '',
+      fileSize: value.size ?? 0,
+      type: '',
+      name,
+    });
   };

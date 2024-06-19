@@ -51,5 +51,6 @@ export default defineConfig({
     /nmsassistant.com/,
     /nmscd.com/,
     /nmsud.com/,
+    /img.shields.io/,
   ],
 });

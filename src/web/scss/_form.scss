@@ -65,6 +65,8 @@
 .floating-button {
   position: fixed;
   bottom: 2em;
-  right: 3em;
-  z-index: 100;
+  right: 2em;
+  border-radius: 100%;
+  padding: 1.5em 0.85em;
+  z-index: 2;
 }
