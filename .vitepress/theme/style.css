@@ -168,6 +168,6 @@ main.main img {
   background-color: var(--vp-c-brand-soft);
 }
 
-body {
+html {
  scrollbar-gutter: stable;
 }
