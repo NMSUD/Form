@@ -49,16 +49,16 @@ export default BuilderFormPage;
 
 ```ts
 {
-    path: routes.form.root.path,
-    children: [
-        // new route
-        {
-          path: routes.form.builder.path,
-          component: lazy(() => import('@web/pages/form/builder')),
-        },
+const lazyBuilder = lazy(() => import('@web/pages/form/builder'));
 
-        // ... other routes
-        // ... other routes
-    ]
+  // ... AppShell.tsx stuff
+
+    path: routes.form.path,
+    children: [
+      { path: routes.form.builder.path, component: lazyBuilder },
+      // ... other form routes
+    ],
+
+    // ... 
 },
 ```

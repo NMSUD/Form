@@ -20,7 +20,9 @@ export interface BuilderDto {
 
 ## Meta for the new DTO
 
-- In the same file, create a meta object
+- Go to this folder `src/contracts/dto/forms/meta`
+- Create a file (e.g. **builderDto.meta.ts**) with an object defined inside that is of type `IFormDtoMeta<YOUR_NEW_DTO>`
+  - Example:
 
 ```ts
 export const BuilderDtoMeta: IFormDtoMeta<BuilderDto> = {

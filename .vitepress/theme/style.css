@@ -171,3 +171,9 @@ main.main img {
 html {
  scrollbar-gutter: stable;
 }
+
+@media (min-width: 768px) {
+  .VPContent.is-home .VPHome {
+      margin-bottom: 0;
+  }
+}

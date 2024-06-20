@@ -3,7 +3,7 @@ run-name: GithubPages
 
 on:
   push:
-    branches: ['main', 'develop']
+    branches: ['main']
 
 concurrency:
   group: 'githubpages'
