@@ -1,7 +1,8 @@
 // prettier-ignore
-import { Anchor, Avatar, Box, Button, Center, CircularProgress, CircularProgressIndicator, Flex, FormControl, FormErrorMessage, FormLabel, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, SimpleGrid, Text, Tooltip, createDisclosure, notificationService } from '@hope-ui/solid';
-import { Component, For, JSX, Match, Show, Switch, createEffect, createSignal } from 'solid-js';
+import { Button, Center, Flex, FormControl, FormErrorMessage, FormLabel, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, SimpleGrid, Text, createDisclosure, notificationService } from '@hope-ui/solid';
+import { Component, For, Match, Show, Switch, createEffect, createSignal } from 'solid-js';
 
+import { AppAnimation } from '@constants/animation';
 import { NetworkState } from '@constants/enum/networkState';
 import { minUrlLength } from '@constants/validation';
 import { makeArrayOrDefault } from '@helpers/arrayHelper';
@@ -10,21 +11,18 @@ import { getImageParams } from '@helpers/imageHelper';
 import { getLog } from '@services/internal/logService';
 import { multiValidation } from '@validation/baseValidation';
 import { minLength, shouldBeUrl, shouldBeYoutubeUrl } from '@validation/textValidation';
-import { OpenInNewIcon } from '@web/components/common/icon/openInNewIcon';
-import { WrapWhen } from '@web/components/common/wrapWhen';
+import { Card } from '@web/components/common/card';
+import { ImageIcon } from '@web/components/common/icon/imageIcon';
+import { UploadIcon } from '@web/components/common/icon/uploadIcon';
+import { VideoIcon } from '@web/components/common/icon/videoIcon';
 import { DebugNode } from '@web/components/core/debugNode';
+import { LoadingSpinner } from '@web/components/core/loading';
 import { FormInputProps } from '@web/contracts/formTypes';
 import { IMediaUpload, MediaUploadType } from '@web/contracts/mediaUpload';
 import { useValidation } from '../../../hooks/useValidation';
 import { HelpIconTooltip } from '../helpIcon/helpIconTooltip';
 import { FormLongInput } from '../text/input';
 import { FormMediaUploadItem } from './mediaUploadItem';
-import { Card } from '@web/components/common/card';
-import { UploadIcon } from '@web/components/common/icon/uploadIcon';
-import { VideoIcon } from '@web/components/common/icon/videoIcon';
-import { ImageIcon } from '@web/components/common/icon/imageIcon';
-import { LoadingSpinner } from '@web/components/core/loading';
-import { AppAnimation } from '@constants/animation';
 
 interface IFormMediaUploadProps extends FormInputProps<Array<IMediaUpload>> {
   maxUploads?: number;
@@ -147,7 +145,7 @@ export const FormMediaUploadInput: Component<IFormMediaUploadProps> = (
   };
 
   const getLabel = (localProps: IFormMediaUploadProps) => {
-    if ((props.maxUploads ?? 0) < 0) {
+    if ((props.maxUploads ?? 0) <= 0) {
       return localProps.label;
     }
 

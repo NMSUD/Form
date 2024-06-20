@@ -12,7 +12,7 @@ interface IProps {
 
 export const FormMediaUploadItem: Component<IProps> = (props: IProps) => {
   return (
-    <Box class="hover-reveal-child pos-rel display-inline-block noselect">
+    <Box class="hover-reveal-child pos-rel display-inline-block pointer noselect">
       <Switch fallback={<Text display="inline-block">???</Text>}>
         <Match when={props.upload.type === MediaUploadType.ImageUrl}>
           <Avatar
@@ -49,7 +49,9 @@ export const FormMediaUploadItem: Component<IProps> = (props: IProps) => {
                 wrapComp={Tooltip}
                 wrapProps={{ label: props.upload.file?.name }}
               >
-                <Text class="max-lines-1">{props.upload.file?.name ?? 'unknown name'}</Text>
+                <Text class="max-lines-1" pr="0.75em">
+                  {props.upload.file?.name ?? 'unknown name'}
+                </Text>
               </WrapWhen>
             </Center>
           </Flex>

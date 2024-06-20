@@ -11,6 +11,10 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     ...getFormInputArgTypes(),
+    minH: { control: 'text' },
+    inputType: { control: 'text' },
+    displayTextLength: { control: 'boolean' },
+    maxTextLength: { control: 'number' },
   },
 } satisfies Meta<typeof FormTextArea>;
 

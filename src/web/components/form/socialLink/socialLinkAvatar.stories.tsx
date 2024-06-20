@@ -10,7 +10,10 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     url: { control: 'text' },
-    size: { control: 'text' },
+    size: {
+      control: 'select',
+      options: ['2xs', 'xs', 'sm', 'lg', 'xl', '2xl', 'md', 'full', undefined],
+    },
   },
 } satisfies Meta<typeof AvatarFromSocialLink>;
 

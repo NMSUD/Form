@@ -9,6 +9,7 @@ const meta = {
   decorators: [UseHopeUIThemeProvider],
   tags: ['autodocs'],
   argTypes: {
+    label: { control: 'text' },
     helpText: { control: 'text' },
   },
 } satisfies Meta<typeof HelpIconTooltip>;
@@ -18,6 +19,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   args: {
+    label: 'Hover me!',
     helpText: 'This is a help icon with a tooltip',
   },
 };

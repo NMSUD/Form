@@ -10,6 +10,10 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     ...getFormInputArgTypes(),
+    inputType: { control: 'text' },
+    min: { control: 'number' },
+    max: { control: 'number' },
+    disabled: { control: 'boolean' },
   },
 } satisfies Meta<typeof FormLongInput>;
 

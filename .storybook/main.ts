@@ -15,5 +15,15 @@ const config: StorybookConfig = {
   docs: {
     autodocs: "tag",
   },
+  async viteFinal(config) {
+    const { mergeConfig } = await import('vite');
+
+    return mergeConfig(config, {
+      define: { 'process.env': process.env },
+      optimizeDeps: {
+        include: ['storybook-dark-mode'],
+      },
+    });
+  },
 };
 export default config;

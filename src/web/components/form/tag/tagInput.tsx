@@ -21,9 +21,7 @@ import { HtmlKeyEvent } from '@contracts/event';
 import { keyboardKeyCode } from '@constants/form';
 import { DebugNode } from '@web/components/core/debugNode';
 
-interface IProps extends FormInputProps<Array<string>> {
-  separator?: string;
-}
+interface IProps extends FormInputProps<Array<string>> {}
 
 export const FormTagInput: Component<IProps> = (props: IProps) => {
   const [isValid, calcIsValid] = useValidation(props.validation);

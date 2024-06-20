@@ -22,15 +22,9 @@ import { FormProfileImageLoading } from './profileImageLoading';
 import { AppAnimation } from '@constants/animation';
 import { IMediaUpload, MediaUploadType } from '@web/contracts/mediaUpload';
 
-interface IFormProfileImageUrlProps extends FormInputProps<IMediaUpload> {
-  imageValue?: string;
-}
+interface IFormProfileImageUrlProps extends FormInputProps<IMediaUpload> {}
 
-const getImageOrFallback = (upload: IMediaUpload, imageUrl?: string): string => {
-  if (imageUrl != null) {
-    return imageUrl;
-  }
-
+const getImageOrFallback = (upload: IMediaUpload): string => {
   const imgUrl = upload?.file?.toString?.() ?? upload?.url;
   if (imgUrl == null) return AppImage.fallbackImg;
   return imgUrl;
@@ -42,9 +36,7 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
   let inputRef: HTMLDivElement;
   const [isValid, calcIsValid] = useValidation(props.validation);
 
-  const [currentImage, setCurrentImage] = createSignal<string>(
-    getImageOrFallback(props.value, props.imageValue),
-  );
+  const [currentImage, setCurrentImage] = createSignal<string>(getImageOrFallback(props.value));
   const [imageDetails, setImageDetails] = createSignal<IImageParams>();
   const [fileToProcess, setFileToProcess] = createSignal<File>();
   const [networkState, setNetworkState] = createSignal<NetworkState>(NetworkState.Success);
@@ -87,7 +79,7 @@ export const FormProfileImageInput: Component<IFormProfileImageUrlProps> = (
   createEffect(() => {
     if (props.value == null) {
       // handle clear
-      setCurrentImage(getImageOrFallback(props.value, props.imageValue));
+      setCurrentImage(getImageOrFallback(props.value));
       setImageDetails(undefined);
     }
   }, [props.value]);

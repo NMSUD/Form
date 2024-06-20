@@ -11,6 +11,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     ...getFormInputArgTypes(),
+    multiple: { control: 'boolean' },
   },
 } satisfies Meta<typeof FormDropdown>;
 
