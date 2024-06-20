@@ -10,10 +10,9 @@ import { routes } from '@constants/route';
 import { IDropdownOption } from '@contracts/dropdownOption';
 import { FormDtoMeta, FormDtoMetaDetails } from '@contracts/dto/forms/baseFormDto';
 import { BugReportDto } from '@contracts/dto/forms/bugReportDto';
-import { makeArrayOrDefault } from '@helpers/arrayHelper';
 import { timeout } from '@helpers/asyncHelper';
 import { capitalizeFirstLetter } from '@helpers/stringHelper';
-import { ObjectWithPropsOfValue, anyObject } from '@helpers/typescriptHacks';
+import { ObjectWithPropsOfValue } from '@helpers/typescriptHacks';
 import { getFormApiService } from '@services/api/formApiService';
 import { getFormBugApiService } from '@services/api/formBugApiService';
 import { getCaptchaService } from '@services/external/captchaService';
@@ -22,7 +21,7 @@ import { getLog } from '@services/internal/logService';
 import { getStateService } from '@services/internal/stateService';
 import { validateObj } from '@validation/baseValidation';
 import { FormFieldGrid, FormFieldGridCell, GridItemSize } from '@web/components/form/grid';
-import { StatusNotificationTile } from '@web/components/form/statusNotificationTile';
+import { showStatusNotificationTile } from '@web/components/form/statusNotificationTile';
 import {
   ComponentMapping,
   IPropertyToFormMapping,
@@ -32,6 +31,12 @@ import { BugReportFAB } from '../bugReportFAB';
 import { Card } from '../common/card';
 import { PageHeader } from '../common/pageHeader';
 import { DebugNode } from '../core/debugNode';
+import {
+  getDtoWithDefaultValues,
+  getDtoWithOverrides,
+  getExtraProps,
+  getNotificationFunctions,
+} from './formBuilderLogic';
 
 interface IProps<T> {
   id: string;
@@ -46,20 +51,11 @@ interface IProps<T> {
 export const FormBuilder = <T,>(props: IProps<T>) => {
   let captchaRef: HTMLDivElement;
 
-  const dataFromState: { [x: string]: unknown } = getStateService().getForm(props.segment);
-  for (const propOverrides of makeArrayOrDefault(props.propertyOverrides)) {
-    for (const property of Object.keys(propOverrides)) {
-      const propKey = property as keyof T;
-      const currVal = dataFromState[property];
-      const propOverrideFunc = propOverrides[propKey];
-      if (propOverrideFunc == null) continue;
-
-      const newValue = propOverrideFunc(currVal);
-      dataFromState[property] = newValue;
-    }
-  }
-
-  const [itemBeingEdited, setItemBeingEdited] = createSignal<T>(dataFromState as T);
+  const dataFromState = getDtoWithOverrides(
+    getStateService().getForm(props.segment),
+    props.propertyOverrides,
+  );
+  const [itemBeingEdited, setItemBeingEdited] = createSignal<T>(dataFromState);
   const [forceValidationMessages, setForceValidationMessages] = createSignal<boolean>(false);
   const [networkState, setNetworkState] = createSignal<NetworkState>(NetworkState.Loading);
 
@@ -88,26 +84,24 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     });
   };
 
-  const getExtraProps = (localItem: IPropertyToFormMapping<T>, localItemBeingEdited: T) => {
-    let extraProps = anyObject;
-    if (localItem.additional == null) return extraProps;
-
-    for (const additionalProp in localItem.additional) {
-      if (Object.prototype.hasOwnProperty.call(localItem.additional, additionalProp) == false)
-        continue;
-
-      const propFunc: (item: T) => unknown = localItem.additional[additionalProp];
-      extraProps = {
-        ...extraProps,
-        [additionalProp]: propFunc(localItemBeingEdited),
-      };
-    }
-
-    return extraProps;
-  };
-
   const submitForm = async () => {
-    getLog().i('submitForm');
+    getLog().i('Submitting Form');
+    const notificationFunctions = getNotificationFunctions({
+      id: 'submit-notification-id',
+      loading: {
+        title: `Submitting ${capitalizeFirstLetter(props.segment)}`,
+        description: 'Uploading details and verifying the data',
+      },
+      failure: {
+        title: 'Something went wrong!',
+        description: `Unable to confirm that your data was submitted correctly. Please either try submitting again or reach out to one of the NMSUD organisers`,
+      },
+      success: {
+        title: 'Form submitted successfully',
+        description: `Thank you for your submission! We will verify your submission as soon as possible`,
+      },
+    });
+
     const failedValidationMsgs = validateObj({
       data: itemBeingEdited(),
       validationObj: props.formDtoMeta,
@@ -115,6 +109,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     }).filter((v) => v.isValid === false);
 
     if (failedValidationMsgs.length > 0) {
+      getLog().w('Submitting Form - validation failed');
       notificationService.show({
         status: 'danger',
         title: 'Validation errors',
@@ -122,28 +117,19 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
       });
       failedValidationMsgs
         .filter((m) => m.errorMessage != null)
-        .map((m) => getLog().e(m.errorMessage!));
+        .map((m) => getLog().e(`Submitting Form - err: ${m.errorMessage}`));
       setForceValidationMessages(true);
       return;
     }
 
-    const loadingNotificationId = 'submit-notification-id';
-    notificationService.show({
-      id: loadingNotificationId,
-      title: `Submitting ${capitalizeFirstLetter(props.segment)}`,
-      description: 'Uploading details and verifying the data',
-      persistent: true,
-      closable: false,
-      loading: true,
-    });
+    notificationFunctions.showLoading();
     setNetworkState(NetworkState.Loading);
 
     let captchaResp = 'test1000080001test';
     if (getConfig().getCaptchaEnabled() == true) {
       const captchaResult = await getCaptchaService().promptUser();
       if (captchaResult.isSuccess == false) {
-        notificationService.show({
-          status: 'danger',
+        notificationFunctions.showError({
           title: 'Captcha failed!',
           description: 'The captcha was cancelled or failed to load, please try again.',
         });
@@ -159,14 +145,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     ]);
 
     if (submitTask.isSuccess === false) {
-      notificationService.update({
-        id: loadingNotificationId,
-        status: 'danger',
-        title: 'Something went wrong!',
-        description: `Unable to confirm that your data was submitted correctly. Please either try submitting again or reach out to one of the NMSUD organisers`,
-        closable: true,
-        duration: 10_000,
-      });
+      notificationFunctions.showError();
       setNetworkState(NetworkState.Success);
       return;
     }
@@ -178,76 +157,42 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
       image: submitTask.value.iconUrl,
     };
     getStateService().addSubmission(props.segment, dropDownOpt);
+    notificationFunctions.showSuccess();
 
-    notificationService.update({
-      id: loadingNotificationId,
-      status: 'success',
-      title: 'Form submitted successfully',
-      description: `Thank you for your submission! We will verify your submission as soon as possible`,
-      duration: 10_000,
-    });
-
-    const urlSegments = [getConfig().getNmsUdFormWebUrl(), '/#', routes.status.path];
-    notificationService.show({
-      render: (notificationProps) => (
-        <StatusNotificationTile
-          {...notificationProps}
-          href={urlSegments.join('')}
-          imgUrl={submitTask.value.iconUrl ?? AppImage.sidebarLogo}
-          title="View the status of your submission here:"
-          descrip={
-            <Text>
-              {capitalizeFirstLetter(props.segment)}: '{name}'
-            </Text>
-          }
-        />
-      ),
-      persistent: true,
+    showStatusNotificationTile({
+      href: [getConfig().getNmsUdFormWebUrl(), '/#', routes.status.path].join(''),
+      imgUrl: submitTask.value.iconUrl ?? AppImage.sidebarLogo,
+      description: `${capitalizeFirstLetter(props.segment)}: '{name}'`,
     });
 
     clearForm();
     setNetworkState(NetworkState.Success);
   };
 
-  const clearForm = () => {
-    setForceValidationMessages(false);
-    setItemBeingEdited((prev) => {
-      const result: T = { ...prev };
-
-      for (const formMetaKey in props.formDtoMeta) {
-        if (Object.prototype.hasOwnProperty.call(props.formDtoMeta, formMetaKey)) {
-          const formMeta = props.formDtoMeta[formMetaKey];
-          if (formMeta.defaultValue !== undefined) {
-            result[formMetaKey] = formMeta.defaultValue;
-          } else {
-            (result[formMetaKey] as unknown) = undefined;
-          }
-        }
-      }
-      getStateService().setForm(props.segment, result);
-      return result;
-    });
-  };
-
   const submitBugReport = async (bugReport: BugReportDto) => {
-    getLog().i('submitBugReport');
-
-    const notificationId = 'bug-notification-id';
-    notificationService.show({
-      id: notificationId,
-      title: 'Submitting Bug report',
-      description: 'Uploading details and verifying the data',
-      persistent: true,
-      closable: false,
-      loading: true,
+    getLog().i('Submitting BugReport');
+    const notificationFunctions = getNotificationFunctions({
+      id: 'bug-notification-id',
+      loading: {
+        title: 'Submitting Bug report',
+        description: 'Uploading details and verifying the data',
+      },
+      failure: {
+        title: 'Something went wrong!',
+        description: `Unable to confirm that your data was submitted correctly. Please either try submitting again or reach out to one of the NMSUD organisers`,
+      },
+      success: {
+        title: 'Report submitted successfully',
+        description: `Thank you for your bug report!`,
+      },
     });
+    notificationFunctions.showLoading();
     setNetworkState(NetworkState.Loading);
 
     if (getConfig().getCaptchaEnabled() == true) {
       const captchaResult = await getCaptchaService().promptUser();
       if (captchaResult.isSuccess == false) {
-        notificationService.show({
-          status: 'danger',
+        notificationFunctions.showError({
           title: 'Captcha failed!',
           description: 'The captcha was cancelled or failed to load, please try again.',
         });
@@ -262,29 +207,19 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
       getFormBugApiService().submitBugReport(bugReport),
     ]);
 
-    debugger;
     if (submitTask.isSuccess === false) {
-      notificationService.update({
-        id: notificationId,
-        status: 'danger',
-        title: 'Something went wrong!',
-        description: `Unable to confirm that your data was submitted correctly. Please either try submitting again or reach out to one of the NMSUD organisers`,
-        closable: true,
-        duration: 10_000,
-      });
+      notificationFunctions.showError();
       setNetworkState(NetworkState.Success);
       return;
     }
 
-    notificationService.update({
-      id: notificationId,
-      status: 'success',
-      title: 'Report submitted successfully',
-      description: `Thank you for your bug report!`,
-      duration: 10_000,
-    });
-
+    notificationFunctions.showSuccess();
     setNetworkState(NetworkState.Success);
+  };
+
+  const clearForm = () => {
+    setForceValidationMessages(false);
+    setItemBeingEdited((prev) => getDtoWithDefaultValues(prev, props.formDtoMeta));
   };
 
   const renderGridCell = (item: IPropertyToFormMapping<T>, children: JSXElement) => {
@@ -300,7 +235,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
 
   return (
     <>
-      <PageHeader text={props.title}></PageHeader>
+      <PageHeader text={props.title} />
 
       <Show when={formIsDisabled}>
         <Alert

@@ -3,8 +3,9 @@ import { AppType } from '@constants/enum/appType';
 
 @Service()
 export class ConfigService {
-  /* If the .env var name starts with VITE_ it is available on the UI & API */
+  private _internalIsProd?: boolean;
 
+  /* If the .env var name starts with VITE_ it is available on the UI & API */
   getNmsUdFormWebUrl = () => this.get('VITE_NMSUD_FORM_WEB_URL');
   getNmsUdApiUrl = () => this.get('VITE_NMSUD_API_URL');
   getNmsUdFormDataUrl = () => this.get('VITE_NMSUD_FORM_DATA_URL');
@@ -31,9 +32,15 @@ export class ConfigService {
   getHCaptchaSiteKey = () => this.get('VITE_HCAPTCHA_SITE_KEY');
 
   /* Special case, available on UI & API */
-  isProd = () =>
-    this.get('NODE_ENV').toLocaleLowerCase() === 'production' ||
-    this.get('MODE').toLocaleLowerCase() === 'production';
+  isProd = () => {
+    if (this._internalIsProd == null) {
+      this._internalIsProd =
+        this.get('NODE_ENV').toLocaleLowerCase() === 'production' ||
+        this.get('MODE').toLocaleLowerCase() === 'production';
+    }
+
+    return this._internalIsProd;
+  };
   packageVersion = () => this.get('PACKAGE_VERSION');
   buildVersion = () => this.get('BUILD_VERSION');
 

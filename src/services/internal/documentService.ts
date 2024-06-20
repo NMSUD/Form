@@ -16,8 +16,9 @@ interface IAddScriptToHead {
 @Service()
 export class DocumentService {
   initDebug = () => {
-    (window as unknown as { debug: boolean }).debug = !getConfig().isProd();
+    (window as unknown as { enableDebug: boolean }).enableDebug = !getConfig().isProd();
   };
+  isDebugEnabled = () => (window as unknown as { enableDebug: boolean }).enableDebug ?? false;
 
   setDocumentTitle = (pageTitle: string) => {
     document.title = `${site.title} - ${pageTitle}`;

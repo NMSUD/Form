@@ -46,9 +46,6 @@ jobs:
               if [[ $p == *"[$version]"* ]]; then
                   mode="add"
               fi
-              if [[ $p == *"<!-- Links used in the page -->"* ]]; then
-                  mode="add"
-              fi
               if [[ $mode == "add" ]]; then
                   echo "$p" >> release.txt
               fi

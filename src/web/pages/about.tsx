@@ -19,7 +19,7 @@ export const AboutPage: Component = () => {
   const subHeadingSize = 18;
   return (
     <>
-      <PageHeader text="About"></PageHeader>
+      <PageHeader text="About" />
       <Box m={25}></Box>
 
       <Container maxWidth="1200px" px="2em">

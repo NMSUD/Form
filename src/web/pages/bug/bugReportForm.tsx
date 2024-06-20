@@ -61,6 +61,8 @@ export const BugReportForm = <T,>(props: IProps<T>) => {
           validation={() => ({ isValid: true })}
           onChange={setDescription}
         />
+        {/* TODO add option to create github issue
+        https://github.com/NMSUD/Form/issues/new?assignees=&labels=bug&projects=&template=---bug-report.yaml&title=%F0%9F%90%9B+Bug+Report%3A+ */}
         <Show when={props.formBuilderModel != null}>
           Add current form in report (useful if you are trying to submit a record but it isn't
           working. The data that you have filled in will be sent to us except for files that have

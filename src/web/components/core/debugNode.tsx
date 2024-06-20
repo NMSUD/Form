@@ -1,3 +1,4 @@
+import { getDocumentServ } from '@services/internal/documentService';
 import { Component } from 'solid-js';
 
 interface IProps {
@@ -5,8 +6,7 @@ interface IProps {
 }
 
 export const DebugNode: Component<IProps> = (props: IProps) => {
-  const renderDebug = (window as unknown as { debug: boolean })?.debug === true;
-  if (!renderDebug) {
+  if (getDocumentServ().isDebugEnabled() != true) {
     return;
   }
 

@@ -1,4 +1,4 @@
-import { Anchor, Avatar, Button, HStack, Text, VStack } from '@hope-ui/solid';
+import { Anchor, Avatar, Button, HStack, Text, VStack, notificationService } from '@hope-ui/solid';
 import { Component, JSX } from 'solid-js';
 import { BasicLink } from '../core/link';
 
@@ -54,4 +54,23 @@ export const StatusNotificationTile: Component<IProps> = (props: IProps) => {
       </Button>
     </HStack>
   );
+};
+
+export const showStatusNotificationTile = (props: {
+  href: string;
+  imgUrl: string;
+  description: string;
+}) => {
+  notificationService.show({
+    render: (notificationProps) => (
+      <StatusNotificationTile
+        {...notificationProps}
+        href={props.href}
+        imgUrl={props.imgUrl}
+        title="View the status of your submission here:"
+        descrip={<Text>{props.description}</Text>}
+      />
+    ),
+    persistent: true,
+  });
 };
