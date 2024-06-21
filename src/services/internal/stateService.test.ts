@@ -93,4 +93,63 @@ describe('LocalStorage service', () => {
       });
     });
   });
+
+  describe('sidebar', () => {
+    test('set & get', () => {
+      const set = vi.fn().mockResolvedValue({});
+      class MockLocalStorageService {
+        set = set;
+        get = () => {};
+      }
+      Container.set(LocalStorageService, new MockLocalStorageService());
+
+      const stateService = new StateService();
+      stateService.setIsSidebarOpen(false);
+      expect(stateService.getIsSidebarOpen()).toBeFalsy();
+    });
+  });
+
+  describe('anonymousUserGuid', () => {
+    test('get new userGuid when localStorage is empty', () => {
+      const set = vi.fn().mockResolvedValue({});
+      class MockLocalStorageService {
+        set = set;
+        get = () => undefined;
+      }
+      Container.set(LocalStorageService, new MockLocalStorageService());
+
+      const stateService = new StateService();
+      expect(stateService.getAnonymousUserGuid().length).toBeGreaterThan(10);
+    });
+    test('when not prod it should return DEV', () => {
+      class MockConfigService {
+        isProd = () => false;
+      }
+      const set = vi.fn().mockResolvedValue({});
+      class MockLocalStorageService {
+        set = set;
+        get = () => ({});
+      }
+      Container.set(LocalStorageService, new MockLocalStorageService());
+      Container.set(ConfigService, new MockConfigService());
+
+      const stateService = new StateService();
+      expect(stateService.getAnonymousUserGuid()).toBe('DEV');
+    });
+    test('get userGuid set in localStorage', () => {
+      class MockConfigService {
+        isProd = () => true;
+      }
+      const set = vi.fn().mockResolvedValue({});
+      class MockLocalStorageService {
+        set = set;
+        get = () => ({ anonymousUserGuid: 'test' });
+      }
+      Container.set(LocalStorageService, new MockLocalStorageService());
+      Container.set(ConfigService, new MockConfigService());
+
+      const stateService = new StateService();
+      expect(stateService.getAnonymousUserGuid()).toBe('test');
+    });
+  });
 });

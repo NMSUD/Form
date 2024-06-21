@@ -60,6 +60,21 @@ export const getDtoWithDefaultValues = <T>(prev: T, formDtoMeta: FormDtoMeta<T>)
   return result;
 };
 
+export const defaultNotificationSettings = {
+  error: {
+    title: 'Something went wrong!',
+    description: `Unable to confirm that your data was submitted correctly. Please either try submitting again or reach out to one of the NMSUD organisers`,
+  },
+  validationError: {
+    title: 'Validation errors',
+    description: 'There are some problems that need fixing!',
+  },
+  captchaError: {
+    title: 'Captcha failed!',
+    description: 'The captcha was cancelled or failed to load, please try again.',
+  },
+};
+
 interface INotificationSettingsTitles {
   title: string;
   description: string;
@@ -67,13 +82,17 @@ interface INotificationSettingsTitles {
 interface INotificationSettings {
   id: string;
   loading: INotificationSettingsTitles;
-  failure: INotificationSettingsTitles;
+  error: INotificationSettingsTitles;
+  validationError: INotificationSettingsTitles;
+  captchaError: INotificationSettingsTitles;
   success: INotificationSettingsTitles;
 }
 
 interface INotificationFunctions {
   showLoading: () => void;
   showError: (override?: INotificationSettingsTitles) => void;
+  showValidationError: (override?: INotificationSettingsTitles) => void;
+  showCaptchaError: (override?: INotificationSettingsTitles) => void;
   showSuccess: () => void;
 }
 
@@ -94,7 +113,25 @@ export const getNotificationFunctions = (
       notificationService.update({
         id: settings.id,
         status: 'danger',
-        ...(override ?? settings.failure),
+        ...(override ?? settings.error),
+        closable: true,
+        duration: 10_000,
+      });
+    },
+    showValidationError: () => {
+      notificationService.update({
+        id: settings.id,
+        status: 'danger',
+        ...settings.validationError,
+        closable: true,
+        duration: 10_000,
+      });
+    },
+    showCaptchaError: () => {
+      notificationService.update({
+        id: settings.id,
+        status: 'danger',
+        ...settings.captchaError,
         closable: true,
         duration: 10_000,
       });

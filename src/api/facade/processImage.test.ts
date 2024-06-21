@@ -21,6 +21,7 @@ describe('Process images from formData', () => {
 
     const testImg = unitTestImages[0];
     await processImageFromFormData({
+      handlerName: 'unitTest',
       fileFromForm: {
         filepath: testImg.input,
         newFilename: testImg.input,
@@ -53,6 +54,7 @@ describe('Process images from formData', () => {
 
     const testImg = unitTestImages[0];
     await processImageFromFormData({
+      handlerName: 'unitTest',
       fileFromForm: {
         filepath: testImg.input,
         newFilename: testImg.input,

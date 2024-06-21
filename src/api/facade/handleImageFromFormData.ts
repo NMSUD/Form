@@ -18,6 +18,18 @@ export const handleImageFromFormData = async (props: {
   const imageMetaResult = await getImageProcessingService().getMetaData({
     input: props.fileFromForm.filepath,
   });
+  if (imageMetaResult.isSuccess === false) {
+    getLog().w(
+      `${props.handlerName} ${props.fileName} image metadata: `,
+      imageMetaResult.errorMessage,
+    );
+    return {
+      isSuccess: false,
+      value: anyObject,
+      errorMessage: imageMetaResult.errorMessage ?? 'failed to read image metadata',
+    };
+  }
+
   const restriction = apiFileUploadRestriction(props.restrictions, props.fileName);
   const validationResult = restriction(imageMetaResult.value);
   if (validationResult.isValid === false) {

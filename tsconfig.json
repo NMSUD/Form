@@ -56,7 +56,6 @@
   ],
   "exclude": [
     "node_modules",
-    "**/*.test.ts",
     "build",
     "dist",
     "public",

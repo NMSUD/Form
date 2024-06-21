@@ -1,25 +1,25 @@
 import { describe, expect, test } from 'vitest';
 
-import { maxLength, minLength, shouldBeUrl } from './textValidation';
+import { maxLength, minLength, shouldBeUrl, shouldBeYoutubeUrl } from './textValidation';
 
 describe('Text Validation', () => {
   describe('min length', () => {
-    test('minItems on null', () => {
+    test('invalid on null', () => {
       const text: any = null;
       const validator = minLength(5);
       expect(validator(text).isValid).toBeFalsy();
     });
-    test('minItems on empty string', () => {
+    test('invalid on empty string', () => {
       const text = '';
       const validator = minLength(5);
       expect(validator(text).isValid).toBeFalsy();
     });
-    test('minItems with too few characters', () => {
+    test('invalid with too few characters', () => {
       const text = 'abc';
       const validator = minLength(5);
       expect(validator(text).isValid).toBeFalsy();
     });
-    test('minItems with enough characters', () => {
+    test('valid with enough characters', () => {
       const text = 'testerString';
       const validator = minLength(5);
       expect(validator(text).isValid).toBeTruthy();
@@ -27,27 +27,27 @@ describe('Text Validation', () => {
   });
 
   describe('max length', () => {
-    test('maxLength on null', () => {
+    test('valid on null', () => {
       const text: any = null;
       const validator = maxLength(5);
       expect(validator(text).isValid).toBeTruthy();
     });
-    test('maxLength on empty string', () => {
+    test('valid on empty string', () => {
       const text = '';
       const validator = maxLength(5);
       expect(validator(text).isValid).toBeTruthy();
     });
-    test('maxLength with too many characters', () => {
+    test('invalid with too many characters', () => {
       const text = 'testerString';
       const validator = maxLength(5);
       expect(validator(text).isValid).toBeFalsy();
     });
-    test('maxLength with correct number of characters', () => {
+    test('valid with correct number of characters', () => {
       const text = 'abc';
       const validator = maxLength(5);
       expect(validator(text).isValid).toBeTruthy();
     });
-    test('maxLength with exactly max number of characters', () => {
+    test('valid with exactly max number of characters', () => {
       const text = 'abcde';
       const validator = maxLength(5);
       expect(validator(text).isValid).toBeTruthy();
@@ -55,21 +55,40 @@ describe('Text Validation', () => {
   });
 
   describe('should be url', () => {
-    test('shouldBeUrl on null', () => {
+    test('invalid on null', () => {
       const text: any = null;
       expect(shouldBeUrl(text).isValid).toBeFalsy();
     });
-    test('shouldBeUrl on empty string', () => {
+    test('invalid on empty string', () => {
       const text = '';
       expect(shouldBeUrl(text).isValid).toBeFalsy();
     });
-    test('shouldBeUrl with an invalid url', () => {
+    test('invalid with an invalid url', () => {
       const text = 'testerString';
       expect(shouldBeUrl(text).isValid).toBeFalsy();
     });
-    test('shouldBeUrl with a valid url', () => {
+    test('valid with a valid url', () => {
       const text = 'http://google.com';
       expect(shouldBeUrl(text).isValid).toBeTruthy();
+    });
+  });
+
+  describe('should be Youtube url', () => {
+    test('invalid on null', () => {
+      const text: any = null;
+      expect(shouldBeYoutubeUrl(text).isValid).toBeFalsy();
+    });
+    test('invalid on empty string', () => {
+      const text = '';
+      expect(shouldBeYoutubeUrl(text).isValid).toBeFalsy();
+    });
+    test('invalid with an invalid url', () => {
+      const text = 'testerString';
+      expect(shouldBeYoutubeUrl(text).isValid).toBeFalsy();
+    });
+    test('valid with a valid url', () => {
+      const text = 'https://www.youtube.com/watch?v=hello';
+      expect(shouldBeYoutubeUrl(text).isValid).toBeTruthy();
     });
   });
 });

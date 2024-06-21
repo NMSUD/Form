@@ -1,5 +1,5 @@
 // prettier-ignore
-import { Alert, AlertDescription, AlertIcon, Button, Center, HStack, Tag, Text, notificationService } from '@hope-ui/solid';
+import { Alert, AlertDescription, AlertIcon, Button, Center, HStack, Tag, Text } from '@hope-ui/solid';
 import classNames from 'classnames';
 import { For, JSXElement, Show, createSignal } from 'solid-js';
 
@@ -32,11 +32,13 @@ import { Card } from '../common/card';
 import { PageHeader } from '../common/pageHeader';
 import { DebugNode } from '../core/debugNode';
 import {
+  defaultNotificationSettings,
   getDtoWithDefaultValues,
   getDtoWithOverrides,
   getExtraProps,
   getNotificationFunctions,
 } from './formBuilderLogic';
+import { FormNotReadyAlert } from './formNotReadyAlert';
 
 interface IProps<T> {
   id: string;
@@ -85,16 +87,14 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
   };
 
   const submitForm = async () => {
-    getLog().i('Submitting Form');
+    const editedItem = itemBeingEdited();
+    getLog().i('Submitting Form with itemData:', editedItem);
     const notificationFunctions = getNotificationFunctions({
+      ...defaultNotificationSettings,
       id: 'submit-notification-id',
       loading: {
         title: `Submitting ${capitalizeFirstLetter(props.segment)}`,
         description: 'Uploading details and verifying the data',
-      },
-      failure: {
-        title: 'Something went wrong!',
-        description: `Unable to confirm that your data was submitted correctly. Please either try submitting again or reach out to one of the NMSUD organisers`,
       },
       success: {
         title: 'Form submitted successfully',
@@ -103,18 +103,14 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     });
 
     const failedValidationMsgs = validateObj({
-      data: itemBeingEdited(),
+      data: editedItem,
       validationObj: props.formDtoMeta,
       includeLabelInErrMsgs: true,
     }).filter((v) => v.isValid === false);
 
     if (failedValidationMsgs.length > 0) {
       getLog().w('Submitting Form - validation failed');
-      notificationService.show({
-        status: 'danger',
-        title: 'Validation errors',
-        description: 'There are some problems that need fixing!',
-      });
+      notificationFunctions.showValidationError();
       failedValidationMsgs
         .filter((m) => m.errorMessage != null)
         .map((m) => getLog().e(`Submitting Form - err: ${m.errorMessage}`));
@@ -129,10 +125,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     if (getConfig().getCaptchaEnabled() == true) {
       const captchaResult = await getCaptchaService().promptUser();
       if (captchaResult.isSuccess == false) {
-        notificationFunctions.showError({
-          title: 'Captcha failed!',
-          description: 'The captcha was cancelled or failed to load, please try again.',
-        });
+        notificationFunctions.showCaptchaError();
         setNetworkState(NetworkState.Success);
         return;
       }
@@ -141,12 +134,12 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
 
     const [_, submitTask] = await Promise.all([
       timeout(getConfig().isProd() ? 0 : 2000), // min 2 sec delay in dev. There is no delay in prod
-      getFormApiService().submit(props.segment, itemBeingEdited(), captchaResp),
+      getFormApiService().submit(props.segment, editedItem, captchaResp),
     ]);
 
     if (submitTask.isSuccess === false) {
       notificationFunctions.showError();
-      setNetworkState(NetworkState.Success);
+      setNetworkState(NetworkState.Error);
       return;
     }
 
@@ -170,16 +163,13 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
   };
 
   const submitBugReport = async (bugReport: BugReportDto) => {
-    getLog().i('Submitting BugReport');
+    getLog().i('Submitting BugReport with data:', bugReport);
     const notificationFunctions = getNotificationFunctions({
+      ...defaultNotificationSettings,
       id: 'bug-notification-id',
       loading: {
         title: 'Submitting Bug report',
         description: 'Uploading details and verifying the data',
-      },
-      failure: {
-        title: 'Something went wrong!',
-        description: `Unable to confirm that your data was submitted correctly. Please either try submitting again or reach out to one of the NMSUD organisers`,
       },
       success: {
         title: 'Report submitted successfully',
@@ -192,10 +182,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
     if (getConfig().getCaptchaEnabled() == true) {
       const captchaResult = await getCaptchaService().promptUser();
       if (captchaResult.isSuccess == false) {
-        notificationFunctions.showError({
-          title: 'Captcha failed!',
-          description: 'The captcha was cancelled or failed to load, please try again.',
-        });
+        notificationFunctions.showCaptchaError();
         setNetworkState(NetworkState.Success);
         return;
       }
@@ -238,22 +225,7 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
       <PageHeader text={props.title} />
 
       <Show when={formIsDisabled}>
-        <Alert
-          mt="2em"
-          status="warning"
-          variant="subtle"
-          borderBottomRadius="0"
-          justifyContent="center"
-          class="card-alert"
-        >
-          <AlertIcon mr="$2_5" />
-          <AlertDescription>
-            <Text>
-              This form is under construction. Submissions made before the page has been made
-              available are likely to be deleted.
-            </Text>
-          </AlertDescription>
-        </Alert>
+        <FormNotReadyAlert />
       </Show>
 
       <Card class={classNames('form', { 'alert-visible': formIsDisabled })}>
@@ -269,15 +241,10 @@ export const FormBuilder = <T,>(props: IProps<T>) => {
               const dtoMeta: FormDtoMetaDetails<string> = (
                 props.formDtoMeta as ObjectWithPropsOfValue<FormDtoMetaDetails<string>>
               )?.[itemPropName];
-              if (dtoMeta == null)
-                return renderGridCell(
-                  item,
-                  <Center border="1px solid red" borderRadius="1em" height="100%">
-                    <Text color="red" textAlign="center" p="2em">
-                      Item mapping '{itemPropName}'' does not exist on '{props.id}'
-                    </Text>
-                  </Center>,
-                );
+              if (dtoMeta == null) {
+                getLog().e(`Item mapping '${itemPropName}'' does not exist on '${props.id}'`);
+                return null;
+              }
 
               return renderGridCell(
                 item,

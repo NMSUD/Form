@@ -41,18 +41,18 @@ export class StateService {
     const localInitialState = getLocalStorage().get<IState>(LocalStorageKey.main);
     if (localInitialState != null) {
       let anonymousUserGuid =
-        (localInitialState.anonymousUserGuid?.length ?? 0) > 10
+        (localInitialState.anonymousUserGuid?.length ?? 0) > 1
           ? localInitialState.anonymousUserGuid
           : uuidv4();
-
-      if (!getConfig().isProd()) {
-        anonymousUserGuid = 'DEV';
-      }
 
       this._internalState = {
         ...localInitialState,
         anonymousUserGuid,
       };
+    }
+
+    if (!getConfig().isProd()) {
+      this._internalState.anonymousUserGuid = 'DEV';
     }
   }
 
@@ -73,7 +73,7 @@ export class StateService {
   }
 
   getAnonymousUserGuid = (): string => {
-    if (this._internalState?.anonymousUserGuid == null) {
+    if ((this._internalState?.anonymousUserGuid?.length ?? 0) < 3) {
       this._internalState.anonymousUserGuid = uuidv4();
       this.saveToLocalStorage(this._internalState);
     }
