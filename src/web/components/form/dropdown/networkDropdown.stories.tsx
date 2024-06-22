@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from 'storybook-solidjs';
 
 import { BuilderDtoMeta } from '@contracts/dto/forms/meta/builderDto.meta';
-import { promiseFrom } from '@helpers/asyncHelper';
 import { UseHopeUIThemeProvider, getFormInputArgTypes } from '../../storybook';
 import { FormNetworkDropdown } from './networkDropdown';
+import { promiseFromResult } from '@helpers/typescriptHacks';
 
 const meta = {
   title: 'Form/NetworkDropdown',
@@ -24,7 +24,7 @@ export const Basic: Story = {
     label: 'Name',
     placeholder: 'this is a placeholder',
     options: ['test1', 'test2', 'test3'].map((t) => ({ title: t, value: t })),
-    optionsPromise: promiseFrom({ isSuccess: true }, 2000),
+    optionsPromise: promiseFromResult({ isSuccess: true }),
     validation: BuilderDtoMeta.platforms.validator,
   },
 };

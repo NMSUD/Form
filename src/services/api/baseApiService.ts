@@ -93,7 +93,13 @@ export class BaseApiService {
     let resultValue = anyObject;
     try {
       resultValue = await result.json();
-    } catch (ex) {}
+    } catch (ex) {
+      return {
+        isSuccess: false,
+        value: anyObject,
+        errorMessage: ex?.toString?.() ?? '',
+      };
+    }
 
     return {
       isSuccess: true,
@@ -142,7 +148,14 @@ export class BaseApiService {
     let resultValue = anyObject;
     try {
       resultValue = await result.json();
-    } catch (ex) {}
+    } catch (ex) {
+      getLog().i('BaseApiService post', ex?.toString?.());
+      return {
+        isSuccess: false,
+        value: anyObject,
+        errorMessage: ex?.toString?.() ?? '',
+      };
+    }
 
     return {
       isSuccess: true,
@@ -178,7 +191,13 @@ export class BaseApiService {
     let resultValue = anyObject;
     try {
       resultValue = await result.json();
-    } catch (ex) {}
+    } catch (ex) {
+      getLog().i('BaseApiService post', ex?.toString?.());
+      return {
+        isSuccess: false,
+        errorMessage: ex?.toString?.() ?? '',
+      };
+    }
 
     return {
       isSuccess: true,

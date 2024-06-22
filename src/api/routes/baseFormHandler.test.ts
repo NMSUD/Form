@@ -135,6 +135,7 @@ describe('Form handler', () => {
           value: {
             ...persistence,
             id: 'createdId',
+            anonymousUserGuid: 'createdId',
             approvalStatus: ApprovalStatus.pending,
           },
           errorMessage: '',

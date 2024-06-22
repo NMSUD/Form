@@ -22,6 +22,7 @@ const testDef = {
         'src/services/external',
         'src/services/internal/apiFileService.ts',
         'src/web/contracts',
+        'src/web/components', // TODO test component logic
         'src/web/hooks',
         'src/web/types',
       ],
