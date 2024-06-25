@@ -1,60 +1,68 @@
-import { Container, Service, Token } from 'typedi';
 import { AppType } from '@constants/enum/appType';
+import { EnvKey } from '@constants/generated/env';
+import { Container, Service, Token } from 'typedi';
 
 @Service()
 export class ConfigService {
-  private _internalIsProd?: boolean;
+  private _internalCache: { [name: string]: string | number | boolean } = {};
 
-  /* If the .env var name starts with VITE_ it is available on the UI & API */
-  getNmsUdFormWebUrl = () => this.get('VITE_NMSUD_FORM_WEB_URL');
-  getNmsUdApiUrl = () => this.get('VITE_NMSUD_API_URL');
-  getNmsUdFormDataUrl = () => this.get('VITE_NMSUD_FORM_DATA_URL');
-  getNmsUdFormDocsUrl = () => this.get('VITE_NMSUD_FORM_DOCS_URL');
+  constructor() {
+    for (const configMetaKey of Object.keys(EnvKey)) {
+      const configProp = (EnvKey as unknown as { [prop: string]: string })[configMetaKey];
+      const isAvailableOnUI = configProp.includes('VITE_');
+      if (getAppType() == AppType.UI && isAvailableOnUI === false) continue;
 
-  getApiPort = () => this.getNumber('API_PORT', 3001);
-  getApiSecret = () => this.get('API_SECRET');
-
-  getXataApiKey = () => this.get('XATA_API_KEY');
-  getXataDbUrl = () => this.get('XATA_DB_URL');
-  getXataFallbackBranch = () => this.get('XATA_FALLBACK_BRANCH');
-
-  getDiscordWebhookUrl = () => this.get('DISCORD_WEBHOOK_URL');
-
-  getGithubActionTriggerOnDecision = () => this.getBool('GITHUB_ACTION_TRIGGER_ON_DECISION');
-  getGithubActionOwner = () => this.get('GITHUB_ACTION_OWNER');
-  getGithubActionRepo = () => this.get('GITHUB_ACTION_REPO');
-  getGithubActionWorkflowId = () => this.get('GITHUB_ACTION_WORKFLOW_ID');
-  getGithubActionMinBetweenRuns = () => this.getNumber('GITHUB_ACTION_MINUTES_BETWEEN_RUN');
-  getGithubActionAuthToken = () => this.get('GITHUB_AUTH_TOKEN');
-
-  getCaptchaEnabled = () => this.getBool('VITE_ENABLE_CAPTCHA');
-  getHCaptchaSecret = () => this.get('HCAPTCHA_SECRET');
-  getHCaptchaSiteKey = () => this.get('VITE_HCAPTCHA_SITE_KEY');
-
-  /* Special case, available on UI & API */
-  isProd = () => {
-    if (this._internalIsProd == null) {
-      this._internalIsProd =
-        this.get('NODE_ENV').toLocaleLowerCase() === 'production' ||
-        this.get('MODE').toLocaleLowerCase() === 'production';
+      let value = this._getFromProcess(configProp);
+      if (value == null || value.length < 1) {
+        console.warn(`Environment variable '${configProp}' is missing a value`);
+      }
+      this._internalCache[configProp] = value;
     }
+    this._internalCache['prod'] =
+      this._getFromProcess('NODE_ENV').toLocaleLowerCase() === 'production' ||
+      this._getFromProcess('MODE').toLocaleLowerCase() === 'production';
+  }
 
-    return this._internalIsProd;
-  };
-  packageVersion = () => this.get('PACKAGE_VERSION');
-  buildVersion = () => this.get('BUILD_VERSION');
-
-  get(property: string, defaultValue?: string): string {
+  private _get = (prop: string) => this._internalCache[prop];
+  private _getBool = (prop: string) => () => this._internalCache[prop] == 'true';
+  private _getNumber = (prop: string) => () => Number(this._internalCache[prop]);
+  private _getFromProcess(property: string, defaultValue?: string): string {
     const value = process?.env?.[property];
     if (defaultValue != null) {
       return value ?? defaultValue;
     }
     return value ?? '';
   }
-  getBool = (property: string, defaultValue?: string) =>
-    this.get(property, defaultValue).toLowerCase() == 'true';
-  getNumber = (property: string, defaultValue?: number) =>
-    Number(this.get(property, defaultValue?.toString?.()));
+
+  getNmsUdFormWebUrl = () => this._get(EnvKey.NMSUD_FORM_WEB_URL);
+  getNmsUdApiUrl = () => this._get(EnvKey.NMSUD_API_URL);
+  getNmsUdFormDataUrl = () => this._get(EnvKey.NMSUD_FORM_DATA_URL);
+  getNmsUdFormDocsUrl = () => this._get(EnvKey.NMSUD_FORM_DOCS_URL);
+
+  getApiPort = () => this._getNumber(EnvKey.API_PORT);
+  getApiSecret = () => this._get(EnvKey.API_SECRET);
+
+  getXataApiKey = () => this._get(EnvKey.XATA_API_KEY);
+  getXataDbUrl = () => this._get(EnvKey.XATA_DB_URL);
+  getXataFallbackBranch = () => this._get(EnvKey.XATA_FALLBACK_BRANCH);
+
+  getDiscordWebhookUrl = () => this._get(EnvKey.DISCORD_WEBHOOK_URL);
+
+  getGithubActionTriggerOnDecision = () => this._getBool(EnvKey.GITHUB_ACTION_TRIGGER_ON_DECISION);
+  getGithubActionOwner = () => this._get(EnvKey.GITHUB_ACTION_OWNER);
+  getGithubActionRepo = () => this._get(EnvKey.GITHUB_ACTION_REPO);
+  getGithubActionWorkflowId = () => this._get(EnvKey.GITHUB_ACTION_WORKFLOW_ID);
+  getGithubActionMinBetweenRuns = () => this._getNumber(EnvKey.GITHUB_ACTION_MINUTES_BETWEEN_RUN);
+  getGithubActionAuthToken = () => this._get(EnvKey.GITHUB_AUTH_TOKEN);
+
+  getCaptchaEnabled = () => this._getBool(EnvKey.ENABLE_CAPTCHA);
+  getHCaptchaSecret = () => this._get(EnvKey.HCAPTCHA_SECRET);
+  getHCaptchaSiteKey = () => this._get(EnvKey.HCAPTCHA_SITE_KEY);
+
+  /* Special case, available on UI & API */
+  isProd = this._getBool('prod');
+  packageVersion = () => this._get('PACKAGE_VERSION');
+  buildVersion = () => this._get('BUILD_VERSION');
 }
 
 export const BOT_PATH = new Token<string>('BOT_PATH');

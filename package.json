@@ -14,6 +14,7 @@
     "build": "npm-run-all --sequential build:*",
     "build:web": "dotenv -- vite build",
     "build:server": "tsc -p ./tsconfig.server.json && resolve-tspaths -p ./tsconfig.server.json --out ./build/src",
+    "build:env": "node  --experimental-modules scripts/generateContractFromEnv.js",
     "data:downloader": "dotenv -- tsx --tsconfig tsconfig.server.json src/data/downloader.ts",
     "data:dev": "dotenv -- tsx --tsconfig tsconfig.server.json src/data/interactive.ts",
     "db:generate": "npx xata codegen",
